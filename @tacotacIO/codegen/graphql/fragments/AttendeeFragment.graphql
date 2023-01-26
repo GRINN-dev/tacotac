@@ -1,0 +1,10 @@
+fragment MyAttendee on Attendee {
+  id
+  firstname
+  lastname
+  email
+  createdAt
+  updatedAt
+  status
+  eventId
+}

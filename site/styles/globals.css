@@ -1,0 +1,41 @@
+:root {
+  --random-x: 9;
+  --random-y: 9;
+  --random-opacity: 0.5;
+  --chaos-amplitude: 100;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+.form-grid {
+  @apply grid grid-cols-1 gap-4;
+}
+
+.form-grid label {
+  @apply block;
+}
+
+.form-grid input,
+.form-grid textarea {
+  @apply w-full px-3 py-2 border-2 border-gray-300 rounded-md;
+}
+
+.form-grid button[type="submit"] {
+  @apply px-4 py-2 mt-4 text-white bg-indigo-500 rounded-md hover:bg-indigo-600;
+}
+
+.form-grid {
+  @apply grid grid-cols-1 gap-4;
+}
+
+.form-grid label {
+  @apply block;
+}
+
+.form-grid input,
+.form-grid textarea {
+  @apply w-full px-3 py-2 border-2 border-gray-300 rounded-md;
+}

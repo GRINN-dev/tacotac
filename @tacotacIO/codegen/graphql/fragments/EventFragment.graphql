@@ -1,0 +1,18 @@
+fragment MyEvent on Event {
+  id
+  name
+  slug
+  description
+  addressLine2
+  addressLine1
+  city
+  zipCode
+  country
+  hppeningAt
+  bookingStartsAt
+  bookingEndsAt
+  createdAt
+  updatedAt
+  placeName
+  organizationId
+}

@@ -1,0 +1,33 @@
+query GetAllOrganization {
+  organizations {
+    nodes {
+      ...OrganizationFragment
+      events {
+        totalCount
+      }
+    }
+  }
+}
+
+query GetOrganizationById($id: UUID!) {
+  organization(id: $id) {
+    ...OrganizationFragment
+    events {
+      totalCount
+      nodes {
+        ...MyEvent
+      }
+    }
+  }
+}
+
+query GetOrganizationBySlug($slug: String!) {
+  organizationBySlug(slug: $slug) {
+    ...OrganizationFragment
+    events {
+      nodes {
+        ...MyEvent
+      }
+    }
+  }
+}

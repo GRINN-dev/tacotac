@@ -1,0 +1,35 @@
+query GetAllEventsByOrganizationId($organizationId: UUID!) {
+  events(
+    orderBy: [CREATED_AT_DESC]
+    condition: { organizationId: $organizationId }
+  ) {
+    nodes {
+      ...MyEvent
+    }
+  }
+}
+
+query GetEventById($eventId: UUID!) {
+  event(id: $eventId) {
+    ...MyEvent
+    attendees {
+      nodes {
+        ...MyAttendee
+      }
+    }
+  }
+}
+
+query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
+  eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
+    organization {
+      ...OrganizationFragment
+    }
+    ...MyEvent
+    attendees {
+      nodes {
+        ...MyAttendee
+      }
+    }
+  }
+}

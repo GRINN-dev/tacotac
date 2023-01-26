@@ -1,0 +1,10 @@
+
+.env
+dist
+.next
+.vercel
+turbo-build.log
+.jojo
+.next
+node_modules
+./site/**/*

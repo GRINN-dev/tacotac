@@ -1,0 +1,25 @@
+# Mutation to create, update and delete the event
+
+mutation CreateEvent($input: CreateEventInput!) {
+  createEvent(input: $input) {
+    event {
+      ...MyEvent
+    }
+  }
+}
+
+mutation UpdateEvent($input: UpdateEventInput!) {
+  updateEvent(input: $input) {
+    event {
+      ...MyEvent
+    }
+  }
+}
+
+mutation DeleteEvent($input: DeleteEventInput!) {
+  deleteEvent(input: $input) {
+    event {
+      ...MyEvent
+    }
+  }
+}

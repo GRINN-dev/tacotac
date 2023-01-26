@@ -1,0 +1,9 @@
+fragment OrganizationFragment on Organization {
+  id
+  name
+  slug
+  description
+  logoUrl
+  createdAt
+  updatedAt
+}

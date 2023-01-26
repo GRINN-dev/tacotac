@@ -1,0 +1,25 @@
+# Mutation to create, update and delete the attendee
+
+mutation CreateAttendee($input: CreateAttendeeInput!) {
+  createAttendee(input: $input) {
+    attendee {
+      ...MyAttendee
+    }
+  }
+}
+
+mutation UpdateAttendee($input: UpdateAttendeeInput!) {
+  updateAttendee(input: $input) {
+    attendee {
+      ...MyAttendee
+    }
+  }
+}
+
+mutation DeleteAttendee($input: DeleteAttendeeInput!) {
+  deleteAttendee(input: $input) {
+    attendee {
+      ...MyAttendee
+    }
+  }
+}
