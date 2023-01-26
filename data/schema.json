@@ -1611,13 +1611,9 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -1751,7 +1747,7 @@
               "deprecationReason": null
             },
             {
-              "name": "hppeningAt",
+              "name": "happeningAt",
               "description": null,
               "args": [],
               "type": {
@@ -3914,13 +3910,13 @@
               "deprecationReason": null
             },
             {
-              "name": "HPPENING_AT_ASC",
+              "name": "HAPPENING_AT_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "HPPENING_AT_DESC",
+              "name": "HAPPENING_AT_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -4021,8 +4017,8 @@
               "defaultValue": null
             },
             {
-              "name": "hppeningAt",
-              "description": "Checks for equality with the object’s `hppeningAt` field.",
+              "name": "happeningAt",
+              "description": "Checks for equality with the object’s `happeningAt` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "Datetime",
@@ -4112,8 +4108,8 @@
               "defaultValue": null
             },
             {
-              "name": "hppeningAt",
-              "description": "Filter by the object’s `hppeningAt` field.",
+              "name": "happeningAt",
+              "description": "Filter by the object’s `happeningAt` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "DatetimeFilter",
@@ -7526,13 +7522,9 @@
               "name": "slug",
               "description": null,
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "defaultValue": null
             },
@@ -7645,7 +7637,7 @@
               "defaultValue": null
             },
             {
-              "name": "hppeningAt",
+              "name": "happeningAt",
               "description": null,
               "type": {
                 "kind": "SCALAR",
@@ -8955,7 +8947,7 @@
               "defaultValue": null
             },
             {
-              "name": "hppeningAt",
+              "name": "happeningAt",
               "description": null,
               "type": {
                 "kind": "SCALAR",

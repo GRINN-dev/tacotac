@@ -6,7 +6,7 @@ drop table if exists publ.events cascade;
 create table publ.events (
     id uuid not null default uuid_generate_v4() primary key unique, 
     name text not null,
-    slug text not null,
+    slug text,
     description text not null,
     organization_id uuid not null references publ.organizations(id) on delete cascade,
     place_name text,
@@ -17,7 +17,7 @@ create table publ.events (
     country text,
     lat float,
     lon float,
-    hppening_at timestamptz,
+    happening_at timestamptz,
     booking_starts_at timestamptz,
     booking_ends_at timestamptz,
     created_at timestamptz not null default now(),
@@ -33,13 +33,13 @@ create table publ.events (
     create index on publ.events(name);
     create index on publ.events(slug);
     create index on publ.events(zip_code);
-    create index on publ.events(hppening_at);
+    create index on publ.events(happening_at);
 
 -- RBAC
     grant select on publ.events to :DATABASE_VISITOR;
-    grant insert(name, description, organization_id) on publ.events to :DATABASE_VISITOR;
-    grant update(name, description) on publ.events to :DATABASE_VISITOR;
-
+    grant insert(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, happening_at, booking_starts_at, booking_ends_at) on publ.events to :DATABASE_VISITOR;
+    grant update(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, happening_at, booking_starts_at, booking_ends_at) on publ.events to :DATABASE_VISITOR;
+    grant delete on publ.events to :DATABASE_VISITOR;
 -- triggers
     create trigger _100_timestamps
     before insert or update on publ.events

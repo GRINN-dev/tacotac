@@ -317,7 +317,7 @@ type Event implements Node {
   nodeId: ID!
   id: UUID!
   name: String!
-  slug: String!
+  slug: String
   description: String!
   organizationId: UUID!
   placeName: String
@@ -328,7 +328,7 @@ type Event implements Node {
   country: String
   lat: Float
   lon: Float
-  hppeningAt: Datetime
+  happeningAt: Datetime
   bookingStartsAt: Datetime
   bookingEndsAt: Datetime
   createdAt: Datetime!
@@ -840,8 +840,8 @@ enum EventsOrderBy {
   ORGANIZATION_ID_DESC
   ZIP_CODE_ASC
   ZIP_CODE_DESC
-  HPPENING_AT_ASC
-  HPPENING_AT_DESC
+  HAPPENING_AT_ASC
+  HAPPENING_AT_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -869,8 +869,8 @@ input EventCondition {
   """Checks for equality with the object’s `zipCode` field."""
   zipCode: String
 
-  """Checks for equality with the object’s `hppeningAt` field."""
-  hppeningAt: Datetime
+  """Checks for equality with the object’s `happeningAt` field."""
+  happeningAt: Datetime
 
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
@@ -898,8 +898,8 @@ input EventFilter {
   """Filter by the object’s `zipCode` field."""
   zipCode: StringFilter
 
-  """Filter by the object’s `hppeningAt` field."""
-  hppeningAt: DatetimeFilter
+  """Filter by the object’s `happeningAt` field."""
+  happeningAt: DatetimeFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -1840,7 +1840,7 @@ input CreateEventInput {
 input EventInput {
   id: UUID
   name: String!
-  slug: String!
+  slug: String
   description: String!
   organizationId: UUID!
   placeName: String
@@ -1851,7 +1851,7 @@ input EventInput {
   country: String
   lat: Float
   lon: Float
-  hppeningAt: Datetime
+  happeningAt: Datetime
   bookingStartsAt: Datetime
   bookingEndsAt: Datetime
   createdAt: Datetime
@@ -2160,7 +2160,7 @@ input EventPatch {
   country: String
   lat: Float
   lon: Float
-  hppeningAt: Datetime
+  happeningAt: Datetime
   bookingStartsAt: Datetime
   bookingEndsAt: Datetime
   createdAt: Datetime

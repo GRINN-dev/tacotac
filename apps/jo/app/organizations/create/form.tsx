@@ -7,6 +7,7 @@ import { CreateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,8 +38,11 @@ export const CreateOrganizationForm = () => {
     });
   });
   return (
-    <form onSubmit={onSubmit} className="w-full mt-4">
-      <div className="grid w-full mt-4 items-center gap-1.5">
+    <form
+      onSubmit={onSubmit}
+      className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}
+    >
+      <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="name">Nom</Label>
         <Input
           type="text"
@@ -55,7 +59,7 @@ export const CreateOrganizationForm = () => {
         )}
       </div>
 
-      <div className="grid w-full mt-4 items-center gap-1.5">
+      <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
@@ -71,7 +75,7 @@ export const CreateOrganizationForm = () => {
         )}
       </div>
 
-      <div className="grid w-full mt-4 items-center gap-1.5">
+      <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="logoUrl">Logo</Label>
         <Input
           type="text"
@@ -85,13 +89,13 @@ export const CreateOrganizationForm = () => {
           </p>
         )}
       </div>
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Créer
         </button>
       </div>
       {error && (
-        <p className="text-sm text-red-800 dark:text-red-300 mt-2 line-clamp-3">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
