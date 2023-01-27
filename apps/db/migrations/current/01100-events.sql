@@ -22,6 +22,8 @@ create table publ.events (
     booking_ends_at timestamptz,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
+    is_published boolean not null default false,
+    registration_id uuid  references publ.registrations(id) on delete cascade,
     constraint events_organization_id_name_key unique (organization_id, name),
     constraint events_organization_id_slug_key unique (organization_id, slug)
 );

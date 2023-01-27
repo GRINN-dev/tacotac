@@ -51,6 +51,40 @@ type Query implements Node {
     filter: AttendeeFilter
   ): AttendeesConnection
 
+  """Reads and enables pagination through a set of `Communication`."""
+  communications(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Communication`."""
+    orderBy: [CommunicationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CommunicationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CommunicationFilter
+  ): CommunicationsConnection
+
   """Reads and enables pagination through a set of `Event`."""
   events(
     """Only read the first `n` values of the set."""
@@ -84,6 +118,74 @@ type Query implements Node {
     """
     filter: EventFilter
   ): EventsConnection
+
+  """Reads and enables pagination through a set of `Experience`."""
+  experiences(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Experience`."""
+    orderBy: [ExperiencesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ExperienceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ExperienceFilter
+  ): ExperiencesConnection
+
+  """Reads and enables pagination through a set of `Option`."""
+  options(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Option`."""
+    orderBy: [OptionsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OptionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: OptionFilter
+  ): OptionsConnection
 
   """
   Reads and enables pagination through a set of `OrganizationMembership`.
@@ -155,8 +257,8 @@ type Query implements Node {
     filter: OrganizationFilter
   ): OrganizationsConnection
 
-  """Reads and enables pagination through a set of `TestTable`."""
-  testTables(
+  """Reads and enables pagination through a set of `Registration`."""
+  registrations(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -175,19 +277,53 @@ type Query implements Node {
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
+    """The method to use when ordering `Registration`."""
+    orderBy: [RegistrationsOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: TestTableCondition
+    condition: RegistrationCondition
 
     """
     A filter to be used in determining which values should be returned by the collection.
     """
-    filter: TestTableFilter
-  ): TestTablesConnection
+    filter: RegistrationFilter
+  ): RegistrationsConnection
+
+  """Reads and enables pagination through a set of `Special`."""
+  specials(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Special`."""
+    orderBy: [SpecialsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SpecialCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SpecialFilter
+  ): SpecialsConnection
 
   """Reads and enables pagination through a set of `User`."""
   users(
@@ -223,17 +359,25 @@ type Query implements Node {
     filter: UserFilter
   ): UsersConnection
   attendee(id: UUID!): Attendee
-  attendeeByEmailAndEventId(email: String!, eventId: UUID!): Attendee
+  attendeeByRegistrationId(registrationId: UUID!): Attendee
+  attendeeByStatus(status: EventStatus!): Attendee
+  communication(id: UUID!): Communication
+  communicationByEventId(eventId: UUID!): Communication
   event(id: UUID!): Event
   eventByOrganizationIdAndName(organizationId: UUID!, name: String!): Event
   eventByOrganizationIdAndSlug(organizationId: UUID!, slug: String!): Event
+  experience(id: UUID!): Experience
+  experienceByRegistrationId(registrationId: UUID!): Experience
+  option(id: UUID!): Option
   organizationMembership(id: UUID!): OrganizationMembership
   organizationMembershipByOrganizationIdAndUserId(organizationId: UUID!, userId: UUID!): OrganizationMembership
   organization(id: UUID!): Organization
   organizationByName(name: String!): Organization
   organizationBySlug(slug: String!): Organization
-  testTable(id: UUID!): TestTable
-  testTableByAttendeeId(attendeeId: UUID!): TestTable
+  registration(id: UUID!): Registration
+  registrationByEmail(email: String!): Registration
+  registrationBySpecialId(specialId: UUID!): Registration
+  special(id: UUID!): Special
   user(id: UUID!): User
   userByEmail(email: String!): User
 
@@ -250,11 +394,33 @@ type Query implements Node {
     nodeId: ID!
   ): Attendee
 
+  """Reads a single `Communication` using its globally unique `ID`."""
+  communicationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `Communication`.
+    """
+    nodeId: ID!
+  ): Communication
+
   """Reads a single `Event` using its globally unique `ID`."""
   eventByNodeId(
     """The globally unique `ID` to be used in selecting a single `Event`."""
     nodeId: ID!
   ): Event
+
+  """Reads a single `Experience` using its globally unique `ID`."""
+  experienceByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `Experience`.
+    """
+    nodeId: ID!
+  ): Experience
+
+  """Reads a single `Option` using its globally unique `ID`."""
+  optionByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Option`."""
+    nodeId: ID!
+  ): Option
 
   """
   Reads a single `OrganizationMembership` using its globally unique `ID`.
@@ -274,11 +440,19 @@ type Query implements Node {
     nodeId: ID!
   ): Organization
 
-  """Reads a single `TestTable` using its globally unique `ID`."""
-  testTableByNodeId(
-    """The globally unique `ID` to be used in selecting a single `TestTable`."""
+  """Reads a single `Registration` using its globally unique `ID`."""
+  registrationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `Registration`.
+    """
     nodeId: ID!
-  ): TestTable
+  ): Registration
+
+  """Reads a single `Special` using its globally unique `ID`."""
+  specialByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Special`."""
+    nodeId: ID!
+  ): Special
 
   """Reads a single `User` using its globally unique `ID`."""
   userByNodeId(
@@ -321,16 +495,16 @@ type Attendee implements Node {
   firstname: String!
   lastname: String!
   email: String!
-  eventId: UUID!
+  registrationId: UUID
   status: EventStatus!
+  notes: String
+  qrCode: String
+  panelNumber: String
   createdAt: Datetime!
   updatedAt: Datetime!
 
-  """Reads a single `Event` that is related to this `Attendee`."""
-  event: Event
-
-  """Reads a single `TestTable` that is related to this `Attendee`."""
-  testTable: TestTable
+  """Reads a single `Registration` that is related to this `Attendee`."""
+  registration: Registration
 }
 
 """
@@ -355,6 +529,650 @@ A point in time as described by the [ISO
 """
 scalar Datetime
 
+type Registration implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  firstname: String!
+  lastname: String!
+  email: String!
+  specialId: UUID
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Special` that is related to this `Registration`."""
+  special: Special
+
+  """Reads a single `Attendee` that is related to this `Registration`."""
+  attendee: Attendee
+
+  """Reads a single `Experience` that is related to this `Registration`."""
+  experience: Experience
+}
+
+type Special implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  type: SpecialType!
+  isMandatory: Boolean!
+  isSensitive: Boolean!
+  isModifiable: Boolean!
+  isHidden: Boolean!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads and enables pagination through a set of `Option`."""
+  options(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Option`."""
+    orderBy: [OptionsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OptionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: OptionFilter
+  ): OptionsConnection!
+
+  """Reads a single `Registration` that is related to this `Special`."""
+  registration: Registration
+}
+
+enum SpecialType {
+  R_GIME_SPECIAL
+  NOM_ENTREPRISE
+  INTITUL_DU_POSTE
+  CHOIX_MULTIPLE
+  CHOIX_UNIQUE
+  DATE
+}
+
+"""A connection to a list of `Option` values."""
+type OptionsConnection {
+  """A list of `Option` objects."""
+  nodes: [Option!]!
+
+  """
+  A list of edges which contains the `Option` and cursor to aid in pagination.
+  """
+  edges: [OptionsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Option` you could get from the connection."""
+  totalCount: Int!
+}
+
+type Option implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  texte: String!
+  specialId: UUID!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Special` that is related to this `Option`."""
+  special: Special
+}
+
+"""A `Option` edge in the connection."""
+type OptionsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Option` at the end of the edge."""
+  node: Option!
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""Methods to use when ordering `Option`."""
+enum OptionsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  TEXTE_ASC
+  TEXTE_DESC
+  SPECIAL_ID_ASC
+  SPECIAL_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Option` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input OptionCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `texte` field."""
+  texte: String
+
+  """Checks for equality with the object’s `specialId` field."""
+  specialId: UUID
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Option` object types. All fields are combined with a logical ‘and.’
+"""
+input OptionFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `texte` field."""
+  texte: StringFilter
+
+  """Filter by the object’s `specialId` field."""
+  specialId: UUIDFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Checks for all expressions in this list."""
+  and: [OptionFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [OptionFilter!]
+
+  """Negates the expression."""
+  not: OptionFilter
+}
+
+"""
+A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
+"""
+input UUIDFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: UUID
+
+  """Not equal to the specified value."""
+  notEqualTo: UUID
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: UUID
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: UUID
+
+  """Included in the specified list."""
+  in: [UUID!]
+
+  """Not included in the specified list."""
+  notIn: [UUID!]
+
+  """Less than the specified value."""
+  lessThan: UUID
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: UUID
+
+  """Greater than the specified value."""
+  greaterThan: UUID
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: UUID
+}
+
+"""
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: String
+
+  """Not equal to the specified value."""
+  notEqualTo: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: String
+
+  """Included in the specified list."""
+  in: [String!]
+
+  """Not included in the specified list."""
+  notIn: [String!]
+
+  """Less than the specified value."""
+  lessThan: String
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: String
+
+  """Greater than the specified value."""
+  greaterThan: String
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: String
+
+  """Contains the specified string (case-sensitive)."""
+  includes: String
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: String
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: String
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: String
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: String
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: String
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: String
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: String
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: String
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: String
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: String
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: String
+
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: String
+
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: String
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: String
+
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: String
+
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: String
+}
+
+"""
+A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
+"""
+input DatetimeFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Datetime
+
+  """Not equal to the specified value."""
+  notEqualTo: Datetime
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Datetime
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Datetime
+
+  """Included in the specified list."""
+  in: [Datetime!]
+
+  """Not included in the specified list."""
+  notIn: [Datetime!]
+
+  """Less than the specified value."""
+  lessThan: Datetime
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Datetime
+
+  """Greater than the specified value."""
+  greaterThan: Datetime
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Datetime
+}
+
+type Experience implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  registrationId: UUID
+  rating: Int
+  feedback: String
+  recommended: Boolean
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Registration` that is related to this `Experience`."""
+  registration: Registration
+}
+
+"""A `Attendee` edge in the connection."""
+type AttendeesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Attendee` at the end of the edge."""
+  node: Attendee!
+}
+
+"""Methods to use when ordering `Attendee`."""
+enum AttendeesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  FIRSTNAME_ASC
+  FIRSTNAME_DESC
+  LASTNAME_ASC
+  LASTNAME_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  REGISTRATION_ID_ASC
+  REGISTRATION_ID_DESC
+  STATUS_ASC
+  STATUS_DESC
+  NOTES_ASC
+  NOTES_DESC
+  QR_CODE_ASC
+  QR_CODE_DESC
+  PANEL_NUMBER_ASC
+  PANEL_NUMBER_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Attendee` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input AttendeeCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `firstname` field."""
+  firstname: String
+
+  """Checks for equality with the object’s `lastname` field."""
+  lastname: String
+
+  """Checks for equality with the object’s `email` field."""
+  email: String
+
+  """Checks for equality with the object’s `registrationId` field."""
+  registrationId: UUID
+
+  """Checks for equality with the object’s `status` field."""
+  status: EventStatus
+
+  """Checks for equality with the object’s `notes` field."""
+  notes: String
+
+  """Checks for equality with the object’s `qrCode` field."""
+  qrCode: String
+
+  """Checks for equality with the object’s `panelNumber` field."""
+  panelNumber: String
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Attendee` object types. All fields are combined with a logical ‘and.’
+"""
+input AttendeeFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `firstname` field."""
+  firstname: StringFilter
+
+  """Filter by the object’s `lastname` field."""
+  lastname: StringFilter
+
+  """Filter by the object’s `email` field."""
+  email: StringFilter
+
+  """Filter by the object’s `registrationId` field."""
+  registrationId: UUIDFilter
+
+  """Filter by the object’s `status` field."""
+  status: EventStatusFilter
+
+  """Filter by the object’s `notes` field."""
+  notes: StringFilter
+
+  """Filter by the object’s `qrCode` field."""
+  qrCode: StringFilter
+
+  """Filter by the object’s `panelNumber` field."""
+  panelNumber: StringFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Checks for all expressions in this list."""
+  and: [AttendeeFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [AttendeeFilter!]
+
+  """Negates the expression."""
+  not: AttendeeFilter
+}
+
+"""
+A filter to be used against EventStatus fields. All fields are combined with a logical ‘and.’
+"""
+input EventStatusFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: EventStatus
+
+  """Not equal to the specified value."""
+  notEqualTo: EventStatus
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: EventStatus
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: EventStatus
+
+  """Included in the specified list."""
+  in: [EventStatus!]
+
+  """Not included in the specified list."""
+  notIn: [EventStatus!]
+
+  """Less than the specified value."""
+  lessThan: EventStatus
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: EventStatus
+
+  """Greater than the specified value."""
+  greaterThan: EventStatus
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: EventStatus
+}
+
+"""A connection to a list of `Communication` values."""
+type CommunicationsConnection {
+  """A list of `Communication` objects."""
+  nodes: [Communication!]!
+
+  """
+  A list of edges which contains the `Communication` and cursor to aid in pagination.
+  """
+  edges: [CommunicationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Communication` you could get from the connection."""
+  totalCount: Int!
+}
+
+type Communication implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  from: String!
+  filter: String
+  subject: String!
+  content: String!
+  draft: Boolean!
+  eventId: UUID
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Event` that is related to this `Communication`."""
+  event: Event
+}
+
 type Event implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -378,43 +1196,14 @@ type Event implements Node {
   bookingEndsAt: Datetime
   createdAt: Datetime!
   updatedAt: Datetime!
+  isPublished: Boolean!
+  registrationId: UUID
 
   """Reads a single `Organization` that is related to this `Event`."""
   organization: Organization
 
-  """Reads and enables pagination through a set of `Attendee`."""
-  attendees(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttendeeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttendeeFilter
-  ): AttendeesConnection!
+  """Reads a single `Communication` that is related to this `Event`."""
+  communication: Communication
 }
 
 """A company, organization, or institution."""
@@ -618,9 +1407,6 @@ type User implements Node {
   hasPassword: Boolean
 }
 
-"""A location in a connection that can be used for resuming pagination."""
-scalar Cursor
-
 """Methods to use when ordering `OrganizationMembership`."""
 enum OrganizationMembershipsOrderBy {
   NATURAL
@@ -697,48 +1483,6 @@ input OrganizationMembershipFilter {
 }
 
 """
-A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
-"""
-input UUIDFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: UUID
-
-  """Not equal to the specified value."""
-  notEqualTo: UUID
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: UUID
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: UUID
-
-  """Included in the specified list."""
-  in: [UUID!]
-
-  """Not included in the specified list."""
-  notIn: [UUID!]
-
-  """Less than the specified value."""
-  lessThan: UUID
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: UUID
-
-  """Greater than the specified value."""
-  greaterThan: UUID
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: UUID
-}
-
-"""
 A filter to be used against OrganizationMembershipsRolesEnum fields. All fields are combined with a logical ‘and.’
 """
 input OrganizationMembershipsRolesEnumFilter {
@@ -780,48 +1524,6 @@ input OrganizationMembershipsRolesEnumFilter {
   greaterThanOrEqualTo: OrganizationMembershipsRolesEnum
 }
 
-"""
-A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
-"""
-input DatetimeFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Datetime
-
-  """Not equal to the specified value."""
-  notEqualTo: Datetime
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Datetime
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Datetime
-
-  """Included in the specified list."""
-  in: [Datetime!]
-
-  """Not included in the specified list."""
-  notIn: [Datetime!]
-
-  """Less than the specified value."""
-  lessThan: Datetime
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Datetime
-
-  """Greater than the specified value."""
-  greaterThan: Datetime
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Datetime
-}
-
 """A `OrganizationMembership` edge in the connection."""
 type OrganizationMembershipsEdge {
   """A cursor for use in pagination."""
@@ -829,21 +1531,6 @@ type OrganizationMembershipsEdge {
 
   """The `OrganizationMembership` at the end of the edge."""
   node: OrganizationMembership!
-}
-
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: Cursor
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: Cursor
 }
 
 """A connection to a list of `Event` values."""
@@ -962,149 +1649,32 @@ input EventFilter {
   not: EventFilter
 }
 
-"""
-A filter to be used against String fields. All fields are combined with a logical ‘and.’
-"""
-input StringFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
+"""A `Communication` edge in the connection."""
+type CommunicationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
 
-  """Equal to the specified value."""
-  equalTo: String
-
-  """Not equal to the specified value."""
-  notEqualTo: String
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: String
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: String
-
-  """Included in the specified list."""
-  in: [String!]
-
-  """Not included in the specified list."""
-  notIn: [String!]
-
-  """Less than the specified value."""
-  lessThan: String
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: String
-
-  """Greater than the specified value."""
-  greaterThan: String
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: String
-
-  """Contains the specified string (case-sensitive)."""
-  includes: String
-
-  """Does not contain the specified string (case-sensitive)."""
-  notIncludes: String
-
-  """Contains the specified string (case-insensitive)."""
-  includesInsensitive: String
-
-  """Does not contain the specified string (case-insensitive)."""
-  notIncludesInsensitive: String
-
-  """Starts with the specified string (case-sensitive)."""
-  startsWith: String
-
-  """Does not start with the specified string (case-sensitive)."""
-  notStartsWith: String
-
-  """Starts with the specified string (case-insensitive)."""
-  startsWithInsensitive: String
-
-  """Does not start with the specified string (case-insensitive)."""
-  notStartsWithInsensitive: String
-
-  """Ends with the specified string (case-sensitive)."""
-  endsWith: String
-
-  """Does not end with the specified string (case-sensitive)."""
-  notEndsWith: String
-
-  """Ends with the specified string (case-insensitive)."""
-  endsWithInsensitive: String
-
-  """Does not end with the specified string (case-insensitive)."""
-  notEndsWithInsensitive: String
-
-  """
-  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  like: String
-
-  """
-  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  notLike: String
-
-  """
-  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  likeInsensitive: String
-
-  """
-  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  notLikeInsensitive: String
-
-  """Equal to the specified value (case-insensitive)."""
-  equalToInsensitive: String
-
-  """Not equal to the specified value (case-insensitive)."""
-  notEqualToInsensitive: String
-
-  """
-  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
-  """
-  distinctFromInsensitive: String
-
-  """
-  Equal to the specified value, treating null like an ordinary value (case-insensitive).
-  """
-  notDistinctFromInsensitive: String
-
-  """Included in the specified list (case-insensitive)."""
-  inInsensitive: [String!]
-
-  """Not included in the specified list (case-insensitive)."""
-  notInInsensitive: [String!]
-
-  """Less than the specified value (case-insensitive)."""
-  lessThanInsensitive: String
-
-  """Less than or equal to the specified value (case-insensitive)."""
-  lessThanOrEqualToInsensitive: String
-
-  """Greater than the specified value (case-insensitive)."""
-  greaterThanInsensitive: String
-
-  """Greater than or equal to the specified value (case-insensitive)."""
-  greaterThanOrEqualToInsensitive: String
+  """The `Communication` at the end of the edge."""
+  node: Communication!
 }
 
-"""Methods to use when ordering `Attendee`."""
-enum AttendeesOrderBy {
+"""Methods to use when ordering `Communication`."""
+enum CommunicationsOrderBy {
   NATURAL
   ID_ASC
   ID_DESC
-  EMAIL_ASC
-  EMAIL_DESC
+  FROM_ASC
+  FROM_DESC
+  FILTER_ASC
+  FILTER_DESC
+  SUBJECT_ASC
+  SUBJECT_DESC
+  CONTENT_ASC
+  CONTENT_DESC
+  DRAFT_ASC
+  DRAFT_DESC
   EVENT_ID_ASC
   EVENT_ID_DESC
-  STATUS_ASC
-  STATUS_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -1114,21 +1684,30 @@ enum AttendeesOrderBy {
 }
 
 """
-A condition to be used against `Attendee` object types. All fields are tested
-for equality and combined with a logical ‘and.’
+A condition to be used against `Communication` object types. All fields are
+tested for equality and combined with a logical ‘and.’
 """
-input AttendeeCondition {
+input CommunicationCondition {
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
-  """Checks for equality with the object’s `email` field."""
-  email: String
+  """Checks for equality with the object’s `from` field."""
+  from: String
+
+  """Checks for equality with the object’s `filter` field."""
+  filter: String
+
+  """Checks for equality with the object’s `subject` field."""
+  subject: String
+
+  """Checks for equality with the object’s `content` field."""
+  content: String
+
+  """Checks for equality with the object’s `draft` field."""
+  draft: Boolean
 
   """Checks for equality with the object’s `eventId` field."""
   eventId: UUID
-
-  """Checks for equality with the object’s `status` field."""
-  status: EventStatus
 
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
@@ -1138,20 +1717,29 @@ input AttendeeCondition {
 }
 
 """
-A filter to be used against `Attendee` object types. All fields are combined with a logical ‘and.’
+A filter to be used against `Communication` object types. All fields are combined with a logical ‘and.’
 """
-input AttendeeFilter {
+input CommunicationFilter {
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
-  """Filter by the object’s `email` field."""
-  email: StringFilter
+  """Filter by the object’s `from` field."""
+  from: StringFilter
+
+  """Filter by the object’s `filter` field."""
+  filter: StringFilter
+
+  """Filter by the object’s `subject` field."""
+  subject: StringFilter
+
+  """Filter by the object’s `content` field."""
+  content: StringFilter
+
+  """Filter by the object’s `draft` field."""
+  draft: BooleanFilter
 
   """Filter by the object’s `eventId` field."""
   eventId: UUIDFilter
-
-  """Filter by the object’s `status` field."""
-  status: EventStatusFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -1160,88 +1748,206 @@ input AttendeeFilter {
   updatedAt: DatetimeFilter
 
   """Checks for all expressions in this list."""
-  and: [AttendeeFilter!]
+  and: [CommunicationFilter!]
 
   """Checks for any expressions in this list."""
-  or: [AttendeeFilter!]
+  or: [CommunicationFilter!]
 
   """Negates the expression."""
-  not: AttendeeFilter
+  not: CommunicationFilter
 }
 
 """
-A filter to be used against EventStatus fields. All fields are combined with a logical ‘and.’
+A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
 """
-input EventStatusFilter {
+input BooleanFilter {
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
   """
   isNull: Boolean
 
   """Equal to the specified value."""
-  equalTo: EventStatus
+  equalTo: Boolean
 
   """Not equal to the specified value."""
-  notEqualTo: EventStatus
+  notEqualTo: Boolean
 
   """
   Not equal to the specified value, treating null like an ordinary value.
   """
-  distinctFrom: EventStatus
+  distinctFrom: Boolean
 
   """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: EventStatus
+  notDistinctFrom: Boolean
 
   """Included in the specified list."""
-  in: [EventStatus!]
+  in: [Boolean!]
 
   """Not included in the specified list."""
-  notIn: [EventStatus!]
+  notIn: [Boolean!]
 
   """Less than the specified value."""
-  lessThan: EventStatus
+  lessThan: Boolean
 
   """Less than or equal to the specified value."""
-  lessThanOrEqualTo: EventStatus
+  lessThanOrEqualTo: Boolean
 
   """Greater than the specified value."""
-  greaterThan: EventStatus
+  greaterThan: Boolean
 
   """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: EventStatus
+  greaterThanOrEqualTo: Boolean
 }
 
-type TestTable implements Node {
+"""A connection to a list of `Experience` values."""
+type ExperiencesConnection {
+  """A list of `Experience` objects."""
+  nodes: [Experience!]!
+
   """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  A list of edges which contains the `Experience` and cursor to aid in pagination.
   """
-  nodeId: ID!
-  id: UUID!
-  infos: String
-  status: TestTableStatus
-  attendeeId: UUID!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+  edges: [ExperiencesEdge!]!
 
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Experience` you could get from the connection."""
+  totalCount: Int!
 }
 
-enum TestTableStatus {
-  """Status est ok"""
-  OK
-
-  """Status est non ok"""
-  NOK
-}
-
-"""A `Attendee` edge in the connection."""
-type AttendeesEdge {
+"""A `Experience` edge in the connection."""
+type ExperiencesEdge {
   """A cursor for use in pagination."""
   cursor: Cursor
 
-  """The `Attendee` at the end of the edge."""
-  node: Attendee!
+  """The `Experience` at the end of the edge."""
+  node: Experience!
+}
+
+"""Methods to use when ordering `Experience`."""
+enum ExperiencesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  REGISTRATION_ID_ASC
+  REGISTRATION_ID_DESC
+  RATING_ASC
+  RATING_DESC
+  FEEDBACK_ASC
+  FEEDBACK_DESC
+  RECOMMENDED_ASC
+  RECOMMENDED_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Experience` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input ExperienceCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `registrationId` field."""
+  registrationId: UUID
+
+  """Checks for equality with the object’s `rating` field."""
+  rating: Int
+
+  """Checks for equality with the object’s `feedback` field."""
+  feedback: String
+
+  """Checks for equality with the object’s `recommended` field."""
+  recommended: Boolean
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Experience` object types. All fields are combined with a logical ‘and.’
+"""
+input ExperienceFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `registrationId` field."""
+  registrationId: UUIDFilter
+
+  """Filter by the object’s `rating` field."""
+  rating: IntFilter
+
+  """Filter by the object’s `feedback` field."""
+  feedback: StringFilter
+
+  """Filter by the object’s `recommended` field."""
+  recommended: BooleanFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Checks for all expressions in this list."""
+  and: [ExperienceFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [ExperienceFilter!]
+
+  """Negates the expression."""
+  not: ExperienceFilter
+}
+
+"""
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Int
+
+  """Not equal to the specified value."""
+  notEqualTo: Int
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Int
+
+  """Included in the specified list."""
+  in: [Int!]
+
+  """Not included in the specified list."""
+  notIn: [Int!]
+
+  """Less than the specified value."""
+  lessThan: Int
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Int
+
+  """Greater than the specified value."""
+  greaterThan: Int
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Int
 }
 
 """A connection to a list of `Organization` values."""
@@ -1337,41 +2043,45 @@ input OrganizationFilter {
   not: OrganizationFilter
 }
 
-"""A connection to a list of `TestTable` values."""
-type TestTablesConnection {
-  """A list of `TestTable` objects."""
-  nodes: [TestTable!]!
+"""A connection to a list of `Registration` values."""
+type RegistrationsConnection {
+  """A list of `Registration` objects."""
+  nodes: [Registration!]!
 
   """
-  A list of edges which contains the `TestTable` and cursor to aid in pagination.
+  A list of edges which contains the `Registration` and cursor to aid in pagination.
   """
-  edges: [TestTablesEdge!]!
+  edges: [RegistrationsEdge!]!
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  """The count of *all* `TestTable` you could get from the connection."""
+  """The count of *all* `Registration` you could get from the connection."""
   totalCount: Int!
 }
 
-"""A `TestTable` edge in the connection."""
-type TestTablesEdge {
+"""A `Registration` edge in the connection."""
+type RegistrationsEdge {
   """A cursor for use in pagination."""
   cursor: Cursor
 
-  """The `TestTable` at the end of the edge."""
-  node: TestTable!
+  """The `Registration` at the end of the edge."""
+  node: Registration!
 }
 
-"""Methods to use when ordering `TestTable`."""
-enum TestTablesOrderBy {
+"""Methods to use when ordering `Registration`."""
+enum RegistrationsOrderBy {
   NATURAL
   ID_ASC
   ID_DESC
-  STATUS_ASC
-  STATUS_DESC
-  ATTENDEE_ID_ASC
-  ATTENDEE_ID_DESC
+  FIRSTNAME_ASC
+  FIRSTNAME_DESC
+  LASTNAME_ASC
+  LASTNAME_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  SPECIAL_ID_ASC
+  SPECIAL_ID_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -1381,18 +2091,24 @@ enum TestTablesOrderBy {
 }
 
 """
-A condition to be used against `TestTable` object types. All fields are tested
-for equality and combined with a logical ‘and.’
+A condition to be used against `Registration` object types. All fields are
+tested for equality and combined with a logical ‘and.’
 """
-input TestTableCondition {
+input RegistrationCondition {
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
-  """Checks for equality with the object’s `status` field."""
-  status: TestTableStatus
+  """Checks for equality with the object’s `firstname` field."""
+  firstname: String
 
-  """Checks for equality with the object’s `attendeeId` field."""
-  attendeeId: UUID
+  """Checks for equality with the object’s `lastname` field."""
+  lastname: String
+
+  """Checks for equality with the object’s `email` field."""
+  email: String
+
+  """Checks for equality with the object’s `specialId` field."""
+  specialId: UUID
 
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
@@ -1402,17 +2118,23 @@ input TestTableCondition {
 }
 
 """
-A filter to be used against `TestTable` object types. All fields are combined with a logical ‘and.’
+A filter to be used against `Registration` object types. All fields are combined with a logical ‘and.’
 """
-input TestTableFilter {
+input RegistrationFilter {
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
-  """Filter by the object’s `status` field."""
-  status: TestTableStatusFilter
+  """Filter by the object’s `firstname` field."""
+  firstname: StringFilter
 
-  """Filter by the object’s `attendeeId` field."""
-  attendeeId: UUIDFilter
+  """Filter by the object’s `lastname` field."""
+  lastname: StringFilter
+
+  """Filter by the object’s `email` field."""
+  email: StringFilter
+
+  """Filter by the object’s `specialId` field."""
+  specialId: UUIDFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -1421,55 +2143,171 @@ input TestTableFilter {
   updatedAt: DatetimeFilter
 
   """Checks for all expressions in this list."""
-  and: [TestTableFilter!]
+  and: [RegistrationFilter!]
 
   """Checks for any expressions in this list."""
-  or: [TestTableFilter!]
+  or: [RegistrationFilter!]
 
   """Negates the expression."""
-  not: TestTableFilter
+  not: RegistrationFilter
+}
+
+"""A connection to a list of `Special` values."""
+type SpecialsConnection {
+  """A list of `Special` objects."""
+  nodes: [Special!]!
+
+  """
+  A list of edges which contains the `Special` and cursor to aid in pagination.
+  """
+  edges: [SpecialsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Special` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Special` edge in the connection."""
+type SpecialsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Special` at the end of the edge."""
+  node: Special!
+}
+
+"""Methods to use when ordering `Special`."""
+enum SpecialsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  TYPE_ASC
+  TYPE_DESC
+  IS_MANDATORY_ASC
+  IS_MANDATORY_DESC
+  IS_SENSITIVE_ASC
+  IS_SENSITIVE_DESC
+  IS_MODIFIABLE_ASC
+  IS_MODIFIABLE_DESC
+  IS_HIDDEN_ASC
+  IS_HIDDEN_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 """
-A filter to be used against TestTableStatus fields. All fields are combined with a logical ‘and.’
+A condition to be used against `Special` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
-input TestTableStatusFilter {
+input SpecialCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `type` field."""
+  type: SpecialType
+
+  """Checks for equality with the object’s `isMandatory` field."""
+  isMandatory: Boolean
+
+  """Checks for equality with the object’s `isSensitive` field."""
+  isSensitive: Boolean
+
+  """Checks for equality with the object’s `isModifiable` field."""
+  isModifiable: Boolean
+
+  """Checks for equality with the object’s `isHidden` field."""
+  isHidden: Boolean
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Special` object types. All fields are combined with a logical ‘and.’
+"""
+input SpecialFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `type` field."""
+  type: SpecialTypeFilter
+
+  """Filter by the object’s `isMandatory` field."""
+  isMandatory: BooleanFilter
+
+  """Filter by the object’s `isSensitive` field."""
+  isSensitive: BooleanFilter
+
+  """Filter by the object’s `isModifiable` field."""
+  isModifiable: BooleanFilter
+
+  """Filter by the object’s `isHidden` field."""
+  isHidden: BooleanFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Checks for all expressions in this list."""
+  and: [SpecialFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [SpecialFilter!]
+
+  """Negates the expression."""
+  not: SpecialFilter
+}
+
+"""
+A filter to be used against SpecialType fields. All fields are combined with a logical ‘and.’
+"""
+input SpecialTypeFilter {
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
   """
   isNull: Boolean
 
   """Equal to the specified value."""
-  equalTo: TestTableStatus
+  equalTo: SpecialType
 
   """Not equal to the specified value."""
-  notEqualTo: TestTableStatus
+  notEqualTo: SpecialType
 
   """
   Not equal to the specified value, treating null like an ordinary value.
   """
-  distinctFrom: TestTableStatus
+  distinctFrom: SpecialType
 
   """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: TestTableStatus
+  notDistinctFrom: SpecialType
 
   """Included in the specified list."""
-  in: [TestTableStatus!]
+  in: [SpecialType!]
 
   """Not included in the specified list."""
-  notIn: [TestTableStatus!]
+  notIn: [SpecialType!]
 
   """Less than the specified value."""
-  lessThan: TestTableStatus
+  lessThan: SpecialType
 
   """Less than or equal to the specified value."""
-  lessThanOrEqualTo: TestTableStatus
+  lessThanOrEqualTo: SpecialType
 
   """Greater than the specified value."""
-  greaterThan: TestTableStatus
+  greaterThan: SpecialType
 
   """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: TestTableStatus
+  greaterThanOrEqualTo: SpecialType
 }
 
 """A connection to a list of `User` values."""
@@ -1560,48 +2398,6 @@ input UserFilter {
 }
 
 """
-A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
-"""
-input BooleanFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Boolean
-
-  """Not equal to the specified value."""
-  notEqualTo: Boolean
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Boolean
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Boolean
-
-  """Included in the specified list."""
-  in: [Boolean!]
-
-  """Not included in the specified list."""
-  notIn: [Boolean!]
-
-  """Less than the specified value."""
-  lessThan: Boolean
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Boolean
-
-  """Greater than the specified value."""
-  greaterThan: Boolean
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Boolean
-}
-
-"""
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
@@ -1613,6 +2409,14 @@ type Mutation {
     input: CreateAttendeeInput!
   ): CreateAttendeePayload
 
+  """Creates a single `Communication`."""
+  createCommunication(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCommunicationInput!
+  ): CreateCommunicationPayload
+
   """Creates a single `Event`."""
   createEvent(
     """
@@ -1620,6 +2424,22 @@ type Mutation {
     """
     input: CreateEventInput!
   ): CreateEventPayload
+
+  """Creates a single `Experience`."""
+  createExperience(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateExperienceInput!
+  ): CreateExperiencePayload
+
+  """Creates a single `Option`."""
+  createOption(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateOptionInput!
+  ): CreateOptionPayload
 
   """Creates a single `OrganizationMembership`."""
   createOrganizationMembership(
@@ -1637,13 +2457,21 @@ type Mutation {
     input: CreateOrganizationInput!
   ): CreateOrganizationPayload
 
-  """Creates a single `TestTable`."""
-  createTestTable(
+  """Creates a single `Registration`."""
+  createRegistration(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: CreateTestTableInput!
-  ): CreateTestTablePayload
+    input: CreateRegistrationInput!
+  ): CreateRegistrationPayload
+
+  """Creates a single `Special`."""
+  createSpecial(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateSpecialInput!
+  ): CreateSpecialPayload
 
   """Creates a single `User`."""
   createUser(
@@ -1670,12 +2498,46 @@ type Mutation {
   ): UpdateAttendeePayload
 
   """Updates a single `Attendee` using a unique key and a patch."""
-  updateAttendeeByEmailAndEventId(
+  updateAttendeeByRegistrationId(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: UpdateAttendeeByEmailAndEventIdInput!
+    input: UpdateAttendeeByRegistrationIdInput!
   ): UpdateAttendeePayload
+
+  """Updates a single `Attendee` using a unique key and a patch."""
+  updateAttendeeByStatus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAttendeeByStatusInput!
+  ): UpdateAttendeePayload
+
+  """
+  Updates a single `Communication` using its globally unique id and a patch.
+  """
+  updateCommunicationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCommunicationByNodeIdInput!
+  ): UpdateCommunicationPayload
+
+  """Updates a single `Communication` using a unique key and a patch."""
+  updateCommunication(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCommunicationInput!
+  ): UpdateCommunicationPayload
+
+  """Updates a single `Communication` using a unique key and a patch."""
+  updateCommunicationByEventId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCommunicationByEventIdInput!
+  ): UpdateCommunicationPayload
 
   """Updates a single `Event` using its globally unique id and a patch."""
   updateEventByNodeId(
@@ -1708,6 +2570,48 @@ type Mutation {
     """
     input: UpdateEventByOrganizationIdAndSlugInput!
   ): UpdateEventPayload
+
+  """
+  Updates a single `Experience` using its globally unique id and a patch.
+  """
+  updateExperienceByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateExperienceByNodeIdInput!
+  ): UpdateExperiencePayload
+
+  """Updates a single `Experience` using a unique key and a patch."""
+  updateExperience(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateExperienceInput!
+  ): UpdateExperiencePayload
+
+  """Updates a single `Experience` using a unique key and a patch."""
+  updateExperienceByRegistrationId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateExperienceByRegistrationIdInput!
+  ): UpdateExperiencePayload
+
+  """Updates a single `Option` using its globally unique id and a patch."""
+  updateOptionByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateOptionByNodeIdInput!
+  ): UpdateOptionPayload
+
+  """Updates a single `Option` using a unique key and a patch."""
+  updateOption(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateOptionInput!
+  ): UpdateOptionPayload
 
   """
   Updates a single `OrganizationMembership` using its globally unique id and a patch.
@@ -1773,29 +2677,55 @@ type Mutation {
     input: UpdateOrganizationBySlugInput!
   ): UpdateOrganizationPayload
 
-  """Updates a single `TestTable` using its globally unique id and a patch."""
-  updateTestTableByNodeId(
+  """
+  Updates a single `Registration` using its globally unique id and a patch.
+  """
+  updateRegistrationByNodeId(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: UpdateTestTableByNodeIdInput!
-  ): UpdateTestTablePayload
+    input: UpdateRegistrationByNodeIdInput!
+  ): UpdateRegistrationPayload
 
-  """Updates a single `TestTable` using a unique key and a patch."""
-  updateTestTable(
+  """Updates a single `Registration` using a unique key and a patch."""
+  updateRegistration(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: UpdateTestTableInput!
-  ): UpdateTestTablePayload
+    input: UpdateRegistrationInput!
+  ): UpdateRegistrationPayload
 
-  """Updates a single `TestTable` using a unique key and a patch."""
-  updateTestTableByAttendeeId(
+  """Updates a single `Registration` using a unique key and a patch."""
+  updateRegistrationByEmail(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: UpdateTestTableByAttendeeIdInput!
-  ): UpdateTestTablePayload
+    input: UpdateRegistrationByEmailInput!
+  ): UpdateRegistrationPayload
+
+  """Updates a single `Registration` using a unique key and a patch."""
+  updateRegistrationBySpecialId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateRegistrationBySpecialIdInput!
+  ): UpdateRegistrationPayload
+
+  """Updates a single `Special` using its globally unique id and a patch."""
+  updateSpecialByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateSpecialByNodeIdInput!
+  ): UpdateSpecialPayload
+
+  """Updates a single `Special` using a unique key and a patch."""
+  updateSpecial(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateSpecialInput!
+  ): UpdateSpecialPayload
 
   """Updates a single `User` using its globally unique id and a patch."""
   updateUserByNodeId(
@@ -1838,12 +2768,44 @@ type Mutation {
   ): DeleteAttendeePayload
 
   """Deletes a single `Attendee` using a unique key."""
-  deleteAttendeeByEmailAndEventId(
+  deleteAttendeeByRegistrationId(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: DeleteAttendeeByEmailAndEventIdInput!
+    input: DeleteAttendeeByRegistrationIdInput!
   ): DeleteAttendeePayload
+
+  """Deletes a single `Attendee` using a unique key."""
+  deleteAttendeeByStatus(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAttendeeByStatusInput!
+  ): DeleteAttendeePayload
+
+  """Deletes a single `Communication` using its globally unique id."""
+  deleteCommunicationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCommunicationByNodeIdInput!
+  ): DeleteCommunicationPayload
+
+  """Deletes a single `Communication` using a unique key."""
+  deleteCommunication(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCommunicationInput!
+  ): DeleteCommunicationPayload
+
+  """Deletes a single `Communication` using a unique key."""
+  deleteCommunicationByEventId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCommunicationByEventIdInput!
+  ): DeleteCommunicationPayload
 
   """Deletes a single `Event` using its globally unique id."""
   deleteEventByNodeId(
@@ -1876,6 +2838,46 @@ type Mutation {
     """
     input: DeleteEventByOrganizationIdAndSlugInput!
   ): DeleteEventPayload
+
+  """Deletes a single `Experience` using its globally unique id."""
+  deleteExperienceByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteExperienceByNodeIdInput!
+  ): DeleteExperiencePayload
+
+  """Deletes a single `Experience` using a unique key."""
+  deleteExperience(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteExperienceInput!
+  ): DeleteExperiencePayload
+
+  """Deletes a single `Experience` using a unique key."""
+  deleteExperienceByRegistrationId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteExperienceByRegistrationIdInput!
+  ): DeleteExperiencePayload
+
+  """Deletes a single `Option` using its globally unique id."""
+  deleteOptionByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteOptionByNodeIdInput!
+  ): DeleteOptionPayload
+
+  """Deletes a single `Option` using a unique key."""
+  deleteOption(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteOptionInput!
+  ): DeleteOptionPayload
 
   """
   Deletes a single `OrganizationMembership` using its globally unique id.
@@ -1935,29 +2937,53 @@ type Mutation {
     input: DeleteOrganizationBySlugInput!
   ): DeleteOrganizationPayload
 
-  """Deletes a single `TestTable` using its globally unique id."""
-  deleteTestTableByNodeId(
+  """Deletes a single `Registration` using its globally unique id."""
+  deleteRegistrationByNodeId(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: DeleteTestTableByNodeIdInput!
-  ): DeleteTestTablePayload
+    input: DeleteRegistrationByNodeIdInput!
+  ): DeleteRegistrationPayload
 
-  """Deletes a single `TestTable` using a unique key."""
-  deleteTestTable(
+  """Deletes a single `Registration` using a unique key."""
+  deleteRegistration(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: DeleteTestTableInput!
-  ): DeleteTestTablePayload
+    input: DeleteRegistrationInput!
+  ): DeleteRegistrationPayload
 
-  """Deletes a single `TestTable` using a unique key."""
-  deleteTestTableByAttendeeId(
+  """Deletes a single `Registration` using a unique key."""
+  deleteRegistrationByEmail(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: DeleteTestTableByAttendeeIdInput!
-  ): DeleteTestTablePayload
+    input: DeleteRegistrationByEmailInput!
+  ): DeleteRegistrationPayload
+
+  """Deletes a single `Registration` using a unique key."""
+  deleteRegistrationBySpecialId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteRegistrationBySpecialIdInput!
+  ): DeleteRegistrationPayload
+
+  """Deletes a single `Special` using its globally unique id."""
+  deleteSpecialByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteSpecialByNodeIdInput!
+  ): DeleteSpecialPayload
+
+  """Deletes a single `Special` using a unique key."""
+  deleteSpecial(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteSpecialInput!
+  ): DeleteSpecialPayload
 
   """Deletes a single `User` using its globally unique id."""
   deleteUserByNodeId(
@@ -1982,6 +3008,12 @@ type Mutation {
     """
     input: DeleteUserByEmailInput!
   ): DeleteUserPayload
+  checkSpecialId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CheckSpecialIdInput!
+  ): CheckSpecialIdPayload
   login(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2024,8 +3056,8 @@ type CreateAttendeePayload {
   """
   query: Query
 
-  """Reads a single `Event` that is related to this `Attendee`."""
-  event: Event
+  """Reads a single `Registration` that is related to this `Attendee`."""
+  registration: Registration
 
   """An edge for our `Attendee`. May be used by Relay 1."""
   attendeeEdge(
@@ -2052,8 +3084,62 @@ input AttendeeInput {
   firstname: String!
   lastname: String!
   email: String!
-  eventId: UUID!
+  registrationId: UUID
   status: EventStatus!
+  notes: String
+  qrCode: String
+  panelNumber: String
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `Communication` mutation."""
+type CreateCommunicationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Communication` that was created by this mutation."""
+  communication: Communication
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Event` that is related to this `Communication`."""
+  event: Event
+
+  """An edge for our `Communication`. May be used by Relay 1."""
+  communicationEdge(
+    """The method to use when ordering `Communication`."""
+    orderBy: [CommunicationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CommunicationsEdge
+}
+
+"""All input for the create `Communication` mutation."""
+input CreateCommunicationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Communication` to be created by this mutation."""
+  communication: CommunicationInput!
+}
+
+"""An input for mutations affecting `Communication`"""
+input CommunicationInput {
+  id: UUID
+  from: String!
+  filter: String
+  subject: String!
+  content: String!
+  draft: Boolean
+  eventId: UUID
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2114,6 +3200,104 @@ input EventInput {
   happeningAt: Datetime
   bookingStartsAt: Datetime
   bookingEndsAt: Datetime
+  createdAt: Datetime
+  updatedAt: Datetime
+  isPublished: Boolean
+  registrationId: UUID
+}
+
+"""The output of our create `Experience` mutation."""
+type CreateExperiencePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Experience` that was created by this mutation."""
+  experience: Experience
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Registration` that is related to this `Experience`."""
+  registration: Registration
+
+  """An edge for our `Experience`. May be used by Relay 1."""
+  experienceEdge(
+    """The method to use when ordering `Experience`."""
+    orderBy: [ExperiencesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ExperiencesEdge
+}
+
+"""All input for the create `Experience` mutation."""
+input CreateExperienceInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Experience` to be created by this mutation."""
+  experience: ExperienceInput!
+}
+
+"""An input for mutations affecting `Experience`"""
+input ExperienceInput {
+  id: UUID
+  registrationId: UUID
+  rating: Int
+  feedback: String
+  recommended: Boolean
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `Option` mutation."""
+type CreateOptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Option` that was created by this mutation."""
+  option: Option
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Special` that is related to this `Option`."""
+  special: Special
+
+  """An edge for our `Option`. May be used by Relay 1."""
+  optionEdge(
+    """The method to use when ordering `Option`."""
+    orderBy: [OptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OptionsEdge
+}
+
+"""All input for the create `Option` mutation."""
+input CreateOptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Option` to be created by this mutation."""
+  option: OptionInput!
+}
+
+"""An input for mutations affecting `Option`"""
+input OptionInput {
+  id: UUID
+  texte: String!
+  specialId: UUID!
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2221,50 +3405,98 @@ input OrganizationInput {
   updatedAt: Datetime
 }
 
-"""The output of our create `TestTable` mutation."""
-type CreateTestTablePayload {
+"""The output of our create `Registration` mutation."""
+type CreateRegistrationPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
 
-  """The `TestTable` that was created by this mutation."""
-  testTable: TestTable
+  """The `Registration` that was created by this mutation."""
+  registration: Registration
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
 
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
+  """Reads a single `Special` that is related to this `Registration`."""
+  special: Special
 
-  """An edge for our `TestTable`. May be used by Relay 1."""
-  testTableEdge(
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): TestTablesEdge
+  """An edge for our `Registration`. May be used by Relay 1."""
+  registrationEdge(
+    """The method to use when ordering `Registration`."""
+    orderBy: [RegistrationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegistrationsEdge
 }
 
-"""All input for the create `TestTable` mutation."""
-input CreateTestTableInput {
+"""All input for the create `Registration` mutation."""
+input CreateRegistrationInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
 
-  """The `TestTable` to be created by this mutation."""
-  testTable: TestTableInput!
+  """The `Registration` to be created by this mutation."""
+  registration: RegistrationInput!
 }
 
-"""An input for mutations affecting `TestTable`"""
-input TestTableInput {
+"""An input for mutations affecting `Registration`"""
+input RegistrationInput {
   id: UUID
-  infos: String
-  status: TestTableStatus
-  attendeeId: UUID!
+  firstname: String!
+  lastname: String!
+  email: String!
+  specialId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `Special` mutation."""
+type CreateSpecialPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Special` that was created by this mutation."""
+  special: Special
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Special`. May be used by Relay 1."""
+  specialEdge(
+    """The method to use when ordering `Special`."""
+    orderBy: [SpecialsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SpecialsEdge
+}
+
+"""All input for the create `Special` mutation."""
+input CreateSpecialInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Special` to be created by this mutation."""
+  special: SpecialInput!
+}
+
+"""An input for mutations affecting `Special`"""
+input SpecialInput {
+  id: UUID
+  type: SpecialType!
+  isMandatory: Boolean!
+  isSensitive: Boolean!
+  isModifiable: Boolean!
+  isHidden: Boolean!
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2332,8 +3564,8 @@ type UpdateAttendeePayload {
   """
   query: Query
 
-  """Reads a single `Event` that is related to this `Attendee`."""
-  event: Event
+  """Reads a single `Registration` that is related to this `Attendee`."""
+  registration: Registration
 
   """An edge for our `Attendee`. May be used by Relay 1."""
   attendeeEdge(
@@ -2369,8 +3601,11 @@ input AttendeePatch {
   firstname: String
   lastname: String
   email: String
-  eventId: UUID
+  registrationId: UUID
   status: EventStatus
+  notes: String
+  qrCode: String
+  panelNumber: String
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2390,8 +3625,8 @@ input UpdateAttendeeInput {
   id: UUID!
 }
 
-"""All input for the `updateAttendeeByEmailAndEventId` mutation."""
-input UpdateAttendeeByEmailAndEventIdInput {
+"""All input for the `updateAttendeeByRegistrationId` mutation."""
+input UpdateAttendeeByRegistrationIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -2402,7 +3637,111 @@ input UpdateAttendeeByEmailAndEventIdInput {
   An object where the defined keys will be set on the `Attendee` being updated.
   """
   patch: AttendeePatch!
-  email: String!
+  registrationId: UUID!
+}
+
+"""All input for the `updateAttendeeByStatus` mutation."""
+input UpdateAttendeeByStatusInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Attendee` being updated.
+  """
+  patch: AttendeePatch!
+  status: EventStatus!
+}
+
+"""The output of our update `Communication` mutation."""
+type UpdateCommunicationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Communication` that was updated by this mutation."""
+  communication: Communication
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Event` that is related to this `Communication`."""
+  event: Event
+
+  """An edge for our `Communication`. May be used by Relay 1."""
+  communicationEdge(
+    """The method to use when ordering `Communication`."""
+    orderBy: [CommunicationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CommunicationsEdge
+}
+
+"""All input for the `updateCommunicationByNodeId` mutation."""
+input UpdateCommunicationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Communication` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Communication` being updated.
+  """
+  patch: CommunicationPatch!
+}
+
+"""
+Represents an update to a `Communication`. Fields that are set will be updated.
+"""
+input CommunicationPatch {
+  id: UUID
+  from: String
+  filter: String
+  subject: String
+  content: String
+  draft: Boolean
+  eventId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""All input for the `updateCommunication` mutation."""
+input UpdateCommunicationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Communication` being updated.
+  """
+  patch: CommunicationPatch!
+  id: UUID!
+}
+
+"""All input for the `updateCommunicationByEventId` mutation."""
+input UpdateCommunicationByEventIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Communication` being updated.
+  """
+  patch: CommunicationPatch!
   eventId: UUID!
 }
 
@@ -2473,6 +3812,8 @@ input EventPatch {
   bookingEndsAt: Datetime
   createdAt: Datetime
   updatedAt: Datetime
+  isPublished: Boolean
+  registrationId: UUID
 }
 
 """All input for the `updateEvent` mutation."""
@@ -2520,6 +3861,165 @@ input UpdateEventByOrganizationIdAndSlugInput {
   patch: EventPatch!
   organizationId: UUID!
   slug: String!
+}
+
+"""The output of our update `Experience` mutation."""
+type UpdateExperiencePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Experience` that was updated by this mutation."""
+  experience: Experience
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Registration` that is related to this `Experience`."""
+  registration: Registration
+
+  """An edge for our `Experience`. May be used by Relay 1."""
+  experienceEdge(
+    """The method to use when ordering `Experience`."""
+    orderBy: [ExperiencesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ExperiencesEdge
+}
+
+"""All input for the `updateExperienceByNodeId` mutation."""
+input UpdateExperienceByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Experience` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Experience` being updated.
+  """
+  patch: ExperiencePatch!
+}
+
+"""
+Represents an update to a `Experience`. Fields that are set will be updated.
+"""
+input ExperiencePatch {
+  id: UUID
+  registrationId: UUID
+  rating: Int
+  feedback: String
+  recommended: Boolean
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""All input for the `updateExperience` mutation."""
+input UpdateExperienceInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Experience` being updated.
+  """
+  patch: ExperiencePatch!
+  id: UUID!
+}
+
+"""All input for the `updateExperienceByRegistrationId` mutation."""
+input UpdateExperienceByRegistrationIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Experience` being updated.
+  """
+  patch: ExperiencePatch!
+  registrationId: UUID!
+}
+
+"""The output of our update `Option` mutation."""
+type UpdateOptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Option` that was updated by this mutation."""
+  option: Option
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Special` that is related to this `Option`."""
+  special: Special
+
+  """An edge for our `Option`. May be used by Relay 1."""
+  optionEdge(
+    """The method to use when ordering `Option`."""
+    orderBy: [OptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OptionsEdge
+}
+
+"""All input for the `updateOptionByNodeId` mutation."""
+input UpdateOptionByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Option` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Option` being updated.
+  """
+  patch: OptionPatch!
+}
+
+"""
+Represents an update to a `Option`. Fields that are set will be updated.
+"""
+input OptionPatch {
+  id: UUID
+  texte: String
+  specialId: UUID
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""All input for the `updateOption` mutation."""
+input UpdateOptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Option` being updated.
+  """
+  patch: OptionPatch!
+  id: UUID!
 }
 
 """The output of our update `OrganizationMembership` mutation."""
@@ -2721,34 +4221,34 @@ input UpdateOrganizationBySlugInput {
   slug: String!
 }
 
-"""The output of our update `TestTable` mutation."""
-type UpdateTestTablePayload {
+"""The output of our update `Registration` mutation."""
+type UpdateRegistrationPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
 
-  """The `TestTable` that was updated by this mutation."""
-  testTable: TestTable
+  """The `Registration` that was updated by this mutation."""
+  registration: Registration
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
 
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
+  """Reads a single `Special` that is related to this `Registration`."""
+  special: Special
 
-  """An edge for our `TestTable`. May be used by Relay 1."""
-  testTableEdge(
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): TestTablesEdge
+  """An edge for our `Registration`. May be used by Relay 1."""
+  registrationEdge(
+    """The method to use when ordering `Registration`."""
+    orderBy: [RegistrationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegistrationsEdge
 }
 
-"""All input for the `updateTestTableByNodeId` mutation."""
-input UpdateTestTableByNodeIdInput {
+"""All input for the `updateRegistrationByNodeId` mutation."""
+input UpdateRegistrationByNodeIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -2756,30 +4256,31 @@ input UpdateTestTableByNodeIdInput {
   clientMutationId: String
 
   """
-  The globally unique `ID` which will identify a single `TestTable` to be updated.
+  The globally unique `ID` which will identify a single `Registration` to be updated.
   """
   nodeId: ID!
 
   """
-  An object where the defined keys will be set on the `TestTable` being updated.
+  An object where the defined keys will be set on the `Registration` being updated.
   """
-  patch: TestTablePatch!
+  patch: RegistrationPatch!
 }
 
 """
-Represents an update to a `TestTable`. Fields that are set will be updated.
+Represents an update to a `Registration`. Fields that are set will be updated.
 """
-input TestTablePatch {
+input RegistrationPatch {
   id: UUID
-  infos: String
-  status: TestTableStatus
-  attendeeId: UUID
+  firstname: String
+  lastname: String
+  email: String
+  specialId: UUID
   createdAt: Datetime
   updatedAt: Datetime
 }
 
-"""All input for the `updateTestTable` mutation."""
-input UpdateTestTableInput {
+"""All input for the `updateRegistration` mutation."""
+input UpdateRegistrationInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -2787,14 +4288,14 @@ input UpdateTestTableInput {
   clientMutationId: String
 
   """
-  An object where the defined keys will be set on the `TestTable` being updated.
+  An object where the defined keys will be set on the `Registration` being updated.
   """
-  patch: TestTablePatch!
+  patch: RegistrationPatch!
   id: UUID!
 }
 
-"""All input for the `updateTestTableByAttendeeId` mutation."""
-input UpdateTestTableByAttendeeIdInput {
+"""All input for the `updateRegistrationByEmail` mutation."""
+input UpdateRegistrationByEmailInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -2802,10 +4303,96 @@ input UpdateTestTableByAttendeeIdInput {
   clientMutationId: String
 
   """
-  An object where the defined keys will be set on the `TestTable` being updated.
+  An object where the defined keys will be set on the `Registration` being updated.
   """
-  patch: TestTablePatch!
-  attendeeId: UUID!
+  patch: RegistrationPatch!
+  email: String!
+}
+
+"""All input for the `updateRegistrationBySpecialId` mutation."""
+input UpdateRegistrationBySpecialIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Registration` being updated.
+  """
+  patch: RegistrationPatch!
+  specialId: UUID!
+}
+
+"""The output of our update `Special` mutation."""
+type UpdateSpecialPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Special` that was updated by this mutation."""
+  special: Special
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Special`. May be used by Relay 1."""
+  specialEdge(
+    """The method to use when ordering `Special`."""
+    orderBy: [SpecialsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SpecialsEdge
+}
+
+"""All input for the `updateSpecialByNodeId` mutation."""
+input UpdateSpecialByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Special` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Special` being updated.
+  """
+  patch: SpecialPatch!
+}
+
+"""
+Represents an update to a `Special`. Fields that are set will be updated.
+"""
+input SpecialPatch {
+  id: UUID
+  type: SpecialType
+  isMandatory: Boolean
+  isSensitive: Boolean
+  isModifiable: Boolean
+  isHidden: Boolean
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""All input for the `updateSpecial` mutation."""
+input UpdateSpecialInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Special` being updated.
+  """
+  patch: SpecialPatch!
+  id: UUID!
 }
 
 """The output of our update `User` mutation."""
@@ -2909,8 +4496,8 @@ type DeleteAttendeePayload {
   """
   query: Query
 
-  """Reads a single `Event` that is related to this `Attendee`."""
-  event: Event
+  """Reads a single `Registration` that is related to this `Attendee`."""
+  registration: Registration
 
   """An edge for our `Attendee`. May be used by Relay 1."""
   attendeeEdge(
@@ -2943,14 +4530,84 @@ input DeleteAttendeeInput {
   id: UUID!
 }
 
-"""All input for the `deleteAttendeeByEmailAndEventId` mutation."""
-input DeleteAttendeeByEmailAndEventIdInput {
+"""All input for the `deleteAttendeeByRegistrationId` mutation."""
+input DeleteAttendeeByRegistrationIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  email: String!
+  registrationId: UUID!
+}
+
+"""All input for the `deleteAttendeeByStatus` mutation."""
+input DeleteAttendeeByStatusInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  status: EventStatus!
+}
+
+"""The output of our delete `Communication` mutation."""
+type DeleteCommunicationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Communication` that was deleted by this mutation."""
+  communication: Communication
+  deletedCommunicationNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Event` that is related to this `Communication`."""
+  event: Event
+
+  """An edge for our `Communication`. May be used by Relay 1."""
+  communicationEdge(
+    """The method to use when ordering `Communication`."""
+    orderBy: [CommunicationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CommunicationsEdge
+}
+
+"""All input for the `deleteCommunicationByNodeId` mutation."""
+input DeleteCommunicationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Communication` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteCommunication` mutation."""
+input DeleteCommunicationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
+"""All input for the `deleteCommunicationByEventId` mutation."""
+input DeleteCommunicationByEventIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
   eventId: UUID!
 }
 
@@ -3025,6 +4682,118 @@ input DeleteEventByOrganizationIdAndSlugInput {
   clientMutationId: String
   organizationId: UUID!
   slug: String!
+}
+
+"""The output of our delete `Experience` mutation."""
+type DeleteExperiencePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Experience` that was deleted by this mutation."""
+  experience: Experience
+  deletedExperienceNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Registration` that is related to this `Experience`."""
+  registration: Registration
+
+  """An edge for our `Experience`. May be used by Relay 1."""
+  experienceEdge(
+    """The method to use when ordering `Experience`."""
+    orderBy: [ExperiencesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ExperiencesEdge
+}
+
+"""All input for the `deleteExperienceByNodeId` mutation."""
+input DeleteExperienceByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Experience` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteExperience` mutation."""
+input DeleteExperienceInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
+"""All input for the `deleteExperienceByRegistrationId` mutation."""
+input DeleteExperienceByRegistrationIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  registrationId: UUID!
+}
+
+"""The output of our delete `Option` mutation."""
+type DeleteOptionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Option` that was deleted by this mutation."""
+  option: Option
+  deletedOptionNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Special` that is related to this `Option`."""
+  special: Special
+
+  """An edge for our `Option`. May be used by Relay 1."""
+  optionEdge(
+    """The method to use when ordering `Option`."""
+    orderBy: [OptionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OptionsEdge
+}
+
+"""All input for the `deleteOptionByNodeId` mutation."""
+input DeleteOptionByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Option` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteOption` mutation."""
+input DeleteOptionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
 }
 
 """The output of our delete `OrganizationMembership` mutation."""
@@ -3166,35 +4935,35 @@ input DeleteOrganizationBySlugInput {
   slug: String!
 }
 
-"""The output of our delete `TestTable` mutation."""
-type DeleteTestTablePayload {
+"""The output of our delete `Registration` mutation."""
+type DeleteRegistrationPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
 
-  """The `TestTable` that was deleted by this mutation."""
-  testTable: TestTable
-  deletedTestTableNodeId: ID
+  """The `Registration` that was deleted by this mutation."""
+  registration: Registration
+  deletedRegistrationNodeId: ID
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
 
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
+  """Reads a single `Special` that is related to this `Registration`."""
+  special: Special
 
-  """An edge for our `TestTable`. May be used by Relay 1."""
-  testTableEdge(
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): TestTablesEdge
+  """An edge for our `Registration`. May be used by Relay 1."""
+  registrationEdge(
+    """The method to use when ordering `Registration`."""
+    orderBy: [RegistrationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegistrationsEdge
 }
 
-"""All input for the `deleteTestTableByNodeId` mutation."""
-input DeleteTestTableByNodeIdInput {
+"""All input for the `deleteRegistrationByNodeId` mutation."""
+input DeleteRegistrationByNodeIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -3202,13 +4971,13 @@ input DeleteTestTableByNodeIdInput {
   clientMutationId: String
 
   """
-  The globally unique `ID` which will identify a single `TestTable` to be deleted.
+  The globally unique `ID` which will identify a single `Registration` to be deleted.
   """
   nodeId: ID!
 }
 
-"""All input for the `deleteTestTable` mutation."""
-input DeleteTestTableInput {
+"""All input for the `deleteRegistration` mutation."""
+input DeleteRegistrationInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -3217,14 +4986,72 @@ input DeleteTestTableInput {
   id: UUID!
 }
 
-"""All input for the `deleteTestTableByAttendeeId` mutation."""
-input DeleteTestTableByAttendeeIdInput {
+"""All input for the `deleteRegistrationByEmail` mutation."""
+input DeleteRegistrationByEmailInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  attendeeId: UUID!
+  email: String!
+}
+
+"""All input for the `deleteRegistrationBySpecialId` mutation."""
+input DeleteRegistrationBySpecialIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  specialId: UUID!
+}
+
+"""The output of our delete `Special` mutation."""
+type DeleteSpecialPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Special` that was deleted by this mutation."""
+  special: Special
+  deletedSpecialNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Special`. May be used by Relay 1."""
+  specialEdge(
+    """The method to use when ordering `Special`."""
+    orderBy: [SpecialsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): SpecialsEdge
+}
+
+"""All input for the `deleteSpecialByNodeId` mutation."""
+input DeleteSpecialByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Special` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteSpecial` mutation."""
+input DeleteSpecialInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
 }
 
 """The output of our delete `User` mutation."""
@@ -3283,6 +5110,30 @@ input DeleteUserByEmailInput {
   """
   clientMutationId: String
   email: String!
+}
+
+"""The output of our `checkSpecialId` mutation."""
+type CheckSpecialIdPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  boolean: Boolean
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `checkSpecialId` mutation."""
+input CheckSpecialIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
 }
 
 """The output of our `login` mutation."""

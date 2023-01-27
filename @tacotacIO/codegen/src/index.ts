@@ -44,9 +44,10 @@ export type Attendee = Node & {
   lastname: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  notes?: Maybe<Scalars['String']>;
+  panelNumber?: Maybe<Scalars['String']>;
+  qrCode?: Maybe<Scalars['String']>;
   status: EventStatus;
-  /** Reads a single `TestTable` that is related to this `Attendee`. */
-  testTable?: Maybe<TestTable>;
   updatedAt: Scalars['Datetime'];
 };
 
@@ -61,8 +62,18 @@ export type AttendeeCondition = {
   email?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `eventId` field. */
   eventId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `firstname` field. */
+  firstname?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `lastname` field. */
+  lastname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `notes` field. */
+  notes?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `panelNumber` field. */
+  panelNumber?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `qrCode` field. */
+  qrCode?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<EventStatus>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -79,12 +90,22 @@ export type AttendeeFilter = {
   email?: InputMaybe<StringFilter>;
   /** Filter by the object’s `eventId` field. */
   eventId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `firstname` field. */
+  firstname?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `lastname` field. */
+  lastname?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<AttendeeFilter>;
+  /** Filter by the object’s `notes` field. */
+  notes?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<AttendeeFilter>>;
+  /** Filter by the object’s `panelNumber` field. */
+  panelNumber?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `qrCode` field. */
+  qrCode?: InputMaybe<StringFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<EventStatusFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -99,6 +120,9 @@ export type AttendeeInput = {
   firstname: Scalars['String'];
   id?: InputMaybe<Scalars['UUID']>;
   lastname: Scalars['String'];
+  notes?: InputMaybe<Scalars['String']>;
+  panelNumber?: InputMaybe<Scalars['String']>;
+  qrCode?: InputMaybe<Scalars['String']>;
   status: EventStatus;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -111,6 +135,9 @@ export type AttendeePatch = {
   firstname?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   lastname?: InputMaybe<Scalars['String']>;
+  notes?: InputMaybe<Scalars['String']>;
+  panelNumber?: InputMaybe<Scalars['String']>;
+  qrCode?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<EventStatus>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -145,11 +172,21 @@ export enum AttendeesOrderBy {
   EmailDesc = 'EMAIL_DESC',
   EventIdAsc = 'EVENT_ID_ASC',
   EventIdDesc = 'EVENT_ID_DESC',
+  FirstnameAsc = 'FIRSTNAME_ASC',
+  FirstnameDesc = 'FIRSTNAME_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  LastnameAsc = 'LASTNAME_ASC',
+  LastnameDesc = 'LASTNAME_DESC',
   Natural = 'NATURAL',
+  NotesAsc = 'NOTES_ASC',
+  NotesDesc = 'NOTES_DESC',
+  PanelNumberAsc = 'PANEL_NUMBER_ASC',
+  PanelNumberDesc = 'PANEL_NUMBER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  QrCodeAsc = 'QR_CODE_ASC',
+  QrCodeDesc = 'QR_CODE_DESC',
   StatusAsc = 'STATUS_ASC',
   StatusDesc = 'STATUS_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
@@ -180,6 +217,28 @@ export type BooleanFilter = {
   notEqualTo?: InputMaybe<Scalars['Boolean']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
+/** All input for the `checkSpecialId` mutation. */
+export type CheckSpecialIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our `checkSpecialId` mutation. */
+export type CheckSpecialIdPayload = {
+  __typename?: 'CheckSpecialIdPayload';
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** All input for the create `Attendee` mutation. */
@@ -252,6 +311,41 @@ export type CreateEventPayloadEventEdgeArgs = {
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
 };
 
+/** All input for the create `Option` mutation. */
+export type CreateOptionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `Option` to be created by this mutation. */
+  option: OptionInput;
+};
+
+/** The output of our create `Option` mutation. */
+export type CreateOptionPayload = {
+  __typename?: 'CreateOptionPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Option` that was created by this mutation. */
+  option?: Maybe<Option>;
+  /** An edge for our `Option`. May be used by Relay 1. */
+  optionEdge?: Maybe<OptionsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Special` that is related to this `Option`. */
+  special?: Maybe<Special>;
+};
+
+
+/** The output of our create `Option` mutation. */
+export type CreateOptionPayloadOptionEdgeArgs = {
+  orderBy?: InputMaybe<Array<OptionsOrderBy>>;
+};
+
 /** All input for the create `Organization` mutation. */
 export type CreateOrganizationInput = {
   /**
@@ -322,22 +416,20 @@ export type CreateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
-/** All input for the create `TestTable` mutation. */
-export type CreateTestTableInput = {
+/** All input for the create `Registration` mutation. */
+export type CreateRegistrationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The `TestTable` to be created by this mutation. */
-  testTable: TestTableInput;
+  /** The `Registration` to be created by this mutation. */
+  registration: RegistrationInput;
 };
 
-/** The output of our create `TestTable` mutation. */
-export type CreateTestTablePayload = {
-  __typename?: 'CreateTestTablePayload';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
+/** The output of our create `Registration` mutation. */
+export type CreateRegistrationPayload = {
+  __typename?: 'CreateRegistrationPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -345,16 +437,49 @@ export type CreateTestTablePayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** The `TestTable` that was created by this mutation. */
-  testTable?: Maybe<TestTable>;
-  /** An edge for our `TestTable`. May be used by Relay 1. */
-  testTableEdge?: Maybe<TestTablesEdge>;
+  /** The `Registration` that was created by this mutation. */
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
 };
 
 
-/** The output of our create `TestTable` mutation. */
-export type CreateTestTablePayloadTestTableEdgeArgs = {
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
+/** The output of our create `Registration` mutation. */
+export type CreateRegistrationPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the create `Special` mutation. */
+export type CreateSpecialInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `Special` to be created by this mutation. */
+  special: SpecialInput;
+};
+
+/** The output of our create `Special` mutation. */
+export type CreateSpecialPayload = {
+  __typename?: 'CreateSpecialPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Special` that was created by this mutation. */
+  special?: Maybe<Special>;
+  /** An edge for our `Special`. May be used by Relay 1. */
+  specialEdge?: Maybe<SpecialsEdge>;
+};
+
+
+/** The output of our create `Special` mutation. */
+export type CreateSpecialPayloadSpecialEdgeArgs = {
+  orderBy?: InputMaybe<Array<SpecialsOrderBy>>;
 };
 
 /** All input for the create `User` mutation. */
@@ -550,6 +675,52 @@ export type DeleteFilePayload = {
   success?: Maybe<Scalars['Boolean']>;
 };
 
+/** All input for the `deleteOptionByNodeId` mutation. */
+export type DeleteOptionByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Option` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteOption` mutation. */
+export type DeleteOptionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `Option` mutation. */
+export type DeleteOptionPayload = {
+  __typename?: 'DeleteOptionPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedOptionNodeId?: Maybe<Scalars['ID']>;
+  /** The `Option` that was deleted by this mutation. */
+  option?: Maybe<Option>;
+  /** An edge for our `Option`. May be used by Relay 1. */
+  optionEdge?: Maybe<OptionsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Special` that is related to this `Option`. */
+  special?: Maybe<Special>;
+};
+
+
+/** The output of our delete `Option` mutation. */
+export type DeleteOptionPayloadOptionEdgeArgs = {
+  orderBy?: InputMaybe<Array<OptionsOrderBy>>;
+};
+
 /** All input for the `deleteOrganizationByName` mutation. */
 export type DeleteOrganizationByNameInput = {
   /**
@@ -673,29 +844,29 @@ export type DeleteOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
-/** All input for the `deleteTestTableByAttendeeId` mutation. */
-export type DeleteTestTableByAttendeeIdInput = {
-  attendeeId: Scalars['UUID'];
+/** All input for the `deleteRegistrationByEmail` mutation. */
+export type DeleteRegistrationByEmailInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
 };
 
-/** All input for the `deleteTestTableByNodeId` mutation. */
-export type DeleteTestTableByNodeIdInput = {
+/** All input for the `deleteRegistrationByNodeId` mutation. */
+export type DeleteRegistrationByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `TestTable` to be deleted. */
+  /** The globally unique `ID` which will identify a single `Registration` to be deleted. */
   nodeId: Scalars['ID'];
 };
 
-/** All input for the `deleteTestTable` mutation. */
-export type DeleteTestTableInput = {
+/** All input for the `deleteRegistration` mutation. */
+export type DeleteRegistrationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -704,29 +875,71 @@ export type DeleteTestTableInput = {
   id: Scalars['UUID'];
 };
 
-/** The output of our delete `TestTable` mutation. */
-export type DeleteTestTablePayload = {
-  __typename?: 'DeleteTestTablePayload';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
+/** The output of our delete `Registration` mutation. */
+export type DeleteRegistrationPayload = {
+  __typename?: 'DeleteRegistrationPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  deletedTestTableNodeId?: Maybe<Scalars['ID']>;
+  deletedRegistrationNodeId?: Maybe<Scalars['ID']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** The `TestTable` that was deleted by this mutation. */
-  testTable?: Maybe<TestTable>;
-  /** An edge for our `TestTable`. May be used by Relay 1. */
-  testTableEdge?: Maybe<TestTablesEdge>;
+  /** The `Registration` that was deleted by this mutation. */
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
 };
 
 
-/** The output of our delete `TestTable` mutation. */
-export type DeleteTestTablePayloadTestTableEdgeArgs = {
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
+/** The output of our delete `Registration` mutation. */
+export type DeleteRegistrationPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the `deleteSpecialByNodeId` mutation. */
+export type DeleteSpecialByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Special` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteSpecial` mutation. */
+export type DeleteSpecialInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `Special` mutation. */
+export type DeleteSpecialPayload = {
+  __typename?: 'DeleteSpecialPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedSpecialNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Special` that was deleted by this mutation. */
+  special?: Maybe<Special>;
+  /** An edge for our `Special`. May be used by Relay 1. */
+  specialEdge?: Maybe<SpecialsEdge>;
+};
+
+
+/** The output of our delete `Special` mutation. */
+export type DeleteSpecialPayloadSpecialEdgeArgs = {
+  orderBy?: InputMaybe<Array<SpecialsOrderBy>>;
 };
 
 /** All input for the `deleteUserByEmail` mutation. */
@@ -797,6 +1010,7 @@ export type Event = Node & {
   description: Scalars['String'];
   happeningAt?: Maybe<Scalars['Datetime']>;
   id: Scalars['UUID'];
+  isPublished: Scalars['Boolean'];
   lat?: Maybe<Scalars['Float']>;
   lon?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
@@ -806,6 +1020,7 @@ export type Event = Node & {
   organization?: Maybe<Organization>;
   organizationId: Scalars['UUID'];
   placeName?: Maybe<Scalars['String']>;
+  registrationId?: Maybe<Scalars['UUID']>;
   slug?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
   zipCode?: Maybe<Scalars['String']>;
@@ -881,11 +1096,13 @@ export type EventInput = {
   description: Scalars['String'];
   happeningAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
+  isPublished?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
   lon?: InputMaybe<Scalars['Float']>;
   name: Scalars['String'];
   organizationId: Scalars['UUID'];
   placeName?: InputMaybe<Scalars['String']>;
+  registrationId?: InputMaybe<Scalars['UUID']>;
   slug?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   zipCode?: InputMaybe<Scalars['String']>;
@@ -903,11 +1120,13 @@ export type EventPatch = {
   description?: InputMaybe<Scalars['String']>;
   happeningAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
+  isPublished?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
   lon?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   organizationId?: InputMaybe<Scalars['UUID']>;
   placeName?: InputMaybe<Scalars['String']>;
+  registrationId?: InputMaybe<Scalars['UUID']>;
   slug?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   zipCode?: InputMaybe<Scalars['String']>;
@@ -1030,16 +1249,21 @@ export type LoginPayload = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  checkSpecialId?: Maybe<CheckSpecialIdPayload>;
   /** Creates a single `Attendee`. */
   createAttendee?: Maybe<CreateAttendeePayload>;
   /** Creates a single `Event`. */
   createEvent?: Maybe<CreateEventPayload>;
+  /** Creates a single `Option`. */
+  createOption?: Maybe<CreateOptionPayload>;
   /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
   /** Creates a single `OrganizationMembership`. */
   createOrganizationMembership?: Maybe<CreateOrganizationMembershipPayload>;
-  /** Creates a single `TestTable`. */
-  createTestTable?: Maybe<CreateTestTablePayload>;
+  /** Creates a single `Registration`. */
+  createRegistration?: Maybe<CreateRegistrationPayload>;
+  /** Creates a single `Special`. */
+  createSpecial?: Maybe<CreateSpecialPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
   /** Deletes a single `Attendee` using a unique key. */
@@ -1057,6 +1281,10 @@ export type Mutation = {
   /** Deletes a single `Event` using a unique key. */
   deleteEventByOrganizationIdAndSlug?: Maybe<DeleteEventPayload>;
   deleteFile?: Maybe<DeleteFilePayload>;
+  /** Deletes a single `Option` using a unique key. */
+  deleteOption?: Maybe<DeleteOptionPayload>;
+  /** Deletes a single `Option` using its globally unique id. */
+  deleteOptionByNodeId?: Maybe<DeleteOptionPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
   /** Deletes a single `Organization` using a unique key. */
@@ -1071,12 +1299,16 @@ export type Mutation = {
   deleteOrganizationMembershipByNodeId?: Maybe<DeleteOrganizationMembershipPayload>;
   /** Deletes a single `OrganizationMembership` using a unique key. */
   deleteOrganizationMembershipByOrganizationIdAndUserId?: Maybe<DeleteOrganizationMembershipPayload>;
-  /** Deletes a single `TestTable` using a unique key. */
-  deleteTestTable?: Maybe<DeleteTestTablePayload>;
-  /** Deletes a single `TestTable` using a unique key. */
-  deleteTestTableByAttendeeId?: Maybe<DeleteTestTablePayload>;
-  /** Deletes a single `TestTable` using its globally unique id. */
-  deleteTestTableByNodeId?: Maybe<DeleteTestTablePayload>;
+  /** Deletes a single `Registration` using a unique key. */
+  deleteRegistration?: Maybe<DeleteRegistrationPayload>;
+  /** Deletes a single `Registration` using a unique key. */
+  deleteRegistrationByEmail?: Maybe<DeleteRegistrationPayload>;
+  /** Deletes a single `Registration` using its globally unique id. */
+  deleteRegistrationByNodeId?: Maybe<DeleteRegistrationPayload>;
+  /** Deletes a single `Special` using a unique key. */
+  deleteSpecial?: Maybe<DeleteSpecialPayload>;
+  /** Deletes a single `Special` using its globally unique id. */
+  deleteSpecialByNodeId?: Maybe<DeleteSpecialPayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
   /** Deletes a single `User` using a unique key. */
@@ -1100,6 +1332,10 @@ export type Mutation = {
   updateEventByOrganizationIdAndName?: Maybe<UpdateEventPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
   updateEventByOrganizationIdAndSlug?: Maybe<UpdateEventPayload>;
+  /** Updates a single `Option` using a unique key and a patch. */
+  updateOption?: Maybe<UpdateOptionPayload>;
+  /** Updates a single `Option` using its globally unique id and a patch. */
+  updateOptionByNodeId?: Maybe<UpdateOptionPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
@@ -1114,18 +1350,28 @@ export type Mutation = {
   updateOrganizationMembershipByNodeId?: Maybe<UpdateOrganizationMembershipPayload>;
   /** Updates a single `OrganizationMembership` using a unique key and a patch. */
   updateOrganizationMembershipByOrganizationIdAndUserId?: Maybe<UpdateOrganizationMembershipPayload>;
-  /** Updates a single `TestTable` using a unique key and a patch. */
-  updateTestTable?: Maybe<UpdateTestTablePayload>;
-  /** Updates a single `TestTable` using a unique key and a patch. */
-  updateTestTableByAttendeeId?: Maybe<UpdateTestTablePayload>;
-  /** Updates a single `TestTable` using its globally unique id and a patch. */
-  updateTestTableByNodeId?: Maybe<UpdateTestTablePayload>;
+  /** Updates a single `Registration` using a unique key and a patch. */
+  updateRegistration?: Maybe<UpdateRegistrationPayload>;
+  /** Updates a single `Registration` using a unique key and a patch. */
+  updateRegistrationByEmail?: Maybe<UpdateRegistrationPayload>;
+  /** Updates a single `Registration` using its globally unique id and a patch. */
+  updateRegistrationByNodeId?: Maybe<UpdateRegistrationPayload>;
+  /** Updates a single `Special` using a unique key and a patch. */
+  updateSpecial?: Maybe<UpdateSpecialPayload>;
+  /** Updates a single `Special` using its globally unique id and a patch. */
+  updateSpecialByNodeId?: Maybe<UpdateSpecialPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUserByEmail?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserByNodeId?: Maybe<UpdateUserPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCheckSpecialIdArgs = {
+  input: CheckSpecialIdInput;
 };
 
 
@@ -1142,6 +1388,12 @@ export type MutationCreateEventArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateOptionArgs = {
+  input: CreateOptionInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateOrganizationArgs = {
   input: CreateOrganizationInput;
 };
@@ -1154,8 +1406,14 @@ export type MutationCreateOrganizationMembershipArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateTestTableArgs = {
-  input: CreateTestTableInput;
+export type MutationCreateRegistrationArgs = {
+  input: CreateRegistrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateSpecialArgs = {
+  input: CreateSpecialInput;
 };
 
 
@@ -1214,6 +1472,18 @@ export type MutationDeleteFileArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteOptionArgs = {
+  input: DeleteOptionInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteOptionByNodeIdArgs = {
+  input: DeleteOptionByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteOrganizationArgs = {
   input: DeleteOrganizationInput;
 };
@@ -1256,20 +1526,32 @@ export type MutationDeleteOrganizationMembershipByOrganizationIdAndUserIdArgs = 
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTestTableArgs = {
-  input: DeleteTestTableInput;
+export type MutationDeleteRegistrationArgs = {
+  input: DeleteRegistrationInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTestTableByAttendeeIdArgs = {
-  input: DeleteTestTableByAttendeeIdInput;
+export type MutationDeleteRegistrationByEmailArgs = {
+  input: DeleteRegistrationByEmailInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTestTableByNodeIdArgs = {
-  input: DeleteTestTableByNodeIdInput;
+export type MutationDeleteRegistrationByNodeIdArgs = {
+  input: DeleteRegistrationByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSpecialArgs = {
+  input: DeleteSpecialInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteSpecialByNodeIdArgs = {
+  input: DeleteSpecialByNodeIdInput;
 };
 
 
@@ -1352,6 +1634,18 @@ export type MutationUpdateEventByOrganizationIdAndSlugArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateOptionArgs = {
+  input: UpdateOptionInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateOptionByNodeIdArgs = {
+  input: UpdateOptionByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateOrganizationArgs = {
   input: UpdateOrganizationInput;
 };
@@ -1394,20 +1688,32 @@ export type MutationUpdateOrganizationMembershipByOrganizationIdAndUserIdArgs = 
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTestTableArgs = {
-  input: UpdateTestTableInput;
+export type MutationUpdateRegistrationArgs = {
+  input: UpdateRegistrationInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTestTableByAttendeeIdArgs = {
-  input: UpdateTestTableByAttendeeIdInput;
+export type MutationUpdateRegistrationByEmailArgs = {
+  input: UpdateRegistrationByEmailInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTestTableByNodeIdArgs = {
-  input: UpdateTestTableByNodeIdInput;
+export type MutationUpdateRegistrationByNodeIdArgs = {
+  input: UpdateRegistrationByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSpecialArgs = {
+  input: UpdateSpecialInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateSpecialByNodeIdArgs = {
+  input: UpdateSpecialByNodeIdInput;
 };
 
 
@@ -1433,6 +1739,110 @@ export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
 };
+
+export type Option = Node & {
+  __typename?: 'Option';
+  createdAt: Scalars['Datetime'];
+  id: Scalars['UUID'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `Special` that is related to this `Option`. */
+  special?: Maybe<Special>;
+  specialId: Scalars['UUID'];
+  texte: Scalars['String'];
+  updatedAt: Scalars['Datetime'];
+};
+
+/** A condition to be used against `Option` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type OptionCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `specialId` field. */
+  specialId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `texte` field. */
+  texte?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `Option` object types. All fields are combined with a logical ‘and.’ */
+export type OptionFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<OptionFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<OptionFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<OptionFilter>>;
+  /** Filter by the object’s `specialId` field. */
+  specialId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `texte` field. */
+  texte?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `Option` */
+export type OptionInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  specialId: Scalars['UUID'];
+  texte: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `Option`. Fields that are set will be updated. */
+export type OptionPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  specialId?: InputMaybe<Scalars['UUID']>;
+  texte?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `Option` values. */
+export type OptionsConnection = {
+  __typename?: 'OptionsConnection';
+  /** A list of edges which contains the `Option` and cursor to aid in pagination. */
+  edges: Array<OptionsEdge>;
+  /** A list of `Option` objects. */
+  nodes: Array<Option>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Option` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Option` edge in the connection. */
+export type OptionsEdge = {
+  __typename?: 'OptionsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Option` at the end of the edge. */
+  node: Option;
+};
+
+/** Methods to use when ordering `Option`. */
+export enum OptionsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  SpecialIdAsc = 'SPECIAL_ID_ASC',
+  SpecialIdDesc = 'SPECIAL_ID_DESC',
+  TexteAsc = 'TEXTE_ASC',
+  TexteDesc = 'TEXTE_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
 
 /** A company, organization, or institution. */
 export type Organization = Node & {
@@ -1776,6 +2186,11 @@ export type Query = Node & {
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
+  option?: Maybe<Option>;
+  /** Reads a single `Option` using its globally unique `ID`. */
+  optionByNodeId?: Maybe<Option>;
+  /** Reads and enables pagination through a set of `Option`. */
+  options?: Maybe<OptionsConnection>;
   organization?: Maybe<Organization>;
   organizationByName?: Maybe<Organization>;
   /** Reads a single `Organization` using its globally unique `ID`. */
@@ -1794,12 +2209,17 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
-  testTable?: Maybe<TestTable>;
-  testTableByAttendeeId?: Maybe<TestTable>;
-  /** Reads a single `TestTable` using its globally unique `ID`. */
-  testTableByNodeId?: Maybe<TestTable>;
-  /** Reads and enables pagination through a set of `TestTable`. */
-  testTables?: Maybe<TestTablesConnection>;
+  registration?: Maybe<Registration>;
+  registrationByEmail?: Maybe<Registration>;
+  /** Reads a single `Registration` using its globally unique `ID`. */
+  registrationByNodeId?: Maybe<Registration>;
+  /** Reads and enables pagination through a set of `Registration`. */
+  registrations?: Maybe<RegistrationsConnection>;
+  special?: Maybe<Special>;
+  /** Reads a single `Special` using its globally unique `ID`. */
+  specialByNodeId?: Maybe<Special>;
+  /** Reads and enables pagination through a set of `Special`. */
+  specials?: Maybe<SpecialsConnection>;
   user?: Maybe<User>;
   userByEmail?: Maybe<User>;
   /** Reads a single `User` using its globally unique `ID`. */
@@ -1894,6 +2314,31 @@ export type QueryNodeArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryOptionArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOptionByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOptionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OptionCondition>;
+  filter?: InputMaybe<OptionFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OptionsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryOrganizationArgs = {
   id: Scalars['UUID'];
 };
@@ -1963,33 +2408,58 @@ export type QueryOrganizationsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTestTableArgs = {
+export type QueryRegistrationArgs = {
   id: Scalars['UUID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTestTableByAttendeeIdArgs = {
-  attendeeId: Scalars['UUID'];
+export type QueryRegistrationByEmailArgs = {
+  email: Scalars['String'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTestTableByNodeIdArgs = {
+export type QueryRegistrationByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTestTablesArgs = {
+export type QueryRegistrationsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<TestTableCondition>;
-  filter?: InputMaybe<TestTableFilter>;
+  condition?: InputMaybe<RegistrationCondition>;
+  filter?: InputMaybe<RegistrationFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySpecialArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySpecialByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySpecialsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SpecialCondition>;
+  filter?: InputMaybe<SpecialFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SpecialsOrderBy>>;
 };
 
 
@@ -2049,6 +2519,298 @@ export type RegisterPayload = {
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
 };
+
+export type Registration = Node & {
+  __typename?: 'Registration';
+  createdAt: Scalars['Datetime'];
+  email: Scalars['String'];
+  firstname: Scalars['String'];
+  id: Scalars['UUID'];
+  lastname: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  updatedAt: Scalars['Datetime'];
+};
+
+/**
+ * A condition to be used against `Registration` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type RegistrationCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `email` field. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `firstname` field. */
+  firstname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `lastname` field. */
+  lastname?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `Registration` object types. All fields are combined with a logical ‘and.’ */
+export type RegistrationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RegistrationFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `email` field. */
+  email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `firstname` field. */
+  firstname?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `lastname` field. */
+  lastname?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RegistrationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RegistrationFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `Registration` */
+export type RegistrationInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  email: Scalars['String'];
+  firstname: Scalars['String'];
+  id?: InputMaybe<Scalars['UUID']>;
+  lastname: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `Registration`. Fields that are set will be updated. */
+export type RegistrationPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  email?: InputMaybe<Scalars['String']>;
+  firstname?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  lastname?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `Registration` values. */
+export type RegistrationsConnection = {
+  __typename?: 'RegistrationsConnection';
+  /** A list of edges which contains the `Registration` and cursor to aid in pagination. */
+  edges: Array<RegistrationsEdge>;
+  /** A list of `Registration` objects. */
+  nodes: Array<Registration>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Registration` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Registration` edge in the connection. */
+export type RegistrationsEdge = {
+  __typename?: 'RegistrationsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Registration` at the end of the edge. */
+  node: Registration;
+};
+
+/** Methods to use when ordering `Registration`. */
+export enum RegistrationsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EmailAsc = 'EMAIL_ASC',
+  EmailDesc = 'EMAIL_DESC',
+  FirstnameAsc = 'FIRSTNAME_ASC',
+  FirstnameDesc = 'FIRSTNAME_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  LastnameAsc = 'LASTNAME_ASC',
+  LastnameDesc = 'LASTNAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+export type Special = Node & {
+  __typename?: 'Special';
+  createdAt: Scalars['Datetime'];
+  id: Scalars['UUID'];
+  isHidden: Scalars['Boolean'];
+  isMandatory: Scalars['Boolean'];
+  isModifiable: Scalars['Boolean'];
+  isSensitive: Scalars['Boolean'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads and enables pagination through a set of `Option`. */
+  options: OptionsConnection;
+  type: SpecialType;
+  updatedAt: Scalars['Datetime'];
+};
+
+
+export type SpecialOptionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OptionCondition>;
+  filter?: InputMaybe<OptionFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OptionsOrderBy>>;
+};
+
+/** A condition to be used against `Special` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type SpecialCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isHidden` field. */
+  isHidden?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `isMandatory` field. */
+  isMandatory?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `isModifiable` field. */
+  isModifiable?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `isSensitive` field. */
+  isSensitive?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<SpecialType>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `Special` object types. All fields are combined with a logical ‘and.’ */
+export type SpecialFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SpecialFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isHidden` field. */
+  isHidden?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isMandatory` field. */
+  isMandatory?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isModifiable` field. */
+  isModifiable?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isSensitive` field. */
+  isSensitive?: InputMaybe<BooleanFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SpecialFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SpecialFilter>>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<SpecialTypeFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `Special` */
+export type SpecialInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isHidden: Scalars['Boolean'];
+  isMandatory: Scalars['Boolean'];
+  isModifiable: Scalars['Boolean'];
+  isSensitive: Scalars['Boolean'];
+  type: SpecialType;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `Special`. Fields that are set will be updated. */
+export type SpecialPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isHidden?: InputMaybe<Scalars['Boolean']>;
+  isMandatory?: InputMaybe<Scalars['Boolean']>;
+  isModifiable?: InputMaybe<Scalars['Boolean']>;
+  isSensitive?: InputMaybe<Scalars['Boolean']>;
+  type?: InputMaybe<SpecialType>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+export enum SpecialType {
+  ChoixMultiple = 'CHOIX_MULTIPLE',
+  ChoixUnique = 'CHOIX_UNIQUE',
+  Date = 'DATE',
+  IntitulDuPoste = 'INTITUL_DU_POSTE',
+  NomEntreprise = 'NOM_ENTREPRISE',
+  RGimeSpecial = 'R_GIME_SPECIAL'
+}
+
+/** A filter to be used against SpecialType fields. All fields are combined with a logical ‘and.’ */
+export type SpecialTypeFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<SpecialType>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<SpecialType>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<SpecialType>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<SpecialType>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<SpecialType>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<SpecialType>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<SpecialType>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<SpecialType>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<SpecialType>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<SpecialType>>;
+};
+
+/** A connection to a list of `Special` values. */
+export type SpecialsConnection = {
+  __typename?: 'SpecialsConnection';
+  /** A list of edges which contains the `Special` and cursor to aid in pagination. */
+  edges: Array<SpecialsEdge>;
+  /** A list of `Special` objects. */
+  nodes: Array<Special>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Special` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Special` edge in the connection. */
+export type SpecialsEdge = {
+  __typename?: 'SpecialsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Special` at the end of the edge. */
+  node: Special;
+};
+
+/** Methods to use when ordering `Special`. */
+export enum SpecialsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  IsHiddenAsc = 'IS_HIDDEN_ASC',
+  IsHiddenDesc = 'IS_HIDDEN_DESC',
+  IsMandatoryAsc = 'IS_MANDATORY_ASC',
+  IsMandatoryDesc = 'IS_MANDATORY_DESC',
+  IsModifiableAsc = 'IS_MODIFIABLE_ASC',
+  IsModifiableDesc = 'IS_MODIFIABLE_DESC',
+  IsSensitiveAsc = 'IS_SENSITIVE_ASC',
+  IsSensitiveDesc = 'IS_SENSITIVE_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
@@ -2127,149 +2889,6 @@ export type StringFilter = {
   /** Starts with the specified string (case-insensitive). */
   startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
-
-export type TestTable = Node & {
-  __typename?: 'TestTable';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
-  attendeeId: Scalars['UUID'];
-  createdAt: Scalars['Datetime'];
-  id: Scalars['UUID'];
-  infos?: Maybe<Scalars['String']>;
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
-  status?: Maybe<TestTableStatus>;
-  updatedAt: Scalars['Datetime'];
-};
-
-/**
- * A condition to be used against `TestTable` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type TestTableCondition = {
-  /** Checks for equality with the object’s `attendeeId` field. */
-  attendeeId?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `status` field. */
-  status?: InputMaybe<TestTableStatus>;
-  /** Checks for equality with the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
-/** A filter to be used against `TestTable` object types. All fields are combined with a logical ‘and.’ */
-export type TestTableFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<TestTableFilter>>;
-  /** Filter by the object’s `attendeeId` field. */
-  attendeeId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<UuidFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<TestTableFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<TestTableFilter>>;
-  /** Filter by the object’s `status` field. */
-  status?: InputMaybe<TestTableStatusFilter>;
-  /** Filter by the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<DatetimeFilter>;
-};
-
-/** An input for mutations affecting `TestTable` */
-export type TestTableInput = {
-  attendeeId: Scalars['UUID'];
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  infos?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<TestTableStatus>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
-/** Represents an update to a `TestTable`. Fields that are set will be updated. */
-export type TestTablePatch = {
-  attendeeId?: InputMaybe<Scalars['UUID']>;
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  infos?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<TestTableStatus>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
-export enum TestTableStatus {
-  /** Status est non ok */
-  Nok = 'NOK',
-  /** Status est ok */
-  Ok = 'OK'
-}
-
-/** A filter to be used against TestTableStatus fields. All fields are combined with a logical ‘and.’ */
-export type TestTableStatusFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<TestTableStatus>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<TestTableStatus>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<TestTableStatus>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<TestTableStatus>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<TestTableStatus>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<TestTableStatus>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<TestTableStatus>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<TestTableStatus>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<TestTableStatus>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<TestTableStatus>>;
-};
-
-/** A connection to a list of `TestTable` values. */
-export type TestTablesConnection = {
-  __typename?: 'TestTablesConnection';
-  /** A list of edges which contains the `TestTable` and cursor to aid in pagination. */
-  edges: Array<TestTablesEdge>;
-  /** A list of `TestTable` objects. */
-  nodes: Array<TestTable>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `TestTable` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `TestTable` edge in the connection. */
-export type TestTablesEdge = {
-  __typename?: 'TestTablesEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `TestTable` at the end of the edge. */
-  node: TestTable;
-};
-
-/** Methods to use when ordering `TestTable`. */
-export enum TestTablesOrderBy {
-  AttendeeIdAsc = 'ATTENDEE_ID_ASC',
-  AttendeeIdDesc = 'ATTENDEE_ID_DESC',
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  StatusAsc = 'STATUS_ASC',
-  StatusDesc = 'STATUS_DESC',
-  UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
-}
 
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
 export type UuidFilter = {
@@ -2434,6 +3053,55 @@ export type UpdateEventPayloadEventEdgeArgs = {
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
 };
 
+/** All input for the `updateOptionByNodeId` mutation. */
+export type UpdateOptionByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Option` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `Option` being updated. */
+  patch: OptionPatch;
+};
+
+/** All input for the `updateOption` mutation. */
+export type UpdateOptionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `Option` being updated. */
+  patch: OptionPatch;
+};
+
+/** The output of our update `Option` mutation. */
+export type UpdateOptionPayload = {
+  __typename?: 'UpdateOptionPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Option` that was updated by this mutation. */
+  option?: Maybe<Option>;
+  /** An edge for our `Option`. May be used by Relay 1. */
+  optionEdge?: Maybe<OptionsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Special` that is related to this `Option`. */
+  special?: Maybe<Special>;
+};
+
+
+/** The output of our update `Option` mutation. */
+export type UpdateOptionPayloadOptionEdgeArgs = {
+  orderBy?: InputMaybe<Array<OptionsOrderBy>>;
+};
+
 /** All input for the `updateOrganizationByName` mutation. */
 export type UpdateOrganizationByNameInput = {
   /**
@@ -2569,48 +3237,46 @@ export type UpdateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
-/** All input for the `updateTestTableByAttendeeId` mutation. */
-export type UpdateTestTableByAttendeeIdInput = {
-  attendeeId: Scalars['UUID'];
+/** All input for the `updateRegistrationByEmail` mutation. */
+export type UpdateRegistrationByEmailInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** An object where the defined keys will be set on the `TestTable` being updated. */
-  patch: TestTablePatch;
+  email: Scalars['String'];
+  /** An object where the defined keys will be set on the `Registration` being updated. */
+  patch: RegistrationPatch;
 };
 
-/** All input for the `updateTestTableByNodeId` mutation. */
-export type UpdateTestTableByNodeIdInput = {
+/** All input for the `updateRegistrationByNodeId` mutation. */
+export type UpdateRegistrationByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `TestTable` to be updated. */
+  /** The globally unique `ID` which will identify a single `Registration` to be updated. */
   nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `TestTable` being updated. */
-  patch: TestTablePatch;
+  /** An object where the defined keys will be set on the `Registration` being updated. */
+  patch: RegistrationPatch;
 };
 
-/** All input for the `updateTestTable` mutation. */
-export type UpdateTestTableInput = {
+/** All input for the `updateRegistration` mutation. */
+export type UpdateRegistrationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `TestTable` being updated. */
-  patch: TestTablePatch;
+  /** An object where the defined keys will be set on the `Registration` being updated. */
+  patch: RegistrationPatch;
 };
 
-/** The output of our update `TestTable` mutation. */
-export type UpdateTestTablePayload = {
-  __typename?: 'UpdateTestTablePayload';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
+/** The output of our update `Registration` mutation. */
+export type UpdateRegistrationPayload = {
+  __typename?: 'UpdateRegistrationPayload';
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -2618,16 +3284,63 @@ export type UpdateTestTablePayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** The `TestTable` that was updated by this mutation. */
-  testTable?: Maybe<TestTable>;
-  /** An edge for our `TestTable`. May be used by Relay 1. */
-  testTableEdge?: Maybe<TestTablesEdge>;
+  /** The `Registration` that was updated by this mutation. */
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
 };
 
 
-/** The output of our update `TestTable` mutation. */
-export type UpdateTestTablePayloadTestTableEdgeArgs = {
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
+/** The output of our update `Registration` mutation. */
+export type UpdateRegistrationPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the `updateSpecialByNodeId` mutation. */
+export type UpdateSpecialByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Special` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `Special` being updated. */
+  patch: SpecialPatch;
+};
+
+/** All input for the `updateSpecial` mutation. */
+export type UpdateSpecialInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `Special` being updated. */
+  patch: SpecialPatch;
+};
+
+/** The output of our update `Special` mutation. */
+export type UpdateSpecialPayload = {
+  __typename?: 'UpdateSpecialPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Special` that was updated by this mutation. */
+  special?: Maybe<Special>;
+  /** An edge for our `Special`. May be used by Relay 1. */
+  specialEdge?: Maybe<SpecialsEdge>;
+};
+
+
+/** The output of our update `Special` mutation. */
+export type UpdateSpecialPayloadSpecialEdgeArgs = {
+  orderBy?: InputMaybe<Array<SpecialsOrderBy>>;
 };
 
 /** All input for the `updateUserByEmail` mutation. */
