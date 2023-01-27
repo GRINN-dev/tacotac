@@ -67,3 +67,4 @@ const OrganizationPage = async ({ params: { organizationSlug } }) => {
 };
 
 export default OrganizationPage;
+export const dynamic = "force-dynamic";

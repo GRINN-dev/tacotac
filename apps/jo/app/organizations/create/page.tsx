@@ -22,3 +22,4 @@ const OrganizationPage = async () => {
 };
 
 export default OrganizationPage;
+export const dynamic = "force-dynamic";

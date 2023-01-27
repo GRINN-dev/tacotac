@@ -69,3 +69,4 @@ const EventPage = async ({ params: { organizationSlug, eventSlug } }) => {
 };
 
 export default EventPage;
+export const dynamic = "force-dynamic";
