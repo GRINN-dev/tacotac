@@ -8,6 +8,7 @@ import {
 
 export const makeApp = () => {
   const app = Express();
+
   installCors(app);
   installDatabasePools(app);
   installPostgraphile(app);
