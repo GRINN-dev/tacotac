@@ -1,5 +1,5 @@
 {
-  "name": "ticket-app",
+  "name": "tacotac",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LouisLec/ticket-app.git"
+    "url": "git+https://github.com/tacotacIO/tacotacIO.git"
   },
   "author": "LouisLec",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LouisLec/ticket-app/issues"
+    "url": "https://github.com/tacotacIO/tacotacIO/issues"
   },
-  "homepage": "https://github.com/LouisLec/ticket-app#readme",
+  "homepage": "https://github.com/tacotacIO/tacotacIO#readme",
   "dependencies": {
     "chalk": "^4.1.2",
     "pg": "^8.8.0",
