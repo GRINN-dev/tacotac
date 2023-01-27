@@ -24,7 +24,34 @@ const RootLayout = ({ children }) => {
             name="viewport"
             content="width=device-width, initial-scale=1.0"
           />
-          <title>Document</title>
+          <title>tacotac.io</title>
+          {/* favicon */}
+          <link rel="icon" href="/favicon.ico" />
+          {/* title and description */}
+          <meta
+            name="description"
+            content="La billeterie de vos évènements de collecte"
+          />
+          <meta name="og:title" content="tacotac.io" />
+          <meta
+            name="og:description"
+            content="La billeterie de vos évènements de collecte"
+          />
+          <meta name="og:image" content="/og-image.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:url" content="https://tacotac.io" />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="Napol.io" />
+          <meta
+            name="twitter:description"
+            content="La billeterie de vos évènements de collecte"
+          />
+          <meta name="twitter:image" content="/og-image.png" />
+          <meta name="twitter:site" content="@LecsLouis" />
+
+          {/* fonts */}
         </head>
         <body
           className={cn(
