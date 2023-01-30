@@ -155,40 +155,6 @@ type Query implements Node {
     filter: OrganizationFilter
   ): OrganizationsConnection
 
-  """Reads and enables pagination through a set of `TestTable`."""
-  testTables(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: TestTableCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: TestTableFilter
-  ): TestTablesConnection
-
   """Reads and enables pagination through a set of `User`."""
   users(
     """Only read the first `n` values of the set."""
@@ -232,8 +198,6 @@ type Query implements Node {
   organization(id: UUID!): Organization
   organizationByName(name: String!): Organization
   organizationBySlug(slug: String!): Organization
-  testTable(id: UUID!): TestTable
-  testTableByAttendeeId(attendeeId: UUID!): TestTable
   user(id: UUID!): User
   userByEmail(email: String!): User
 
@@ -273,12 +237,6 @@ type Query implements Node {
     """
     nodeId: ID!
   ): Organization
-
-  """Reads a single `TestTable` using its globally unique `ID`."""
-  testTableByNodeId(
-    """The globally unique `ID` to be used in selecting a single `TestTable`."""
-    nodeId: ID!
-  ): TestTable
 
   """Reads a single `User` using its globally unique `ID`."""
   userByNodeId(
@@ -328,9 +286,6 @@ type Attendee implements Node {
 
   """Reads a single `Event` that is related to this `Attendee`."""
   event: Event
-
-  """Reads a single `TestTable` that is related to this `Attendee`."""
-  testTable: TestTable
 }
 
 """
@@ -1211,30 +1166,6 @@ input EventStatusFilter {
   greaterThanOrEqualTo: EventStatus
 }
 
-type TestTable implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: UUID!
-  infos: String
-  status: TestTableStatus
-  attendeeId: UUID!
-  createdAt: Datetime!
-  updatedAt: Datetime!
-
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
-}
-
-enum TestTableStatus {
-  """Status est ok"""
-  OK
-
-  """Status est non ok"""
-  NOK
-}
-
 """A `Attendee` edge in the connection."""
 type AttendeesEdge {
   """A cursor for use in pagination."""
@@ -1335,141 +1266,6 @@ input OrganizationFilter {
 
   """Negates the expression."""
   not: OrganizationFilter
-}
-
-"""A connection to a list of `TestTable` values."""
-type TestTablesConnection {
-  """A list of `TestTable` objects."""
-  nodes: [TestTable!]!
-
-  """
-  A list of edges which contains the `TestTable` and cursor to aid in pagination.
-  """
-  edges: [TestTablesEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `TestTable` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `TestTable` edge in the connection."""
-type TestTablesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `TestTable` at the end of the edge."""
-  node: TestTable!
-}
-
-"""Methods to use when ordering `TestTable`."""
-enum TestTablesOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  STATUS_ASC
-  STATUS_DESC
-  ATTENDEE_ID_ASC
-  ATTENDEE_ID_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `TestTable` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input TestTableCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: UUID
-
-  """Checks for equality with the object’s `status` field."""
-  status: TestTableStatus
-
-  """Checks for equality with the object’s `attendeeId` field."""
-  attendeeId: UUID
-
-  """Checks for equality with the object’s `createdAt` field."""
-  createdAt: Datetime
-
-  """Checks for equality with the object’s `updatedAt` field."""
-  updatedAt: Datetime
-}
-
-"""
-A filter to be used against `TestTable` object types. All fields are combined with a logical ‘and.’
-"""
-input TestTableFilter {
-  """Filter by the object’s `id` field."""
-  id: UUIDFilter
-
-  """Filter by the object’s `status` field."""
-  status: TestTableStatusFilter
-
-  """Filter by the object’s `attendeeId` field."""
-  attendeeId: UUIDFilter
-
-  """Filter by the object’s `createdAt` field."""
-  createdAt: DatetimeFilter
-
-  """Filter by the object’s `updatedAt` field."""
-  updatedAt: DatetimeFilter
-
-  """Checks for all expressions in this list."""
-  and: [TestTableFilter!]
-
-  """Checks for any expressions in this list."""
-  or: [TestTableFilter!]
-
-  """Negates the expression."""
-  not: TestTableFilter
-}
-
-"""
-A filter to be used against TestTableStatus fields. All fields are combined with a logical ‘and.’
-"""
-input TestTableStatusFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: TestTableStatus
-
-  """Not equal to the specified value."""
-  notEqualTo: TestTableStatus
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: TestTableStatus
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: TestTableStatus
-
-  """Included in the specified list."""
-  in: [TestTableStatus!]
-
-  """Not included in the specified list."""
-  notIn: [TestTableStatus!]
-
-  """Less than the specified value."""
-  lessThan: TestTableStatus
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: TestTableStatus
-
-  """Greater than the specified value."""
-  greaterThan: TestTableStatus
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: TestTableStatus
 }
 
 """A connection to a list of `User` values."""
@@ -1637,14 +1433,6 @@ type Mutation {
     input: CreateOrganizationInput!
   ): CreateOrganizationPayload
 
-  """Creates a single `TestTable`."""
-  createTestTable(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateTestTableInput!
-  ): CreateTestTablePayload
-
   """Creates a single `User`."""
   createUser(
     """
@@ -1772,30 +1560,6 @@ type Mutation {
     """
     input: UpdateOrganizationBySlugInput!
   ): UpdateOrganizationPayload
-
-  """Updates a single `TestTable` using its globally unique id and a patch."""
-  updateTestTableByNodeId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateTestTableByNodeIdInput!
-  ): UpdateTestTablePayload
-
-  """Updates a single `TestTable` using a unique key and a patch."""
-  updateTestTable(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateTestTableInput!
-  ): UpdateTestTablePayload
-
-  """Updates a single `TestTable` using a unique key and a patch."""
-  updateTestTableByAttendeeId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateTestTableByAttendeeIdInput!
-  ): UpdateTestTablePayload
 
   """Updates a single `User` using its globally unique id and a patch."""
   updateUserByNodeId(
@@ -1934,30 +1698,6 @@ type Mutation {
     """
     input: DeleteOrganizationBySlugInput!
   ): DeleteOrganizationPayload
-
-  """Deletes a single `TestTable` using its globally unique id."""
-  deleteTestTableByNodeId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteTestTableByNodeIdInput!
-  ): DeleteTestTablePayload
-
-  """Deletes a single `TestTable` using a unique key."""
-  deleteTestTable(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteTestTableInput!
-  ): DeleteTestTablePayload
-
-  """Deletes a single `TestTable` using a unique key."""
-  deleteTestTableByAttendeeId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteTestTableByAttendeeIdInput!
-  ): DeleteTestTablePayload
 
   """Deletes a single `User` using its globally unique id."""
   deleteUserByNodeId(
@@ -2217,54 +1957,6 @@ input OrganizationInput {
 
   """The URL of the organization's logo."""
   logoUrl: String!
-  createdAt: Datetime
-  updatedAt: Datetime
-}
-
-"""The output of our create `TestTable` mutation."""
-type CreateTestTablePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `TestTable` that was created by this mutation."""
-  testTable: TestTable
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
-
-  """An edge for our `TestTable`. May be used by Relay 1."""
-  testTableEdge(
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): TestTablesEdge
-}
-
-"""All input for the create `TestTable` mutation."""
-input CreateTestTableInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `TestTable` to be created by this mutation."""
-  testTable: TestTableInput!
-}
-
-"""An input for mutations affecting `TestTable`"""
-input TestTableInput {
-  id: UUID
-  infos: String
-  status: TestTableStatus
-  attendeeId: UUID!
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2721,93 +2413,6 @@ input UpdateOrganizationBySlugInput {
   slug: String!
 }
 
-"""The output of our update `TestTable` mutation."""
-type UpdateTestTablePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `TestTable` that was updated by this mutation."""
-  testTable: TestTable
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
-
-  """An edge for our `TestTable`. May be used by Relay 1."""
-  testTableEdge(
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): TestTablesEdge
-}
-
-"""All input for the `updateTestTableByNodeId` mutation."""
-input UpdateTestTableByNodeIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `TestTable` to be updated.
-  """
-  nodeId: ID!
-
-  """
-  An object where the defined keys will be set on the `TestTable` being updated.
-  """
-  patch: TestTablePatch!
-}
-
-"""
-Represents an update to a `TestTable`. Fields that are set will be updated.
-"""
-input TestTablePatch {
-  id: UUID
-  infos: String
-  status: TestTableStatus
-  attendeeId: UUID
-  createdAt: Datetime
-  updatedAt: Datetime
-}
-
-"""All input for the `updateTestTable` mutation."""
-input UpdateTestTableInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `TestTable` being updated.
-  """
-  patch: TestTablePatch!
-  id: UUID!
-}
-
-"""All input for the `updateTestTableByAttendeeId` mutation."""
-input UpdateTestTableByAttendeeIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `TestTable` being updated.
-  """
-  patch: TestTablePatch!
-  attendeeId: UUID!
-}
-
 """The output of our update `User` mutation."""
 type UpdateUserPayload {
   """
@@ -3164,67 +2769,6 @@ input DeleteOrganizationBySlugInput {
   """
   clientMutationId: String
   slug: String!
-}
-
-"""The output of our delete `TestTable` mutation."""
-type DeleteTestTablePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `TestTable` that was deleted by this mutation."""
-  testTable: TestTable
-  deletedTestTableNodeId: ID
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `Attendee` that is related to this `TestTable`."""
-  attendee: Attendee
-
-  """An edge for our `TestTable`. May be used by Relay 1."""
-  testTableEdge(
-    """The method to use when ordering `TestTable`."""
-    orderBy: [TestTablesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): TestTablesEdge
-}
-
-"""All input for the `deleteTestTableByNodeId` mutation."""
-input DeleteTestTableByNodeIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `TestTable` to be deleted.
-  """
-  nodeId: ID!
-}
-
-"""All input for the `deleteTestTable` mutation."""
-input DeleteTestTableInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  id: UUID!
-}
-
-"""All input for the `deleteTestTableByAttendeeId` mutation."""
-input DeleteTestTableByAttendeeIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  attendeeId: UUID!
 }
 
 """The output of our delete `User` mutation."""
