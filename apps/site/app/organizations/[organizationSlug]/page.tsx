@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { GetAllEventsByOrganizationIdQuery } from "@/../../@tacotacIO/codegen/dist";
-import { ChevronLeft, ChevronRight, Cog, PlusSquare } from "lucide-react";
+import { Cog, PlusSquare } from "lucide-react";
+
+
 
 import { sdk } from "@/lib/sdk";
-import { PaginationUi } from "@/components/Pagination";
 import { buttonVariants } from "@/components/ui/button";
 import { TableEvent } from "./TableEvent";
+
+
 
 interface iEvent
   extends ExtractArrayType<
@@ -19,9 +22,6 @@ const OrganizationPage = async ({
   params: { organizationSlug },
   searchParams: { name, first, after, last, before },
 }) => {
-  console.log("🚀 ~ file: page.tsx:22 ~ before", before);
-  console.log("🚀 ~ file: page.tsx:22 ~ last", last);
-  console.log("🚀 ~ file: page.tsx:22 ~ after", after);
   const limit = 2;
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
@@ -35,9 +35,6 @@ const OrganizationPage = async ({
   console.log("🚀 ~ file: page.tsx:27 ~ organization", organization);
 
   return (
-    // <>
-    //   <ClientComponent />
-    // </>
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">

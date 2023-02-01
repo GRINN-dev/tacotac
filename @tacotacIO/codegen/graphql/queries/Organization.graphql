@@ -25,14 +25,14 @@ query GetOrganizationBySlug(
   $slug: String!
   $after: Cursor
   $first: Int
-  $name: String = ""
   $before: Cursor
   $last: Int
+  $filter: EventFilter
 ) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
     events(
-      filter: { name: { includes: $name } }
+      filter: $filter
       first: $first
       after: $after
       last: $last

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { TransitionStartFunction, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { PageInfo } from "@/../../@tacotacIO/codegen/dist";
@@ -13,6 +13,7 @@ interface IPagination {
   limit: number;
   searchParams?: any;
   pageInfo?: PageInfo;
+  transition: TransitionStartFunction;
 }
 
 export const PaginationUi = ({
@@ -20,9 +21,9 @@ export const PaginationUi = ({
   limit,
   searchParams,
   pageInfo,
+  transition,
 }: IPagination) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentCursor, setCurrentCursor] = useState(pageInfo?.endCursor);
   const totalPages = Math.ceil(totalCount / limit);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   const pathname = usePathname();
@@ -36,17 +37,18 @@ export const PaginationUi = ({
         <Button
           disabled={!pageInfo?.hasPreviousPage}
           onClick={() => {
-            router.push(pathname + `?last=2&before=${pageInfo?.startCursor}`);
-            //setCurrentPage(currentPage - 1);
-            setCurrentCursor(pageInfo?.endCursor);
+            transition(() =>
+              router.push(pathname + `?last=2&before=${pageInfo?.startCursor}`)
+            );
+
+            setCurrentPage(currentPage - 1);
           }}
         >
           <span className="sr-only">Previous</span>
           <ChevronLeft className="w-5 h-5" />
         </Button>
-
+        {/* a recheck */}
         {pages?.map((number) => (
-          //   <Link href={pathname}>{number}</Link>
           <button
             disabled={currentPage === number}
             key={"input-limit-" + number}
@@ -63,9 +65,10 @@ export const PaginationUi = ({
         <Button
           disabled={!pageInfo?.hasNextPage}
           onClick={() => {
-            router.push(pathname + `?after=${pageInfo?.endCursor}`);
-            //setCurrentPage(currentPage + 1);
-            setCurrentCursor(pageInfo?.endCursor);
+            transition(() =>
+              router.push(pathname + `?after=${pageInfo?.endCursor}`)
+            );
+            setCurrentPage(currentPage + 1);
           }}
         >
           <span className="sr-only">Next</span>

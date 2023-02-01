@@ -2,30 +2,20 @@
 
 import { FC, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import {
-  CreateAttendeeInput,
-  CreateEventInput,
-  EventStatus,
-} from "@/../../@tacotacIO/codegen/dist";
+import { CreateAttendeeInput, EventStatus } from "@/../../@tacotacIO/codegen/dist";
 import { Controller, useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 export const CreateAttendeeForm: FC<{ eventId: string }> = ({ eventId }) => {
-  console.log("🚀 ~ file: form.tsx:159 ~ eventId", eventId);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();

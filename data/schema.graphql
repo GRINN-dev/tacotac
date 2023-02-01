@@ -277,6 +277,7 @@ type Query implements Node {
 
   """Handy method to get the current user ID."""
   currentUserId: UUID
+  dateTruncFunc(unit: String, date: Datetime): Datetime
   eventBySlug(eventSlug: String, organizationSlug: String): Event
 
   """Reads a single `Attendee` using its globally unique `ID`."""
@@ -964,10 +965,14 @@ enum EventsOrderBy {
   SLUG_DESC
   ORGANIZATION_ID_ASC
   ORGANIZATION_ID_DESC
-  ZIP_CODE_ASC
-  ZIP_CODE_DESC
+  CITY_ASC
+  CITY_DESC
   HAPPENING_AT_ASC
   HAPPENING_AT_DESC
+  BOOKING_STARTS_AT_ASC
+  BOOKING_STARTS_AT_DESC
+  BOOKING_ENDS_AT_ASC
+  BOOKING_ENDS_AT_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -992,11 +997,17 @@ input EventCondition {
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: UUID
 
-  """Checks for equality with the object’s `zipCode` field."""
-  zipCode: String
+  """Checks for equality with the object’s `city` field."""
+  city: String
 
   """Checks for equality with the object’s `happeningAt` field."""
   happeningAt: Datetime
+
+  """Checks for equality with the object’s `bookingStartsAt` field."""
+  bookingStartsAt: Datetime
+
+  """Checks for equality with the object’s `bookingEndsAt` field."""
+  bookingEndsAt: Datetime
 
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
@@ -1021,11 +1032,17 @@ input EventFilter {
   """Filter by the object’s `organizationId` field."""
   organizationId: UUIDFilter
 
-  """Filter by the object’s `zipCode` field."""
-  zipCode: StringFilter
+  """Filter by the object’s `city` field."""
+  city: StringFilter
 
   """Filter by the object’s `happeningAt` field."""
   happeningAt: DatetimeFilter
+
+  """Filter by the object’s `bookingStartsAt` field."""
+  bookingStartsAt: DatetimeFilter
+
+  """Filter by the object’s `bookingEndsAt` field."""
+  bookingEndsAt: DatetimeFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -1083,96 +1100,6 @@ input StringFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: String
-
-  """Contains the specified string (case-sensitive)."""
-  includes: String
-
-  """Does not contain the specified string (case-sensitive)."""
-  notIncludes: String
-
-  """Contains the specified string (case-insensitive)."""
-  includesInsensitive: String
-
-  """Does not contain the specified string (case-insensitive)."""
-  notIncludesInsensitive: String
-
-  """Starts with the specified string (case-sensitive)."""
-  startsWith: String
-
-  """Does not start with the specified string (case-sensitive)."""
-  notStartsWith: String
-
-  """Starts with the specified string (case-insensitive)."""
-  startsWithInsensitive: String
-
-  """Does not start with the specified string (case-insensitive)."""
-  notStartsWithInsensitive: String
-
-  """Ends with the specified string (case-sensitive)."""
-  endsWith: String
-
-  """Does not end with the specified string (case-sensitive)."""
-  notEndsWith: String
-
-  """Ends with the specified string (case-insensitive)."""
-  endsWithInsensitive: String
-
-  """Does not end with the specified string (case-insensitive)."""
-  notEndsWithInsensitive: String
-
-  """
-  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  like: String
-
-  """
-  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  notLike: String
-
-  """
-  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  likeInsensitive: String
-
-  """
-  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  notLikeInsensitive: String
-
-  """Equal to the specified value (case-insensitive)."""
-  equalToInsensitive: String
-
-  """Not equal to the specified value (case-insensitive)."""
-  notEqualToInsensitive: String
-
-  """
-  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
-  """
-  distinctFromInsensitive: String
-
-  """
-  Equal to the specified value, treating null like an ordinary value (case-insensitive).
-  """
-  notDistinctFromInsensitive: String
-
-  """Included in the specified list (case-insensitive)."""
-  inInsensitive: [String!]
-
-  """Not included in the specified list (case-insensitive)."""
-  notInInsensitive: [String!]
-
-  """Less than the specified value (case-insensitive)."""
-  lessThanInsensitive: String
-
-  """Less than or equal to the specified value (case-insensitive)."""
-  lessThanOrEqualToInsensitive: String
-
-  """Greater than the specified value (case-insensitive)."""
-  greaterThanInsensitive: String
-
-  """Greater than or equal to the specified value (case-insensitive)."""
-  greaterThanOrEqualToInsensitive: String
 }
 
 """A connection to a list of `Registration` values."""

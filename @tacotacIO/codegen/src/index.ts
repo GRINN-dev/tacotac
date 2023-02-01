@@ -935,6 +935,12 @@ export type EventRegistrationsArgs = {
 
 /** A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type EventCondition = {
+  /** Checks for equality with the object’s `bookingEndsAt` field. */
+  bookingEndsAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `bookingStartsAt` field. */
+  bookingStartsAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `city` field. */
+  city?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `happeningAt` field. */
@@ -949,14 +955,18 @@ export type EventCondition = {
   slug?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `zipCode` field. */
-  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’ */
 export type EventFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<EventFilter>>;
+  /** Filter by the object’s `bookingEndsAt` field. */
+  bookingEndsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `bookingStartsAt` field. */
+  bookingStartsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `city` field. */
+  city?: InputMaybe<StringFilter>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `happeningAt` field. */
@@ -975,8 +985,6 @@ export type EventFilter = {
   slug?: InputMaybe<StringFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `zipCode` field. */
-  zipCode?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `Event` */
@@ -1082,6 +1090,12 @@ export type EventsEdge = {
 
 /** Methods to use when ordering `Event`. */
 export enum EventsOrderBy {
+  BookingEndsAtAsc = 'BOOKING_ENDS_AT_ASC',
+  BookingEndsAtDesc = 'BOOKING_ENDS_AT_DESC',
+  BookingStartsAtAsc = 'BOOKING_STARTS_AT_ASC',
+  BookingStartsAtDesc = 'BOOKING_STARTS_AT_DESC',
+  CityAsc = 'CITY_ASC',
+  CityDesc = 'CITY_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   HappeningAtAsc = 'HAPPENING_AT_ASC',
@@ -1098,9 +1112,7 @@ export enum EventsOrderBy {
   SlugAsc = 'SLUG_ASC',
   SlugDesc = 'SLUG_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC',
-  ZipCodeAsc = 'ZIP_CODE_ASC',
-  ZipCodeDesc = 'ZIP_CODE_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
 export type GeneratePresignedPostInput = {
@@ -1914,6 +1926,7 @@ export type Query = Node & {
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID. */
   currentUserId?: Maybe<Scalars['UUID']>;
+  dateTruncFunc?: Maybe<Scalars['Datetime']>;
   event?: Maybe<Event>;
   /** Reads a single `Event` using its globally unique `ID`. */
   eventByNodeId?: Maybe<Event>;
@@ -1993,6 +2006,13 @@ export type QueryAttendeesArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryDateTruncFuncArgs = {
+  date?: InputMaybe<Scalars['Datetime']>;
+  unit?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -2355,78 +2375,26 @@ export enum RegistrationsOrderBy {
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: InputMaybe<Scalars['String']>;
-  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  distinctFromInsensitive?: InputMaybe<Scalars['String']>;
-  /** Ends with the specified string (case-sensitive). */
-  endsWith?: InputMaybe<Scalars['String']>;
-  /** Ends with the specified string (case-insensitive). */
-  endsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value. */
   equalTo?: InputMaybe<Scalars['String']>;
-  /** Equal to the specified value (case-insensitive). */
-  equalToInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than the specified value. */
   greaterThan?: InputMaybe<Scalars['String']>;
-  /** Greater than the specified value (case-insensitive). */
-  greaterThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
-  /** Greater than or equal to the specified value (case-insensitive). */
-  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
-  /** Included in the specified list (case-insensitive). */
-  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
-  /** Contains the specified string (case-sensitive). */
-  includes?: InputMaybe<Scalars['String']>;
-  /** Contains the specified string (case-insensitive). */
-  includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
   lessThan?: InputMaybe<Scalars['String']>;
-  /** Less than the specified value (case-insensitive). */
-  lessThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Less than or equal to the specified value. */
   lessThanOrEqualTo?: InputMaybe<Scalars['String']>;
-  /** Less than or equal to the specified value (case-insensitive). */
-  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
-  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  like?: InputMaybe<Scalars['String']>;
-  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  likeInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value. */
   notDistinctFrom?: InputMaybe<Scalars['String']>;
-  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  notDistinctFromInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not end with the specified string (case-sensitive). */
-  notEndsWith?: InputMaybe<Scalars['String']>;
-  /** Does not end with the specified string (case-insensitive). */
-  notEndsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value. */
   notEqualTo?: InputMaybe<Scalars['String']>;
-  /** Not equal to the specified value (case-insensitive). */
-  notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
-  /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
-  /** Does not contain the specified string (case-sensitive). */
-  notIncludes?: InputMaybe<Scalars['String']>;
-  /** Does not contain the specified string (case-insensitive). */
-  notIncludesInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLike?: InputMaybe<Scalars['String']>;
-  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLikeInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not start with the specified string (case-sensitive). */
-  notStartsWith?: InputMaybe<Scalars['String']>;
-  /** Does not start with the specified string (case-insensitive). */
-  notStartsWithInsensitive?: InputMaybe<Scalars['String']>;
-  /** Starts with the specified string (case-sensitive). */
-  startsWith?: InputMaybe<Scalars['String']>;
-  /** Starts with the specified string (case-insensitive). */
-  startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
 
 export type TestTable = Node & {
@@ -3285,9 +3253,9 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
   after?: InputMaybe<Scalars['Cursor']>;
   first?: InputMaybe<Scalars['Int']>;
-  name?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['Cursor']>;
   last?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<EventFilter>;
 }>;
 
 
@@ -3497,11 +3465,11 @@ export const GetOrganizationByIdDocument = gql`
     ${OrganizationFragmentFragmentDoc}
 ${MyEventFragmentDoc}`;
 export const GetOrganizationBySlugDocument = gql`
-    query GetOrganizationBySlug($slug: String!, $after: Cursor, $first: Int, $name: String = "", $before: Cursor, $last: Int) {
+    query GetOrganizationBySlug($slug: String!, $after: Cursor, $first: Int, $before: Cursor, $last: Int, $filter: EventFilter) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
     events(
-      filter: {name: {includes: $name}}
+      filter: $filter
       first: $first
       after: $after
       last: $last

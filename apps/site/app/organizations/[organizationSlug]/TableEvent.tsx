@@ -5,8 +5,11 @@ import Link from "next/link";
 import { motion, useAnimationControls } from "framer-motion";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { PaginationUi } from "@/components/Pagination";
 import { buttonVariants } from "@/components/ui/button";
+
 
 export const TableEvent = ({ organization, limit }) => {
   const [isPending, startTransition] = useTransition();
@@ -27,16 +30,24 @@ export const TableEvent = ({ organization, limit }) => {
                   className="flex items-center justify-between px-6 py-3 border-b border-x border-slate-300 first-of-type:rounded-t-lg first-of-type:border-t last-of-type:rounded-b-lg"
                 >
                   <Link
+                    className={
+                      isPending &&
+                      "w-1/2 h-10  bg-gray-200 rounded-lg opacity-20 animate-pulse"
+                    }
                     href={`/organizations/${organization?.slug}/${event?.node?.slug}`}
                   >
-                    {event?.node?.name}
+                    {!isPending && event?.node?.name}
                   </Link>
 
                   <Link
                     href={`/organizations/${organization?.slug}/${event?.node?.slug}`}
-                    className={buttonVariants({ variant: "outline" })}
+                    className={`${
+                      isPending
+                        ? "w-1/6 h-10  bg-gray-200 rounded-lg opacity-20 animate-pulse "
+                        : buttonVariants({ variant: "outline" })
+                    }`}
                   >
-                    <PlusSquare className="w-4 h-4 mr-2" /> Infos
+                    {!isPending && <><PlusSquare className="w-4 h-4 mr-2" /> Infos</>}
                   </Link>
                 </div>
               ))}
@@ -44,6 +55,7 @@ export const TableEvent = ({ organization, limit }) => {
                 totalCount={organization?.events?.totalCount}
                 limit={limit}
                 pageInfo={organization?.events?.pageInfo}
+                transition={startTransition}
               />
             </>
           ) : (

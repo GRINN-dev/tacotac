@@ -1266,6 +1266,39 @@
               "deprecationReason": null
             },
             {
+              "name": "dateTruncFunc",
+              "description": null,
+              "args": [
+                {
+                  "name": "unit",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "date",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Datetime",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "eventBySlug",
               "description": null,
               "args": [
@@ -4386,13 +4419,13 @@
               "deprecationReason": null
             },
             {
-              "name": "ZIP_CODE_ASC",
+              "name": "CITY_ASC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "ZIP_CODE_DESC",
+              "name": "CITY_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -4405,6 +4438,30 @@
             },
             {
               "name": "HAPPENING_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BOOKING_STARTS_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BOOKING_STARTS_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BOOKING_ENDS_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "BOOKING_ENDS_AT_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -4495,8 +4552,8 @@
               "defaultValue": null
             },
             {
-              "name": "zipCode",
-              "description": "Checks for equality with the object’s `zipCode` field.",
+              "name": "city",
+              "description": "Checks for equality with the object’s `city` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -4507,6 +4564,26 @@
             {
               "name": "happeningAt",
               "description": "Checks for equality with the object’s `happeningAt` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "bookingStartsAt",
+              "description": "Checks for equality with the object’s `bookingStartsAt` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Datetime",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "bookingEndsAt",
+              "description": "Checks for equality with the object’s `bookingEndsAt` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "Datetime",
@@ -4586,8 +4663,8 @@
               "defaultValue": null
             },
             {
-              "name": "zipCode",
-              "description": "Filter by the object’s `zipCode` field.",
+              "name": "city",
+              "description": "Filter by the object’s `city` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
@@ -4598,6 +4675,26 @@
             {
               "name": "happeningAt",
               "description": "Filter by the object’s `happeningAt` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "DatetimeFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "bookingStartsAt",
+              "description": "Filter by the object’s `bookingStartsAt` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "DatetimeFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "bookingEndsAt",
+              "description": "Filter by the object’s `bookingEndsAt` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "DatetimeFilter",
@@ -4801,282 +4898,6 @@
             {
               "name": "greaterThanOrEqualTo",
               "description": "Greater than or equal to the specified value.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "includes",
-              "description": "Contains the specified string (case-sensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notIncludes",
-              "description": "Does not contain the specified string (case-sensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "includesInsensitive",
-              "description": "Contains the specified string (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notIncludesInsensitive",
-              "description": "Does not contain the specified string (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "startsWith",
-              "description": "Starts with the specified string (case-sensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notStartsWith",
-              "description": "Does not start with the specified string (case-sensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "startsWithInsensitive",
-              "description": "Starts with the specified string (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notStartsWithInsensitive",
-              "description": "Does not start with the specified string (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "endsWith",
-              "description": "Ends with the specified string (case-sensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notEndsWith",
-              "description": "Does not end with the specified string (case-sensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "endsWithInsensitive",
-              "description": "Ends with the specified string (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notEndsWithInsensitive",
-              "description": "Does not end with the specified string (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "like",
-              "description": "Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notLike",
-              "description": "Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "likeInsensitive",
-              "description": "Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notLikeInsensitive",
-              "description": "Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "equalToInsensitive",
-              "description": "Equal to the specified value (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notEqualToInsensitive",
-              "description": "Not equal to the specified value (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "distinctFromInsensitive",
-              "description": "Not equal to the specified value, treating null like an ordinary value (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notDistinctFromInsensitive",
-              "description": "Equal to the specified value, treating null like an ordinary value (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "inInsensitive",
-              "description": "Included in the specified list (case-insensitive).",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "notInInsensitive",
-              "description": "Not included in the specified list (case-insensitive).",
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "lessThanInsensitive",
-              "description": "Less than the specified value (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "lessThanOrEqualToInsensitive",
-              "description": "Less than or equal to the specified value (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "greaterThanInsensitive",
-              "description": "Greater than the specified value (case-insensitive).",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "greaterThanOrEqualToInsensitive",
-              "description": "Greater than or equal to the specified value (case-insensitive).",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",

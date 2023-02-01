@@ -32,8 +32,11 @@ create table publ.events (
     create index on publ.events(updated_at);
     create index on publ.events(name);
     create index on publ.events(slug);
-    create index on publ.events(zip_code);
+    create index on publ.events(city);
     create index on publ.events(happening_at);
+    create index on publ.events(booking_starts_at);
+    create index on publ.events(booking_ends_at);
+
 
 -- RBAC
     grant select on publ.events to :DATABASE_VISITOR;
@@ -71,7 +74,10 @@ create table publ.events (
     END TABLE: publ.events
 
 */
-
+create or replace function publ.date_trunc_func(unit text, date timestamptz)
+RETURNS timestamptz AS $$
+  SELECT date_trunc($1, $2) - interval '30 days';
+$$ LANGUAGE sql stable security definer;
 
 create or replace function publ.event_by_slug(event_slug text, organization_slug text) returns publ.events as $$
   select proj from publ.events proj
