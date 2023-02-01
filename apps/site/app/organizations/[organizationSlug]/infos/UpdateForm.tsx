@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { FC, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { CreateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
+import {
+  GetOrganizationBySlugQuery,
+  UpdateOrganizationInput,
+} from "@/../../@tacotacIO/codegen/dist";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -12,18 +15,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export const CreateOrganizationForm = () => {
+interface iUpdateOrganization
+  extends ExtractType<GetOrganizationBySlugQuery, "organizationBySlug"> {}
+export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({
+  id,
+  name,
+  description,
+  logoUrl,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   const { register, handleSubmit, formState } =
-    useForm<CreateOrganizationInput>();
+    useForm<UpdateOrganizationInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
+    data.id = id;
     await sdk()
-      .CreateOrganization({
+      .UpdateOrganization({
         input: data,
       })
       .catch((error) => {
@@ -46,14 +57,15 @@ export const CreateOrganizationForm = () => {
         <Input
           type="text"
           id="name"
+          defaultValue={name}
           placeholder="Obole"
-          {...register("organization.name", {
+          {...register("patch.name", {
             required: "Un nom pour l'organisation est requis",
           })}
         />
-        {formState.errors?.organization?.name && (
+        {formState.errors?.patch?.name && (
           <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.organization?.name?.message}
+            {formState.errors?.patch?.name?.message}
           </p>
         )}
       </div>
@@ -63,13 +75,14 @@ export const CreateOrganizationForm = () => {
         <Textarea
           id="description"
           placeholder="Description"
-          {...register("organization.description", {
+          defaultValue={description}
+          {...register("patch.description", {
             required: "Une description pour l'organisation est requise",
           })}
         />
-        {formState.errors?.organization?.description && (
+        {formState.errors?.patch?.description && (
           <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.organization?.description?.message}
+            {formState.errors?.patch?.description?.message}
           </p>
         )}
       </div>
@@ -80,17 +93,18 @@ export const CreateOrganizationForm = () => {
           type="text"
           id="logoUrl"
           placeholder="Logo"
-          {...register("organization.logoUrl", {})}
+          defaultValue={logoUrl}
+          {...register("patch.logoUrl", {})}
         />
-        {formState.errors?.organization?.logoUrl && (
+        {formState.errors?.patch?.logoUrl && (
           <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors.organization?.logoUrl?.message}
+            {formState.errors.patch?.logoUrl?.message}
           </p>
         )}
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
-          Créer
+          Mettre à jour
         </button>
       </div>
       {error && (

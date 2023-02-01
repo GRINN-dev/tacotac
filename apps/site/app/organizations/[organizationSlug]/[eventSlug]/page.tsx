@@ -9,57 +9,51 @@ const EventPage = async ({ params: { organizationSlug, eventSlug } }) => {
   const { eventBySlug: event } = data;
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="mx-auto flex w-full max-w-3xl  items-baseline gap-2">
+      <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-          {event.name}
+          {event?.name}
         </h1>
-        <Link
-          href={`/organizations/${event.slug}/infos`}
-          className={buttonVariants({ size: "lg", variant: "link" })}
-        >
-          <Cog aria-hidden className="h-8 w-8" />
-          <span className="sr-only">Paramètres</span>
-        </Link>
+       
       </div>
-      <div className="mx-auto flex w-full max-w-3xl  items-baseline justify-between gap-2">
-        <h2 className="mt-10 scroll-m-20  pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
+      <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
+        <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors scroll-m-20 first:mt-0 ">
           Tous les participants
         </h2>
         <Link
-          href={`/organizations/${event.slug}/infos`}
+          href={`/organizations/${organizationSlug}/${event?.slug}/create-participant`}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
-          <PlusSquare className="mr-2 h-4 w-4" /> Ajouter
+          <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
 
-      <div id="organizations" className="mx-auto mt-4 w-full max-w-3xl">
-        {event.attendees?.nodes.length > 0 ? (
-          event.attendees?.nodes.map((attendee) => (
+      <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
+        {event?.attendees?.nodes.length > 0 ? (
+          event?.attendees?.nodes.map((attendee) => (
             <div
-              key={attendee.id}
-              className="flex items-center justify-between border-x  border-b border-slate-300 px-6 py-3 first-of-type:rounded-t-lg first-of-type:border-t last-of-type:rounded-b-lg"
+              key={attendee?.id}
+              className="flex items-center justify-between px-6 py-3 border-b border-x border-slate-300 first-of-type:rounded-t-lg first-of-type:border-t last-of-type:rounded-b-lg"
             >
-              <Link href={`/organizations/${attendee.id}`}>
-                {attendee.firstname} {attendee.lastname}
+              <Link href={`/organizations/${organizationSlug}/${event?.slug}/participant/${attendee?.id}`}>
+                {attendee?.firstname} {attendee?.lastname}
               </Link>
 
               <Link
-                href={`/organizations/${attendee.id}/infos`}
+                 href={`/organizations/${organizationSlug}/${event?.slug}/participant/${attendee?.id}`}
                 className={buttonVariants({ variant: "outline" })}
               >
-                <PlusSquare className="mr-2 h-4 w-4" /> Infos
+                <PlusSquare className="w-4 h-4 mr-2" /> Infos
               </Link>
             </div>
           ))
         ) : (
-          <div className="flex flex-col gap-4 items-start">
-            <p>Vous n&apos;avez pas encore créé d&apos;évènements.</p>
+          <div className="flex flex-col items-start gap-4">
+            <p>Vous n&apos;avez pas encore de participants.</p>
             <Link
-              href={`/organizations/${event.slug}/infos`}
+              href={`/organizations/${organizationSlug}/${event?.slug}/create-participant`}
               className={buttonVariants({ size: "lg", variant: "outline" })}
             >
-              <PlusSquare className="mr-2 h-4 w-4" /> Créer un évènement
+              <PlusSquare className="w-4 h-4 mr-2" /> Ajouter un participant
             </Link>
           </div>
         )}

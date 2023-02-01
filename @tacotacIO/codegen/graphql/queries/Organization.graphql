@@ -21,12 +21,35 @@ query GetOrganizationById($id: UUID!) {
   }
 }
 
-query GetOrganizationBySlug($slug: String!) {
+query GetOrganizationBySlug(
+  $slug: String!
+  $after: Cursor
+  $first: Int
+  $name: String = ""
+  $before: Cursor
+  $last: Int
+) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
-    events {
-      nodes {
-        ...MyEvent
+    events(
+      filter: { name: { includes: $name } }
+      first: $first
+      after: $after
+      last: $last
+      before: $before
+      orderBy: CREATED_AT_ASC
+    ) {
+      edges {
+        node {
+          ...MyEvent
+        }
+      }
+      totalCount
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
       }
     }
   }
