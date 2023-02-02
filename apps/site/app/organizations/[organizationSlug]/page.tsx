@@ -1,14 +1,19 @@
 import Link from "next/link";
-import { GetAllEventsByOrganizationIdQuery } from "@/../../@tacotacIO/codegen/dist";
+import {
+  GetAllEventsByOrganizationIdQuery,
+  GetOrganizationBySlugQuery,
+} from "@/../../@tacotacIO/codegen/dist";
+import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
+
+
 
 
 
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
-import { TableEvent } from "./TableEvent";
-
-
+import { TableEvent } from "../../../components/table/TableEvent";
+import formatData from "../../../components/table/taskTable";
 
 interface iEvent
   extends ExtractArrayType<
@@ -30,9 +35,44 @@ const OrganizationPage = async ({
     last: Number(last),
     before: before,
   });
+
+  //erreur Le type 'string' ne satisfait pas la contrainte 'never'. ??!
+  //   type EventNode = ExtractType<
+  //   ExtractArrayType<
+  //     ExtractArrayType<
+  //       ExtractType<GetOrganizationBySlugQuery, 'organizationBySlug'>,
+  //       'events'
+  //     >,
+  //     'edges'
+  //   >,
+  //   'node'
+  // >;
   const { organizationBySlug: organization } = data;
-  //const myEvent:iEvent={description:"",name:""}
-  console.log("🚀 ~ file: page.tsx:27 ~ organization", organization);
+  const header = [
+    "Nom",
+    "Lieu",
+    "Commence le",
+    "Debut inscription",
+    "Fin inscription",
+    "Participants",
+  ];
+
+  const rawOrga = [
+    ...organization?.events?.edges.map((event) => {
+      return {
+        Nom: event?.node?.name,
+        Lieu: event?.node?.city,
+        "Commence le": dayjs(event?.node?.happeningAt).format("DD/MM/YYYY"),
+        "Debut inscription": dayjs(event?.node?.bookingStartsAt).format(
+          "DD/MM/YYYY"
+        ),
+        "Fin inscription": dayjs(event?.node?.bookingEndsAt).format(
+          "DD/MM/YYYY"
+        ),
+        Participants: event?.node?.attendees?.nodes?.length,
+      };
+    }),
+  ];
 
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
@@ -59,7 +99,11 @@ const OrganizationPage = async ({
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
-      <TableEvent organization={organization} limit={limit} />
+      <TableEvent
+        organization={organization}
+        limit={limit}
+        {...formatData(header, rawOrga)}
+      />
     </section>
   );
 };

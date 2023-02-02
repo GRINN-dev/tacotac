@@ -42,6 +42,11 @@ query GetOrganizationBySlug(
       edges {
         node {
           ...MyEvent
+          attendees {
+            nodes {
+              ...MyAttendee
+            }
+          }
         }
       }
       totalCount

@@ -113,6 +113,7 @@ importers:
       autoprefixer: ^10.4.13
       class-variance-authority: ^0.4.0
       clsx: ^1.2.1
+      dayjs: ^1.11.7
       eslint: ^8.31.0
       eslint-config-next: 13.0.0
       eslint-config-prettier: ^8.3.0
@@ -163,6 +164,7 @@ importers:
       '@tacotacIO/codegen': link:../../@tacotacIO/codegen
       class-variance-authority: 0.4.0_typescript@4.9.4
       clsx: 1.2.1
+      dayjs: 1.11.7
       framer-motion: 8.5.5_biqbaboplfbrettd7655fr4n2y
       graphql-request: 5.1.0
       lucide-react: 0.105.0-alpha.4_react@18.2.0
@@ -4785,6 +4787,10 @@ packages:
   /dataloader/2.1.0:
     resolution: {integrity: sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==}
     dev: true
+
+  /dayjs/1.11.7:
+    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
+    dev: false
 
   /debounce/1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}

@@ -11,7 +11,7 @@ import { PaginationUi } from "@/components/Pagination";
 import { buttonVariants } from "@/components/ui/button";
 
 
-export const TableEvent = ({ organization, limit }) => {
+export const TableEvent = ({ organization, limit, header, data }) => {
   const [isPending, startTransition] = useTransition();
   const controls = useAnimationControls();
   useEffect(() => {
@@ -24,33 +24,35 @@ export const TableEvent = ({ organization, limit }) => {
         <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
           {organization?.events?.edges?.length > 0 ? (
             <>
-              {organization?.events?.edges.map((event) => (
-                <div
-                  key={event?.node?.id}
-                  className="flex items-center justify-between px-6 py-3 border-b border-x border-slate-300 first-of-type:rounded-t-lg first-of-type:border-t last-of-type:rounded-b-lg"
-                >
-                  <Link
-                    className={
-                      isPending &&
-                      "w-1/2 h-10  bg-gray-200 rounded-lg opacity-20 animate-pulse"
-                    }
-                    href={`/organizations/${organization?.slug}/${event?.node?.slug}`}
-                  >
-                    {!isPending && event?.node?.name}
-                  </Link>
-
-                  <Link
-                    href={`/organizations/${organization?.slug}/${event?.node?.slug}`}
-                    className={`${
-                      isPending
-                        ? "w-1/6 h-10  bg-gray-200 rounded-lg opacity-20 animate-pulse "
-                        : buttonVariants({ variant: "outline" })
-                    }`}
-                  >
-                    {!isPending && <><PlusSquare className="w-4 h-4 mr-2" /> Infos</>}
-                  </Link>
-                </div>
-              ))}
+              <table className="flex flex-col px-6 py-3 border-t border-b rounded-t-lg rounded-b-lg border-x border-slate-300">
+                <thead>
+                  <tr className="flex items-center">
+                    {header?.map((item) => (
+                      <th className="w-1/3 p-1" key={item}>
+                        {item}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="flex flex-col">
+                  {data.map((row, index) => (
+                    <tr className="flex items-center " key={index}>
+                      {header?.map((item) => (
+                        <td
+                          className={` border-t ${
+                            !isPending
+                              ? "w-1/3 p-2 text-center "
+                              : "w-1/6 h-8 m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
+                          }`}
+                          key={item}
+                        >
+                          {!isPending && row[item]}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
               <PaginationUi
                 totalCount={organization?.events?.totalCount}
                 limit={limit}
