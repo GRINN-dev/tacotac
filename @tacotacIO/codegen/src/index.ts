@@ -3255,11 +3255,13 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   before?: InputMaybe<Scalars['Cursor']>;
   last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<EventsOrderBy> | EventsOrderBy>;
   filter?: InputMaybe<EventFilter>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, edges: Array<{ __typename?: 'EventsEdge', node: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, city?: string | null, happeningAt?: any | null, bookingEndsAt?: any | null, bookingStartsAt?: any | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, lastname: string, firstname: string }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export const MyAttendeeFragmentDoc = gql`
     fragment MyAttendee on Attendee {
@@ -3465,7 +3467,7 @@ export const GetOrganizationByIdDocument = gql`
     ${OrganizationFragmentFragmentDoc}
 ${MyEventFragmentDoc}`;
 export const GetOrganizationBySlugDocument = gql`
-    query GetOrganizationBySlug($slug: String!, $after: Cursor, $first: Int, $before: Cursor, $last: Int, $filter: EventFilter) {
+    query GetOrganizationBySlug($slug: String!, $after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [EventsOrderBy!] = CREATED_AT_ASC, $filter: EventFilter, $offset: Int) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
     events(
@@ -3474,25 +3476,35 @@ export const GetOrganizationBySlugDocument = gql`
       after: $after
       last: $last
       before: $before
-      orderBy: CREATED_AT_ASC
+      orderBy: $orderBy
+      offset: $offset
     ) {
-      edges {
-        node {
-          ...MyEvent
+      nodes {
+        id
+        name
+        city
+        happeningAt
+        bookingEndsAt
+        bookingStartsAt
+        attendees {
+          nodes {
+            id
+            lastname
+            firstname
+          }
         }
       }
-      totalCount
       pageInfo {
         hasNextPage
         hasPreviousPage
         startCursor
         endCursor
       }
+      totalCount
     }
   }
 }
-    ${OrganizationFragmentFragmentDoc}
-${MyEventFragmentDoc}`;
+    ${OrganizationFragmentFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 

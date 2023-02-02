@@ -27,7 +27,9 @@ query GetOrganizationBySlug(
   $first: Int
   $before: Cursor
   $last: Int
+  $orderBy: [EventsOrderBy!] = CREATED_AT_ASC
   $filter: EventFilter
+  $offset: Int
 ) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
@@ -37,20 +39,31 @@ query GetOrganizationBySlug(
       after: $after
       last: $last
       before: $before
-      orderBy: CREATED_AT_ASC
+      orderBy: $orderBy
+      offset: $offset
     ) {
-      edges {
-        node {
-          ...MyEvent
+      nodes {
+        id
+        name
+        city
+        happeningAt
+        bookingEndsAt
+        bookingStartsAt
+        attendees {
+          nodes {
+            id
+            lastname
+            firstname
+          }
         }
       }
-      totalCount
       pageInfo {
         hasNextPage
         hasPreviousPage
         startCursor
         endCursor
       }
+      totalCount
     }
   }
 }

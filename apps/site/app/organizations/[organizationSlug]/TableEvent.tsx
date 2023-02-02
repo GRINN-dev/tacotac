@@ -22,11 +22,11 @@ export const TableEvent = ({ organization, limit }) => {
     <>
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
-          {organization?.events?.edges?.length > 0 ? (
+          {organization?.events?.nodes?.length > 0 ? (
             <>
-              {organization?.events?.edges.map((event) => (
+              {organization?.events?.nodes.map((event) => (
                 <div
-                  key={event?.node?.id}
+                  key={event?.id}
                   className="flex items-center justify-between px-6 py-3 border-b border-x border-slate-300 first-of-type:rounded-t-lg first-of-type:border-t last-of-type:rounded-b-lg"
                 >
                   <Link
@@ -34,13 +34,13 @@ export const TableEvent = ({ organization, limit }) => {
                       isPending &&
                       "w-1/2 h-10  bg-gray-200 rounded-lg opacity-20 animate-pulse"
                     }
-                    href={`/organizations/${organization?.slug}/${event?.node?.slug}`}
+                    href={`/organizations/${organization?.slug}/${event?.slug}`}
                   >
-                    {!isPending && event?.node?.name}
+                    {!isPending && event?.name}
                   </Link>
 
                   <Link
-                    href={`/organizations/${organization?.slug}/${event?.node?.slug}`}
+                    href={`/organizations/${organization?.slug}/${event?.slug}`}
                     className={`${
                       isPending
                         ? "w-1/6 h-10  bg-gray-200 rounded-lg opacity-20 animate-pulse "

@@ -9,7 +9,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { TableEvent } from "./TableEvent";
 
 
-
 interface iEvent
   extends ExtractArrayType<
     ExtractType<GetAllEventsByOrganizationIdQuery, "events">,
@@ -20,15 +19,13 @@ interface iEvent
 
 const OrganizationPage = async ({
   params: { organizationSlug },
-  searchParams: { name, first, after, last, before },
+  searchParams: { name, first, last, offset },
 }) => {
   const limit = 2;
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
-    first: Number(last) ? null : limit,
-    after: after,
-    last: Number(last),
-    before: before,
+    first: limit,
+    offset: Number(offset),
   });
   const { organizationBySlug: organization } = data;
   //const myEvent:iEvent={description:"",name:""}
