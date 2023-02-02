@@ -4,10 +4,11 @@ import { Cog, PlusSquare } from "lucide-react";
 
 
 
+import { iSelectData } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
+import { FilterUi } from "@/components/Filter";
 import { buttonVariants } from "@/components/ui/button";
 import { TableEvent } from "./TableEvent";
-
 
 interface iEvent
   extends ExtractArrayType<
@@ -19,13 +20,14 @@ interface iEvent
 
 const OrganizationPage = async ({
   params: { organizationSlug },
-  searchParams: { name, first, last, offset },
+  searchParams: { name, first, last, offset, filter },
 }) => {
   const limit = 2;
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
     first: limit,
     offset: Number(offset),
+    filter: filter ? JSON.parse(filter) : null,
   });
   const { organizationBySlug: organization } = data;
   //const myEvent:iEvent={description:"",name:""}
