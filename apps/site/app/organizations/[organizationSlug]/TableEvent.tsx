@@ -34,26 +34,32 @@ export const TableEvent = ({ organization, limit }) => {
     {
       title: "Nom",
       value: "name",
+      type: "string",
     },
     {
       title: "Lieu",
       value: "city",
+      type: "string",
     },
     {
       title: "Commence le",
       value: "happeningAt",
+      type: "date",
     },
     {
       title: "Début inscription",
       value: "bookingStartsAt",
+      type: "date",
     },
     {
       title: "Fin inscription",
       value: "bookingsEndAt",
+      type: "date",
     },
     {
       title: "Participants",
       value: "attendees",
+      type: "date",
     },
   ];
 

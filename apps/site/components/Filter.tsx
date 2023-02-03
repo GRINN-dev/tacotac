@@ -42,11 +42,11 @@ export const FilterUi = ({ select, filterType }: iFilter) => {
       typeObject[filter] = value || date;
 
       filterObject[type] = typeObject;
-      router.push(pathname + `?filter=${JSON.stringify(filterObject)}`);
-      setType(null)
-      setFilter(null)
-      setValue(null)
-      setDate(null)
+      //router.push(pathname + `?filter=${JSON.stringify(filterObject)}`);
+      setType(null);
+      setFilter(null);
+      setValue(null);
+      setDate(null);
     }
   };
   return (
@@ -67,8 +67,8 @@ export const FilterUi = ({ select, filterType }: iFilter) => {
                 </SelectTrigger>
                 <SelectContent className="w-[180px]">
                   <SelectGroup>
-                    {select?.map(({ title, value }) => (
-                      <SelectItem key={title + value} value={value}>
+                    {select?.map(({ title, value,type }) => (
+                      <SelectItem key={title + value} value={JSON.stringify({value:value,type:type})}>
                         {title}
                       </SelectItem>
                     ))}
