@@ -25,15 +25,13 @@ interface iEvent
 
 const OrganizationPage = async ({
   params: { organizationSlug },
-  searchParams: { name, first, after, last, before },
+  searchParams: { name, first, last, offset },
 }) => {
   const limit = 2;
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
-    first: Number(last) ? null : limit,
-    after: after,
-    last: Number(last),
-    before: before,
+    first: limit,
+    offset: Number(offset),
   });
 
   //erreur Le type 'string' ne satisfait pas la contrainte 'never'. ??!
@@ -58,18 +56,18 @@ const OrganizationPage = async ({
   ];
 
   const rawOrga = [
-    ...organization?.events?.edges.map((event) => {
+    ...organization?.events?.nodes.map((event) => {
       return {
-        Nom: event?.node?.name,
-        Lieu: event?.node?.city,
-        "Commence le": dayjs(event?.node?.happeningAt).format("DD/MM/YYYY"),
-        "Debut inscription": dayjs(event?.node?.bookingStartsAt).format(
+        Nom: event?.name,
+        Lieu: event?.city,
+        "Commence le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
+        "Debut inscription": dayjs(event?.bookingStartsAt).format(
           "DD/MM/YYYY"
         ),
-        "Fin inscription": dayjs(event?.node?.bookingEndsAt).format(
+        "Fin inscription": dayjs(event?.bookingEndsAt).format(
           "DD/MM/YYYY"
         ),
-        Participants: event?.node?.attendees?.nodes?.length,
+        Participants: event?.attendees?.nodes?.length,
       };
     }),
   ];
