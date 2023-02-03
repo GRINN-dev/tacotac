@@ -90,14 +90,14 @@ export const FilterUi = ({ select, transition }: iFilter) => {
   };
   return (
     <div id="Filter" className="w-full max-w-3xl mx-auto mt-4">
-      <Popover>
+      <Popover >
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-10 p-0 rounded-full">
             <Filter className="w-4 h-4" />
             <span className="sr-only">Open popover</span>
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent className="">
           <div className="flex flex-col space-y-4">
             <div className="">
               <Select onValueChange={(value) => setTypeFilter(value)}>
@@ -124,12 +124,12 @@ export const FilterUi = ({ select, transition }: iFilter) => {
                   <SelectGroup>
                     {isDate
                       ? filterDateType?.map(({ title, value }) => (
-                          <SelectItem defaultChecked value={value}>
+                          <SelectItem key={title+ value} defaultChecked value={value}>
                             {title}
                           </SelectItem>
                         ))
                       : filterStringType?.map(({ title, value }) => (
-                          <SelectItem defaultChecked value={value}>
+                          <SelectItem key={title+ value} defaultChecked value={value}>
                             {title}
                           </SelectItem>
                         ))}
@@ -157,7 +157,7 @@ export const FilterUi = ({ select, transition }: iFilter) => {
               <PopoverTrigger asChild>
                 <Button onClick={onChange} variant="outline" className="flex space-x-4 ">
                   <PlusCircle className="w-4 h-4" />
-                  <span>Ajouter</span>
+                  <span>Filtrer</span>
                 </Button>
               </PopoverTrigger>
             </div>

@@ -13,6 +13,7 @@ import { FilterUi } from "@/components/Filter";
 import { PaginationUi } from "@/components/Pagination";
 import { buttonVariants } from "@/components/ui/button";
 
+
 interface iTableEvent extends ExtractType<GetOrganizationBySlugQuery, "organizationBySlug"> {
   limit: number;
   header: string[];
@@ -59,7 +60,9 @@ export const TableEvent = ({ slug, events, limit, header, data }: iTableEvent) =
                       {header?.map((item) => (
                         <td
                           className={` border-t ${
-                            !isPending ? "w-1/3 p-2 text-center " : "w-1/6 h-8 m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
+                            !isPending
+                              ? "w-1/3 p-2 text-center "
+                              : "w-1/6  h-[2.05rem] m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
                           }`}
                           key={item}
                         >
