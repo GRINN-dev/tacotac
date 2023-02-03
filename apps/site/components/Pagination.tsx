@@ -22,13 +22,12 @@ interface IPagination {
 export const PaginationUi = ({ totalCount, limit, pageInfo, transition }: IPagination) => {
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
-  console.log("🚀 ~ file: Pagination.tsx:28 ~ filter", filter);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalCount / limit);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   const pathname = usePathname();
   const router = useRouter();
-
+//pour pr
   return (
     <div className="flex flex-row justify-between">
       <nav className="inline-flex -space-x-px rounded-md shadow-sm isolate" aria-label="Pagination">
