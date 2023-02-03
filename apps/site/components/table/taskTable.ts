@@ -1,6 +1,7 @@
 interface DataRow {
   [key: string]: any;
 }
+console.log("new compo");
 
 interface iData {
   Nom: string;

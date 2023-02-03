@@ -17,7 +17,7 @@ export const TableEvent = ({ organization, limit, header, data }) => {
   useEffect(() => {
     controls.start({ opacity: 1, x: 0 });
   }, [organization]);
-
+console.log("new compo");
   return (
     <>
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
