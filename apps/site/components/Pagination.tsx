@@ -10,6 +10,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "./ui/button";
 
+
 interface IPagination {
   totalCount: number;
   limit: number;
@@ -18,12 +19,7 @@ interface IPagination {
   transition: TransitionStartFunction;
 }
 
-export const PaginationUi = ({
-  totalCount,
-  limit,
-  pageInfo,
-  transition,
-}: IPagination) => {
+export const PaginationUi = ({ totalCount, limit, pageInfo, transition }: IPagination) => {
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
   console.log("🚀 ~ file: Pagination.tsx:28 ~ filter", filter);
@@ -35,20 +31,13 @@ export const PaginationUi = ({
 
   return (
     <div className="flex flex-row justify-between">
-      <nav
-        className="inline-flex -space-x-px rounded-md shadow-sm isolate"
-        aria-label="Pagination"
-      >
+      <nav className="inline-flex -space-x-px rounded-md shadow-sm isolate" aria-label="Pagination">
         <Button
           disabled={!pageInfo?.hasPreviousPage}
           onClick={() => {
             transition(() => {
-              const offset = currentPage <= 2 ? 0 : currentPage - 1;
-              router.push(
-                `${pathname}?offset=${offset}${
-                  filter ? `&filter=${filter}` : ""
-                }`
-              );
+              const offset = currentPage <= 2 ? 0 : currentPage % 2 ? currentPage - 1 : currentPage - 2;
+              router.push(`${pathname}?offset=${offset}${filter ? `&filter=${filter}` : ""}`);
             });
 
             setCurrentPage(currentPage - 1);
@@ -64,13 +53,8 @@ export const PaginationUi = ({
             className={`relative  inline-flex items-center px-4 py-2 text-sm font-medium focus:z-20`}
             onClick={() => {
               transition(() => {
-                const offsetCurrent =
-                  number > 1 ? (number % 2 ? number + 1 : number) : 0;
-                router.push(
-                  `${pathname}?offset=${offsetCurrent}${
-                    filter ? `&filter=${filter}` : ""
-                  }`
-                );
+                const offsetCurrent = number > 1 ? (number % 2 ? number + 1 : number) : 0;
+                router.push(`${pathname}?offset=${offsetCurrent}${filter ? `&filter=${filter}` : ""}`);
               });
 
               setCurrentPage(number);
@@ -89,12 +73,8 @@ export const PaginationUi = ({
           disabled={!pageInfo?.hasNextPage}
           onClick={() => {
             transition(() => {
-              const offsetNext = currentPage + 1;
-              router.push(
-                `${pathname}?offset=${offsetNext}${
-                  filter ? `&filter=${filter}` : ""
-                }`
-              );
+              const offsetNext = currentPage % 2 ? currentPage + 1 : currentPage + 2;
+              router.push(`${pathname}?offset=${offsetNext}${filter ? `&filter=${filter}` : ""}`);
             });
             setCurrentPage(currentPage + 1);
           }}
