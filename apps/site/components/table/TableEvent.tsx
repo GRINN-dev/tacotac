@@ -22,7 +22,7 @@ console.log("new compo");
     <>
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
-          {organization?.events?.edges?.length > 0 ? (
+          {organization?.events?.nodes?.length > 0 ? (
             <>
               <table className="flex flex-col px-6 py-3 border-t border-b rounded-t-lg rounded-b-lg border-x border-slate-300">
                 <thead>
