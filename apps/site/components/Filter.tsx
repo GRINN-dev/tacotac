@@ -1,34 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Filter, PlusCircle } from "lucide-react";
-
-
 
 import { iSelectData } from "@/types/filter";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface iFilter {
   select: iSelectData[];
-  filterType: iSelectData[];
+  filterStringType: iSelectData[];
+  filterDateType: iSelectData[];
+}
+interface iStateFilter {
+  value: string;
+  type: string;
 }
 
-export const FilterUi = ({ select, filterType }: iFilter) => {
+export const FilterUi = ({
+  select,
+  filterStringType,
+  filterDateType,
+}: iFilter) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [type, setType] = useState<string | null>(null);
+  const [typeFilter, setTypeFilter] = useState<any>("{}");
   const [filter, setFilter] = useState<string | null>(null);
-  const [value, setValue] = useState<string | number | null>(null);
+  const [valueFilter, setValueFilter] = useState<string | number | null>(null);
   const [date, setDate] = useState<Date | null>(null);
+  const [isDate, setIsDate] = useState(false);
+
+  useEffect(() => {
+    const { value, type } = JSON.parse(typeFilter);
+    if (type === "date") {
+      setIsDate(true);
+    } else {
+      setIsDate(false);
+    }
+  }, [typeFilter]);
 
   const onChange = () => {
-    console.log(type, filter, value, date);
+    const { value } = JSON.parse(typeFilter);
     const filterObject = {};
     const typeObject = {};
 
@@ -36,16 +59,20 @@ export const FilterUi = ({ select, filterType }: iFilter) => {
     console.log(
       "🚀 ~ file: Filter.tsx:50 ~ onChange ~ typeObject",
       filterObject,
-      JSON.stringify(filterObject)
+      JSON.parse(typeFilter).value
     );
-    if (type && filter && (value || date)) {
-      typeObject[filter] = value || date;
+    if (value && filter && (valueFilter || date)) {
+      typeObject[filter] = valueFilter || date;
 
-      filterObject[type] = typeObject;
+      filterObject[value] = typeObject;
+      console.log(
+        "🚀 ~ file: Filter.tsx:69 ~ onChange ~ filterObject",
+        filterObject
+      );
       //router.push(pathname + `?filter=${JSON.stringify(filterObject)}`);
-      setType(null);
+      setTypeFilter(null);
       setFilter(null);
-      setValue(null);
+      setValueFilter(null);
       setDate(null);
     }
   };
@@ -61,14 +88,17 @@ export const FilterUi = ({ select, filterType }: iFilter) => {
         <PopoverContent className="w-80">
           <div className="flex flex-col space-y-4">
             <div className="">
-              <Select onValueChange={(value) => setType(value)}>
+              <Select onValueChange={(value) => setTypeFilter(value as any)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Choisis un type" />
                 </SelectTrigger>
                 <SelectContent className="w-[180px]">
                   <SelectGroup>
-                    {select?.map(({ title, value,type }) => (
-                      <SelectItem key={title + value} value={JSON.stringify({value:value,type:type})}>
+                    {select?.map(({ title, value, type }) => (
+                      <SelectItem
+                        key={title + value}
+                        value={JSON.stringify({ value: value, type: type })}
+                      >
                         {title}
                       </SelectItem>
                     ))}
@@ -83,32 +113,39 @@ export const FilterUi = ({ select, filterType }: iFilter) => {
                 </SelectTrigger>
                 <SelectContent className="w-[180px]">
                   <SelectGroup>
-                    {filterType?.map(({ title, value }) => (
-                      <SelectItem defaultChecked value={value}>
-                        {title}
-                      </SelectItem>
-                    ))}
+                    {isDate
+                      ? filterDateType?.map(({ title, value }) => (
+                          <SelectItem defaultChecked value={value}>
+                            {title}
+                          </SelectItem>
+                        ))
+                      : filterStringType?.map(({ title, value }) => (
+                          <SelectItem defaultChecked value={value}>
+                            {title}
+                          </SelectItem>
+                        ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
             <div className="">
-              <Label htmlFor="height">Valeur</Label>
-              <Input
-                onChange={(e) => setValue(e.target.value)}
-                id="value"
-                className="h-8 col-span-2"
-              />
+              <Label htmlFor="height">{isDate ? "Date" : "Valeur"}</Label>
+              {isDate ? (
+                <Input
+                  onChange={(e) => setDate(e.target.valueAsDate)}
+                  type={"date"}
+                  id="date"
+                  className="h-8 col-span-2"
+                />
+              ) : (
+                <Input
+                  onChange={(e) => setValueFilter(e.target.value)}
+                  id="value"
+                  className="h-8 col-span-2"
+                />
+              )}
             </div>
-            <div className="">
-              <Label htmlFor="maxHeight">Date</Label>
-              <Input
-                onChange={(e) => setDate(e.target.valueAsDate)}
-                type={"date"}
-                id="date"
-                className="h-8 col-span-2"
-              />
-            </div>
+
             <div className="self-center">
               <PopoverTrigger asChild>
                 <Button

@@ -63,24 +63,62 @@ export const TableEvent = ({ organization, limit, header, data }) => {
     },
   ];
 
-  const filterType = [
+  const filterStringType = [
     {
-      title: "Inclus",
+      title: "contient",
       value: "in",
     },
     {
+      title: "ne contient pas",
+      value: "notIn",
+    },
+    {
+      title: "est",
+      value: "equalTo",
+    },
+    {
+      title: "n'est pas",
+      value: "notEqualTo",
+    },
+    {
+      title: "n'est pas nul",
+      value: "isNull",
+    },
+  ];
+  const filterDateType = [
+    {
+      title: "est",
+      value: "equalTo",
+    },
+    {
+      title: "n'est pas",
+      value: "notEqualTo",
+    },
+    {
+      title: "n'est pas nul",
+      value: "isNull",
+    },
+    {
       title: "est plus petit que",
+      value: "lessThan",
+    },
+    {
+      title: "est plus petit ou égal à",
       value: "lessThanOrEqualTo",
     },
     {
       title: "est plus grand que",
+      value: "greaterThan",
+    },
+    {
+      title: "est plus grand ou égale à",
       value: "greaterThanOrEqualTo",
     },
   ];
   return (
     <>
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
-        <FilterUi select={select} filterType={filterType} />
+        <FilterUi select={select} filterStringType={filterStringType} filterDateType={filterDateType} />
         <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
           {organization?.events?.nodes?.length > 0 ? (
             <>
