@@ -6,6 +6,8 @@ import { PageInfo } from "@/../../@tacotacIO/codegen/dist";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+
+
 import { Button } from "./ui/button";
 
 
@@ -62,16 +64,19 @@ export const PaginationUi = ({
             key={"input-limit-" + number}
             className={`relative  inline-flex items-center px-4 py-2 text-sm font-medium focus:z-20`}
             onClick={() => {
-              if (number > 1) {
-                router.push(
-                  pathname + `?offset=${number % 2 ? number + 1 : number}`
-                );
-              } else {
-                router.push(pathname);
-              }
+              transition(() => {
+                if (number > 1) {
+                  router.push(
+                    pathname + `?offset=${number % 2 ? number + 1 : number}`
+                  );
+                } else {
+                  router.push(pathname);
+                }
+              });
 
               setCurrentPage(number);
             }}
+            
           >
             {currentPage === number && (
               <motion.span
