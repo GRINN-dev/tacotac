@@ -1,16 +1,9 @@
+import { iData } from "@/types/filter";
+
 interface DataRow {
   [key: string]: any;
 }
 console.log("new compo");
-
-interface iData {
-  Nom: string;
-  Lieu: string;
-  "Commence le": string;
-  "Debut inscription": string;
-  "Fin inscription": string;
-  Participants: number;
-}
 
 const formatData = (header: string[], rawData: iData[]) => {
   const data: DataRow[] = rawData?.map((row) => {

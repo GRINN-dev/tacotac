@@ -5,7 +5,7 @@ import { Cog, PlusSquare } from "lucide-react";
 
 
 
-import { iSelectData } from "@/types/filter";
+import { iData, iSelectData } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { FilterUi } from "@/components/Filter";
 import { buttonVariants } from "@/components/ui/button";
@@ -13,18 +13,7 @@ import { TableEvent } from "../../../components/table/TableEvent";
 import formatData from "../../../components/table/taskTable";
 
 
-interface iEvent
-  extends ExtractArrayType<
-    ExtractType<GetAllEventsByOrganizationIdQuery, "events">,
-    "nodes"
-  > {
-  params: any;
-}
-
-const OrganizationPage = async ({
-  params: { organizationSlug },
-  searchParams: { name, first, last, offset, filter },
-}) => {
+const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter } }) => {
   const limit = 2;
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
@@ -33,44 +22,17 @@ const OrganizationPage = async ({
     filter: filter ? JSON.parse(filter) : null,
   });
 
-  //erreur Le type 'string' ne satisfait pas la contrainte 'never'. ??!
-  //   type EventNode = ExtractType<
-  //   ExtractArrayType<
-  //     ExtractArrayType<
-  //       ExtractType<GetOrganizationBySlugQuery, 'organizationBySlug'>,
-  //       'events'
-  //     >,
-  //     'edges'
-  //   >,
-  //   'node'
-  // >;
   const { organizationBySlug: organization } = data;
-  const header = [
-    "Nom",
-    "Lieu",
-    "Commence le",
-    "Debut inscription",
-    "Fin inscription",
-    "Participants",
-  ];
+  const header = ["Nom", "Lieu", "Commence le", "Debut inscription", "Fin inscription", "Participants"];
 
-  const rawOrga = [
-    ...organization?.events?.nodes.map((event) => {
-      return {
-        Nom: event?.name,
-        Lieu: event?.city,
-        "Commence le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
-        "Debut inscription": dayjs(event?.bookingStartsAt).format(
-          "DD/MM/YYYY"
-        ),
-        "Fin inscription": dayjs(event?.bookingEndsAt).format(
-          "DD/MM/YYYY"
-        ),
-        Participants: event?.attendees?.nodes?.length,
-      };
-    }),
-  ];
-  console.log("modif compo")
+  const rawOrga: iData[] = organization?.events?.nodes.map((event) => ({
+    Nom: event?.name,
+    Lieu: event?.city,
+    "Commence le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
+    "Debut inscription": dayjs(event?.bookingStartsAt).format("DD/MM/YYYY"),
+    "Fin inscription": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
+    Participants: event?.attendees?.nodes?.length,
+  }));
 
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
@@ -97,11 +59,7 @@ const OrganizationPage = async ({
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
-      <TableEvent
-        organization={organization}
-        limit={limit}
-        {...formatData(header, rawOrga)}
-      />
+      <TableEvent limit={limit} {...organization} {...formatData(header, rawOrga)} />
     </section>
   );
 };

@@ -4,6 +4,7 @@ module.exports = {
   semi: true,
   singleQuote: false,
   tabWidth: 2,
+  printWidth: 120,
   trailingComma: "es5",
   importOrder: [
     "^(react/(.*)$)|^(react$)",
@@ -25,4 +26,4 @@ module.exports = {
   importOrderMergeDuplicateImports: true,
   importOrderCombineTypeAndValueImports: true,
   plugins: ["@ianvs/prettier-plugin-sort-imports"],
-}
+};

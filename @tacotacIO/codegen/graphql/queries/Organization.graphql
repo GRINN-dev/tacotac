@@ -43,19 +43,7 @@ query GetOrganizationBySlug(
       offset: $offset
     ) {
       nodes {
-        id
-        name
-        city
-        happeningAt
-        bookingEndsAt
-        bookingStartsAt
-        attendees {
-          nodes {
-            id
-            lastname
-            firstname
-          }
-        }
+        ...MyEvent
       }
       pageInfo {
         hasNextPage

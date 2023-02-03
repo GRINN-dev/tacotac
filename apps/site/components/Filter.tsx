@@ -1,80 +1,91 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { TransitionStartFunction, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Filter, PlusCircle } from "lucide-react";
 
-import { iSelectData } from "@/types/filter";
+import { iSelectData, iTypeFilter } from "@/types/filter";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 interface iFilter {
   select: iSelectData[];
-  filterStringType: iSelectData[];
-  filterDateType: iSelectData[];
-}
-interface iStateFilter {
-  value: string;
-  type: string;
+  transition: TransitionStartFunction;
 }
 
-export const FilterUi = ({
-  select,
-  filterStringType,
-  filterDateType,
-}: iFilter) => {
+
+export const FilterUi = ({ select, transition }: iFilter) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [typeFilter, setTypeFilter] = useState<any>("{}");
+  const [typeFilter, setTypeFilter] = useState<string>();
   const [filter, setFilter] = useState<string | null>(null);
   const [valueFilter, setValueFilter] = useState<string | number | null>(null);
-  const [date, setDate] = useState<Date | null>(null);
+  const [dateFilter, setDateFilter] = useState<Date | null>(null);
   const [isDate, setIsDate] = useState(false);
+  const [isNull, setIsNull] = useState(false);
 
+  const filterStringType: iTypeFilter[] = [
+    { title: "contient", value: "in" },
+    { title: "ne contient pas", value: "notIn" },
+    { title: "est", value: "equalTo" },
+    { title: "n'est pas", value: "notEqualTo" },
+    { title: "n'est pas nul", value: "isNull" },
+  ];
+
+  const filterDateType: iTypeFilter[] = [
+    { title: "est", value: "equalTo" },
+    { title: "n'est pas", value: "notEqualTo" },
+    { title: "n'est pas nul", value: "isNull" },
+    { title: "est plus petit que", value: "lessThan" },
+    { title: "est plus petit ou égal à", value: "lessThanOrEqualTo" },
+    { title: "est plus grand que", value: "greaterThan" },
+    { title: "est plus grand ou égale à", value: "greaterThanOrEqualTo" },
+  ];
   useEffect(() => {
-    const { value, type } = JSON.parse(typeFilter);
-    if (type === "date") {
-      setIsDate(true);
-    } else {
-      setIsDate(false);
+    if (typeFilter) {
+      const { type } = JSON.parse(typeFilter);
+      setIsDate(type === "date");
     }
-  }, [typeFilter]);
+
+    setIsNull(filter === "isNull");
+  }, [typeFilter, filter]);
+
+  const createFilterObject = (
+    value: any,
+    filter: string,
+    valueFilter: string | number | null,
+    dateFilter: Date | null,
+    isNull: boolean
+  ) => {
+    const typeObject: {} = {};
+
+    if (!value || !filter) {
+      return null;
+    }
+
+    if (isNull) {
+      typeObject[filter] = false;
+    } else {
+      typeObject[filter] = valueFilter || dateFilter;
+    }
+
+    return { [value]: typeObject };
+  };
 
   const onChange = () => {
     const { value } = JSON.parse(typeFilter);
-    const filterObject = {};
-    const typeObject = {};
+    const filterObject = createFilterObject(value, filter, valueFilter, dateFilter, isNull);
 
-    // Vérifiez si les variables ne sont pas null ou undefined
-    console.log(
-      "🚀 ~ file: Filter.tsx:50 ~ onChange ~ typeObject",
-      filterObject,
-      JSON.parse(typeFilter).value
-    );
-    if (value && filter && (valueFilter || date)) {
-      typeObject[filter] = valueFilter || date;
-
-      filterObject[value] = typeObject;
-      console.log(
-        "🚀 ~ file: Filter.tsx:69 ~ onChange ~ filterObject",
-        filterObject
-      );
-      //router.push(pathname + `?filter=${JSON.stringify(filterObject)}`);
-      setTypeFilter(null);
-      setFilter(null);
-      setValueFilter(null);
-      setDate(null);
+    if (filterObject) {
+      transition(() => router.push(pathname + `?filter=${JSON.stringify(filterObject)}`));
     }
+    setTypeFilter(null);
+    setFilter(null);
+    setValueFilter(null);
+    setDateFilter(null);
   };
   return (
     <div id="Filter" className="w-full max-w-3xl mx-auto mt-4">
@@ -88,17 +99,14 @@ export const FilterUi = ({
         <PopoverContent className="w-80">
           <div className="flex flex-col space-y-4">
             <div className="">
-              <Select onValueChange={(value) => setTypeFilter(value as any)}>
+              <Select onValueChange={(value) => setTypeFilter(value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Choisis un type" />
                 </SelectTrigger>
                 <SelectContent className="w-[180px]">
                   <SelectGroup>
                     {select?.map(({ title, value, type }) => (
-                      <SelectItem
-                        key={title + value}
-                        value={JSON.stringify({ value: value, type: type })}
-                      >
+                      <SelectItem key={title + value} value={JSON.stringify({ value: value, type: type })}>
                         {title}
                       </SelectItem>
                     ))}
@@ -128,31 +136,25 @@ export const FilterUi = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="">
-              <Label htmlFor="height">{isDate ? "Date" : "Valeur"}</Label>
-              {isDate ? (
-                <Input
-                  onChange={(e) => setDate(e.target.valueAsDate)}
-                  type={"date"}
-                  id="date"
-                  className="h-8 col-span-2"
-                />
-              ) : (
-                <Input
-                  onChange={(e) => setValueFilter(e.target.value)}
-                  id="value"
-                  className="h-8 col-span-2"
-                />
-              )}
-            </div>
+            {!isNull && (
+              <div className="">
+                <Label htmlFor="height">{isDate ? "Date" : "Valeur"}</Label>
+                {isDate ? (
+                  <Input
+                    onChange={(e) => setDateFilter(e.target.valueAsDate)}
+                    type={"date"}
+                    id="date"
+                    className="h-8 col-span-2"
+                  />
+                ) : (
+                  <Input onChange={(e) => setValueFilter(e.target.value)} id="value" className="h-8 col-span-2" />
+                )}
+              </div>
+            )}
 
             <div className="self-center">
               <PopoverTrigger asChild>
-                <Button
-                  onClick={onChange}
-                  variant="outline"
-                  className="flex space-x-4 "
-                >
+                <Button onClick={onChange} variant="outline" className="flex space-x-4 ">
                   <PlusCircle className="w-4 h-4" />
                   <span>Ajouter</span>
                 </Button>

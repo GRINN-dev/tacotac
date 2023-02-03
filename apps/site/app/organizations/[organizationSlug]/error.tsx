@@ -16,14 +16,14 @@ export default function Error({
 
   return (
     <div>
-      <h2>Something went wrong!</h2>
+      <h2>Quelque chose a mal tournée !!!</h2>
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
       >
-        Try again
+        Essaye encore (vérifie l url ;) )
       </button>
     </div>
   );

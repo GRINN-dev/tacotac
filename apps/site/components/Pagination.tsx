@@ -1,7 +1,7 @@
 "use client";
 
 import { TransitionStartFunction, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PageInfo } from "@/../../@tacotacIO/codegen/dist";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,7 +9,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 
 import { Button } from "./ui/button";
-
 
 interface IPagination {
   totalCount: number;
@@ -25,11 +24,15 @@ export const PaginationUi = ({
   pageInfo,
   transition,
 }: IPagination) => {
+  const searchParams = useSearchParams();
+  const filter = searchParams.get("filter");
+  console.log("🚀 ~ file: Pagination.tsx:28 ~ filter", filter);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalCount / limit);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   const pathname = usePathname();
   const router = useRouter();
+
   return (
     <div className="flex flex-row justify-between">
       <nav
@@ -40,15 +43,11 @@ export const PaginationUi = ({
           disabled={!pageInfo?.hasPreviousPage}
           onClick={() => {
             transition(() => {
-              if (currentPage <= 2) {
-                router.push(pathname);
-                return;
-              }
+              const offset = currentPage <= 2 ? 0 : currentPage - 1;
               router.push(
-                pathname +
-                  `?offset=${
-                    currentPage % 2 ? currentPage - 1 : currentPage - 2
-                  }`
+                `${pathname}?offset=${offset}${
+                  filter ? `&filter=${filter}` : ""
+                }`
               );
             });
 
@@ -65,18 +64,17 @@ export const PaginationUi = ({
             className={`relative  inline-flex items-center px-4 py-2 text-sm font-medium focus:z-20`}
             onClick={() => {
               transition(() => {
-                if (number > 1) {
-                  router.push(
-                    pathname + `?offset=${number % 2 ? number + 1 : number}`
-                  );
-                } else {
-                  router.push(pathname);
-                }
+                const offsetCurrent =
+                  number > 1 ? (number % 2 ? number + 1 : number) : 0;
+                router.push(
+                  `${pathname}?offset=${offsetCurrent}${
+                    filter ? `&filter=${filter}` : ""
+                  }`
+                );
               });
 
               setCurrentPage(number);
             }}
-            
           >
             {currentPage === number && (
               <motion.span
@@ -91,11 +89,11 @@ export const PaginationUi = ({
           disabled={!pageInfo?.hasNextPage}
           onClick={() => {
             transition(() => {
+              const offsetNext = currentPage + 1;
               router.push(
-                pathname +
-                  `?offset=${
-                    currentPage % 2 ? currentPage + 1 : currentPage + 2
-                  }`
+                `${pathname}?offset=${offsetNext}${
+                  filter ? `&filter=${filter}` : ""
+                }`
               );
             });
             setCurrentPage(currentPage + 1);
