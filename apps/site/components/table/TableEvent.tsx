@@ -13,7 +13,7 @@ import { PaginationUi } from "@/components/Pagination";
 import { buttonVariants } from "@/components/ui/button";
 
 
-export const TableEvent = ({ organization, limit }) => {
+export const TableEvent = ({ organization, limit, header, data }) => {
   const [isPending, startTransition] = useTransition();
   const controls = useAnimationControls();
   useEffect(() => {
