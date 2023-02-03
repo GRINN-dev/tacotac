@@ -1,12 +1,7 @@
 import Link from "next/link";
-import {
-  GetAllEventsByOrganizationIdQuery,
-  GetOrganizationBySlugQuery,
-} from "@/../../@tacotacIO/codegen/dist";
+import { GetAllEventsByOrganizationIdQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
 import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
-
-
 
 
 
@@ -14,9 +9,9 @@ import { iSelectData } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { FilterUi } from "@/components/Filter";
 import { buttonVariants } from "@/components/ui/button";
-import { TableEvent } from "./TableEvent";
 import { TableEvent } from "../../../components/table/TableEvent";
 import formatData from "../../../components/table/taskTable";
+
 
 interface iEvent
   extends ExtractArrayType<
