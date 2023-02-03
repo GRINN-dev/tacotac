@@ -59,9 +59,7 @@ export const TableEvent = ({ slug, events, limit, header, data }: iTableEvent) =
                       {header?.map((item) => (
                         <td
                           className={` border-t ${
-                            !isPending
-                              ? "w-1/3 p-2 text-center "
-                              : "w-1/6 h-8 m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
+                            !isPending ? "w-1/3 p-2 text-center " : "w-1/6 h-8 m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
                           }`}
                           key={item}
                         >

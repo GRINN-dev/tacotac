@@ -1,17 +1,12 @@
 import Link from "next/link";
-import { GetAllEventsByOrganizationIdQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
 import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
 
-
-
-import { iData, iSelectData } from "@/types/filter";
+import { iData } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
-import { FilterUi } from "@/components/Filter";
 import { buttonVariants } from "@/components/ui/button";
 import { TableEvent } from "../../../components/table/TableEvent";
 import formatData from "../../../components/table/taskTable";
-
 
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter } }) => {
   const limit = 2;
@@ -33,7 +28,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     "Fin inscription": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
     Participants: event?.attendees?.nodes?.length,
   }));
-//pour pr
+
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">

@@ -6,10 +6,7 @@ import { PageInfo } from "@/../../@tacotacIO/codegen/dist";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-
-
 import { Button } from "./ui/button";
-
 
 interface IPagination {
   totalCount: number;
@@ -27,7 +24,7 @@ export const PaginationUi = ({ totalCount, limit, pageInfo, transition }: IPagin
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   const pathname = usePathname();
   const router = useRouter();
-//pour pr
+
   return (
     <div className="flex flex-row justify-between">
       <nav className="inline-flex -space-x-px rounded-md shadow-sm isolate" aria-label="Pagination">

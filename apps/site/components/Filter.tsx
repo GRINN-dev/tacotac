@@ -13,12 +13,10 @@ import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
-
 interface iFilter {
   select: iSelectData[];
   transition: TransitionStartFunction;
 }
-
 
 export const FilterUi = ({ select, transition }: iFilter) => {
   const router = useRouter();
@@ -56,7 +54,6 @@ export const FilterUi = ({ select, transition }: iFilter) => {
     setIsNull(filter === "isNull");
   }, [typeFilter, filter]);
 
-  //pour pr
   const createFilterObject = (
     value: any,
     filter: string,
