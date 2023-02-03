@@ -10,8 +10,6 @@ insert into publ.event_status values
     ('CANCELLED', 'Inscription annulée'),
     ('CONFIRMED', 'Présence confirmée à l''évenement');
 
-
-
 /*
   TABLE: publ.attendees
   DESCRIPTION: Participants à l'évenement
@@ -23,6 +21,7 @@ create table publ.attendees (
     lastname text not null,
     email citext not null,
     event_id uuid not null references publ.events(id) on delete cascade,
+    registration_id uuid  references publ.registrations(id) on delete cascade,
     status text not null references publ.event_status on delete cascade,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
@@ -32,16 +31,17 @@ create table publ.attendees (
 -- indexes
   create index on publ.attendees(created_at);
   create index on publ.attendees(updated_at);
-  create index on publ.attendees(updated_at);
-  create index on publ.attendees(updated_at);
   create index on publ.attendees(event_id);
   create index on publ.attendees(status);
   create index on publ.attendees(email);
+  create index on publ.attendees(registration_id);
 
 
 -- RBAC
   grant select on publ.attendees to :DATABASE_VISITOR;
-
+    grant insert(firstname,lastname, email, event_id, registration_id, status) on publ.attendees to :DATABASE_VISITOR;
+    grant update(firstname,lastname, email, event_id, registration_id, status) on publ.attendees to :DATABASE_VISITOR;
+    grant delete on publ.attendees to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
   before insert or update on publ.attendees

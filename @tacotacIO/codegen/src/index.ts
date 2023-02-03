@@ -44,7 +44,12 @@ export type Attendee = Node & {
   lastname: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** Reads a single `Registration` that is related to this `Attendee`. */
+  registration?: Maybe<Registration>;
+  registrationId?: Maybe<Scalars['UUID']>;
   status: EventStatus;
+  /** Reads a single `TestTable` that is related to this `Attendee`. */
+  testTable?: Maybe<TestTable>;
   updatedAt: Scalars['Datetime'];
 };
 
@@ -61,6 +66,8 @@ export type AttendeeCondition = {
   eventId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `registrationId` field. */
+  registrationId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<EventStatus>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -83,6 +90,8 @@ export type AttendeeFilter = {
   not?: InputMaybe<AttendeeFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<AttendeeFilter>>;
+  /** Filter by the object’s `registrationId` field. */
+  registrationId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<EventStatusFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -97,6 +106,7 @@ export type AttendeeInput = {
   firstname: Scalars['String'];
   id?: InputMaybe<Scalars['UUID']>;
   lastname: Scalars['String'];
+  registrationId?: InputMaybe<Scalars['UUID']>;
   status: EventStatus;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -109,6 +119,7 @@ export type AttendeePatch = {
   firstname?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   lastname?: InputMaybe<Scalars['String']>;
+  registrationId?: InputMaybe<Scalars['UUID']>;
   status?: InputMaybe<EventStatus>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -148,6 +159,8 @@ export enum AttendeesOrderBy {
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RegistrationIdAsc = 'REGISTRATION_ID_ASC',
+  RegistrationIdDesc = 'REGISTRATION_ID_DESC',
   StatusAsc = 'STATUS_ASC',
   StatusDesc = 'STATUS_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
@@ -207,6 +220,8 @@ export type CreateAttendeePayload = {
   event?: Maybe<Event>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Registration` that is related to this `Attendee`. */
+  registration?: Maybe<Registration>;
 };
 
 
@@ -320,6 +335,76 @@ export type CreateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
+/** All input for the create `Registration` mutation. */
+export type CreateRegistrationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `Registration` to be created by this mutation. */
+  registration: RegistrationInput;
+};
+
+/** The output of our create `Registration` mutation. */
+export type CreateRegistrationPayload = {
+  __typename?: 'CreateRegistrationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `Registration`. */
+  event?: Maybe<Event>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Registration` that was created by this mutation. */
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
+};
+
+
+/** The output of our create `Registration` mutation. */
+export type CreateRegistrationPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the create `TestTable` mutation. */
+export type CreateTestTableInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `TestTable` to be created by this mutation. */
+  testTable: TestTableInput;
+};
+
+/** The output of our create `TestTable` mutation. */
+export type CreateTestTablePayload = {
+  __typename?: 'CreateTestTablePayload';
+  /** Reads a single `Attendee` that is related to this `TestTable`. */
+  attendee?: Maybe<Attendee>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `TestTable` that was created by this mutation. */
+  testTable?: Maybe<TestTable>;
+  /** An edge for our `TestTable`. May be used by Relay 1. */
+  testTableEdge?: Maybe<TestTablesEdge>;
+};
+
+
+/** The output of our create `TestTable` mutation. */
+export type CreateTestTablePayloadTestTableEdgeArgs = {
+  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
+};
+
 /** All input for the create `User` mutation. */
 export type CreateUserInput = {
   /**
@@ -428,6 +513,8 @@ export type DeleteAttendeePayload = {
   event?: Maybe<Event>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Registration` that is related to this `Attendee`. */
+  registration?: Maybe<Registration>;
 };
 
 
@@ -636,6 +723,108 @@ export type DeleteOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
+/** All input for the `deleteRegistrationByNodeId` mutation. */
+export type DeleteRegistrationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Registration` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteRegistration` mutation. */
+export type DeleteRegistrationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `Registration` mutation. */
+export type DeleteRegistrationPayload = {
+  __typename?: 'DeleteRegistrationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedRegistrationNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `Event` that is related to this `Registration`. */
+  event?: Maybe<Event>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Registration` that was deleted by this mutation. */
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
+};
+
+
+/** The output of our delete `Registration` mutation. */
+export type DeleteRegistrationPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the `deleteTestTableByAttendeeId` mutation. */
+export type DeleteTestTableByAttendeeIdInput = {
+  attendeeId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** All input for the `deleteTestTableByNodeId` mutation. */
+export type DeleteTestTableByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `TestTable` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteTestTable` mutation. */
+export type DeleteTestTableInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `TestTable` mutation. */
+export type DeleteTestTablePayload = {
+  __typename?: 'DeleteTestTablePayload';
+  /** Reads a single `Attendee` that is related to this `TestTable`. */
+  attendee?: Maybe<Attendee>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedTestTableNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `TestTable` that was deleted by this mutation. */
+  testTable?: Maybe<TestTable>;
+  /** An edge for our `TestTable`. May be used by Relay 1. */
+  testTableEdge?: Maybe<TestTablesEdge>;
+};
+
+
+/** The output of our delete `TestTable` mutation. */
+export type DeleteTestTablePayloadTestTableEdgeArgs = {
+  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
+};
+
 /** All input for the `deleteUserByEmail` mutation. */
 export type DeleteUserByEmailInput = {
   /**
@@ -713,6 +902,8 @@ export type Event = Node & {
   organization?: Maybe<Organization>;
   organizationId: Scalars['UUID'];
   placeName?: Maybe<Scalars['String']>;
+  /** Reads and enables pagination through a set of `Registration`. */
+  registrations: RegistrationsConnection;
   slug?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
   zipCode?: Maybe<Scalars['String']>;
@@ -730,8 +921,26 @@ export type EventAttendeesArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
+
+export type EventRegistrationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RegistrationCondition>;
+  filter?: InputMaybe<RegistrationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
 /** A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type EventCondition = {
+  /** Checks for equality with the object’s `bookingEndsAt` field. */
+  bookingEndsAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `bookingStartsAt` field. */
+  bookingStartsAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `city` field. */
+  city?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `happeningAt` field. */
@@ -746,14 +955,18 @@ export type EventCondition = {
   slug?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `zipCode` field. */
-  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Event` object types. All fields are combined with a logical ‘and.’ */
 export type EventFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<EventFilter>>;
+  /** Filter by the object’s `bookingEndsAt` field. */
+  bookingEndsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `bookingStartsAt` field. */
+  bookingStartsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `city` field. */
+  city?: InputMaybe<StringFilter>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `happeningAt` field. */
@@ -772,8 +985,6 @@ export type EventFilter = {
   slug?: InputMaybe<StringFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `zipCode` field. */
-  zipCode?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `Event` */
@@ -879,6 +1090,12 @@ export type EventsEdge = {
 
 /** Methods to use when ordering `Event`. */
 export enum EventsOrderBy {
+  BookingEndsAtAsc = 'BOOKING_ENDS_AT_ASC',
+  BookingEndsAtDesc = 'BOOKING_ENDS_AT_DESC',
+  BookingStartsAtAsc = 'BOOKING_STARTS_AT_ASC',
+  BookingStartsAtDesc = 'BOOKING_STARTS_AT_DESC',
+  CityAsc = 'CITY_ASC',
+  CityDesc = 'CITY_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   HappeningAtAsc = 'HAPPENING_AT_ASC',
@@ -895,9 +1112,7 @@ export enum EventsOrderBy {
   SlugAsc = 'SLUG_ASC',
   SlugDesc = 'SLUG_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC',
-  ZipCodeAsc = 'ZIP_CODE_ASC',
-  ZipCodeDesc = 'ZIP_CODE_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
 export type GeneratePresignedPostInput = {
@@ -945,6 +1160,10 @@ export type Mutation = {
   createOrganization?: Maybe<CreateOrganizationPayload>;
   /** Creates a single `OrganizationMembership`. */
   createOrganizationMembership?: Maybe<CreateOrganizationMembershipPayload>;
+  /** Creates a single `Registration`. */
+  createRegistration?: Maybe<CreateRegistrationPayload>;
+  /** Creates a single `TestTable`. */
+  createTestTable?: Maybe<CreateTestTablePayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
   /** Deletes a single `Attendee` using a unique key. */
@@ -976,6 +1195,16 @@ export type Mutation = {
   deleteOrganizationMembershipByNodeId?: Maybe<DeleteOrganizationMembershipPayload>;
   /** Deletes a single `OrganizationMembership` using a unique key. */
   deleteOrganizationMembershipByOrganizationIdAndUserId?: Maybe<DeleteOrganizationMembershipPayload>;
+  /** Deletes a single `Registration` using a unique key. */
+  deleteRegistration?: Maybe<DeleteRegistrationPayload>;
+  /** Deletes a single `Registration` using its globally unique id. */
+  deleteRegistrationByNodeId?: Maybe<DeleteRegistrationPayload>;
+  /** Deletes a single `TestTable` using a unique key. */
+  deleteTestTable?: Maybe<DeleteTestTablePayload>;
+  /** Deletes a single `TestTable` using a unique key. */
+  deleteTestTableByAttendeeId?: Maybe<DeleteTestTablePayload>;
+  /** Deletes a single `TestTable` using its globally unique id. */
+  deleteTestTableByNodeId?: Maybe<DeleteTestTablePayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
   /** Deletes a single `User` using a unique key. */
@@ -1013,6 +1242,16 @@ export type Mutation = {
   updateOrganizationMembershipByNodeId?: Maybe<UpdateOrganizationMembershipPayload>;
   /** Updates a single `OrganizationMembership` using a unique key and a patch. */
   updateOrganizationMembershipByOrganizationIdAndUserId?: Maybe<UpdateOrganizationMembershipPayload>;
+  /** Updates a single `Registration` using a unique key and a patch. */
+  updateRegistration?: Maybe<UpdateRegistrationPayload>;
+  /** Updates a single `Registration` using its globally unique id and a patch. */
+  updateRegistrationByNodeId?: Maybe<UpdateRegistrationPayload>;
+  /** Updates a single `TestTable` using a unique key and a patch. */
+  updateTestTable?: Maybe<UpdateTestTablePayload>;
+  /** Updates a single `TestTable` using a unique key and a patch. */
+  updateTestTableByAttendeeId?: Maybe<UpdateTestTablePayload>;
+  /** Updates a single `TestTable` using its globally unique id and a patch. */
+  updateTestTableByNodeId?: Maybe<UpdateTestTablePayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using a unique key and a patch. */
@@ -1043,6 +1282,18 @@ export type MutationCreateOrganizationArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateOrganizationMembershipArgs = {
   input: CreateOrganizationMembershipInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateRegistrationArgs = {
+  input: CreateRegistrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateTestTableArgs = {
+  input: CreateTestTableInput;
 };
 
 
@@ -1139,6 +1390,36 @@ export type MutationDeleteOrganizationMembershipByNodeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteOrganizationMembershipByOrganizationIdAndUserIdArgs = {
   input: DeleteOrganizationMembershipByOrganizationIdAndUserIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRegistrationArgs = {
+  input: DeleteRegistrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRegistrationByNodeIdArgs = {
+  input: DeleteRegistrationByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTestTableArgs = {
+  input: DeleteTestTableInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTestTableByAttendeeIdArgs = {
+  input: DeleteTestTableByAttendeeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTestTableByNodeIdArgs = {
+  input: DeleteTestTableByNodeIdInput;
 };
 
 
@@ -1259,6 +1540,36 @@ export type MutationUpdateOrganizationMembershipByNodeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateOrganizationMembershipByOrganizationIdAndUserIdArgs = {
   input: UpdateOrganizationMembershipByOrganizationIdAndUserIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRegistrationArgs = {
+  input: UpdateRegistrationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRegistrationByNodeIdArgs = {
+  input: UpdateRegistrationByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTestTableArgs = {
+  input: UpdateTestTableInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTestTableByAttendeeIdArgs = {
+  input: UpdateTestTableByAttendeeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTestTableByNodeIdArgs = {
+  input: UpdateTestTableByNodeIdInput;
 };
 
 
@@ -1615,6 +1926,7 @@ export type Query = Node & {
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID. */
   currentUserId?: Maybe<Scalars['UUID']>;
+  dateTruncFunc?: Maybe<Scalars['Datetime']>;
   event?: Maybe<Event>;
   /** Reads a single `Event` using its globally unique `ID`. */
   eventByNodeId?: Maybe<Event>;
@@ -1645,6 +1957,17 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
+  registration?: Maybe<Registration>;
+  /** Reads a single `Registration` using its globally unique `ID`. */
+  registrationByNodeId?: Maybe<Registration>;
+  /** Reads and enables pagination through a set of `Registration`. */
+  registrations?: Maybe<RegistrationsConnection>;
+  testTable?: Maybe<TestTable>;
+  testTableByAttendeeId?: Maybe<TestTable>;
+  /** Reads a single `TestTable` using its globally unique `ID`. */
+  testTableByNodeId?: Maybe<TestTable>;
+  /** Reads and enables pagination through a set of `TestTable`. */
+  testTables?: Maybe<TestTablesConnection>;
   user?: Maybe<User>;
   userByEmail?: Maybe<User>;
   /** Reads a single `User` using its globally unique `ID`. */
@@ -1683,6 +2006,13 @@ export type QueryAttendeesArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryDateTruncFuncArgs = {
+  date?: InputMaybe<Scalars['Datetime']>;
+  unit?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1808,6 +2138,62 @@ export type QueryOrganizationsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryRegistrationArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRegistrationByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRegistrationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<RegistrationCondition>;
+  filter?: InputMaybe<RegistrationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTestTableArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTestTableByAttendeeIdArgs = {
+  attendeeId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTestTableByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTestTablesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<TestTableCondition>;
+  filter?: InputMaybe<TestTableFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryUserArgs = {
   id: Scalars['UUID'];
 };
@@ -1864,83 +2250,295 @@ export type RegisterPayload = {
   query?: Maybe<Query>;
 };
 
+export type Registration = Node & {
+  __typename?: 'Registration';
+  /** Reads and enables pagination through a set of `Attendee`. */
+  attendees: AttendeesConnection;
+  createdAt: Scalars['Datetime'];
+  email: Scalars['String'];
+  /** Reads a single `Event` that is related to this `Registration`. */
+  event?: Maybe<Event>;
+  eventId?: Maybe<Scalars['UUID']>;
+  firstname: Scalars['String'];
+  id: Scalars['UUID'];
+  lastname: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  updatedAt: Scalars['Datetime'];
+};
+
+
+export type RegistrationAttendeesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AttendeeCondition>;
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+/**
+ * A condition to be used against `Registration` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type RegistrationCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `eventId` field. */
+  eventId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `Registration` object types. All fields are combined with a logical ‘and.’ */
+export type RegistrationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RegistrationFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `eventId` field. */
+  eventId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RegistrationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RegistrationFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `Registration` */
+export type RegistrationInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  email: Scalars['String'];
+  eventId?: InputMaybe<Scalars['UUID']>;
+  firstname: Scalars['String'];
+  id?: InputMaybe<Scalars['UUID']>;
+  lastname: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `Registration`. Fields that are set will be updated. */
+export type RegistrationPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  email?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  firstname?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  lastname?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `Registration` values. */
+export type RegistrationsConnection = {
+  __typename?: 'RegistrationsConnection';
+  /** A list of edges which contains the `Registration` and cursor to aid in pagination. */
+  edges: Array<RegistrationsEdge>;
+  /** A list of `Registration` objects. */
+  nodes: Array<Registration>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Registration` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Registration` edge in the connection. */
+export type RegistrationsEdge = {
+  __typename?: 'RegistrationsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Registration` at the end of the edge. */
+  node: Registration;
+};
+
+/** Methods to use when ordering `Registration`. */
+export enum RegistrationsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EventIdAsc = 'EVENT_ID_ASC',
+  EventIdDesc = 'EVENT_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: InputMaybe<Scalars['String']>;
-  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  distinctFromInsensitive?: InputMaybe<Scalars['String']>;
-  /** Ends with the specified string (case-sensitive). */
-  endsWith?: InputMaybe<Scalars['String']>;
-  /** Ends with the specified string (case-insensitive). */
-  endsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value. */
   equalTo?: InputMaybe<Scalars['String']>;
-  /** Equal to the specified value (case-insensitive). */
-  equalToInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than the specified value. */
   greaterThan?: InputMaybe<Scalars['String']>;
-  /** Greater than the specified value (case-insensitive). */
-  greaterThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
-  /** Greater than or equal to the specified value (case-insensitive). */
-  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
-  /** Included in the specified list (case-insensitive). */
-  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
-  /** Contains the specified string (case-sensitive). */
-  includes?: InputMaybe<Scalars['String']>;
-  /** Contains the specified string (case-insensitive). */
-  includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
   lessThan?: InputMaybe<Scalars['String']>;
-  /** Less than the specified value (case-insensitive). */
-  lessThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Less than or equal to the specified value. */
   lessThanOrEqualTo?: InputMaybe<Scalars['String']>;
-  /** Less than or equal to the specified value (case-insensitive). */
-  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
-  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  like?: InputMaybe<Scalars['String']>;
-  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  likeInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value. */
   notDistinctFrom?: InputMaybe<Scalars['String']>;
-  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  notDistinctFromInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not end with the specified string (case-sensitive). */
-  notEndsWith?: InputMaybe<Scalars['String']>;
-  /** Does not end with the specified string (case-insensitive). */
-  notEndsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value. */
   notEqualTo?: InputMaybe<Scalars['String']>;
-  /** Not equal to the specified value (case-insensitive). */
-  notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
-  /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
-  /** Does not contain the specified string (case-sensitive). */
-  notIncludes?: InputMaybe<Scalars['String']>;
-  /** Does not contain the specified string (case-insensitive). */
-  notIncludesInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLike?: InputMaybe<Scalars['String']>;
-  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLikeInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not start with the specified string (case-sensitive). */
-  notStartsWith?: InputMaybe<Scalars['String']>;
-  /** Does not start with the specified string (case-insensitive). */
-  notStartsWithInsensitive?: InputMaybe<Scalars['String']>;
-  /** Starts with the specified string (case-sensitive). */
-  startsWith?: InputMaybe<Scalars['String']>;
-  /** Starts with the specified string (case-insensitive). */
-  startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
+
+export type TestTable = Node & {
+  __typename?: 'TestTable';
+  /** Reads a single `Attendee` that is related to this `TestTable`. */
+  attendee?: Maybe<Attendee>;
+  attendeeId: Scalars['UUID'];
+  createdAt: Scalars['Datetime'];
+  id: Scalars['UUID'];
+  infos?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  status?: Maybe<TestTableStatus>;
+  updatedAt: Scalars['Datetime'];
+};
+
+/**
+ * A condition to be used against `TestTable` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type TestTableCondition = {
+  /** Checks for equality with the object’s `attendeeId` field. */
+  attendeeId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<TestTableStatus>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `TestTable` object types. All fields are combined with a logical ‘and.’ */
+export type TestTableFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<TestTableFilter>>;
+  /** Filter by the object’s `attendeeId` field. */
+  attendeeId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<TestTableFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<TestTableFilter>>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<TestTableStatusFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `TestTable` */
+export type TestTableInput = {
+  attendeeId: Scalars['UUID'];
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  infos?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<TestTableStatus>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `TestTable`. Fields that are set will be updated. */
+export type TestTablePatch = {
+  attendeeId?: InputMaybe<Scalars['UUID']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  infos?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<TestTableStatus>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+export enum TestTableStatus {
+  /** Status est non ok */
+  Nok = 'NOK',
+  /** Status est ok */
+  Ok = 'OK'
+}
+
+/** A filter to be used against TestTableStatus fields. All fields are combined with a logical ‘and.’ */
+export type TestTableStatusFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<TestTableStatus>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<TestTableStatus>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<TestTableStatus>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<TestTableStatus>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<TestTableStatus>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<TestTableStatus>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<TestTableStatus>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<TestTableStatus>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<TestTableStatus>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<TestTableStatus>>;
+};
+
+/** A connection to a list of `TestTable` values. */
+export type TestTablesConnection = {
+  __typename?: 'TestTablesConnection';
+  /** A list of edges which contains the `TestTable` and cursor to aid in pagination. */
+  edges: Array<TestTablesEdge>;
+  /** A list of `TestTable` objects. */
+  nodes: Array<TestTable>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `TestTable` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `TestTable` edge in the connection. */
+export type TestTablesEdge = {
+  __typename?: 'TestTablesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `TestTable` at the end of the edge. */
+  node: TestTable;
+};
+
+/** Methods to use when ordering `TestTable`. */
+export enum TestTablesOrderBy {
+  AttendeeIdAsc = 'ATTENDEE_ID_ASC',
+  AttendeeIdDesc = 'ATTENDEE_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
 
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
 export type UuidFilter = {
@@ -2022,6 +2620,8 @@ export type UpdateAttendeePayload = {
   event?: Maybe<Event>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `Registration` that is related to this `Attendee`. */
+  registration?: Maybe<Registration>;
 };
 
 
@@ -2238,6 +2838,116 @@ export type UpdateOrganizationPayload = {
 /** The output of our update `Organization` mutation. */
 export type UpdateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
+};
+
+/** All input for the `updateRegistrationByNodeId` mutation. */
+export type UpdateRegistrationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Registration` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `Registration` being updated. */
+  patch: RegistrationPatch;
+};
+
+/** All input for the `updateRegistration` mutation. */
+export type UpdateRegistrationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `Registration` being updated. */
+  patch: RegistrationPatch;
+};
+
+/** The output of our update `Registration` mutation. */
+export type UpdateRegistrationPayload = {
+  __typename?: 'UpdateRegistrationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `Registration`. */
+  event?: Maybe<Event>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Registration` that was updated by this mutation. */
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
+};
+
+
+/** The output of our update `Registration` mutation. */
+export type UpdateRegistrationPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the `updateTestTableByAttendeeId` mutation. */
+export type UpdateTestTableByAttendeeIdInput = {
+  attendeeId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `TestTable` being updated. */
+  patch: TestTablePatch;
+};
+
+/** All input for the `updateTestTableByNodeId` mutation. */
+export type UpdateTestTableByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `TestTable` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `TestTable` being updated. */
+  patch: TestTablePatch;
+};
+
+/** All input for the `updateTestTable` mutation. */
+export type UpdateTestTableInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `TestTable` being updated. */
+  patch: TestTablePatch;
+};
+
+/** The output of our update `TestTable` mutation. */
+export type UpdateTestTablePayload = {
+  __typename?: 'UpdateTestTablePayload';
+  /** Reads a single `Attendee` that is related to this `TestTable`. */
+  attendee?: Maybe<Attendee>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `TestTable` that was updated by this mutation. */
+  testTable?: Maybe<TestTable>;
+  /** An edge for our `TestTable`. May be used by Relay 1. */
+  testTableEdge?: Maybe<TestTablesEdge>;
+};
+
+
+/** The output of our update `TestTable` mutation. */
+export type UpdateTestTablePayloadTestTableEdgeArgs = {
+  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
 };
 
 /** All input for the `updateUserByEmail` mutation. */
@@ -2491,6 +3201,20 @@ export type UpdateOrganizationMutationVariables = Exact<{
 
 export type UpdateOrganizationMutation = { __typename?: 'Mutation', updateOrganization?: { __typename?: 'UpdateOrganizationPayload', organization?: { __typename?: 'Organization', id: any } | null } | null };
 
+export type GetAllAttendeeByEventIdQueryVariables = Exact<{
+  eventId: Scalars['UUID'];
+}>;
+
+
+export type GetAllAttendeeByEventIdQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } | null };
+
+export type GetAttendeeByIdQueryVariables = Exact<{
+  attendeeId: Scalars['UUID'];
+}>;
+
+
+export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any } | null };
+
 export type GetAllEventsByOrganizationIdQueryVariables = Exact<{
   organizationId: Scalars['UUID'];
 }>;
@@ -2527,10 +3251,17 @@ export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { 
 
 export type GetOrganizationBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
+  after?: InputMaybe<Scalars['Cursor']>;
+  first?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<EventsOrderBy> | EventsOrderBy>;
+  filter?: InputMaybe<EventFilter>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any }> } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, city?: string | null, happeningAt?: any | null, bookingEndsAt?: any | null, bookingStartsAt?: any | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, lastname: string, firstname: string }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export const MyAttendeeFragmentDoc = gql`
     fragment MyAttendee on Attendee {
@@ -2654,6 +3385,22 @@ export const UpdateOrganizationDocument = gql`
   }
 }
     `;
+export const GetAllAttendeeByEventIdDocument = gql`
+    query GetAllAttendeeByEventId($eventId: UUID!) {
+  attendees(orderBy: [CREATED_AT_DESC], condition: {eventId: $eventId}) {
+    nodes {
+      ...MyAttendee
+    }
+  }
+}
+    ${MyAttendeeFragmentDoc}`;
+export const GetAttendeeByIdDocument = gql`
+    query GetAttendeeById($attendeeId: UUID!) {
+  attendee(id: $attendeeId) {
+    ...MyAttendee
+  }
+}
+    ${MyAttendeeFragmentDoc}`;
 export const GetAllEventsByOrganizationIdDocument = gql`
     query GetAllEventsByOrganizationId($organizationId: UUID!) {
   events(orderBy: [CREATED_AT_DESC], condition: {organizationId: $organizationId}) {
@@ -2720,18 +3467,44 @@ export const GetOrganizationByIdDocument = gql`
     ${OrganizationFragmentFragmentDoc}
 ${MyEventFragmentDoc}`;
 export const GetOrganizationBySlugDocument = gql`
-    query GetOrganizationBySlug($slug: String!) {
+    query GetOrganizationBySlug($slug: String!, $after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [EventsOrderBy!] = CREATED_AT_ASC, $filter: EventFilter, $offset: Int) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
-    events {
+    events(
+      filter: $filter
+      first: $first
+      after: $after
+      last: $last
+      before: $before
+      orderBy: $orderBy
+      offset: $offset
+    ) {
       nodes {
-        ...MyEvent
+        id
+        name
+        city
+        happeningAt
+        bookingEndsAt
+        bookingStartsAt
+        attendees {
+          nodes {
+            id
+            lastname
+            firstname
+          }
+        }
       }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      totalCount
     }
   }
 }
-    ${OrganizationFragmentFragmentDoc}
-${MyEventFragmentDoc}`;
+    ${OrganizationFragmentFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -2766,6 +3539,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     UpdateOrganization(variables: UpdateOrganizationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateOrganizationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateOrganizationMutation>(UpdateOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateOrganization', 'mutation');
+    },
+    GetAllAttendeeByEventId(variables: GetAllAttendeeByEventIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllAttendeeByEventIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllAttendeeByEventIdQuery>(GetAllAttendeeByEventIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllAttendeeByEventId', 'query');
+    },
+    GetAttendeeById(variables: GetAttendeeByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByIdQuery>(GetAttendeeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeById', 'query');
     },
     GetAllEventsByOrganizationId(variables: GetAllEventsByOrganizationIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllEventsByOrganizationIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllEventsByOrganizationIdQuery>(GetAllEventsByOrganizationIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllEventsByOrganizationId', 'query');

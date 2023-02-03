@@ -1,7 +1,11 @@
 import { getSdk } from "@tacotacIO/codegen";
 import { GraphQLClient } from "graphql-request";
 
-const fetchWrapper = args => {
+
+
+
+
+const fetchWrapper = (args) => {
   return (url, options = {} as any) => {
     const headers = { "Content-Type": "application/json" };
     const defaultOptions = {

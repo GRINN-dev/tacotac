@@ -32,8 +32,11 @@ create table publ.events (
     create index on publ.events(updated_at);
     create index on publ.events(name);
     create index on publ.events(slug);
-    create index on publ.events(zip_code);
+    create index on publ.events(city);
     create index on publ.events(happening_at);
+    create index on publ.events(booking_starts_at);
+    create index on publ.events(booking_ends_at);
+
 
 -- RBAC
     grant select on publ.events to :DATABASE_VISITOR;
@@ -71,7 +74,10 @@ create table publ.events (
     END TABLE: publ.events
 
 */
-
+create or replace function publ.date_trunc_func(unit text, date timestamptz)
+RETURNS timestamptz AS $$
+  SELECT date_trunc($1, $2) - interval '30 days';
+$$ LANGUAGE sql stable security definer;
 
 create or replace function publ.event_by_slug(event_slug text, organization_slug text) returns publ.events as $$
   select proj from publ.events proj
@@ -81,3 +87,47 @@ create or replace function publ.event_by_slug(event_slug text, organization_slug
 $$ language sql stable security definer;
 
 grant execute on function publ.event_by_slug(text, text) to :DATABASE_VISITOR;
+
+/*
+  TABLE: publ.registrations
+  DESCRIPTION: la table registration contient les inscriptions d'un evenement
+*/
+drop table if exists publ.registrations cascade;
+create table publ.registrations (
+    id uuid not null default uuid_generate_v4() primary key unique, 
+    firstname text not null,
+    lastname text not null,
+    email citext not null,
+    event_id uuid  references publ.events(id),
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+);
+
+-- indexes
+  create index on publ.registrations(created_at);
+  create index on publ.registrations(updated_at);
+  create index on publ.registrations(event_id);
+
+-- RBAC
+  grant select on publ.registrations to :DATABASE_VISITOR;
+
+-- triggers
+  create trigger _100_timestamps
+  before insert or update on publ.registrations
+  for each row
+  execute procedure priv.tg__timestamps();
+
+-- RLS
+  alter table publ.registrations enable row level security;
+
+ create policy no_limit /*TODO: update policy*/
+   on publ.registrations
+   for all
+   using (true)
+   with check(true);
+
+-- fixtures
+  -- fixtures go here
+/*
+  END TABLE: publ.registrations
+*/

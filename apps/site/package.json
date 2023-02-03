@@ -39,6 +39,7 @@
     "@tacotacIO/codegen": "workspace:*",
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
+    "framer-motion": "^8.5.5",
     "graphql-request": "^5.1.0",
     "lucide-react": "0.105.0-alpha.4",
     "next": "^13.1.5",
