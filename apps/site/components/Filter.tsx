@@ -13,6 +13,7 @@ import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
+
 interface iFilter {
   select: iSelectData[];
   transition: TransitionStartFunction;
@@ -21,6 +22,7 @@ interface iFilter {
 export const FilterUi = ({ select, transition }: iFilter) => {
   const router = useRouter();
   const pathname = usePathname();
+
   const [typeFilter, setTypeFilter] = useState<string>();
   const [filter, setFilter] = useState<string | null>(null);
   const [valueFilter, setValueFilter] = useState<string | number | null>(null);
@@ -45,7 +47,7 @@ export const FilterUi = ({ select, transition }: iFilter) => {
     { title: "est plus grand que", value: "greaterThan" },
     { title: "est plus grand ou égale à", value: "greaterThanOrEqualTo" },
   ];
-  
+
   useEffect(() => {
     if (typeFilter) {
       const { type } = JSON.parse(typeFilter);

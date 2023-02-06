@@ -6,6 +6,8 @@ import { PageInfo } from "@/../../@tacotacIO/codegen/dist";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+
+
 import { Button } from "./ui/button";
 
 interface IPagination {
@@ -18,7 +20,7 @@ interface IPagination {
 
 export const PaginationUi = ({ totalCount, limit, pageInfo, transition }: IPagination) => {
   const searchParams = useSearchParams();
-  const filter = searchParams.get("filter");
+  const filterParams = searchParams.get("filterParams");
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(totalCount / limit);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -33,7 +35,7 @@ export const PaginationUi = ({ totalCount, limit, pageInfo, transition }: IPagin
           onClick={() => {
             transition(() => {
               const offset = currentPage <= 2 ? 0 : currentPage % 2 ? currentPage - 1 : currentPage - 2;
-              router.push(`${pathname}?offset=${offset}${filter ? `&filter=${filter}` : ""}`);
+              router.push(`${pathname}?offset=${offset}${filterParams ? `&filterParams=${filterParams}` : ""}`);
             });
 
             setCurrentPage(currentPage - 1);
@@ -50,7 +52,9 @@ export const PaginationUi = ({ totalCount, limit, pageInfo, transition }: IPagin
             onClick={() => {
               transition(() => {
                 const offsetCurrent = number > 1 ? (number % 2 ? number + 1 : number) : 0;
-                router.push(`${pathname}?offset=${offsetCurrent}${filter ? `&filter=${filter}` : ""}`);
+                router.push(
+                  `${pathname}?offset=${offsetCurrent}${filterParams ? `&filterParams=${filterParams}` : ""}`
+                );
               });
 
               setCurrentPage(number);
@@ -70,7 +74,7 @@ export const PaginationUi = ({ totalCount, limit, pageInfo, transition }: IPagin
           onClick={() => {
             transition(() => {
               const offsetNext = currentPage % 2 ? currentPage + 1 : currentPage + 2;
-              router.push(`${pathname}?offset=${offsetNext}${filter ? `&filter=${filter}` : ""}`);
+              router.push(`${pathname}?offset=${offsetNext}${filterParams ? `&filterParams=${filterParams}` : ""}`);
             });
             setCurrentPage(currentPage + 1);
           }}
