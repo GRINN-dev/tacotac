@@ -37,21 +37,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter } }) => {
       </div>
 
       <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
-        {data?.organizations?.nodes.map((organization) => (
-          <div
-            key={organization?.id}
-            className="flex items-center justify-between px-6 py-3 border-b border-x border-slate-300 first-of-type:rounded-t-lg first-of-type:border-t last-of-type:rounded-b-lg"
-          >
-            <Link href={`/organizations/${organization?.slug}`}>{organization?.name}</Link>
-
-            <Link
-              href={`/organizations/${organization?.slug}/infos`}
-              className={buttonVariants({ variant: "outline" })}
-            >
-              <PlusSquare className="w-4 h-4 mr-2" /> Infos
-            </Link>
-          </div>
-        ))}
+        
         <Collection
           totalCount={data?.organizations?.totalCount}
           pageInfo={data?.organizations?.pageInfo}

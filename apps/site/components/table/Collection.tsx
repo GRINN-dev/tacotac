@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useId, useState, useTransition } from "react";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion, useAnimationControls } from "framer-motion";
 import { ChevronLeft, ChevronRight, Filter, PlusCircle } from "lucide-react";
 
-
-
 import { DataRow, iHeader, iTypeFilter } from "@/types/filter";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -40,6 +39,7 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const offsetParams = searchParams.get("offset");
 
   const { headerFormat, dataformat } = formatCollectionData(header, data);
 
@@ -117,6 +117,7 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
 
   const filterParams = searchParams.get("filter"); //On peut éventuellement recupérer les données de filterObject dans le onChange via un hook (ceci est un reliquat du composant pagination)
   const [currentPage, setCurrentPage] = useState(1);
+  const [offset, setOffest] = useState(0);
   const totalPages = Math.ceil(totalCount / limit);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   //end pagination parts
@@ -225,8 +226,13 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
               </tr>
             </thead>
             <tbody className="flex flex-col">
+              {/* router.push(`/${pathname}/${row?.name}`) */}
               {dataformat.map((row, index) => (
-                <tr className="flex items-center " key={"row-" + index}>
+                <tr
+                  className="flex items-center "
+                  onClick={() => router.push(`${pathname}/${row?.Nom.toLowerCase()}`)}
+                  key={"row-" + index}
+                >
                   {headerFormat?.map((item, index) => (
                     <td
                       className={` border-t ${
@@ -245,22 +251,38 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
           </table>
           {/* Begin pagination parts */}
           <div id="Pagination" className="flex flex-row justify-between">
-            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-              <Button
-                disabled={!pageInfo?.hasPreviousPage}
-                onClick={() => {
-                  startTransition(() => {
-                    const offset = currentPage <= 2 ? 0 : currentPage % 2 ? currentPage - 1 : currentPage - 2;
-                    router.push(`${pathname}?offset=${offset}${filterParams ? `&filterParams=${filterParams}` : ""}`);
-                  });
+            <nav
+              className="flex items-center justify-evenly border-t  px-4 py-3 sm:px-6 w-full"
+              aria-label="Pagination"
+            >
+              <div className="hidden sm:block">
+                <p className="text-sm ">
+                  Affichage{" "}
+                  <span className="font-medium">
+                    {!offsetParams || Number(offsetParams) < 2 ? 1 : Number(offsetParams) + 1}
+                  </span>{" "}
+                  à <span className="font-medium">{Number(offsetParams) + limit}</span> sur{" "}
+                  <span className="font-medium">{totalCount}</span> résultats
+                </p>
+              </div>
+              <div className="flex flex-1 justify-between sm:justify-end">
+                <Button
+                  className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  disabled={!pageInfo?.hasPreviousPage}
+                  onClick={() => {
+                    startTransition(() => {
+                      const offSetPrev = currentPage <= 2 ? 0 : currentPage % 2 ? currentPage - 1 : currentPage - 2;
+                      router.push(
+                        `${pathname}?offset=${offSetPrev}${filterParams ? `&filterParams=${filterParams}` : ""}`
+                      );
+                    });
 
-                  setCurrentPage(currentPage - 1);
-                }}
-              >
-                <span className="sr-only">Previous</span>
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              {pages?.map((number) => (
+                    setCurrentPage(currentPage - 1);
+                  }}
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </Button>
+                {/* {pages?.map((number) => (
                 <button
                   disabled={currentPage === number}
                   key={"input-limit-" + number}
@@ -284,22 +306,23 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
                   )}
                   {number}
                 </button>
-              ))}
-              <Button
-                disabled={!pageInfo?.hasNextPage}
-                onClick={() => {
-                  startTransition(() => {
-                    const offsetNext = currentPage % 2 ? currentPage + 1 : currentPage + 2;
-                    router.push(
-                      `${pathname}?offset=${offsetNext}${filterParams ? `&filterParams=${filterParams}` : ""}`
-                    );
-                  });
-                  setCurrentPage(currentPage + 1);
-                }}
-              >
-                <span className="sr-only">Next</span>
-                <ChevronRight className="w-5 h-5" />
-              </Button>
+              ))} */}
+                <Button
+                  className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  disabled={!pageInfo?.hasNextPage}
+                  onClick={() => {
+                    startTransition(() => {
+                      const offsetNext = currentPage % 2 ? currentPage + 1 : currentPage + 2;
+                      router.push(
+                        `${pathname}?offset=${offsetNext}${filterParams ? `&filterParams=${filterParams}` : ""}`
+                      );
+                    });
+                    setCurrentPage(currentPage + 1);
+                  }}
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </Button>
+              </div>
             </nav>
           </div>
           {/* End pagination parts */}
