@@ -1,15 +1,10 @@
-import { iData } from "@/types/filter";
+import { DataRow, iData, iHeader } from "@/types/filter";
 
-
-interface DataRow {
-  [key: string]: any;
-}
-
-const formatData = (header: string[], rawData: iData[]) => {
+const formatData = (header: iHeader[], rawData: any[]) => {
   const data: DataRow[] = rawData?.map((row) => {
     const dataRow: DataRow = {};
     header?.forEach((item) => {
-      dataRow[item] = row[item];
+      dataRow[item?.title] = row[item?.title];
     });
     return dataRow;
   });

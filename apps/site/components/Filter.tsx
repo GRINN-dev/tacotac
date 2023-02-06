@@ -45,6 +45,7 @@ export const FilterUi = ({ select, transition }: iFilter) => {
     { title: "est plus grand que", value: "greaterThan" },
     { title: "est plus grand ou égale à", value: "greaterThanOrEqualTo" },
   ];
+  
   useEffect(() => {
     if (typeFilter) {
       const { type } = JSON.parse(typeFilter);

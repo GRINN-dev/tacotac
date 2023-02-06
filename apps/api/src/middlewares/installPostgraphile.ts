@@ -61,6 +61,7 @@ const getPostgraphileOptions = (rootPgPool: Pool): PostGraphileOptions => {
     graphileBuildOptions: {
       connectionFilterAllowNullInput: true,
       connectionFilterAllowedOperators: [
+        "includesInsensitive",
         "isNull",
         "equalTo",
         "notEqualTo",

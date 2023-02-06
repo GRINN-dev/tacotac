@@ -17,4 +17,23 @@ export interface iData {
   "Fin inscription": string;
   Participants: number;
 }
-//pour pr
+
+export interface iDataOrga {
+  Nom: string;
+  Description: string;
+}
+
+export enum Type {
+  "string" = "string",
+  "date" = "date",
+}
+
+export interface iHeader {
+  title: string;
+  value: string;
+  type: Type;
+}
+
+export interface DataRow {
+  [key: string]: any;
+}

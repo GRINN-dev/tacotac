@@ -2383,6 +2383,8 @@ export type StringFilter = {
   greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
@@ -3237,10 +3239,18 @@ export type GetEventBySlugQueryVariables = Exact<{
 
 export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null };
 
-export type GetAllOrganizationQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllOrganizationQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['Cursor']>;
+  first?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OrganizationsOrderBy> | OrganizationsOrderBy>;
+  filter?: InputMaybe<OrganizationFilter>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type GetAllOrganizationQuery = { __typename?: 'Query', organizations?: { __typename?: 'OrganizationsConnection', nodes: Array<{ __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number } }> } | null };
+export type GetAllOrganizationQuery = { __typename?: 'Query', organizations?: { __typename?: 'OrganizationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetOrganizationByIdQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -3446,13 +3456,28 @@ export const GetEventBySlugDocument = gql`
 ${MyEventFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
 export const GetAllOrganizationDocument = gql`
-    query GetAllOrganization {
-  organizations {
+    query GetAllOrganization($after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [OrganizationsOrderBy!] = CREATED_AT_ASC, $filter: OrganizationFilter, $offset: Int) {
+  organizations(
+    filter: $filter
+    first: $first
+    after: $after
+    last: $last
+    before: $before
+    orderBy: $orderBy
+    offset: $offset
+  ) {
     nodes {
       ...OrganizationFragment
       events {
         totalCount
       }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
     }
   }
 }

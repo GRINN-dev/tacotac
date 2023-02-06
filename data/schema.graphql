@@ -1100,6 +1100,9 @@ input StringFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: String
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: String
 }
 
 """A connection to a list of `Registration` values."""
