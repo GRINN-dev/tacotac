@@ -5,7 +5,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { motion, useAnimationControls } from "framer-motion";
 import { ChevronLeft, ChevronRight, Filter, PlusCircle } from "lucide-react";
 
-import { iTypeFilter } from "@/types/filter";
+
+
+import { DataRow, iHeader, iTypeFilter } from "@/types/filter";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -20,11 +22,26 @@ interface iTableEvent {
   pageInfo: any;
 }
 
+const formatCollectionData = (headerFormat: iHeader[], rawData: any[]) => {
+  //regroupement des données afin qu'elles correspondent au header pour l'affichage à faire évoluer ?
+  const dataformat: DataRow[] = rawData?.map((row) => {
+    const dataRow: DataRow = {};
+    headerFormat?.forEach((item) => {
+      dataRow[item?.title] = row[item?.title];
+    });
+    return dataRow;
+  });
+
+  return { headerFormat, dataformat };
+};
+
 export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTableEvent) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const { headerFormat, dataformat } = formatCollectionData(header, data);
 
   // Begin filter parts
   const [typeFilter, setTypeFilter] = useState<string>();
@@ -132,7 +149,7 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
                     </SelectTrigger>
                     <SelectContent className="w-[180px]">
                       <SelectGroup>
-                        {header?.map(({ title, value, type, index }) => (
+                        {headerFormat?.map(({ title, value, type }, index) => (
                           <SelectItem key={title + value + index} value={JSON.stringify({ value: value, type: type })}>
                             {title}
                           </SelectItem>
@@ -196,7 +213,7 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
           <table className="flex flex-col px-6 py-3 border-t border-b rounded-t-lg rounded-b-lg border-x border-slate-300">
             <thead>
               <tr className="flex items-center">
-                {header?.map((item, index) => (
+                {headerFormat?.map((item, index) => (
                   <th
                     className="w-1/3 p-1"
                     key={"head " + item?.title + index}
@@ -208,9 +225,9 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
               </tr>
             </thead>
             <tbody className="flex flex-col">
-              {data.map((row, index) => (
+              {dataformat.map((row, index) => (
                 <tr className="flex items-center " key={"row-" + index}>
-                  {header?.map((item, index) => (
+                  {headerFormat?.map((item, index) => (
                     <td
                       className={` border-t ${
                         !isPending

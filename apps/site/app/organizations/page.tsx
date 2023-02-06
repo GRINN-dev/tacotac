@@ -6,7 +6,6 @@ import { PlusSquare } from "lucide-react";
 import { Type, iData, iDataOrga } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
-import formatData from "@/components/table/taskTable";
 import { buttonVariants } from "@/components/ui/button";
 
 const OrganizationsPage = async ({ searchParams: { offset, filter } }) => {
@@ -16,7 +15,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter } }) => {
     filter: filter ? JSON.parse(filter) : null,
   });
 
-  const header = [
+  const headerOrga = [
     { title: "Nom", value: "name", type: Type?.string },
     { title: "Description", value: "description", type: Type?.string },
   ];
@@ -25,6 +24,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter } }) => {
     Nom: organization?.name,
     Description: organization?.description,
   }));
+
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
@@ -56,7 +56,8 @@ const OrganizationsPage = async ({ searchParams: { offset, filter } }) => {
           totalCount={data?.organizations?.totalCount}
           pageInfo={data?.organizations?.pageInfo}
           limit={2}
-          {...formatData(header, rawOrga)}
+          header={headerOrga}
+          data={rawOrga}
         />
       </div>
     </section>

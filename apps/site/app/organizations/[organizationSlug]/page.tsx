@@ -8,8 +8,6 @@ import { iData } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../components/table/Collection";
-import formatData from "../../../components/table/taskTable";
-
 
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter } }) => {
   const limit = 2;
@@ -28,7 +26,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
 
   const { organizationBySlug: organization } = data;
 
-  const header = [
+  const headerEvent = [
     { title: "Nom", value: "name", type: Type?.string },
     { title: "Lieu", value: "city", type: Type?.string },
     { title: "Commence le", value: "happeningAt", type: Type?.date },
@@ -37,7 +35,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     { title: "Participants", value: "attendees", type: Type?.date },
   ];
 
-  const rawOrga: iData[] = organization?.events?.nodes.map((event) => ({
+  const rawEvent: iData[] = organization?.events?.nodes.map((event) => ({
     Nom: event?.name,
     Lieu: event?.city,
     "Commence le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
@@ -75,7 +73,8 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
         totalCount={organization?.events?.totalCount}
         pageInfo={organization?.events?.pageInfo}
         limit={limit}
-        {...formatData(header, rawOrga)}
+        header={headerEvent}
+        data={rawEvent}
       />
     </section>
   );
