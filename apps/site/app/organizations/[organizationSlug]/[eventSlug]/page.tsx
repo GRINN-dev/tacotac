@@ -38,7 +38,7 @@ const EventPage = async ({
     Date: dayjs(attendee?.updatedAt).format("DD/MM/YYYY"),
     slug: "/participant/" + attendee?.id,
   }));
-
+//pour pr ici slug rediige vers l'id ptit tricks lol
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">

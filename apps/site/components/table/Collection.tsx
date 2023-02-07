@@ -15,12 +15,14 @@ import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
+
 interface iTableEvent {
   header: IHeader[];
   data: IData[];
   totalCount: number;
   pageInfo: any;
 }
+//pour pr
 
 const formatCollectionData = (headerFormat: IHeader[], rawData: IData[]) => {
   //regroupement des données afin qu'elles correspondent au header pour l'affichage à faire évoluer ?
