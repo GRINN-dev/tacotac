@@ -59,6 +59,8 @@ create table publ.attendees (
 
 -- fixtures
   -- fixtures go here
+
+
 /*
   END TABLE: publ.attendees
 */

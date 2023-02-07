@@ -4904,6 +4904,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "includesInsensitive",
+              "description": "Contains the specified string (case-insensitive).",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,

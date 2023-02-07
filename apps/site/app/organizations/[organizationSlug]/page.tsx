@@ -1,35 +1,50 @@
 import Link from "next/link";
-import { GetAllEventsByOrganizationIdQuery } from "@/../../@tacotacIO/codegen/dist";
+import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
 
 
 
+import { IData, IHeader } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
-import { TableEvent } from "./TableEvent";
+import { Collection } from "../../../components/table/Collection";
 
 
-interface iEvent
-  extends ExtractArrayType<
-    ExtractType<GetAllEventsByOrganizationIdQuery, "events">,
-    "nodes"
-  > {
-  params: any;
-}
-
-const OrganizationPage = async ({
-  params: { organizationSlug },
-  searchParams: { name, first, last, offset },
-}) => {
-  const limit = 2;
+const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
-    first: limit,
+    first: Number(first) || 2,
     offset: Number(offset),
+    filter: filter ? JSON.parse(filter) : null,
+    orderBy: orderBy,
   });
+
+  enum Type {
+    "string" = "string",
+    "date" = "date",
+  }
+
   const { organizationBySlug: organization } = data;
-  //const myEvent:iEvent={description:"",name:""}
-  console.log("🚀 ~ file: page.tsx:27 ~ organization", organization);
+
+  const headerEvent: IHeader[] = [
+    { title: "Nom", value: "name", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "Lieu", value: "city", type: Type?.string, isSortable: true, isVisible: true },
+    { title: "Début le", value: "happeningAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
+    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
+  ];
+
+  const rawEvent: IData[] = organization?.events?.nodes.map((event) => ({
+    Nom: event?.name,
+    Lieu: event?.city,
+    "Début le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
+    "Début inscr.": dayjs(event?.bookingStartsAt).format("DD/MM/YYYY"),
+    "Fin inscr.": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
+    Participants: event?.attendees?.nodes?.length,
+    slug: event?.slug,
+  }));
 
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
@@ -56,7 +71,19 @@ const OrganizationPage = async ({
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
-      <TableEvent organization={organization} limit={limit} />
+     {organization?.events?.nodes?.length > 0 ? <Collection
+        totalCount={organization?.events?.totalCount}
+        pageInfo={organization?.events?.pageInfo}
+        header={headerEvent}
+        data={rawEvent}
+      />:<div className="flex flex-col items-start gap-4">
+      <p>
+        Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
+      </p>
+      <Link href={`/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+        <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
+      </Link>
+    </div>}
     </section>
   );
 };

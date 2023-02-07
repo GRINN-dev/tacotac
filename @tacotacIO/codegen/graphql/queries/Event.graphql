@@ -20,16 +20,39 @@ query GetEventById($eventId: UUID!) {
   }
 }
 
-query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
+query GetAttendeeByEventSlug(
+  $eventSlug: String!
+  $organizationSlug: String!
+  $after: Cursor
+  $first: Int
+  $before: Cursor
+  $last: Int
+  $offset: Int
+  $filter: AttendeeFilter = {}
+  $orderBy: [AttendeesOrderBy!] = NATURAL
+) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
-    organization {
-      ...OrganizationFragment
-    }
-    ...MyEvent
-    attendees {
+    name
+    slug
+    attendees(
+      first: $first
+      after: $after
+      last: $last
+      before: $before
+      offset: $offset
+      filter: $filter
+      orderBy: $orderBy
+    ) {
       nodes {
         ...MyAttendee
       }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      totalCount
     }
   }
 }
