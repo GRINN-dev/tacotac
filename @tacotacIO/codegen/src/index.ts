@@ -3231,13 +3231,20 @@ export type GetEventByIdQueryVariables = Exact<{
 
 export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null };
 
-export type GetEventBySlugQueryVariables = Exact<{
+export type GetAttendeeByEventSlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
   organizationSlug: Scalars['String'];
+  after?: InputMaybe<Scalars['Cursor']>;
+  first?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<AttendeeFilter>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy> | AttendeesOrderBy>;
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null };
+export type GetAttendeeByEventSlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', name: string, slug?: string | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
@@ -3438,23 +3445,34 @@ export const GetEventByIdDocument = gql`
 }
     ${MyEventFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
-export const GetEventBySlugDocument = gql`
-    query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
+export const GetAttendeeByEventSlugDocument = gql`
+    query GetAttendeeByEventSlug($eventSlug: String!, $organizationSlug: String!, $after: Cursor, $first: Int, $before: Cursor, $last: Int, $offset: Int, $filter: AttendeeFilter = {}, $orderBy: [AttendeesOrderBy!] = NATURAL) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
-    organization {
-      ...OrganizationFragment
-    }
-    ...MyEvent
-    attendees {
+    name
+    slug
+    attendees(
+      first: $first
+      after: $after
+      last: $last
+      before: $before
+      offset: $offset
+      filter: $filter
+      orderBy: $orderBy
+    ) {
       nodes {
         ...MyAttendee
       }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      totalCount
     }
   }
 }
-    ${OrganizationFragmentFragmentDoc}
-${MyEventFragmentDoc}
-${MyAttendeeFragmentDoc}`;
+    ${MyAttendeeFragmentDoc}`;
 export const GetAllOrganizationDocument = gql`
     query GetAllOrganization($after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [OrganizationsOrderBy!] = CREATED_AT_ASC, $filter: OrganizationFilter, $offset: Int) {
   organizations(
@@ -3571,8 +3589,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetEventById(variables: GetEventByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetEventByIdQuery>(GetEventByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventById', 'query');
     },
-    GetEventBySlug(variables: GetEventBySlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventBySlugQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetEventBySlugQuery>(GetEventBySlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventBySlug', 'query');
+    GetAttendeeByEventSlug(variables: GetAttendeeByEventSlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByEventSlugQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByEventSlugQuery>(GetAttendeeByEventSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeByEventSlug', 'query');
     },
     GetAllOrganization(variables?: GetAllOrganizationQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllOrganizationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllOrganizationQuery>(GetAllOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllOrganization', 'query');

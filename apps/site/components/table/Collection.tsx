@@ -6,7 +6,9 @@ import dayjs from "dayjs";
 import { motion, useAnimationControls } from "framer-motion";
 import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, XCircle } from "lucide-react";
 
-import { IData, IDataRow, IHeader, ITypeFilter } from "@/types/filter";
+
+
+import { IData, IHeader, ITypeFilter } from "@/types/filter";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -71,7 +73,6 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
   ];
   useEffect(() => {
     if (typeFilter) {
-      console.log("🚀 ~ file: Collection.tsx:73 ~ useEffect ~ typeFilter", typeFilter);
       const { type } = JSON.parse(typeFilter);
       setIsDate(type === "date");
     }
@@ -140,6 +141,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
 
   return (
     <>
+      {/* //motion.div => pour animation peut-etre supprimé si import */}
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         {/* begin filter parts */}
         <div id="Filter" className="w-full max-w-3xl mx-auto mt-4 flex space-x-4">
@@ -254,7 +256,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
                 {headerFormat?.map(
                   (item, index) =>
                     item?.isVisible && (
-                      <th className="w-1/3 p-1" key={"head " + item?.title + index}>
+                      <th className="w-full p-1" key={"head " + item?.title + index}>
                         <div className="flex justify-center items-center">
                           {item?.title}
 
@@ -299,8 +301,8 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
                         <td
                           className={` border-t ${
                             !isPending
-                              ? "w-1/3 p-2 text-center "
-                              : "w-1/6  h-[2.05rem] m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
+                              ? "w-full p-2 text-center "
+                              : "w-full  h-[2.05rem] m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
                           }`}
                           key={"data " + item?.title + index}
                         >
@@ -312,7 +314,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
               ))}
             </tbody>
           </table>
-
+          {/* End table parts */}
           {/* Begin pagination parts */}
           <div id="Pagination" className="flex flex-row justify-between">
             <nav className="flex items-center justify-evenly  px-4 py-3 sm:px-6 w-full" aria-label="Pagination">

@@ -9,11 +9,12 @@ import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 
 
-const OrganizationsPage = async ({ searchParams: { offset, filter, first } }) => {
+const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetAllOrganization({
     first: Number(first) || 2,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
+    orderBy: orderBy,
   });
 
   const headerOrga: IHeader[] = [
@@ -50,10 +51,10 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first } }) =>
         ) : (
           <div className="flex flex-col items-start gap-4">
             <p>
-              Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
+              Vous n&apos;avez pas encore créé d&apos;organisation <u>ou</u> aucun ne correspondant a votre recherche.
             </p>
             <Link href={`/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
-              <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
+              <PlusSquare className="w-4 h-4 mr-2" /> Créer une organisation
             </Link>
           </div>
         )}

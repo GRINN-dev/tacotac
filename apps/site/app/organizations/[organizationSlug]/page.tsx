@@ -71,12 +71,19 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
-      <Collection
+     {organization?.events?.nodes?.length > 0 ? <Collection
         totalCount={organization?.events?.totalCount}
         pageInfo={organization?.events?.pageInfo}
         header={headerEvent}
         data={rawEvent}
-      />
+      />:<div className="flex flex-col items-start gap-4">
+      <p>
+        Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
+      </p>
+      <Link href={`/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+        <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
+      </Link>
+    </div>}
     </section>
   );
 };
