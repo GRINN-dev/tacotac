@@ -1,30 +1,29 @@
 "use client";
 
-import { useEffect, useId, useState, useTransition } from "react";
-import Link from "next/link";
+import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import dayjs from "dayjs";
 import { motion, useAnimationControls } from "framer-motion";
-import { ChevronLeft, ChevronRight, Filter, PlusCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, XCircle } from "lucide-react";
 
-import { DataRow, iHeader, iTypeFilter } from "@/types/filter";
-import { Button, buttonVariants } from "../ui/button";
+import { IData, IDataRow, IHeader, ITypeFilter } from "@/types/filter";
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface iTableEvent {
-  limit: number;
-  header: any[];
-  data: any[];
+  header: IHeader[];
+  data: IData[];
   totalCount: number;
   pageInfo: any;
 }
 
-const formatCollectionData = (headerFormat: iHeader[], rawData: any[]) => {
+const formatCollectionData = (headerFormat: IHeader[], rawData: IData[]) => {
   //regroupement des données afin qu'elles correspondent au header pour l'affichage à faire évoluer ?
-  const dataformat: DataRow[] = rawData?.map((row) => {
-    const dataRow: DataRow = {};
+  const dataformat: IData[] = rawData?.map((row) => {
+    const dataRow: IData = {};
     headerFormat?.forEach((item) => {
       dataRow[item?.title] = row[item?.title];
     });
@@ -34,13 +33,14 @@ const formatCollectionData = (headerFormat: iHeader[], rawData: any[]) => {
   return { headerFormat, dataformat };
 };
 
-export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTableEvent) => {
+export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const offsetParams = searchParams.get("offset");
-
+  const firstParams = searchParams.get("first");
+  const orderByParams = searchParams.get("orderBy");
   const { headerFormat, dataformat } = formatCollectionData(header, data);
 
   // Begin filter parts
@@ -50,8 +50,9 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
   const [dateFilter, setDateFilter] = useState<Date | null>(null);
   const [isDate, setIsDate] = useState(false);
   const [isNull, setIsNull] = useState(false);
+  const [currentFilter, setCurrentFilter] = useState("");
 
-  const filterStringType: iTypeFilter[] = [
+  const filterStringType: ITypeFilter[] = [
     { title: "contient", value: "in" },
     { title: "ne contient pas", value: "notIn" },
     { title: "est", value: "equalTo" },
@@ -59,7 +60,7 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
     { title: "n'est pas nul", value: "isNull" },
   ];
 
-  const filterDateType: iTypeFilter[] = [
+  const filterDateType: ITypeFilter[] = [
     { title: "est", value: "equalTo" },
     { title: "n'est pas", value: "notEqualTo" },
     { title: "n'est pas nul", value: "isNull" },
@@ -70,6 +71,7 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
   ];
   useEffect(() => {
     if (typeFilter) {
+      console.log("🚀 ~ file: Collection.tsx:73 ~ useEffect ~ typeFilter", typeFilter);
       const { type } = JSON.parse(typeFilter);
       setIsDate(type === "date");
     }
@@ -90,11 +92,15 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
       return null;
     }
 
-    if (isNull) {
-      typeObject[filter] = false;
-    } else {
-      typeObject[filter] = valueFilter || dateFilter;
-    }
+    const foundTitle =
+      filterStringType.find((element) => element.value === filter) ||
+      filterDateType.find((element) => element.value === filter);
+
+    setCurrentFilter(
+      `${value} ${foundTitle?.title} ${isNull ? "" : valueFilter || dayjs(dateFilter).format("DD/MM/YYYY")}`
+    );
+
+    typeObject[filter] = isNull ? false : valueFilter || dateFilter;
 
     return { [value]: typeObject };
   };
@@ -104,7 +110,9 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
     const filterObject = createFilterObject(value, filter, valueFilter, dateFilter, isNull);
 
     if (filterObject) {
-      startTransition(() => router.push(pathname + `?filter=${JSON.stringify(filterObject)}`));
+      startTransition(() =>
+        router.push(pathname + `?filter=${JSON.stringify(filterObject)}${firstParams ? `&first=${firstParams}` : ""}`)
+      );
     }
     setTypeFilter(null);
     setFilter(null);
@@ -115,17 +123,18 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
 
   //begin pagination parts
 
-  const filterParams = searchParams.get("filter"); //On peut éventuellement recupérer les données de filterObject dans le onChange via un hook (ceci est un reliquat du composant pagination)
+  const filterParams = searchParams.get("filter");
+  //On peut éventuellement recupérer les données de filterObject dans le onChange via un hook (ceci est un reliquat du composant pagination)
   const [currentPage, setCurrentPage] = useState(1);
-  const [offset, setOffest] = useState(0);
-  const totalPages = Math.ceil(totalCount / limit);
-  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+  const [limit, setLimit] = useState(2);
+
   //end pagination parts
 
   //animation non dépendante supprimer motion.div si nécessaire
   const controls = useAnimationControls();
 
   useEffect(() => {
+    //pour animation peut-etre supprimé si import
     controls.start({ opacity: 1, x: 0 });
   }, [data]);
 
@@ -133,7 +142,7 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
     <>
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         {/* begin filter parts */}
-        <div id="Filter" className="w-full max-w-3xl mx-auto mt-4">
+        <div id="Filter" className="w-full max-w-3xl mx-auto mt-4 flex space-x-4">
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="w-10 p-0 rounded-full">
@@ -208,60 +217,112 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
               </div>
             </PopoverContent>
           </Popover>
+          {currentFilter && (
+            <div
+              className="rounded-md border border-slate-300 p-2"
+              onClick={() => {
+                router.push(pathname);
+                setCurrentFilter("");
+              }}
+            >
+              <div className="flex">
+                <div className="ml-3">
+                  <p className="text-sm font-medium">{currentFilter}</p>
+                </div>
+                <div className="ml-auto pl-3">
+                  <div className="-mx-1.5 -my-1.5">
+                    <button
+                      type="button"
+                      className="inline-flex rounded-md p-1.5 p-1.5 text-white focus:outline-none focus:none"
+                    >
+                      <span className="sr-only">Dismiss</span>
+                      <XCircle className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         {/* end filter parts */}
-        <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
+
+        {/* begin table parts */}
+        <div id="organizations" className="w-full max-w-[54rem] mx-auto mt-4">
           <table className="flex flex-col px-6 py-3 border-t border-b rounded-t-lg rounded-b-lg border-x border-slate-300">
             <thead>
               <tr className="flex items-center">
-                {headerFormat?.map((item, index) => (
-                  <th
-                    className="w-1/3 p-1"
-                    key={"head " + item?.title + index}
-                    onClick={() => console.log("test: ", item)}
-                  >
-                    {item?.title}
-                  </th>
-                ))}
+                {headerFormat?.map(
+                  (item, index) =>
+                    item?.isVisible && (
+                      <th className="w-1/3 p-1" key={"head " + item?.title + index}>
+                        <div className="flex justify-center items-center">
+                          {item?.title}
+
+                          {item?.isSortable && (
+                            <Button
+                              onClick={() => {
+                                const chekActualOrder = orderByParams?.includes("_ASC") ? "_DESC" : "_ASC";
+                                const convertName =
+                                  item.value?.replace(/([A-Z])/g, "_$1").toUpperCase() + chekActualOrder;
+                                router.push(
+                                  `${pathname}?orderBy=${convertName}${filterParams ? `&filter=${filterParams}` : ""}${
+                                    firstParams ? `&first=${firstParams}` : ""
+                                  }${offsetParams ? `&offset=${offsetParams}` : ""}`
+                                );
+                              }}
+                              variant="ghost"
+                              size="sm"
+                              className="w-9 p-0"
+                            >
+                              <ChevronsUpDown className="h-4 w-4" />
+                              <span className="sr-only">Toggle</span>
+                            </Button>
+                          )}
+                        </div>
+                      </th>
+                    )
+                )}
               </tr>
             </thead>
             <tbody className="flex flex-col">
-              {/* router.push(`/${pathname}/${row?.name}`) */}
               {dataformat.map((row, index) => (
                 <tr
-                  className="flex items-center "
-                  onClick={() => router.push(`${pathname}/${row?.Nom.toLowerCase()}`)}
+                  className="flex items-center hover:cursor-pointer"
+                  onClick={() => {
+                    router.push(`${pathname}/${row?.slug}`);
+                  }}
                   key={"row-" + index}
                 >
-                  {headerFormat?.map((item, index) => (
-                    <td
-                      className={` border-t ${
-                        !isPending
-                          ? "w-1/3 p-2 text-center "
-                          : "w-1/6  h-[2.05rem] m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
-                      }`}
-                      key={"data " + item?.title + index}
-                    >
-                      {!isPending && row[item?.title]}
-                    </td>
-                  ))}
+                  {headerFormat?.map(
+                    (item, index) =>
+                      item?.isVisible && (
+                        <td
+                          className={` border-t ${
+                            !isPending
+                              ? "w-1/3 p-2 text-center "
+                              : "w-1/6  h-[2.05rem] m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
+                          }`}
+                          key={"data " + item?.title + index}
+                        >
+                          {!isPending && row[item?.title]}
+                        </td>
+                      )
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
+
           {/* Begin pagination parts */}
           <div id="Pagination" className="flex flex-row justify-between">
-            <nav
-              className="flex items-center justify-evenly border-t  px-4 py-3 sm:px-6 w-full"
-              aria-label="Pagination"
-            >
+            <nav className="flex items-center justify-evenly  px-4 py-3 sm:px-6 w-full" aria-label="Pagination">
               <div className="hidden sm:block">
                 <p className="text-sm ">
                   Affichage{" "}
                   <span className="font-medium">
                     {!offsetParams || Number(offsetParams) < 2 ? 1 : Number(offsetParams) + 1}
                   </span>{" "}
-                  à <span className="font-medium">{Number(offsetParams) + limit}</span> sur{" "}
+                  à <span className="font-medium">{data?.length + Number(offsetParams)}</span> sur{" "}
                   <span className="font-medium">{totalCount}</span> résultats
                 </p>
               </div>
@@ -271,9 +332,11 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
                   disabled={!pageInfo?.hasPreviousPage}
                   onClick={() => {
                     startTransition(() => {
-                      const offSetPrev = currentPage <= 2 ? 0 : currentPage % 2 ? currentPage - 1 : currentPage - 2;
+                      const offSetPrev = currentPage <= 2 ? 0 : currentPage % 2 ? currentPage - 1 : currentPage - limit;
                       router.push(
-                        `${pathname}?offset=${offSetPrev}${filterParams ? `&filterParams=${filterParams}` : ""}`
+                        `${pathname}?offset=${offSetPrev}${filterParams ? `&filter=${filterParams}` : ""}${
+                          firstParams ? `&first=${firstParams}` : ""
+                        }`
                       );
                     });
 
@@ -282,39 +345,17 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
-                {/* {pages?.map((number) => (
-                <button
-                  disabled={currentPage === number}
-                  key={"input-limit-" + number}
-                  className={`relative  inline-flex items-center px-4 py-2 text-sm font-medium focus:z-20`}
-                  onClick={() => {
-                    startTransition(() => {
-                      const offsetCurrent = number > 1 ? (number % 2 ? number + 1 : number) : 0;
-                      router.push(
-                        `${pathname}?offset=${offsetCurrent}${filterParams ? `&filterParams=${filterParams}` : ""}`
-                      );
-                    });
 
-                    setCurrentPage(number);
-                  }}
-                >
-                  {currentPage === number && (
-                    <motion.span
-                      layoutId="underline"
-                      className="absolute left-[25%] block items-center justify-center top-full  h-[1px] w-1/2 bg-white"
-                    />
-                  )}
-                  {number}
-                </button>
-              ))} */}
                 <Button
-                  className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="relative inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                   disabled={!pageInfo?.hasNextPage}
                   onClick={() => {
                     startTransition(() => {
-                      const offsetNext = currentPage % 2 ? currentPage + 1 : currentPage + 2;
+                      const offsetNext = currentPage % 2 ? currentPage + 1 : currentPage + limit;
                       router.push(
-                        `${pathname}?offset=${offsetNext}${filterParams ? `&filterParams=${filterParams}` : ""}`
+                        `${pathname}?offset=${offsetNext}${filterParams ? `&filter=${filterParams}` : ""}${
+                          firstParams ? `&first=${firstParams}` : ""
+                        }`
                       );
                     });
                     setCurrentPage(currentPage + 1);
@@ -323,19 +364,32 @@ export const Collection = ({ pageInfo, totalCount, limit, header, data }: iTable
                   <ChevronRight className="w-5 h-5" />
                 </Button>
               </div>
+              <Select
+                onValueChange={(value) => {
+                  setLimit(Number(value));
+                  router.push(
+                    `${pathname}?first=${value}${filterParams ? `&filter=${filterParams}` : ""}${
+                      offsetParams ? `&offset=${offsetParams}` : ""
+                    }${filterParams ? `&filter=${filterParams}` : ""}`
+                  );
+                }}
+              >
+                <SelectTrigger className="w-34">
+                  <SelectValue placeholder="Entrée par page" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {[2, 10, 25, 50, 100].map((value, index) => (
+                      <SelectItem key={value + "-" + index} value={value.toString()}>
+                        {value}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </nav>
           </div>
           {/* End pagination parts */}
-          {/* ) : (
-            <div className="flex flex-col items-start gap-4">
-              <p>
-                Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
-              </p>
-              <Link href={`/${pathname}/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
-                <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
-              </Link>
-            </div>
-          )} */}
         </div>
       </motion.div>
     </>

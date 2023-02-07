@@ -4,19 +4,19 @@ import { Cog, PlusSquare } from "lucide-react";
 
 
 
-import { iData } from "@/types/filter";
+import { IData, IHeader } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../components/table/Collection";
 
-const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter } }) => {
-  const limit = 2;
 
+const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
-    first: limit,
+    first: Number(first) || 2,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
+    orderBy: orderBy,
   });
 
   enum Type {
@@ -26,22 +26,24 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
 
   const { organizationBySlug: organization } = data;
 
-  const headerEvent = [
-    { title: "Nom", value: "name", type: Type?.string },
-    { title: "Lieu", value: "city", type: Type?.string },
-    { title: "Commence le", value: "happeningAt", type: Type?.date },
-    { title: "Debut inscription", value: "bookingStartsAt", type: Type?.date },
-    { title: "Fin inscription", value: "bookingEndsAt", type: Type?.date },
-    { title: "Participants", value: "attendees", type: Type?.date },
+  const headerEvent: IHeader[] = [
+    { title: "Nom", value: "name", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "Lieu", value: "city", type: Type?.string, isSortable: true, isVisible: true },
+    { title: "Début le", value: "happeningAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
+    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawEvent: iData[] = organization?.events?.nodes.map((event) => ({
+  const rawEvent: IData[] = organization?.events?.nodes.map((event) => ({
     Nom: event?.name,
     Lieu: event?.city,
-    "Commence le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
-    "Debut inscription": dayjs(event?.bookingStartsAt).format("DD/MM/YYYY"),
-    "Fin inscription": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
+    "Début le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
+    "Début inscr.": dayjs(event?.bookingStartsAt).format("DD/MM/YYYY"),
+    "Fin inscr.": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
     Participants: event?.attendees?.nodes?.length,
+    slug: event?.slug,
   }));
 
   return (
@@ -72,7 +74,6 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
       <Collection
         totalCount={organization?.events?.totalCount}
         pageInfo={organization?.events?.pageInfo}
-        limit={limit}
         header={headerEvent}
         data={rawEvent}
       />

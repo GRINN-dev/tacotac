@@ -3,26 +3,29 @@ import { PlusSquare } from "lucide-react";
 
 
 
-import { Type, iData, iDataOrga } from "@/types/filter";
+import { IData, IHeader, Type } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 
-const OrganizationsPage = async ({ searchParams: { offset, filter } }) => {
+
+const OrganizationsPage = async ({ searchParams: { offset, filter, first } }) => {
   const data = await sdk().GetAllOrganization({
-    first: 2,
+    first: Number(first) || 2,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
   });
 
-  const headerOrga = [
-    { title: "Nom", value: "name", type: Type?.string },
-    { title: "Description", value: "description", type: Type?.string },
+  const headerOrga: IHeader[] = [
+    { title: "Nom", value: "name", type: Type?.string, isSortable: true, isVisible: true },
+    { title: "Description", value: "description", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawOrga: any[] = data?.organizations?.nodes.map((organization) => ({
+  const rawOrga: IData[] = data?.organizations?.nodes.map((organization) => ({
     Nom: organization?.name,
     Description: organization?.description,
+    slug: organization?.slug,
   }));
 
   return (
@@ -37,14 +40,23 @@ const OrganizationsPage = async ({ searchParams: { offset, filter } }) => {
       </div>
 
       <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
-        
-        <Collection
-          totalCount={data?.organizations?.totalCount}
-          pageInfo={data?.organizations?.pageInfo}
-          limit={2}
-          header={headerOrga}
-          data={rawOrga}
-        />
+        {data?.organizations?.nodes?.length > 0 ? (
+          <Collection
+            totalCount={data?.organizations?.totalCount}
+            pageInfo={data?.organizations?.pageInfo}
+            header={headerOrga}
+            data={rawOrga}
+          />
+        ) : (
+          <div className="flex flex-col items-start gap-4">
+            <p>
+              Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
+            </p>
+            <Link href={`/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+              <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

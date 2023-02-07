@@ -1,26 +1,24 @@
-export interface iSelectData {
+export interface ISelectData {
   title: string;
   value: string;
   type?: string;
 }
 
-export interface iTypeFilter {
+export interface ITypeFilter {
   title: string;
   value: string;
 }
 
-export interface iData {
-  Nom: string;
-  Lieu: string;
-  "Commence le": string;
-  "Debut inscription": string;
-  "Fin inscription": string;
-  Participants: number;
+export interface IHeader {
+  title: string;
+  value: string;
+  type: Type;
+  isSortable: boolean;
+  isVisible: boolean;
 }
 
-export interface iDataOrga {
-  Nom: string;
-  Description: string;
+export interface IData {
+  [key: string]: string | number;
 }
 
 export enum Type {
@@ -28,12 +26,12 @@ export enum Type {
   "date" = "date",
 }
 
-export interface iHeader {
+export interface IHeader {
   title: string;
   value: string;
   type: Type;
 }
 
-export interface DataRow {
+export interface IDataRow {
   [key: string]: any;
 }
