@@ -4,16 +4,15 @@ import { Cog, PlusSquare } from "lucide-react";
 
 
 
-import { IData, IHeader } from "@/types/filter";
+import { IData, IHeader, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../components/table/Collection";
 
-
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
-    first: Number(first) || 2,
+    first: Number(first) || initLimit,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
     orderBy: orderBy,
@@ -45,7 +44,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     Participants: event?.attendees?.nodes?.length,
     slug: event?.slug,
   }));
-//pour pr
+  //pour pr
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
@@ -71,19 +70,24 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
-     {organization?.events?.nodes?.length > 0 ? <Collection
-        totalCount={organization?.events?.totalCount}
-        pageInfo={organization?.events?.pageInfo}
-        header={headerEvent}
-        data={rawEvent}
-      />:<div className="flex flex-col items-start gap-4">
-      <p>
-        Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
-      </p>
-      <Link href={`/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
-        <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
-      </Link>
-    </div>}
+      {organization?.events?.nodes?.length > 0 ? (
+        <Collection
+          totalCount={organization?.events?.totalCount}
+          pageInfo={organization?.events?.pageInfo}
+          header={headerEvent}
+          data={rawEvent}
+          initLimit={initLimit}
+        />
+      ) : (
+        <div className="flex flex-col items-start gap-4">
+          <p>
+            Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
+          </p>
+          <Link href={`/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+            <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
+          </Link>
+        </div>
+      )}
     </section>
   );
 };

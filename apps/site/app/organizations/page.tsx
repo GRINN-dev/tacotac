@@ -3,15 +3,14 @@ import { PlusSquare } from "lucide-react";
 
 
 
-import { IData, IHeader, Type } from "@/types/filter";
+import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 
-
 const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetAllOrganization({
-    first: Number(first) || 2,
+    first: Number(first) || initLimit,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
     orderBy: orderBy,
@@ -47,6 +46,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
             pageInfo={data?.organizations?.pageInfo}
             header={headerOrga}
             data={rawOrga}
+            initLimit={initLimit}
           />
         ) : (
           <div className="flex flex-col items-start gap-4">

@@ -21,6 +21,7 @@ interface iTableEvent {
   data: IData[];
   totalCount: number;
   pageInfo: any;
+  initLimit?: number;
 }
 //pour pr
 
@@ -37,7 +38,7 @@ const formatCollectionData = (headerFormat: IHeader[], rawData: IData[]) => {
   return { headerFormat, dataformat };
 };
 
-export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) => {
+export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iTableEvent) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
@@ -132,7 +133,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
   const filterParams = searchParams.get("filter");
   //On peut éventuellement recupérer les données de filterObject dans le onChange via un hook (ceci est un reliquat du composant pagination)
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(2);
+  const [limit, setLimit] = useState(initLimit);
 
   //end pagination parts
 
@@ -150,7 +151,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         {/* begin filter parts */}
         <div id="Filter" className="w-full  mx-auto mt-4 flex space-x-4">
-          <Popover >
+          <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="w-10 p-0 rounded-full">
                 <Filter className="w-4 h-4" />
@@ -166,11 +167,16 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
                     </SelectTrigger>
                     <SelectContent className="w-[180px]">
                       <SelectGroup>
-                        {headerFormat?.filter(({isVisible})=>isVisible)?.map(({ title, value, type }, index) => (
-                          <SelectItem key={title + value + index} value={JSON.stringify({ value: value, type: type })}>
-                            {title}
-                          </SelectItem>
-                        ))}
+                        {headerFormat
+                          ?.filter(({ isVisible }) => isVisible)
+                          ?.map(({ title, value, type }, index) => (
+                            <SelectItem
+                              key={title + value + index}
+                              value={JSON.stringify({ value: value, type: type })}
+                            >
+                              {title}
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
