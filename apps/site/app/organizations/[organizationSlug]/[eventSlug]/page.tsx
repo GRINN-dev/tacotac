@@ -33,14 +33,16 @@ const EventPage = async ({
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawAttendees: IData[] = event?.attendees?.nodes.map((attendee) => ({
-    Prénom: attendee?.firstname,
-    Nom: attendee?.lastname,
-    Email: attendee?.email,
-    Status: attendee?.status,
-    Date: dayjs(attendee?.updatedAt).format("DD/MM/YYYY"),
-    slug: "/participant/" + attendee?.id,
-  }));
+  const rawAttendees: IData[] = event?.attendees?.nodes.map(
+    ({ firstname, lastname, email, status, updatedAt, id }) => ({
+      Prénom: firstname,
+      Nom: lastname,
+      Email: email,
+      Status: status,
+      Date: dayjs(updatedAt).format("DD/MM/YYYY"),
+      slug: "/participant/" + id,
+    })
+  );
   //pour pr ici slug rediige vers l'id ptit tricks lol
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">

@@ -36,23 +36,25 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawEvent: IData[] = organization?.events?.nodes.map((event) => ({
-    Nom: event?.name,
-    Lieu: event?.city,
-    "Début le": (
-      <div className="flex flex-col">
-        <div>{dayjs(event?.happeningAt).format("DD/MM/YYYY")}</div>{" "}
-        <div>
-          {" à "}
-          {dayjs(event?.happeningAt).format("HH:mm")}
+  const rawEvent: IData[] = organization?.events?.nodes.map(
+    ({ name, city, happeningAt, bookingStartsAt, bookingEndsAt, attendees, slug }) => ({
+      Nom: name,
+      Lieu: city,
+      "Début le": (
+        <div className="flex flex-col">
+          <div>{dayjs(happeningAt).format("DD/MM/YYYY")}</div>{" "}
+          <div>
+            {" à "}
+            {dayjs(happeningAt).format("HH:mm")}
+          </div>
         </div>
-      </div>
-    ),
-    "Début inscr.": dayjs(event?.bookingStartsAt).format("DD/MM/YYYY"),
-    "Fin inscr.": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
-    Participants: event?.attendees?.nodes?.length,
-    slug: event?.slug,
-  }));
+      ),
+      "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
+      "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
+      Participants: attendees?.nodes?.length,
+      slug: slug,
+    })
+  );
   //pour pr
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">

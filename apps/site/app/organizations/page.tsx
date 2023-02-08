@@ -8,6 +8,7 @@ import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 
+
 const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetAllOrganization({
     first: Number(first) || initLimit,
@@ -22,10 +23,10 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawOrga: IData[] = data?.organizations?.nodes.map((organization) => ({
-    Nom: organization?.name,
-    Description: organization?.description,
-    slug: organization?.slug,
+  const rawOrga: IData[] = data?.organizations?.nodes.map(({ name, description, slug }) => ({
+    Nom: name,
+    Description: description,
+    slug: slug,
   }));
 
   return (
