@@ -39,7 +39,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
   const rawEvent: IData[] = organization?.events?.nodes.map((event) => ({
     Nom: event?.name,
     Lieu: event?.city,
-    "Début le": dayjs(event?.happeningAt).format("DD/MM/YYYY"),
+    "Début le": dayjs(event?.happeningAt).format("DD/MM/YYYY") + " à " + dayjs(event?.bookingEndsAt).format("HH:mm"),
     "Début inscr.": dayjs(event?.bookingStartsAt).format("DD/MM/YYYY"),
     "Fin inscr.": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
     Participants: event?.attendees?.nodes?.length,

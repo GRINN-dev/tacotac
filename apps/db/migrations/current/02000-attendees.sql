@@ -60,6 +60,13 @@ create table publ.attendees (
 -- fixtures
   -- fixtures go here
 
+    insert into publ.attendees (firstname,lastname, email, event_id ,status) values ('1', 'blip','1@blip.com', (select id from publ.events where name = 'third'),'IDLE');
+    insert into publ.attendees (firstname,lastname, email, event_id ,status) values ('11', 'blip','11@blip.com', (select id from publ.events where name = 'third'),'IDLE');
+    insert into publ.attendees (firstname,lastname, email, event_id ,status) values ('111', 'blip','111@blip.com', (select id from publ.events where name = 'third'),'IDLE');
+    insert into publ.attendees (firstname,lastname, email, event_id ,status) values ('12', 'blip','12@blip.com', (select id from publ.events where name = 'third'),'IDLE');
+    insert into publ.attendees (firstname,lastname, email, event_id ,status) values ('13', 'blip','13@blip.com', (select id from publ.events where name = 'third'),'IDLE');
+    insert into publ.attendees (firstname,lastname, email, event_id ,status) values ('14', 'blip','14@blip.com', (select id from publ.events where name = 'third'),'IDLE');
+    insert into publ.attendees (firstname,lastname, email, event_id ,status) values ('15', 'blip','15@blip.com', (select id from publ.events where name = 'third'),'IDLE');
 
 /*
   END TABLE: publ.attendees

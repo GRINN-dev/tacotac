@@ -1,11 +1,14 @@
 import Link from "next/link";
 import dayjs from "dayjs";
-import { Cog, PlusSquare } from "lucide-react";
+import { PlusSquare } from "lucide-react";
+
+
 
 import { IData, IHeader, Type } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
+
 
 const EventPage = async ({
   params: { organizationSlug, eventSlug },
