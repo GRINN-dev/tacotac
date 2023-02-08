@@ -35,5 +35,7 @@ export interface IHeader {
 export interface IDataRow {
   [key: string]: any;
 }
+
+
 //pour pr
 export const initLimit = 2;

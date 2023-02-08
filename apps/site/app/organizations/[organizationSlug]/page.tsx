@@ -4,7 +4,7 @@ import { Cog, PlusSquare } from "lucide-react";
 
 
 
-import { IData, IHeader, initLimit } from "@/types/filter";
+import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../components/table/Collection";
@@ -19,10 +19,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     orderBy: orderBy,
   });
 
-  enum Type {
-    "string" = "string",
-    "date" = "date",
-  }
+  
 
   const { organizationBySlug: organization } = data;
 
