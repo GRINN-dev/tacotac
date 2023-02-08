@@ -4,16 +4,16 @@ import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
 import { motion, useAnimationControls } from "framer-motion";
-import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, XCircle } from "lucide-react";
-
-
+import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, Settings2, XCircle } from "lucide-react";
 
 import { IData, IHeader, ITypeFilter } from "@/types/filter";
 import { Button } from "../ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+
 
 
 interface iTableEvent {
@@ -66,8 +66,8 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
   ];
 
   const filterDateType: ITypeFilter[] = [
-    { title: "est", value: "equalTo" },
-    { title: "n'est pas", value: "notEqualTo" },
+    // { title: "est", value: "equalTo" },
+    // { title: "n'est pas", value: "notEqualTo" },
     { title: "n'est pas nul", value: "isNull" },
     { title: "est plus petit que", value: "lessThan" },
     { title: "est plus petit ou égal à", value: "lessThanOrEqualTo" },
@@ -151,15 +151,15 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         {/* begin filter parts */}
         <div id="Filter" className="w-full  mx-auto mt-4 flex space-x-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="w-10 p-0 rounded-full">
-                <Filter className="w-4 h-4" />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="outline" className="w-10 rounded-full p-0">
+                <Filter className="h-4 w-4" />
                 <span className="sr-only">Open popover</span>
               </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="flex flex-col space-y-4">
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <div className="flex flex-col space-y-4 m-2">
                 <div className="">
                   <Select onValueChange={(value) => setTypeFilter(value)}>
                     <SelectTrigger>
@@ -219,17 +219,15 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
                   </div>
                 )}
 
-                <div className="self-center">
-                  <PopoverTrigger asChild>
-                    <Button onClick={onChange} variant="outline" className="flex space-x-4 ">
-                      <PlusCircle className="w-4 h-4" />
-                      <span>Filtrer</span>
-                    </Button>
-                  </PopoverTrigger>
-                </div>
+                <DropdownMenuItem className="self-center" onClick={onChange}>
+                  <Button className="flex space-x-4 ">
+                    <PlusCircle className="w-4 h-4" />
+                    <span>Filtrer</span>
+                  </Button>
+                </DropdownMenuItem>
               </div>
-            </PopoverContent>
-          </Popover>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {currentFilter && (
             <div
               className="rounded-md border border-slate-300 p-2"
