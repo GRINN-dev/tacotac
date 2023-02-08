@@ -9,6 +9,7 @@ import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../components/table/Collection";
 
+
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
@@ -38,7 +39,15 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
   const rawEvent: IData[] = organization?.events?.nodes.map((event) => ({
     Nom: event?.name,
     Lieu: event?.city,
-    "Début le": dayjs(event?.happeningAt).format("DD/MM/YYYY") + " à " + dayjs(event?.bookingEndsAt).format("HH:mm"),
+    "Début le": (
+      <div className="flex flex-col">
+        <div>{dayjs(event?.happeningAt).format("DD/MM/YYYY")}</div>{" "}
+        <div>
+          {" à "}
+          {dayjs(event?.happeningAt).format("HH:mm")}
+        </div>
+      </div>
+    ),
     "Début inscr.": dayjs(event?.bookingStartsAt).format("DD/MM/YYYY"),
     "Fin inscr.": dayjs(event?.bookingEndsAt).format("DD/MM/YYYY"),
     Participants: event?.attendees?.nodes?.length,

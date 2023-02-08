@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import { motion, useAnimationControls } from "framer-motion";
 import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, Settings2, XCircle } from "lucide-react";
 
+
+
 import { IData, IHeader, ITypeFilter } from "@/types/filter";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
@@ -13,7 +15,6 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-
 
 
 interface iTableEvent {
@@ -90,7 +91,6 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
     dateFilter: any | null,
     isNull: boolean
   ) => {
-    console.log("🚀 ~ file: Collection.tsx:92 ~ Collection ~ dateFilter", dateFilter);
     const typeObject: {} = {};
 
     if (!value || !filter) {

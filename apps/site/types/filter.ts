@@ -18,7 +18,7 @@ export interface IHeader {
 }
 
 export interface IData {
-  [key: string]: string | number;
+  [key: string]: string | number | React.ReactElement;
 }
 
 export enum Type {
