@@ -53,7 +53,7 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
   const [typeFilter, setTypeFilter] = useState<string>();
   const [filter, setFilter] = useState<string | null>(null);
   const [valueFilter, setValueFilter] = useState<string | number | null>(null);
-  const [dateFilter, setDateFilter] = useState<any | null>(null);
+  const [dateFilter, setDateFilter] = useState(null);
   const [isDate, setIsDate] = useState(false);
   const [isNull, setIsNull] = useState(false);
   const [currentFilter, setCurrentFilter] = useState("");
@@ -97,6 +97,7 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
       return null;
     }
 
+    //début partie gestion affichage filtre
     const foundTitle =
       filterStringType.find((element) => element.value === filter) ||
       filterDateType.find((element) => element.value === filter);
@@ -106,7 +107,7 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
     setCurrentFilter(
       `${title} ${foundTitle?.title} ${isNull ? "" : valueFilter || dayjs(dateFilter).format("DD/MM/YYYY")}`
     );
-
+    //fin parti gestion affichage filtre
     typeObject[filter] = isNull ? false : valueFilter || dateFilter;
 
     return { [value]: typeObject };
