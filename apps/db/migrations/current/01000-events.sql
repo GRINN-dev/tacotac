@@ -22,6 +22,7 @@ create table publ.events (
     booking_ends_at timestamptz,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
+    
     constraint events_organization_id_name_key unique (organization_id, name),
     constraint events_organization_id_slug_key unique (organization_id, slug)
 );

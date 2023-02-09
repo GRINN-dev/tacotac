@@ -8,3 +8,4 @@ turbo-build.log
 .next
 node_modules
 ./site/**/*
+.buildt
