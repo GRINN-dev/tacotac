@@ -4,23 +4,27 @@ import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
 import { motion, useAnimationControls } from "framer-motion";
-import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, XCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, Settings2, XCircle } from "lucide-react";
 
 
 
 import { IData, IHeader, ITypeFilter } from "@/types/filter";
 import { Button } from "../ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+
 
 interface iTableEvent {
   header: IHeader[];
   data: IData[];
   totalCount: number;
   pageInfo: any;
+  initLimit?: number;
 }
+//pour pr
 
 const formatCollectionData = (headerFormat: IHeader[], rawData: IData[]) => {
   //regroupement des données afin qu'elles correspondent au header pour l'affichage à faire évoluer ?
@@ -35,7 +39,7 @@ const formatCollectionData = (headerFormat: IHeader[], rawData: IData[]) => {
   return { headerFormat, dataformat };
 };
 
-export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) => {
+export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iTableEvent) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
@@ -49,7 +53,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
   const [typeFilter, setTypeFilter] = useState<string>();
   const [filter, setFilter] = useState<string | null>(null);
   const [valueFilter, setValueFilter] = useState<string | number | null>(null);
-  const [dateFilter, setDateFilter] = useState<Date | null>(null);
+  const [dateFilter, setDateFilter] = useState(null);
   const [isDate, setIsDate] = useState(false);
   const [isNull, setIsNull] = useState(false);
   const [currentFilter, setCurrentFilter] = useState("");
@@ -63,8 +67,8 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
   ];
 
   const filterDateType: ITypeFilter[] = [
-    { title: "est", value: "equalTo" },
-    { title: "n'est pas", value: "notEqualTo" },
+    // { title: "est", value: "equalTo" },
+    // { title: "n'est pas", value: "notEqualTo" },
     { title: "n'est pas nul", value: "isNull" },
     { title: "est plus petit que", value: "lessThan" },
     { title: "est plus petit ou égal à", value: "lessThanOrEqualTo" },
@@ -84,7 +88,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
     value: any,
     filter: string,
     valueFilter: string | number | null,
-    dateFilter: Date | null,
+    dateFilter: any | null,
     isNull: boolean
   ) => {
     const typeObject: {} = {};
@@ -93,14 +97,17 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
       return null;
     }
 
+    //début partie gestion affichage filtre
     const foundTitle =
       filterStringType.find((element) => element.value === filter) ||
       filterDateType.find((element) => element.value === filter);
 
-    setCurrentFilter(
-      `${value} ${foundTitle?.title} ${isNull ? "" : valueFilter || dayjs(dateFilter).format("DD/MM/YYYY")}`
-    );
+    const { title } = header?.find((element) => element?.value === value);
 
+    setCurrentFilter(
+      `${title} ${foundTitle?.title} ${isNull ? "" : valueFilter || dayjs(dateFilter).format("DD/MM/YYYY")}`
+    );
+    //fin parti gestion affichage filtre
     typeObject[filter] = isNull ? false : valueFilter || dateFilter;
 
     return { [value]: typeObject };
@@ -127,7 +134,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
   const filterParams = searchParams.get("filter");
   //On peut éventuellement recupérer les données de filterObject dans le onChange via un hook (ceci est un reliquat du composant pagination)
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(2);
+  const [limit, setLimit] = useState(initLimit);
 
   //end pagination parts
 
@@ -144,16 +151,16 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
       {/* //motion.div => pour animation peut-etre supprimé si import */}
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         {/* begin filter parts */}
-        <div id="Filter" className="w-full max-w-3xl mx-auto mt-4 flex space-x-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="w-10 p-0 rounded-full">
-                <Filter className="w-4 h-4" />
+        <div id="Filter" className="w-full  mx-auto mt-4 flex space-x-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="outline" className="w-10 rounded-full p-0">
+                <Filter className="h-4 w-4" />
                 <span className="sr-only">Open popover</span>
               </Button>
-            </PopoverTrigger>
-            <PopoverContent className="">
-              <div className="flex flex-col space-y-4">
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <div className="flex flex-col space-y-4 m-2">
                 <div className="">
                   <Select onValueChange={(value) => setTypeFilter(value)}>
                     <SelectTrigger>
@@ -161,11 +168,16 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
                     </SelectTrigger>
                     <SelectContent className="w-[180px]">
                       <SelectGroup>
-                        {headerFormat?.map(({ title, value, type }, index) => (
-                          <SelectItem key={title + value + index} value={JSON.stringify({ value: value, type: type })}>
-                            {title}
-                          </SelectItem>
-                        ))}
+                        {headerFormat
+                          ?.filter(({ isVisible }) => isVisible)
+                          ?.map(({ title, value, type }, index) => (
+                            <SelectItem
+                              key={title + value + index}
+                              value={JSON.stringify({ value: value, type: type })}
+                            >
+                              {title}
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -197,8 +209,8 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
                     <Label htmlFor="height">{isDate ? "Date" : "Valeur"}</Label>
                     {isDate ? (
                       <Input
-                        onChange={(e) => setDateFilter(e.target.valueAsDate)}
-                        type={"date"}
+                        onChange={(e) => setDateFilter(e.target?.value)}
+                        type={"datetime-local"}
                         id="date"
                         className="h-8 col-span-2"
                       />
@@ -208,17 +220,15 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
                   </div>
                 )}
 
-                <div className="self-center">
-                  <PopoverTrigger asChild>
-                    <Button onClick={onChange} variant="outline" className="flex space-x-4 ">
-                      <PlusCircle className="w-4 h-4" />
-                      <span>Filtrer</span>
-                    </Button>
-                  </PopoverTrigger>
-                </div>
+                <DropdownMenuItem className="self-center" onClick={onChange}>
+                  <Button className="flex space-x-4 ">
+                    <PlusCircle className="w-4 h-4" />
+                    <span>Filtrer</span>
+                  </Button>
+                </DropdownMenuItem>
               </div>
-            </PopoverContent>
-          </Popover>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {currentFilter && (
             <div
               className="rounded-md border border-slate-300 p-2"
@@ -249,7 +259,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
         {/* end filter parts */}
 
         {/* begin table parts */}
-        <div id="organizations" className="w-full max-w-[54rem] mx-auto mt-4">
+        <div id="organizations" className="w-full mx-auto mt-4">
           <table className="flex flex-col px-6 py-3 border-t border-b rounded-t-lg rounded-b-lg border-x border-slate-300">
             <thead>
               <tr className="flex items-center">
@@ -289,7 +299,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
             <tbody className="flex flex-col">
               {dataformat.map((row, index) => (
                 <tr
-                  className="flex items-center hover:cursor-pointer"
+                  className="flex items-start hover:cursor-pointer"
                   onClick={() => {
                     router.push(`${pathname}/${row?.slug}`);
                   }}
@@ -304,7 +314,7 @@ export const Collection = ({ pageInfo, totalCount, header, data }: iTableEvent) 
                               ? "w-full p-2 text-center "
                               : "w-full  h-[2.05rem] m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
                           }`}
-                          key={"data " + item?.title + index}
+                          key={"data-" + item?.title + index}
                         >
                           {!isPending && row[item?.title]}
                         </td>

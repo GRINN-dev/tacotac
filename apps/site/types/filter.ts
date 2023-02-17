@@ -18,7 +18,7 @@ export interface IHeader {
 }
 
 export interface IData {
-  [key: string]: string | number;
+  [key: string]: string | number | React.ReactElement;
 }
 
 export enum Type {
@@ -35,3 +35,7 @@ export interface IHeader {
 export interface IDataRow {
   [key: string]: any;
 }
+
+
+//pour pr
+export const initLimit = 2;

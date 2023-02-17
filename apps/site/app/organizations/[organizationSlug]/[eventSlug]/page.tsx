@@ -1,11 +1,14 @@
 import Link from "next/link";
 import dayjs from "dayjs";
-import { Cog, PlusSquare } from "lucide-react";
+import { PlusSquare } from "lucide-react";
 
-import { IData, IHeader, Type } from "@/types/filter";
+
+
+import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
+
 
 const EventPage = async ({
   params: { organizationSlug, eventSlug },
@@ -14,7 +17,7 @@ const EventPage = async ({
   const data = await sdk().GetAttendeeByEventSlug({
     eventSlug,
     organizationSlug,
-    first: Number(first) || 2,
+    first: Number(first) || initLimit,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
     orderBy: orderBy,
@@ -30,15 +33,17 @@ const EventPage = async ({
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawAttendees: IData[] = event?.attendees?.nodes.map((attendee) => ({
-    Prénom: attendee?.firstname,
-    Nom: attendee?.lastname,
-    Email: attendee?.email,
-    Status: attendee?.status,
-    Date: dayjs(attendee?.updatedAt).format("DD/MM/YYYY"),
-    slug: "/participant/" + attendee?.id,
-  }));
-
+  const rawAttendees: IData[] = event?.attendees?.nodes.map(
+    ({ firstname, lastname, email, status, updatedAt, id }) => ({
+      Prénom: firstname,
+      Nom: lastname,
+      Email: email,
+      Status: status,
+      Date: dayjs(updatedAt).format("DD/MM/YYYY"),
+      slug: "/participant/" + id,
+    })
+  );
+  //pour pr ici slug rediige vers l'id ptit tricks lol
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
@@ -65,6 +70,7 @@ const EventPage = async ({
             pageInfo={event?.attendees?.pageInfo}
             header={headerAttendees}
             data={rawAttendees}
+            initLimit={initLimit}
           />
         ) : (
           <div className="flex flex-col items-start gap-4">

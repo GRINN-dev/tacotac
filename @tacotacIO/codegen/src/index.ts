@@ -48,8 +48,6 @@ export type Attendee = Node & {
   registration?: Maybe<Registration>;
   registrationId?: Maybe<Scalars['UUID']>;
   status: EventStatus;
-  /** Reads a single `TestTable` that is related to this `Attendee`. */
-  testTable?: Maybe<TestTable>;
   updatedAt: Scalars['Datetime'];
 };
 
@@ -368,41 +366,6 @@ export type CreateRegistrationPayload = {
 /** The output of our create `Registration` mutation. */
 export type CreateRegistrationPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
-};
-
-/** All input for the create `TestTable` mutation. */
-export type CreateTestTableInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The `TestTable` to be created by this mutation. */
-  testTable: TestTableInput;
-};
-
-/** The output of our create `TestTable` mutation. */
-export type CreateTestTablePayload = {
-  __typename?: 'CreateTestTablePayload';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `TestTable` that was created by this mutation. */
-  testTable?: Maybe<TestTable>;
-  /** An edge for our `TestTable`. May be used by Relay 1. */
-  testTableEdge?: Maybe<TestTablesEdge>;
-};
-
-
-/** The output of our create `TestTable` mutation. */
-export type CreateTestTablePayloadTestTableEdgeArgs = {
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
 };
 
 /** All input for the create `User` mutation. */
@@ -769,62 +732,6 @@ export type DeleteRegistrationPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
-/** All input for the `deleteTestTableByAttendeeId` mutation. */
-export type DeleteTestTableByAttendeeIdInput = {
-  attendeeId: Scalars['UUID'];
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-};
-
-/** All input for the `deleteTestTableByNodeId` mutation. */
-export type DeleteTestTableByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `TestTable` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
-/** All input for the `deleteTestTable` mutation. */
-export type DeleteTestTableInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
-};
-
-/** The output of our delete `TestTable` mutation. */
-export type DeleteTestTablePayload = {
-  __typename?: 'DeleteTestTablePayload';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  deletedTestTableNodeId?: Maybe<Scalars['ID']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `TestTable` that was deleted by this mutation. */
-  testTable?: Maybe<TestTable>;
-  /** An edge for our `TestTable`. May be used by Relay 1. */
-  testTableEdge?: Maybe<TestTablesEdge>;
-};
-
-
-/** The output of our delete `TestTable` mutation. */
-export type DeleteTestTablePayloadTestTableEdgeArgs = {
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
-};
-
 /** All input for the `deleteUserByEmail` mutation. */
 export type DeleteUserByEmailInput = {
   /**
@@ -1162,8 +1069,6 @@ export type Mutation = {
   createOrganizationMembership?: Maybe<CreateOrganizationMembershipPayload>;
   /** Creates a single `Registration`. */
   createRegistration?: Maybe<CreateRegistrationPayload>;
-  /** Creates a single `TestTable`. */
-  createTestTable?: Maybe<CreateTestTablePayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
   /** Deletes a single `Attendee` using a unique key. */
@@ -1199,12 +1104,6 @@ export type Mutation = {
   deleteRegistration?: Maybe<DeleteRegistrationPayload>;
   /** Deletes a single `Registration` using its globally unique id. */
   deleteRegistrationByNodeId?: Maybe<DeleteRegistrationPayload>;
-  /** Deletes a single `TestTable` using a unique key. */
-  deleteTestTable?: Maybe<DeleteTestTablePayload>;
-  /** Deletes a single `TestTable` using a unique key. */
-  deleteTestTableByAttendeeId?: Maybe<DeleteTestTablePayload>;
-  /** Deletes a single `TestTable` using its globally unique id. */
-  deleteTestTableByNodeId?: Maybe<DeleteTestTablePayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
   /** Deletes a single `User` using a unique key. */
@@ -1246,12 +1145,6 @@ export type Mutation = {
   updateRegistration?: Maybe<UpdateRegistrationPayload>;
   /** Updates a single `Registration` using its globally unique id and a patch. */
   updateRegistrationByNodeId?: Maybe<UpdateRegistrationPayload>;
-  /** Updates a single `TestTable` using a unique key and a patch. */
-  updateTestTable?: Maybe<UpdateTestTablePayload>;
-  /** Updates a single `TestTable` using a unique key and a patch. */
-  updateTestTableByAttendeeId?: Maybe<UpdateTestTablePayload>;
-  /** Updates a single `TestTable` using its globally unique id and a patch. */
-  updateTestTableByNodeId?: Maybe<UpdateTestTablePayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using a unique key and a patch. */
@@ -1288,12 +1181,6 @@ export type MutationCreateOrganizationMembershipArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateRegistrationArgs = {
   input: CreateRegistrationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateTestTableArgs = {
-  input: CreateTestTableInput;
 };
 
 
@@ -1402,24 +1289,6 @@ export type MutationDeleteRegistrationArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteRegistrationByNodeIdArgs = {
   input: DeleteRegistrationByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTestTableArgs = {
-  input: DeleteTestTableInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTestTableByAttendeeIdArgs = {
-  input: DeleteTestTableByAttendeeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTestTableByNodeIdArgs = {
-  input: DeleteTestTableByNodeIdInput;
 };
 
 
@@ -1552,24 +1421,6 @@ export type MutationUpdateRegistrationArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRegistrationByNodeIdArgs = {
   input: UpdateRegistrationByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTestTableArgs = {
-  input: UpdateTestTableInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTestTableByAttendeeIdArgs = {
-  input: UpdateTestTableByAttendeeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTestTableByNodeIdArgs = {
-  input: UpdateTestTableByNodeIdInput;
 };
 
 
@@ -1962,12 +1813,6 @@ export type Query = Node & {
   registrationByNodeId?: Maybe<Registration>;
   /** Reads and enables pagination through a set of `Registration`. */
   registrations?: Maybe<RegistrationsConnection>;
-  testTable?: Maybe<TestTable>;
-  testTableByAttendeeId?: Maybe<TestTable>;
-  /** Reads a single `TestTable` using its globally unique `ID`. */
-  testTableByNodeId?: Maybe<TestTable>;
-  /** Reads and enables pagination through a set of `TestTable`. */
-  testTables?: Maybe<TestTablesConnection>;
   user?: Maybe<User>;
   userByEmail?: Maybe<User>;
   /** Reads a single `User` using its globally unique `ID`. */
@@ -2159,37 +2004,6 @@ export type QueryRegistrationsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryTestTableArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryTestTableByAttendeeIdArgs = {
-  attendeeId: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryTestTableByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryTestTablesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<TestTableCondition>;
-  filter?: InputMaybe<TestTableFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
 };
 
 
@@ -2398,149 +2212,6 @@ export type StringFilter = {
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
 };
-
-export type TestTable = Node & {
-  __typename?: 'TestTable';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
-  attendeeId: Scalars['UUID'];
-  createdAt: Scalars['Datetime'];
-  id: Scalars['UUID'];
-  infos?: Maybe<Scalars['String']>;
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
-  status?: Maybe<TestTableStatus>;
-  updatedAt: Scalars['Datetime'];
-};
-
-/**
- * A condition to be used against `TestTable` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type TestTableCondition = {
-  /** Checks for equality with the object’s `attendeeId` field. */
-  attendeeId?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `status` field. */
-  status?: InputMaybe<TestTableStatus>;
-  /** Checks for equality with the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
-/** A filter to be used against `TestTable` object types. All fields are combined with a logical ‘and.’ */
-export type TestTableFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<TestTableFilter>>;
-  /** Filter by the object’s `attendeeId` field. */
-  attendeeId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<UuidFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<TestTableFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<TestTableFilter>>;
-  /** Filter by the object’s `status` field. */
-  status?: InputMaybe<TestTableStatusFilter>;
-  /** Filter by the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<DatetimeFilter>;
-};
-
-/** An input for mutations affecting `TestTable` */
-export type TestTableInput = {
-  attendeeId: Scalars['UUID'];
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  infos?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<TestTableStatus>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
-/** Represents an update to a `TestTable`. Fields that are set will be updated. */
-export type TestTablePatch = {
-  attendeeId?: InputMaybe<Scalars['UUID']>;
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  infos?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<TestTableStatus>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
-export enum TestTableStatus {
-  /** Status est non ok */
-  Nok = 'NOK',
-  /** Status est ok */
-  Ok = 'OK'
-}
-
-/** A filter to be used against TestTableStatus fields. All fields are combined with a logical ‘and.’ */
-export type TestTableStatusFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<TestTableStatus>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<TestTableStatus>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<TestTableStatus>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<TestTableStatus>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<TestTableStatus>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<TestTableStatus>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<TestTableStatus>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<TestTableStatus>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<TestTableStatus>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<TestTableStatus>>;
-};
-
-/** A connection to a list of `TestTable` values. */
-export type TestTablesConnection = {
-  __typename?: 'TestTablesConnection';
-  /** A list of edges which contains the `TestTable` and cursor to aid in pagination. */
-  edges: Array<TestTablesEdge>;
-  /** A list of `TestTable` objects. */
-  nodes: Array<TestTable>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `TestTable` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `TestTable` edge in the connection. */
-export type TestTablesEdge = {
-  __typename?: 'TestTablesEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `TestTable` at the end of the edge. */
-  node: TestTable;
-};
-
-/** Methods to use when ordering `TestTable`. */
-export enum TestTablesOrderBy {
-  AttendeeIdAsc = 'ATTENDEE_ID_ASC',
-  AttendeeIdDesc = 'ATTENDEE_ID_DESC',
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  StatusAsc = 'STATUS_ASC',
-  StatusDesc = 'STATUS_DESC',
-  UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
-}
 
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
 export type UuidFilter = {
@@ -2889,67 +2560,6 @@ export type UpdateRegistrationPayload = {
 /** The output of our update `Registration` mutation. */
 export type UpdateRegistrationPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
-};
-
-/** All input for the `updateTestTableByAttendeeId` mutation. */
-export type UpdateTestTableByAttendeeIdInput = {
-  attendeeId: Scalars['UUID'];
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** An object where the defined keys will be set on the `TestTable` being updated. */
-  patch: TestTablePatch;
-};
-
-/** All input for the `updateTestTableByNodeId` mutation. */
-export type UpdateTestTableByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `TestTable` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `TestTable` being updated. */
-  patch: TestTablePatch;
-};
-
-/** All input for the `updateTestTable` mutation. */
-export type UpdateTestTableInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `TestTable` being updated. */
-  patch: TestTablePatch;
-};
-
-/** The output of our update `TestTable` mutation. */
-export type UpdateTestTablePayload = {
-  __typename?: 'UpdateTestTablePayload';
-  /** Reads a single `Attendee` that is related to this `TestTable`. */
-  attendee?: Maybe<Attendee>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `TestTable` that was updated by this mutation. */
-  testTable?: Maybe<TestTable>;
-  /** An edge for our `TestTable`. May be used by Relay 1. */
-  testTableEdge?: Maybe<TestTablesEdge>;
-};
-
-
-/** The output of our update `TestTable` mutation. */
-export type UpdateTestTablePayloadTestTableEdgeArgs = {
-  orderBy?: InputMaybe<Array<TestTablesOrderBy>>;
 };
 
 /** All input for the `updateUserByEmail` mutation. */
