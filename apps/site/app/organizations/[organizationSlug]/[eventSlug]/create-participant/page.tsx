@@ -5,7 +5,7 @@ import { sdk } from "@/lib/sdk";
 import { CreateAttendeeForm } from "./form";
 
 const AttendeePage = async ({ params: { organizationSlug, eventSlug } }) => {
-  const { eventBySlug } = await sdk().GetEventBySlug({
+  const { eventBySlug } = await sdk().GetAttendeeByEventSlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
