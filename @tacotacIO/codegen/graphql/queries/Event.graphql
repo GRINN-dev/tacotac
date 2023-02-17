@@ -34,6 +34,7 @@ query GetAttendeeByEventSlug(
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     name
     slug
+    id
     attendees(
       first: $first
       after: $after

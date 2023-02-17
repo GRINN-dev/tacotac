@@ -2854,7 +2854,7 @@ export type GetAttendeeByEventSlugQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByEventSlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', name: string, slug?: string | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetAttendeeByEventSlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', name: string, slug?: string | null, id: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
@@ -3060,6 +3060,7 @@ export const GetAttendeeByEventSlugDocument = gql`
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     name
     slug
+    id
     attendees(
       first: $first
       after: $after
