@@ -143,4 +143,4 @@ create table publ.registrations (
   -- fixtures go here
 /*
   END TABLE: publ.registrations
-*/t
+*/
