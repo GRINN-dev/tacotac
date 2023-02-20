@@ -2,13 +2,10 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
-import { Collection } from "../../../components/table/Collection";
-
+import { Collection } from "../../../../components/table/Collection";
 
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
@@ -18,8 +15,6 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     filter: filter ? JSON.parse(filter) : null,
     orderBy: orderBy,
   });
-
-  
 
   const { organizationBySlug: organization } = data;
 
@@ -60,7 +55,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           {organization?.name}
         </h1>
         <Link
-          href={`/organizations/${organization?.slug}/infos`}
+          href={`/organisations/${organization?.slug}/infos`}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           <Cog aria-hidden className="w-8 h-8" />

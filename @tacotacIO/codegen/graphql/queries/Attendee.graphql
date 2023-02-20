@@ -1,3 +1,17 @@
+query GetAllAttendee {
+  attendees(orderBy: [CREATED_AT_DESC]) {
+    nodes {
+      ...MyAttendee
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
 query GetAllAttendeeByEventId($eventId: UUID!) {
   attendees(orderBy: [CREATED_AT_DESC], condition: { eventId: $eventId }) {
     nodes {
