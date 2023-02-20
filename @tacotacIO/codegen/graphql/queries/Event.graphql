@@ -1,8 +1,32 @@
+query GetAllEvents {
+  events(orderBy: [CREATED_AT_DESC]) {
+    nodes {
+      ...MyEvent
+      organization {
+        slug
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
 query GetAllEventsByOrganizationId($organizationId: UUID!) {
   events(
     orderBy: [CREATED_AT_DESC]
     condition: { organizationId: $organizationId }
   ) {
+    nodes {
+      ...MyEvent
+    }
+  }
+}
+query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
+  events(orderBy: [CREATED_AT_DESC], condition: { slug: $organizationSlug }) {
     nodes {
       ...MyEvent
     }
@@ -16,6 +40,31 @@ query GetEventById($eventId: UUID!) {
       nodes {
         ...MyAttendee
       }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      totalCount
+    }
+  }
+}
+
+query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
+  eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
+    ...MyEvent
+    attendees {
+      nodes {
+        ...MyAttendee
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      totalCount
     }
   }
 }

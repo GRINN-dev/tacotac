@@ -23,6 +23,7 @@ interface iTableEvent {
   totalCount: number;
   pageInfo: any;
   initLimit?: number;
+  routerPath?: any;
 }
 //pour pr
 
@@ -39,7 +40,7 @@ const formatCollectionData = (headerFormat: IHeader[], rawData: IData[]) => {
   return { headerFormat, dataformat };
 };
 
-export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iTableEvent) => {
+export const Collection = ({ pageInfo, totalCount, header, data, initLimit, routerPath }: iTableEvent) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
@@ -301,7 +302,9 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit }: iT
                 <tr
                   className="flex items-start hover:cursor-pointer"
                   onClick={() => {
-                    router.push(`${pathname}/${row?.slug}`);
+                    router.push(
+                      `${routerPath ?? pathname}/${row?.firstSlug}${row?.secondSlug ? `/${row?.secondSlug}` : ""}`
+                    );
                   }}
                   key={"row-" + index}
                 >

@@ -7,8 +7,7 @@ import { Cog, PlusSquare } from "lucide-react";
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
-import { Collection } from "../../../components/table/Collection";
-
+import { Collection } from "../../../../components/table/Collection";
 
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
@@ -19,8 +18,6 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     orderBy: orderBy,
   });
 
-  
-
   const { organizationBySlug: organization } = data;
 
   const headerEvent: IHeader[] = [
@@ -30,7 +27,8 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
-    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "firstSlug", value: "firstSlug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "secondSlug", value: "secondSlug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawEvent: IData[] = organization?.events?.nodes.map(
@@ -49,7 +47,8 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
       "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
       "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
       Participants: attendees?.nodes?.length,
-      slug: slug,
+      firstSlug: organization?.slug,
+      secondSlug: slug,
     })
   );
   //pour pr
@@ -60,7 +59,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           {organization?.name}
         </h1>
         <Link
-          href={`/organizations/${organization?.slug}/infos`}
+          href={`/organisations/${organization?.slug}/infos`}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           <Cog aria-hidden className="w-8 h-8" />
@@ -85,6 +84,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           header={headerEvent}
           data={rawEvent}
           initLimit={initLimit}
+          routerPath="/evenements"
         />
       ) : (
         <div className="flex flex-col items-start gap-4">
