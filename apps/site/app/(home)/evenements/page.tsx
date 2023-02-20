@@ -2,6 +2,8 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
@@ -18,11 +20,12 @@ const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) 
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
     { title: "Organisations", value: "organisations", type: Type?.date, isSortable: false, isVisible: true },
-    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "firstSlug", value: "firstSlug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "secondSlug", value: "secondSlug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawEvent: IData[] = events?.nodes.map(
-    ({ id, name, city, happeningAt, bookingStartsAt, bookingEndsAt, attendees, slug, organizationId }) => ({
+    ({ name, city, happeningAt, bookingStartsAt, bookingEndsAt, attendees, slug, organizationId, organization }) => ({
       Nom: name,
       Lieu: city,
       "Début le": (
@@ -38,7 +41,8 @@ const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) 
       "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
       Participants: attendees?.nodes?.length,
       organisations: organizationId,
-      slug: id,
+      firstSlug: organization.slug,
+      secondSlug: slug,
     })
   );
 

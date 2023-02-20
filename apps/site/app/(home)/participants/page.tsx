@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
+
 
 const AttendeesPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const { attendees } = await sdk().GetAllAttendee();
@@ -15,7 +18,7 @@ const AttendeesPage = async ({ searchParams: { offset, filter, first, orderBy } 
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
     { title: "status", value: "Status", type: Type?.string, isSortable: false, isVisible: true },
     { title: "eventId", value: "Event-id", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "slug", value: "id", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "firstSlug", value: "id", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawAttendees: IData[] = attendees.nodes.map(({ id, firstname, lastname, email, status, eventId }) => ({
@@ -24,7 +27,7 @@ const AttendeesPage = async ({ searchParams: { offset, filter, first, orderBy } 
     email: email,
     status: status,
     eventId: eventId,
-    slug: id,
+    firstSlug: id,
   }));
 
   return (

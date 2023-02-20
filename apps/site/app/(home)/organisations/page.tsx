@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
+
 
 const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const { organizations } = await sdk().GetAllOrganization();
@@ -12,13 +15,13 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
   const headerOrga: IHeader[] = [
     { title: "Nom", value: "name", type: Type?.string, isSortable: true, isVisible: true },
     { title: "Description", value: "description", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "firstSlug", value: "firstSlug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawOrga: IData[] = organizations.nodes.map(({ name, description, slug }) => ({
     Nom: name,
     Description: description,
-    slug: slug,
+    firstSlug: slug,
   }));
 
   return (
