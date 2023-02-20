@@ -1,3 +1,4 @@
+
 /*
     TABLE: publ.events
     DESCRIPTION:  A event is a group of epics that are related to each other. The event as a whole is a goal that the organization is trying to achieve.
@@ -22,6 +23,7 @@ create table publ.events (
     booking_starts_at timestamptz,
     booking_ends_at timestamptz,
     capacity int,
+    is_vip boolean,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
     
@@ -72,7 +74,7 @@ create table publ.events (
 
 -- fixtures
     -- fixtures go here
-      insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('b9b4b51f-e5e1-4068-a593-4c7212da4e2d','Nantes', 'Chez Daddy', 'Des cafés conviviaux et intergénrationnels pour recréer du lien dans les quartiers', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
+    insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('b9b4b51f-e5e1-4068-a593-4c7212da4e2d','Nantes', 'Chez Daddy', 'Des cafés conviviaux et intergénrationnels pour recréer du lien dans les quartiers', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
     insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('2678d40b-c0ee-4472-b9b1-146374a87fa4','Nantes', 'Canto', 'Le conservatoire du chant populaire', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
     insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('a04700b6-8afc-4ce5-a820-599b6cef5de1','Nantes', 'Napol.io', 'Le meilleur booster de productivité pour la gestion de projet informatique', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
     insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('3d370256-eb3c-42ce-9e8f-fa4dda7ab0fa','Nantes', 'third', 'third', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
@@ -108,9 +110,7 @@ grant execute on function publ.event_by_slug(text, text) to :DATABASE_VISITOR;
 drop table if exists publ.registrations cascade;
 create table publ.registrations (
     id uuid not null default uuid_generate_v4() primary key unique, 
-    firstname text not null,
-    lastname text not null,
-    email citext not null,
+    code_id uuid,
     event_id uuid  references publ.events(id),
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
@@ -138,9 +138,61 @@ create table publ.registrations (
    for all
    using (true)
    with check(true);
-
 -- fixtures
   -- fixtures go here
 /*
   END TABLE: publ.registrations
+*//*
+  TABLE: publ.event_brandings
+  DESCRIPTION: table regroupant les informations custom de l'event
+*/
+drop table if exists publ.event_brandings cascade;
+create table publ.event_brandings (
+  id uuid not null default uuid_generate_v4() primary key unique, 
+  color_1 text,
+  color_2 text,
+  font text,
+  logo text,
+  placeholder json, 
+  rich_text text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- indexes
+
+  create index on publ.event_brandings(created_at);
+
+  create index on publ.event_brandings(updated_at);
+  
+
+
+-- RBAC
+    grant select on publ.event_brandings to :DATABASE_VISITOR;
+    grant insert(color_1, color_2, font, logo,  placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
+    grant update(color_1, color_2, font, logo,  placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
+    grant delete on publ.event_brandings to :DATABASE_VISITOR;
+-- triggers
+  create trigger _100_timestamps
+  before insert or update on publ.event_brandings
+  for each row
+  execute procedure priv.tg__timestamps();
+
+-- RLS
+  alter table publ.event_brandings enable row level security;
+  
+  alter table publ.events add column event_brandings_id uuid unique  references publ.event_brandings(id) on delete cascade;
+  create index on publ.events(event_brandings_id);
+
+
+ create policy no_limit /*TODO: update policy*/
+   on publ.event_brandings
+   for all
+   using (true)
+   with check(true);
+
+-- fixtures
+  -- fixtures go here
+/*
+  END TABLE: publ.event_brandings
 */

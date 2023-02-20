@@ -49,9 +49,9 @@ EXECUTE FUNCTION publ.generate_slug();
 -- fixtures
   -- fixtures go here
   insert into publ.organizations (id, name, description, logo_url) values ('3fdd6e49-8a4b-41c8-8df0-17fe8be4efb8', 'The Organisation', 'The Organisation is a group of people who work together on projects.', 'https://project-management.com/wp-content/uploads/2022/11/PMcom_logo_MobileLogo.png');
-  insert into publ.organizations (id, name, description, logo_url) values ('3d670ad3-29c6-4a8d-a761-f8494859c67f', 'La Nuit Du Bien Commun', 'The Organisation is a group of people who work together on projects.', 'https://project-management.com/wp-content/uploads/2022/11/PMcom_logo_MobileLogo.png');
-  insert into publ.organizations (id, name, description, logo_url) values ('80bdb4c2-6fee-488c-b0c2-d9e34317c1d2', 'Obole', 'The Organisation is a group of people who work together on projects.', 'https://project-management.com/wp-content/uploads/2022/11/PMcom_logo_MobileLogo.png');
-  insert into publ.organizations (id, name, description, logo_url) values ('881a4dc1-b74f-4e21-9d37-87b83970642f', 'Grinn', 'The Organisation is a group of people who work together on projects.', 'https://project-management.com/wp-content/uploads/2022/11/PMcom_logo_MobileLogo.png');
+  insert into publ.organizations (id, name, description, logo_url) values ('3d670ad3-29c6-4a8d-a761-f8494859c67f', 'La Nuit Du Bien Commun', 'La nuit du bien commun', 'https://project-management.com/wp-content/uploads/2022/11/PMcom_logo_MobileLogo.png');
+  insert into publ.organizations (id, name, description, logo_url) values ('80bdb4c2-6fee-488c-b0c2-d9e34317c1d2', 'Obole', 'Obole startup', 'https://project-management.com/wp-content/uploads/2022/11/PMcom_logo_MobileLogo.png');
+  insert into publ.organizations (id, name, description, logo_url) values ('881a4dc1-b74f-4e21-9d37-87b83970642f', 'Grinn', 'Grinn agency web', 'https://project-management.com/wp-content/uploads/2022/11/PMcom_logo_MobileLogo.png');
 /*
   END TABLE: publ.organizations
 */
