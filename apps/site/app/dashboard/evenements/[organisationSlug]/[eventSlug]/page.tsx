@@ -42,7 +42,7 @@ const EventPage = async ({
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           {eventBySlug?.name}
         </h1>
-        <Link href={`/evenements/${eventBySlug?.id}/infos`} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link href={`/dashboard/evenements/${eventBySlug?.id}/infos`} className={buttonVariants({ size: "lg", variant: "link" })}>
           <Cog aria-hidden className="w-8 h-8" />
           <span className="sr-only">Paramètres</span>
         </Link>
@@ -68,7 +68,7 @@ const EventPage = async ({
           <p>
             Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
           </p>
-          <Link href={`/evenements/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+          <Link href={`/dashboard/evenements/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
             <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
           </Link>
         </div>

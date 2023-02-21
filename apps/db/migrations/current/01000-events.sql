@@ -169,8 +169,8 @@ create table publ.event_brandings (
 
 -- RBAC
     grant select on publ.event_brandings to :DATABASE_VISITOR;
-    grant insert(color_1, color_2, font, logo,  placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
-    grant update(color_1, color_2, font, logo,  placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
+    grant insert(color_1, color_2, font, logo, placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
+    grant update(color_1, color_2, font, logo, placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
     grant delete on publ.event_brandings to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps

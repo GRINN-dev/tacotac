@@ -22,7 +22,7 @@ export default function OrganisationsLayout({
       <div className="w-1/6">
         <nav className="flex flex-col">
           <Link
-            href={"/organizations/" + organizationSlug + "/infos"}
+            href={"/dashboard/organizations/" + organizationSlug + "/infos"}
             className={cn(
               "flex items-center text-lg font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-100 sm:text-sm"
             )}
@@ -30,7 +30,7 @@ export default function OrganisationsLayout({
             Événements {organizationSlug}
           </Link>
           <Link
-            href={"/organizations/" + organizationSlug + "/" + eventSlug}
+            href={"/dashboard/organizations/" + organizationSlug + "/" + eventSlug}
             className={cn(
               "flex items-center text-lg font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-100 sm:text-sm"
             )}

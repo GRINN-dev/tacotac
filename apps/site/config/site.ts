@@ -24,15 +24,15 @@ export const siteConfig: SiteConfig = {
     },
     {
       title: "Organisations",
-      href: "/organisations",
+      href: "/dashboard/organisations",
     },
     {
       title: "Événements",
-      href: "/evenements",
+      href: "/dashboard/evenements",
     },
     {
       title: "Participants",
-      href: "/participants",
+      href: "/dashboard/participants",
     },
   ],
   links: {
