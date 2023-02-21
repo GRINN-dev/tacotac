@@ -247,6 +247,8 @@ export type CreateEventBrandingPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `EventBranding`. */
+  event?: Maybe<Event>;
   /** The `EventBranding` that was created by this mutation. */
   eventBranding?: Maybe<EventBranding>;
   /** An edge for our `EventBranding`. May be used by Relay 1. */
@@ -282,8 +284,6 @@ export type CreateEventPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** The `Event` that was created by this mutation. */
   event?: Maybe<Event>;
-  /** Reads a single `EventBranding` that is related to this `Event`. */
-  eventBrandings?: Maybe<EventBranding>;
   /** An edge for our `Event`. May be used by Relay 1. */
   eventEdge?: Maybe<EventsEdge>;
   /** Reads a single `Organization` that is related to this `Event`. */
@@ -521,6 +521,16 @@ export type DeleteAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
+/** All input for the `deleteEventBrandingByEventId` mutation. */
+export type DeleteEventBrandingByEventIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  eventId: Scalars['UUID'];
+};
+
 /** All input for the `deleteEventBrandingByNodeId` mutation. */
 export type DeleteEventBrandingByNodeIdInput = {
   /**
@@ -551,6 +561,8 @@ export type DeleteEventBrandingPayload = {
    */
   clientMutationId?: Maybe<Scalars['String']>;
   deletedEventBrandingNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `Event` that is related to this `EventBranding`. */
+  event?: Maybe<Event>;
   /** The `EventBranding` that was deleted by this mutation. */
   eventBranding?: Maybe<EventBranding>;
   /** An edge for our `EventBranding`. May be used by Relay 1. */
@@ -563,16 +575,6 @@ export type DeleteEventBrandingPayload = {
 /** The output of our delete `EventBranding` mutation. */
 export type DeleteEventBrandingPayloadEventBrandingEdgeArgs = {
   orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
-};
-
-/** All input for the `deleteEventByEventBrandingsId` mutation. */
-export type DeleteEventByEventBrandingsIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  eventBrandingsId: Scalars['UUID'];
 };
 
 /** All input for the `deleteEventByNodeId` mutation. */
@@ -629,8 +631,6 @@ export type DeleteEventPayload = {
   deletedEventNodeId?: Maybe<Scalars['ID']>;
   /** The `Event` that was deleted by this mutation. */
   event?: Maybe<Event>;
-  /** Reads a single `EventBranding` that is related to this `Event`. */
-  eventBrandings?: Maybe<EventBranding>;
   /** An edge for our `Event`. May be used by Relay 1. */
   eventEdge?: Maybe<EventsEdge>;
   /** Reads a single `Organization` that is related to this `Event`. */
@@ -892,8 +892,7 @@ export type Event = Node & {
   description: Scalars['String'];
   endsAt?: Maybe<Scalars['Datetime']>;
   /** Reads a single `EventBranding` that is related to this `Event`. */
-  eventBrandings?: Maybe<EventBranding>;
-  eventBrandingsId?: Maybe<Scalars['UUID']>;
+  eventBranding?: Maybe<EventBranding>;
   id: Scalars['UUID'];
   isVip?: Maybe<Scalars['Boolean']>;
   lat?: Maybe<Scalars['Float']>;
@@ -939,18 +938,22 @@ export type EventRegistrationsArgs = {
 
 export type EventBranding = Node & {
   __typename?: 'EventBranding';
+  awardWinningAssoList?: Maybe<Array<Maybe<Scalars['String']>>>;
   color1?: Maybe<Scalars['String']>;
   color2?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
   /** Reads a single `Event` that is related to this `EventBranding`. */
-  eventByEventBrandingsId?: Maybe<Event>;
+  event?: Maybe<Event>;
+  eventId: Scalars['UUID'];
   font?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   logo?: Maybe<Scalars['String']>;
+  longText?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   placeholder?: Maybe<Scalars['JSON']>;
   richText?: Maybe<Scalars['String']>;
+  shortText?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
 };
 
@@ -961,6 +964,8 @@ export type EventBranding = Node & {
 export type EventBrandingCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `eventId` field. */
+  eventId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -973,6 +978,8 @@ export type EventBrandingFilter = {
   and?: InputMaybe<Array<EventBrandingFilter>>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `eventId` field. */
+  eventId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
@@ -985,27 +992,35 @@ export type EventBrandingFilter = {
 
 /** An input for mutations affecting `EventBranding` */
 export type EventBrandingInput = {
+  awardWinningAssoList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   color1?: InputMaybe<Scalars['String']>;
   color2?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId: Scalars['UUID'];
   font?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   logo?: InputMaybe<Scalars['String']>;
+  longText?: InputMaybe<Scalars['String']>;
   placeholder?: InputMaybe<Scalars['JSON']>;
   richText?: InputMaybe<Scalars['String']>;
+  shortText?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
 /** Represents an update to a `EventBranding`. Fields that are set will be updated. */
 export type EventBrandingPatch = {
+  awardWinningAssoList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   color1?: InputMaybe<Scalars['String']>;
   color2?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
   font?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   logo?: InputMaybe<Scalars['String']>;
+  longText?: InputMaybe<Scalars['String']>;
   placeholder?: InputMaybe<Scalars['JSON']>;
   richText?: InputMaybe<Scalars['String']>;
+  shortText?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
@@ -1035,6 +1050,8 @@ export type EventBrandingsEdge = {
 export enum EventBrandingsOrderBy {
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
+  EventIdAsc = 'EVENT_ID_ASC',
+  EventIdDesc = 'EVENT_ID_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
@@ -1058,8 +1075,6 @@ export type EventCondition = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `endsAt` field. */
   endsAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `eventBrandingsId` field. */
-  eventBrandingsId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `name` field. */
@@ -1090,8 +1105,6 @@ export type EventFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `endsAt` field. */
   endsAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `eventBrandingsId` field. */
-  eventBrandingsId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
@@ -1122,7 +1135,6 @@ export type EventInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   description: Scalars['String'];
   endsAt?: InputMaybe<Scalars['Datetime']>;
-  eventBrandingsId?: InputMaybe<Scalars['UUID']>;
   id?: InputMaybe<Scalars['UUID']>;
   isVip?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
@@ -1148,7 +1160,6 @@ export type EventPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   description?: InputMaybe<Scalars['String']>;
   endsAt?: InputMaybe<Scalars['Datetime']>;
-  eventBrandingsId?: InputMaybe<Scalars['UUID']>;
   id?: InputMaybe<Scalars['UUID']>;
   isVip?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
@@ -1233,8 +1244,6 @@ export enum EventsOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   EndsAtAsc = 'ENDS_AT_ASC',
   EndsAtDesc = 'ENDS_AT_DESC',
-  EventBrandingsIdAsc = 'EVENT_BRANDINGS_ID_ASC',
-  EventBrandingsIdDesc = 'EVENT_BRANDINGS_ID_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   NameAsc = 'NAME_ASC',
@@ -1339,10 +1348,10 @@ export type Mutation = {
   deleteEvent?: Maybe<DeleteEventPayload>;
   /** Deletes a single `EventBranding` using a unique key. */
   deleteEventBranding?: Maybe<DeleteEventBrandingPayload>;
+  /** Deletes a single `EventBranding` using a unique key. */
+  deleteEventBrandingByEventId?: Maybe<DeleteEventBrandingPayload>;
   /** Deletes a single `EventBranding` using its globally unique id. */
   deleteEventBrandingByNodeId?: Maybe<DeleteEventBrandingPayload>;
-  /** Deletes a single `Event` using a unique key. */
-  deleteEventByEventBrandingsId?: Maybe<DeleteEventPayload>;
   /** Deletes a single `Event` using its globally unique id. */
   deleteEventByNodeId?: Maybe<DeleteEventPayload>;
   /** Deletes a single `Event` using a unique key. */
@@ -1387,10 +1396,10 @@ export type Mutation = {
   updateEvent?: Maybe<UpdateEventPayload>;
   /** Updates a single `EventBranding` using a unique key and a patch. */
   updateEventBranding?: Maybe<UpdateEventBrandingPayload>;
+  /** Updates a single `EventBranding` using a unique key and a patch. */
+  updateEventBrandingByEventId?: Maybe<UpdateEventBrandingPayload>;
   /** Updates a single `EventBranding` using its globally unique id and a patch. */
   updateEventBrandingByNodeId?: Maybe<UpdateEventBrandingPayload>;
-  /** Updates a single `Event` using a unique key and a patch. */
-  updateEventByEventBrandingsId?: Maybe<UpdateEventPayload>;
   /** Updates a single `Event` using its globally unique id and a patch. */
   updateEventByNodeId?: Maybe<UpdateEventPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
@@ -1497,14 +1506,14 @@ export type MutationDeleteEventBrandingArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventBrandingByNodeIdArgs = {
-  input: DeleteEventBrandingByNodeIdInput;
+export type MutationDeleteEventBrandingByEventIdArgs = {
+  input: DeleteEventBrandingByEventIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventByEventBrandingsIdArgs = {
-  input: DeleteEventByEventBrandingsIdInput;
+export type MutationDeleteEventBrandingByNodeIdArgs = {
+  input: DeleteEventBrandingByNodeIdInput;
 };
 
 
@@ -1653,14 +1662,14 @@ export type MutationUpdateEventBrandingArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventBrandingByNodeIdArgs = {
-  input: UpdateEventBrandingByNodeIdInput;
+export type MutationUpdateEventBrandingByEventIdArgs = {
+  input: UpdateEventBrandingByEventIdInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventByEventBrandingsIdArgs = {
-  input: UpdateEventByEventBrandingsIdInput;
+export type MutationUpdateEventBrandingByNodeIdArgs = {
+  input: UpdateEventBrandingByNodeIdInput;
 };
 
 
@@ -2092,11 +2101,11 @@ export type Query = Node & {
   dateTruncFunc?: Maybe<Scalars['Datetime']>;
   event?: Maybe<Event>;
   eventBranding?: Maybe<EventBranding>;
+  eventBrandingByEventId?: Maybe<EventBranding>;
   /** Reads a single `EventBranding` using its globally unique `ID`. */
   eventBrandingByNodeId?: Maybe<EventBranding>;
   /** Reads and enables pagination through a set of `EventBranding`. */
   eventBrandings?: Maybe<EventBrandingsConnection>;
-  eventByEventBrandingsId?: Maybe<Event>;
   /** Reads a single `Event` using its globally unique `ID`. */
   eventByNodeId?: Maybe<Event>;
   eventByOrganizationIdAndName?: Maybe<Event>;
@@ -2192,6 +2201,12 @@ export type QueryEventBrandingArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryEventBrandingByEventIdArgs = {
+  eventId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryEventBrandingByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
@@ -2207,12 +2222,6 @@ export type QueryEventBrandingsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryEventByEventBrandingsIdArgs = {
-  eventBrandingsId: Scalars['UUID'];
 };
 
 
@@ -2422,6 +2431,7 @@ export type Registration = Node & {
   /** Reads a single `Event` that is related to this `Registration`. */
   event?: Maybe<Event>;
   eventId?: Maybe<Scalars['UUID']>;
+  hearAboutList?: Maybe<Array<Maybe<Scalars['String']>>>;
   id: Scalars['UUID'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
@@ -2478,6 +2488,7 @@ export type RegistrationInput = {
   codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   eventId?: InputMaybe<Scalars['UUID']>;
+  hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -2487,6 +2498,7 @@ export type RegistrationPatch = {
   codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   eventId?: InputMaybe<Scalars['UUID']>;
+  hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -2646,6 +2658,18 @@ export type UpdateAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
+/** All input for the `updateEventBrandingByEventId` mutation. */
+export type UpdateEventBrandingByEventIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  eventId: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `EventBranding` being updated. */
+  patch: EventBrandingPatch;
+};
+
 /** All input for the `updateEventBrandingByNodeId` mutation. */
 export type UpdateEventBrandingByNodeIdInput = {
   /**
@@ -2679,6 +2703,8 @@ export type UpdateEventBrandingPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `EventBranding`. */
+  event?: Maybe<Event>;
   /** The `EventBranding` that was updated by this mutation. */
   eventBranding?: Maybe<EventBranding>;
   /** An edge for our `EventBranding`. May be used by Relay 1. */
@@ -2691,18 +2717,6 @@ export type UpdateEventBrandingPayload = {
 /** The output of our update `EventBranding` mutation. */
 export type UpdateEventBrandingPayloadEventBrandingEdgeArgs = {
   orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
-};
-
-/** All input for the `updateEventByEventBrandingsId` mutation. */
-export type UpdateEventByEventBrandingsIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  eventBrandingsId: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
 };
 
 /** All input for the `updateEventByNodeId` mutation. */
@@ -2766,8 +2780,6 @@ export type UpdateEventPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** The `Event` that was updated by this mutation. */
   event?: Maybe<Event>;
-  /** Reads a single `EventBranding` that is related to this `Event`. */
-  eventBrandings?: Maybe<EventBranding>;
   /** An edge for our `Event`. May be used by Relay 1. */
   eventEdge?: Maybe<EventsEdge>;
   /** Reads a single `Organization` that is related to this `Event`. */
@@ -3149,7 +3161,9 @@ export enum UsersOrderBy {
 
 export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any };
 
-export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } };
+export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any };
+
+export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } };
 
 export type OrganizationFragmentFragment = { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any };
 
@@ -3187,21 +3201,42 @@ export type CreateEventMutationVariables = Exact<{
 }>;
 
 
-export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'CreateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
+export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'CreateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
 
 export type UpdateEventMutationVariables = Exact<{
   input: UpdateEventInput;
 }>;
 
 
-export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'UpdateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
+export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'UpdateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
 
 export type DeleteEventMutationVariables = Exact<{
   input: DeleteEventInput;
 }>;
 
 
-export type DeleteEventMutation = { __typename?: 'Mutation', deleteEvent?: { __typename?: 'DeleteEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
+export type DeleteEventMutation = { __typename?: 'Mutation', deleteEvent?: { __typename?: 'DeleteEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
+
+export type CreateEventBrandingMutationVariables = Exact<{
+  input: CreateEventBrandingInput;
+}>;
+
+
+export type CreateEventBrandingMutation = { __typename?: 'Mutation', createEventBranding?: { __typename?: 'CreateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
+
+export type UpdateEventBrandingMutationVariables = Exact<{
+  input: UpdateEventBrandingInput;
+}>;
+
+
+export type UpdateEventBrandingMutation = { __typename?: 'Mutation', updateEventBranding?: { __typename?: 'UpdateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
+
+export type DeleteEventBrandingMutationVariables = Exact<{
+  input: DeleteEventBrandingInput;
+}>;
+
+
+export type DeleteEventBrandingMutation = { __typename?: 'Mutation', deleteEventBranding?: { __typename?: 'DeleteEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
 
 export type CreateOrganizationMutationVariables = Exact<{
   input: CreateOrganizationInput;
@@ -3239,28 +3274,28 @@ export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typena
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetAllEventsByOrganizationIdQueryVariables = Exact<{
   organizationId: Scalars['UUID'];
 }>;
 
 
-export type GetAllEventsByOrganizationIdQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } | null };
+export type GetAllEventsByOrganizationIdQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } | null };
 
 export type GetAllEventsByOrganizationSlugQueryVariables = Exact<{
   organizationSlug: Scalars['String'];
 }>;
 
 
-export type GetAllEventsByOrganizationSlugQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllEventsByOrganizationSlugQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetEventByIdQueryVariables = Exact<{
   eventId: Scalars['UUID'];
 }>;
 
 
-export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } }, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
 
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -3268,7 +3303,7 @@ export type GetEventBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } }, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
 
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
@@ -3288,7 +3323,7 @@ export type GetOrganizationByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } } | null };
+export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } } | null };
 
 export type GetOrganizationBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -3302,8 +3337,24 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: string | null, id: any, logo?: string | null, longText?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
+export const EventBrandingFragmentFragmentDoc = gql`
+    fragment EventBrandingFragment on EventBranding {
+  awardWinningAssoList
+  color1
+  color2
+  createdAt
+  font
+  id
+  logo
+  longText
+  placeholder
+  shortText
+  richText
+  updatedAt
+}
+    `;
 export const MyAttendeeFragmentDoc = gql`
     fragment MyAttendee on Attendee {
   id
@@ -3334,13 +3385,17 @@ export const MyEventFragmentDoc = gql`
   updatedAt
   placeName
   organizationId
+  eventBranding {
+    ...EventBrandingFragment
+  }
   attendees {
     nodes {
       ...MyAttendee
     }
   }
 }
-    ${MyAttendeeFragmentDoc}`;
+    ${EventBrandingFragmentFragmentDoc}
+${MyAttendeeFragmentDoc}`;
 export const OrganizationFragmentFragmentDoc = gql`
     fragment OrganizationFragment on Organization {
   id
@@ -3413,6 +3468,36 @@ export const DeleteEventDocument = gql`
   }
 }
     ${MyEventFragmentDoc}`;
+export const CreateEventBrandingDocument = gql`
+    mutation CreateEventBranding($input: CreateEventBrandingInput!) {
+  createEventBranding(input: $input) {
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    clientMutationId
+  }
+}
+    ${EventBrandingFragmentFragmentDoc}`;
+export const UpdateEventBrandingDocument = gql`
+    mutation UpdateEventBranding($input: UpdateEventBrandingInput!) {
+  updateEventBranding(input: $input) {
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    clientMutationId
+  }
+}
+    ${EventBrandingFragmentFragmentDoc}`;
+export const DeleteEventBrandingDocument = gql`
+    mutation DeleteEventBranding($input: DeleteEventBrandingInput!) {
+  deleteEventBranding(input: $input) {
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    clientMutationId
+  }
+}
+    ${EventBrandingFragmentFragmentDoc}`;
 export const CreateOrganizationDocument = gql`
     mutation CreateOrganization($input: CreateOrganizationInput!) {
   createOrganization(input: $input) {
@@ -3641,6 +3726,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeleteEvent(variables: DeleteEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteEventMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteEventMutation>(DeleteEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteEvent', 'mutation');
+    },
+    CreateEventBranding(variables: CreateEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateEventBrandingMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateEventBrandingMutation>(CreateEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateEventBranding', 'mutation');
+    },
+    UpdateEventBranding(variables: UpdateEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateEventBrandingMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateEventBrandingMutation>(UpdateEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateEventBranding', 'mutation');
+    },
+    DeleteEventBranding(variables: DeleteEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteEventBrandingMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteEventBrandingMutation>(DeleteEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteEventBranding', 'mutation');
     },
     CreateOrganization(variables: CreateOrganizationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateOrganizationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateOrganizationMutation>(CreateOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateOrganization', 'mutation');

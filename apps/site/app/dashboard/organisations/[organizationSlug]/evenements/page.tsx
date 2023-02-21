@@ -86,7 +86,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           <p>
             Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
           </p>
-          <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+          <Link href={`/dashboard/organisations/${organizationSlug}/evenements/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
             <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
           </Link>
         </div>

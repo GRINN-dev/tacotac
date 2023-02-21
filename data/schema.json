@@ -876,6 +876,33 @@
               "deprecationReason": null
             },
             {
+              "name": "eventBrandingByEventId",
+              "description": null,
+              "args": [
+                {
+                  "name": "eventId",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "UUID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "EventBranding",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "event",
               "description": null,
               "args": [
@@ -970,33 +997,6 @@
                     "ofType": {
                       "kind": "SCALAR",
                       "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "Event",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "eventByEventBrandingsId",
-              "description": null,
-              "args": [
-                {
-                  "name": "eventBrandingsId",
-                  "description": null,
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "UUID",
                       "ofType": null
                     }
                   },
@@ -1590,12 +1590,12 @@
             },
             {
               "kind": "OBJECT",
-              "name": "EventBranding",
+              "name": "Registration",
               "ofType": null
             },
             {
               "kind": "OBJECT",
-              "name": "Registration",
+              "name": "EventBranding",
               "ofType": null
             }
           ]
@@ -2255,36 +2255,12 @@
               "deprecationReason": null
             },
             {
-              "name": "eventBrandingsId",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "organization",
               "description": "Reads a single `Organization` that is related to this `Event`.",
               "args": [],
               "type": {
                 "kind": "OBJECT",
                 "name": "Organization",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "eventBrandings",
-              "description": "Reads a single `EventBranding` that is related to this `Event`.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "EventBranding",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -2391,6 +2367,18 @@
                   "name": "RegistrationsConnection",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "eventBranding",
+              "description": "Reads a single `EventBranding` that is related to this `Event`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "EventBranding",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -4563,18 +4551,6 @@
               "deprecationReason": null
             },
             {
-              "name": "EVENT_BRANDINGS_ID_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "EVENT_BRANDINGS_ID_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "PRIMARY_KEY_ASC",
               "description": null,
               "isDeprecated": false,
@@ -4714,16 +4690,6 @@
                 "ofType": null
               },
               "defaultValue": null
-            },
-            {
-              "name": "eventBrandingsId",
-              "description": "Checks for equality with the object’s `eventBrandingsId` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              },
-              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -4852,16 +4818,6 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "DatetimeFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "eventBrandingsId",
-              "description": "Filter by the object’s `eventBrandingsId` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "UUIDFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -5203,181 +5159,6 @@
         },
         {
           "kind": "OBJECT",
-          "name": "EventBranding",
-          "description": null,
-          "fields": [
-            {
-              "name": "nodeId",
-              "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "ID",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "id",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "UUID",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "color1",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "color2",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "font",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "logo",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "placeholder",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "JSON",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "richText",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "createdAt",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Datetime",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "updatedAt",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Datetime",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "eventByEventBrandingsId",
-              "description": "Reads a single `Event` that is related to this `EventBranding`.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "Event",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [
-            {
-              "kind": "INTERFACE",
-              "name": "Node",
-              "ofType": null
-            }
-          ],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "SCALAR",
-          "name": "JSON",
-          "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
           "name": "RegistrationsConnection",
           "description": "A connection to a list of `Registration` values.",
           "fields": [
@@ -5524,6 +5305,22 @@
                 "kind": "SCALAR",
                 "name": "UUID",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "hearAboutList",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -6413,6 +6210,237 @@
         },
         {
           "kind": "OBJECT",
+          "name": "EventBranding",
+          "description": null,
+          "fields": [
+            {
+              "name": "nodeId",
+              "description": "A globally unique identifier. Can be used in various places throughout the system to identify this single value.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "id",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "eventId",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "color1",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "color2",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "font",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "logo",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "placeholder",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "richText",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "shortText",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "longText",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "awardWinningAssoList",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdAt",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedAt",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Datetime",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "event",
+              "description": "Reads a single `Event` that is related to this `EventBranding`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Event",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "JSON",
+          "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
           "name": "AttendeesEdge",
           "description": "A `Attendee` edge in the connection.",
           "fields": [
@@ -6607,6 +6635,18 @@
               "deprecationReason": null
             },
             {
+              "name": "EVENT_ID_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "EVENT_ID_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -6662,6 +6702,16 @@
               "defaultValue": null
             },
             {
+              "name": "eventId",
+              "description": "Checks for equality with the object’s `eventId` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": "Checks for equality with the object’s `createdAt` field.",
               "type": {
@@ -6695,6 +6745,16 @@
             {
               "name": "id",
               "description": "Filter by the object’s `id` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "UUIDFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "eventId",
+              "description": "Filter by the object’s `eventId` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "UUIDFilter",
@@ -7992,6 +8052,33 @@
               "deprecationReason": null
             },
             {
+              "name": "updateEventBrandingByEventId",
+              "description": "Updates a single `EventBranding` using a unique key and a patch.",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "UpdateEventBrandingByEventIdInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UpdateEventBrandingPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "updateEventByNodeId",
               "description": "Updates a single `Event` using its globally unique id and a patch.",
               "args": [
@@ -8085,33 +8172,6 @@
                     "ofType": {
                       "kind": "INPUT_OBJECT",
                       "name": "UpdateEventByOrganizationIdAndSlugInput",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "UpdateEventPayload",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "updateEventByEventBrandingsId",
-              "description": "Updates a single `Event` using a unique key and a patch.",
-              "args": [
-                {
-                  "name": "input",
-                  "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "UpdateEventByEventBrandingsIdInput",
                       "ofType": null
                     }
                   },
@@ -8586,6 +8646,33 @@
               "deprecationReason": null
             },
             {
+              "name": "deleteEventBrandingByEventId",
+              "description": "Deletes a single `EventBranding` using a unique key.",
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "DeleteEventBrandingByEventIdInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "DeleteEventBrandingPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "deleteEventByNodeId",
               "description": "Deletes a single `Event` using its globally unique id.",
               "args": [
@@ -8679,33 +8766,6 @@
                     "ofType": {
                       "kind": "INPUT_OBJECT",
                       "name": "DeleteEventByOrganizationIdAndSlugInput",
-                      "ofType": null
-                    }
-                  },
-                  "defaultValue": null
-                }
-              ],
-              "type": {
-                "kind": "OBJECT",
-                "name": "DeleteEventPayload",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "deleteEventByEventBrandingsId",
-              "description": "Deletes a single `Event` using a unique key.",
-              "args": [
-                {
-                  "name": "input",
-                  "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
-                  "type": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "DeleteEventByEventBrandingsIdInput",
                       "ofType": null
                     }
                   },
@@ -9458,6 +9518,18 @@
               "deprecationReason": null
             },
             {
+              "name": "event",
+              "description": "Reads a single `Event` that is related to this `EventBranding`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Event",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "eventBrandingEdge",
               "description": "An edge for our `EventBranding`. May be used by Relay 1.",
               "args": [
@@ -9546,6 +9618,20 @@
               "defaultValue": null
             },
             {
+              "name": "eventId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "color1",
               "description": null,
               "type": {
@@ -9602,6 +9688,40 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "shortText",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "longText",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "awardWinningAssoList",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
@@ -9678,18 +9798,6 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Organization",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "eventBrandings",
-              "description": "Reads a single `EventBranding` that is related to this `Event`.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "EventBranding",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -9991,16 +10099,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Datetime",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "eventBrandingsId",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
                 "ofType": null
               },
               "defaultValue": null
@@ -10590,6 +10688,20 @@
                 "kind": "SCALAR",
                 "name": "UUID",
                 "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "hearAboutList",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
@@ -11240,6 +11352,18 @@
               "deprecationReason": null
             },
             {
+              "name": "event",
+              "description": "Reads a single `Event` that is related to this `EventBranding`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Event",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "eventBrandingEdge",
               "description": "An edge for our `EventBranding`. May be used by Relay 1.",
               "args": [
@@ -11342,6 +11466,16 @@
               "defaultValue": null
             },
             {
+              "name": "eventId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "color1",
               "description": null,
               "type": {
@@ -11398,6 +11532,40 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "shortText",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "longText",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "awardWinningAssoList",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
@@ -11476,6 +11644,55 @@
           "possibleTypes": null
         },
         {
+          "kind": "INPUT_OBJECT",
+          "name": "UpdateEventBrandingByEventIdInput",
+          "description": "All input for the `updateEventBrandingByEventId` mutation.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "clientMutationId",
+              "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "patch",
+              "description": "An object where the defined keys will be set on the `EventBranding` being updated.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "EventBrandingPatch",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "eventId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "OBJECT",
           "name": "UpdateEventPayload",
           "description": "The output of our update `Event` mutation.",
@@ -11523,18 +11740,6 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Organization",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "eventBrandings",
-              "description": "Reads a single `EventBranding` that is related to this `Event`.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "EventBranding",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -11841,16 +12046,6 @@
                 "ofType": null
               },
               "defaultValue": null
-            },
-            {
-              "name": "eventBrandingsId",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              },
-              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -12022,55 +12217,6 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "UpdateEventByEventBrandingsIdInput",
-          "description": "All input for the `updateEventByEventBrandingsId` mutation.",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "clientMutationId",
-              "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "patch",
-              "description": "An object where the defined keys will be set on the `Event` being updated.",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "EventPatch",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "eventBrandingsId",
-              "description": null,
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "UUID",
                   "ofType": null
                 }
               },
@@ -12946,6 +13092,20 @@
               "defaultValue": null
             },
             {
+              "name": "hearAboutList",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": null,
               "type": {
@@ -13622,6 +13782,18 @@
               "deprecationReason": null
             },
             {
+              "name": "event",
+              "description": "Reads a single `Event` that is related to this `EventBranding`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Event",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "eventBrandingEdge",
               "description": "An edge for our `EventBranding`. May be used by Relay 1.",
               "args": [
@@ -13729,6 +13901,41 @@
           "possibleTypes": null
         },
         {
+          "kind": "INPUT_OBJECT",
+          "name": "DeleteEventBrandingByEventIdInput",
+          "description": "All input for the `deleteEventBrandingByEventId` mutation.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "clientMutationId",
+              "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "eventId",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "UUID",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "OBJECT",
           "name": "DeleteEventPayload",
           "description": "The output of our delete `Event` mutation.",
@@ -13788,18 +13995,6 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Organization",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "eventBrandings",
-              "description": "Reads a single `EventBranding` that is related to this `Event`.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "EventBranding",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -14000,41 +14195,6 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "String",
-                  "ofType": null
-                }
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "DeleteEventByEventBrandingsIdInput",
-          "description": "All input for the `deleteEventByEventBrandingsId` mutation.",
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "clientMutationId",
-              "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "eventBrandingsId",
-              "description": null,
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "UUID",
                   "ofType": null
                 }
               },

@@ -15,6 +15,9 @@ fragment MyEvent on Event {
   updatedAt
   placeName
   organizationId
+  eventBranding {
+    ...EventBrandingFragment
+  }
   attendees {
     nodes {
       ...MyAttendee

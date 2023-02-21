@@ -1,0 +1,26 @@
+mutation CreateEventBranding($input: CreateEventBrandingInput!) {
+  createEventBranding(input: $input) {
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    clientMutationId
+  }
+}
+
+mutation UpdateEventBranding($input: UpdateEventBrandingInput!) {
+  updateEventBranding(input: $input) {
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    clientMutationId
+  }
+}
+
+mutation DeleteEventBranding($input: DeleteEventBrandingInput!) {
+  deleteEventBranding(input: $input) {
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    clientMutationId
+  }
+}

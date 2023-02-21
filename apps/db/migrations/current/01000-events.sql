@@ -112,6 +112,7 @@ create table publ.registrations (
     id uuid not null default uuid_generate_v4() primary key unique, 
     code_id uuid,
     event_id uuid  references publ.events(id),
+    hear_about_list text[] default '{"par un mécène", "par une association lauréate", "par le bouche à oreille", "autre", "par Obole, co-organisateur de l''événement", "par la Fondation de France, co-organisateur de l''événement"}',
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );
@@ -149,12 +150,16 @@ create table publ.registrations (
 drop table if exists publ.event_brandings cascade;
 create table publ.event_brandings (
   id uuid not null default uuid_generate_v4() primary key unique, 
+  event_id uuid not null unique references publ.events(id) on delete cascade,
   color_1 text,
   color_2 text,
   font text,
   logo text,
   placeholder json, 
   rich_text text,
+  short_text varchar(32),
+  long_text text,
+  award_winning_asso_list text[],
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -162,27 +167,42 @@ create table publ.event_brandings (
 -- indexes
 
   create index on publ.event_brandings(created_at);
-
   create index on publ.event_brandings(updated_at);
-  
+  create index on publ.event_brandings(event_id);
 
 
 -- RBAC
     grant select on publ.event_brandings to :DATABASE_VISITOR;
-    grant insert(color_1, color_2, font, logo, placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
-    grant update(color_1, color_2, font, logo, placeholder, rich_text) on publ.event_brandings to :DATABASE_VISITOR;
+    grant insert(id, color_1, color_2, font, logo, placeholder, rich_text, short_text, long_text) on publ.event_brandings to :DATABASE_VISITOR;
+    grant update(id, color_1, color_2, font, logo, placeholder, rich_text, short_text, long_text) on publ.event_brandings to :DATABASE_VISITOR;
     grant delete on publ.event_brandings to :DATABASE_VISITOR;
+    grant ALL  on table publ.event_brandings to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
   before insert or update on publ.event_brandings
   for each row
   execute procedure priv.tg__timestamps();
 
+
+
+create function publ.event_branding__insert_with_event() returns trigger as $$
+begin
+  insert into publ.event_brandings(event_id, color_1, color_2,font, logo, placeholder, rich_text, short_text, long_text) values(NEW.id,'023047','e63946','roboto','https://lille.lanuitdubiencommun.com/lib_YZQWsZJIBnpPHhyU/9co78sidc8k6jjf1.png?w=140','{"placeholder":"civilité","placeholder":"nom","placeholder":"prenom","placeholder":"email"}','rich text goes  here','short text','long text goes here') on conflict do nothing;
+  return NEW;
+end;
+$$ language plpgsql volatile set search_path to pg_catalog, public, pg_temp;
+
+
+create trigger _500_insert_branding
+  after insert on publ.events
+  for each row
+  execute procedure publ.event_branding__insert_with_event();
+comment on function publ.event_branding__insert_with_event() is E'Ensures that every create event insert branding value in event_branding';
+
 -- RLS
   alter table publ.event_brandings enable row level security;
   
-  alter table publ.events add column event_brandings_id uuid unique  references publ.event_brandings(id) on delete cascade;
-  create index on publ.events(event_brandings_id);
+
 
 
  create policy no_limit /*TODO: update policy*/
@@ -193,6 +213,7 @@ create table publ.event_brandings (
 
 -- fixtures
   -- fixtures go here
+  insert into publ.event_brandings(event_id, color_1) values ((select id from publ.events where name = 'third'), 'test color');
 /*
   END TABLE: publ.event_brandings
 */
