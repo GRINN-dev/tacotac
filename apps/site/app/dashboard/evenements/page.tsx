@@ -9,13 +9,14 @@ import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 
+
 const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const { events } = await sdk().GetAllEvents();
 
   const headerEvent: IHeader[] = [
     { title: "Nom", value: "name", type: Type?.string, isSortable: false, isVisible: true },
     { title: "Lieu", value: "city", type: Type?.string, isSortable: true, isVisible: true },
-    { title: "Début le", value: "happeningAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Début le", value: "startsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
@@ -25,15 +26,15 @@ const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) 
   ];
 
   const rawEvent: IData[] = events?.nodes.map(
-    ({ name, city, happeningAt, bookingStartsAt, bookingEndsAt, attendees, slug, organizationId, organization }) => ({
+    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, attendees, slug, organizationId, organization }) => ({
       Nom: name,
       Lieu: city,
       "Début le": (
         <div className="flex flex-col">
-          <div>{dayjs(happeningAt).format("DD/MM/YYYY")}</div>{" "}
+          <div>{dayjs(startsAt).format("DD/MM/YYYY")}</div>{" "}
           <div>
             {" à "}
-            {dayjs(happeningAt).format("HH:mm")}
+            {dayjs(startsAt).format("HH:mm")}
           </div>
         </div>
       ),
@@ -52,7 +53,7 @@ const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) 
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           Tous les événements
         </h1>
-        <Link href={"/evenements/create"} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link href={"/dashboard/evenements/create"} className={buttonVariants({ size: "lg", variant: "link" })}>
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
@@ -71,7 +72,7 @@ const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) 
             <p>
               Vous n&apos;avez pas encore créé d&apos;organisation <u>ou</u> aucun ne correspondant a votre recherche.
             </p>
-            <Link href={`/evenements/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+            <Link href={`/dashboard/evenements/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
               <PlusSquare className="w-4 h-4 mr-2" /> Créer une organisation
             </Link>
           </div>

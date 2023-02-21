@@ -36,7 +36,7 @@ const AttendeesPage = async ({ searchParams: { offset, filter, first, orderBy } 
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           Tous les participants
         </h1>
-        <Link href={"/participants/create"} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link href={"/dashboard/participants/create"} className={buttonVariants({ size: "lg", variant: "link" })}>
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
@@ -55,7 +55,7 @@ const AttendeesPage = async ({ searchParams: { offset, filter, first, orderBy } 
             <p>
               Vous n&apos;avez pas encore créé d&apos;organisation <u>ou</u> aucun ne correspondant a votre recherche.
             </p>
-            <Link href={`/participants/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+            <Link href={`/dashboard/participants/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
               <PlusSquare className="w-4 h-4 mr-2" /> Créer une organisation
             </Link>
           </div>

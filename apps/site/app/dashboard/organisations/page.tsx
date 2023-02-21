@@ -30,7 +30,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           Toutes les organizations
         </h1>
-        <Link href={"/organisations/create"} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link href={"/dashboard/organisations/create"} className={buttonVariants({ size: "lg", variant: "link" })}>
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
@@ -49,7 +49,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
             <p>
               Vous n&apos;avez pas encore créé d&apos;organisation <u>ou</u> aucun ne correspondant a votre recherche.
             </p>
-            <Link href={`/organisations/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+            <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
               <PlusSquare className="w-4 h-4 mr-2" /> Créer une organisation
             </Link>
           </div>

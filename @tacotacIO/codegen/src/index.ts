@@ -228,6 +228,39 @@ export type CreateAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
+/** All input for the create `EventBranding` mutation. */
+export type CreateEventBrandingInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `EventBranding` to be created by this mutation. */
+  eventBranding: EventBrandingInput;
+};
+
+/** The output of our create `EventBranding` mutation. */
+export type CreateEventBrandingPayload = {
+  __typename?: 'CreateEventBrandingPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `EventBranding` that was created by this mutation. */
+  eventBranding?: Maybe<EventBranding>;
+  /** An edge for our `EventBranding`. May be used by Relay 1. */
+  eventBrandingEdge?: Maybe<EventBrandingsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `EventBranding` mutation. */
+export type CreateEventBrandingPayloadEventBrandingEdgeArgs = {
+  orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
+};
+
 /** All input for the create `Event` mutation. */
 export type CreateEventInput = {
   /**
@@ -249,6 +282,8 @@ export type CreateEventPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** The `Event` that was created by this mutation. */
   event?: Maybe<Event>;
+  /** Reads a single `EventBranding` that is related to this `Event`. */
+  eventBrandings?: Maybe<EventBranding>;
   /** An edge for our `Event`. May be used by Relay 1. */
   eventEdge?: Maybe<EventsEdge>;
   /** Reads a single `Organization` that is related to this `Event`. */
@@ -486,6 +521,60 @@ export type DeleteAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
+/** All input for the `deleteEventBrandingByNodeId` mutation. */
+export type DeleteEventBrandingByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `EventBranding` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteEventBranding` mutation. */
+export type DeleteEventBrandingInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `EventBranding` mutation. */
+export type DeleteEventBrandingPayload = {
+  __typename?: 'DeleteEventBrandingPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedEventBrandingNodeId?: Maybe<Scalars['ID']>;
+  /** The `EventBranding` that was deleted by this mutation. */
+  eventBranding?: Maybe<EventBranding>;
+  /** An edge for our `EventBranding`. May be used by Relay 1. */
+  eventBrandingEdge?: Maybe<EventBrandingsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `EventBranding` mutation. */
+export type DeleteEventBrandingPayloadEventBrandingEdgeArgs = {
+  orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
+};
+
+/** All input for the `deleteEventByEventBrandingsId` mutation. */
+export type DeleteEventByEventBrandingsIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  eventBrandingsId: Scalars['UUID'];
+};
+
 /** All input for the `deleteEventByNodeId` mutation. */
 export type DeleteEventByNodeIdInput = {
   /**
@@ -540,6 +629,8 @@ export type DeleteEventPayload = {
   deletedEventNodeId?: Maybe<Scalars['ID']>;
   /** The `Event` that was deleted by this mutation. */
   event?: Maybe<Event>;
+  /** Reads a single `EventBranding` that is related to this `Event`. */
+  eventBrandings?: Maybe<EventBranding>;
   /** An edge for our `Event`. May be used by Relay 1. */
   eventEdge?: Maybe<EventsEdge>;
   /** Reads a single `Organization` that is related to this `Event`. */
@@ -794,12 +885,17 @@ export type Event = Node & {
   attendees: AttendeesConnection;
   bookingEndsAt?: Maybe<Scalars['Datetime']>;
   bookingStartsAt?: Maybe<Scalars['Datetime']>;
+  capacity?: Maybe<Scalars['Int']>;
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
   description: Scalars['String'];
-  happeningAt?: Maybe<Scalars['Datetime']>;
+  endsAt?: Maybe<Scalars['Datetime']>;
+  /** Reads a single `EventBranding` that is related to this `Event`. */
+  eventBrandings?: Maybe<EventBranding>;
+  eventBrandingsId?: Maybe<Scalars['UUID']>;
   id: Scalars['UUID'];
+  isVip?: Maybe<Scalars['Boolean']>;
   lat?: Maybe<Scalars['Float']>;
   lon?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
@@ -812,6 +908,7 @@ export type Event = Node & {
   /** Reads and enables pagination through a set of `Registration`. */
   registrations: RegistrationsConnection;
   slug?: Maybe<Scalars['String']>;
+  startsAt?: Maybe<Scalars['Datetime']>;
   updatedAt: Scalars['Datetime'];
   zipCode?: Maybe<Scalars['String']>;
 };
@@ -840,18 +937,129 @@ export type EventRegistrationsArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
+export type EventBranding = Node & {
+  __typename?: 'EventBranding';
+  color1?: Maybe<Scalars['String']>;
+  color2?: Maybe<Scalars['String']>;
+  createdAt: Scalars['Datetime'];
+  /** Reads a single `Event` that is related to this `EventBranding`. */
+  eventByEventBrandingsId?: Maybe<Event>;
+  font?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  logo?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  placeholder?: Maybe<Scalars['JSON']>;
+  richText?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['Datetime'];
+};
+
+/**
+ * A condition to be used against `EventBranding` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type EventBrandingCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `EventBranding` object types. All fields are combined with a logical ‘and.’ */
+export type EventBrandingFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<EventBrandingFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<EventBrandingFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<EventBrandingFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `EventBranding` */
+export type EventBrandingInput = {
+  color1?: InputMaybe<Scalars['String']>;
+  color2?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  font?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  logo?: InputMaybe<Scalars['String']>;
+  placeholder?: InputMaybe<Scalars['JSON']>;
+  richText?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `EventBranding`. Fields that are set will be updated. */
+export type EventBrandingPatch = {
+  color1?: InputMaybe<Scalars['String']>;
+  color2?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  font?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  logo?: InputMaybe<Scalars['String']>;
+  placeholder?: InputMaybe<Scalars['JSON']>;
+  richText?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `EventBranding` values. */
+export type EventBrandingsConnection = {
+  __typename?: 'EventBrandingsConnection';
+  /** A list of edges which contains the `EventBranding` and cursor to aid in pagination. */
+  edges: Array<EventBrandingsEdge>;
+  /** A list of `EventBranding` objects. */
+  nodes: Array<EventBranding>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `EventBranding` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `EventBranding` edge in the connection. */
+export type EventBrandingsEdge = {
+  __typename?: 'EventBrandingsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `EventBranding` at the end of the edge. */
+  node: EventBranding;
+};
+
+/** Methods to use when ordering `EventBranding`. */
+export enum EventBrandingsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
 /** A condition to be used against `Event` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type EventCondition = {
   /** Checks for equality with the object’s `bookingEndsAt` field. */
   bookingEndsAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `bookingStartsAt` field. */
   bookingStartsAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `capacity` field. */
+  capacity?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `city` field. */
   city?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `happeningAt` field. */
-  happeningAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `endsAt` field. */
+  endsAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `eventBrandingsId` field. */
+  eventBrandingsId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `name` field. */
@@ -860,6 +1068,8 @@ export type EventCondition = {
   organizationId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `slug` field. */
   slug?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `startsAt` field. */
+  startsAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -872,12 +1082,16 @@ export type EventFilter = {
   bookingEndsAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `bookingStartsAt` field. */
   bookingStartsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `capacity` field. */
+  capacity?: InputMaybe<IntFilter>;
   /** Filter by the object’s `city` field. */
   city?: InputMaybe<StringFilter>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `happeningAt` field. */
-  happeningAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `endsAt` field. */
+  endsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `eventBrandingsId` field. */
+  eventBrandingsId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
@@ -890,6 +1104,8 @@ export type EventFilter = {
   organizationId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `slug` field. */
   slug?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `startsAt` field. */
+  startsAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
 };
@@ -900,18 +1116,22 @@ export type EventInput = {
   addressLine2?: InputMaybe<Scalars['String']>;
   bookingEndsAt?: InputMaybe<Scalars['Datetime']>;
   bookingStartsAt?: InputMaybe<Scalars['Datetime']>;
+  capacity?: InputMaybe<Scalars['Int']>;
   city?: InputMaybe<Scalars['String']>;
   country?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   description: Scalars['String'];
-  happeningAt?: InputMaybe<Scalars['Datetime']>;
+  endsAt?: InputMaybe<Scalars['Datetime']>;
+  eventBrandingsId?: InputMaybe<Scalars['UUID']>;
   id?: InputMaybe<Scalars['UUID']>;
+  isVip?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
   lon?: InputMaybe<Scalars['Float']>;
   name: Scalars['String'];
   organizationId: Scalars['UUID'];
   placeName?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
+  startsAt?: InputMaybe<Scalars['Datetime']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -922,18 +1142,22 @@ export type EventPatch = {
   addressLine2?: InputMaybe<Scalars['String']>;
   bookingEndsAt?: InputMaybe<Scalars['Datetime']>;
   bookingStartsAt?: InputMaybe<Scalars['Datetime']>;
+  capacity?: InputMaybe<Scalars['Int']>;
   city?: InputMaybe<Scalars['String']>;
   country?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   description?: InputMaybe<Scalars['String']>;
-  happeningAt?: InputMaybe<Scalars['Datetime']>;
+  endsAt?: InputMaybe<Scalars['Datetime']>;
+  eventBrandingsId?: InputMaybe<Scalars['UUID']>;
   id?: InputMaybe<Scalars['UUID']>;
+  isVip?: InputMaybe<Scalars['Boolean']>;
   lat?: InputMaybe<Scalars['Float']>;
   lon?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   organizationId?: InputMaybe<Scalars['UUID']>;
   placeName?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
+  startsAt?: InputMaybe<Scalars['Datetime']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -1001,12 +1225,16 @@ export enum EventsOrderBy {
   BookingEndsAtDesc = 'BOOKING_ENDS_AT_DESC',
   BookingStartsAtAsc = 'BOOKING_STARTS_AT_ASC',
   BookingStartsAtDesc = 'BOOKING_STARTS_AT_DESC',
+  CapacityAsc = 'CAPACITY_ASC',
+  CapacityDesc = 'CAPACITY_DESC',
   CityAsc = 'CITY_ASC',
   CityDesc = 'CITY_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
-  HappeningAtAsc = 'HAPPENING_AT_ASC',
-  HappeningAtDesc = 'HAPPENING_AT_DESC',
+  EndsAtAsc = 'ENDS_AT_ASC',
+  EndsAtDesc = 'ENDS_AT_DESC',
+  EventBrandingsIdAsc = 'EVENT_BRANDINGS_ID_ASC',
+  EventBrandingsIdDesc = 'EVENT_BRANDINGS_ID_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   NameAsc = 'NAME_ASC',
@@ -1018,6 +1246,8 @@ export enum EventsOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   SlugAsc = 'SLUG_ASC',
   SlugDesc = 'SLUG_DESC',
+  StartsAtAsc = 'STARTS_AT_ASC',
+  StartsAtDesc = 'STARTS_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
@@ -1030,6 +1260,32 @@ export type GeneratePresignedPostPayload = {
   __typename?: 'GeneratePresignedPostPayload';
   fields?: Maybe<Scalars['JSON']>;
   url?: Maybe<Scalars['String']>;
+};
+
+/** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
+export type IntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Int']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Int']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Int']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Int']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Int']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Int']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Int']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Int']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Int']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 /** All input for the `login` mutation. */
@@ -1063,6 +1319,8 @@ export type Mutation = {
   createAttendee?: Maybe<CreateAttendeePayload>;
   /** Creates a single `Event`. */
   createEvent?: Maybe<CreateEventPayload>;
+  /** Creates a single `EventBranding`. */
+  createEventBranding?: Maybe<CreateEventBrandingPayload>;
   /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
   /** Creates a single `OrganizationMembership`. */
@@ -1079,6 +1337,12 @@ export type Mutation = {
   deleteAttendeeByNodeId?: Maybe<DeleteAttendeePayload>;
   /** Deletes a single `Event` using a unique key. */
   deleteEvent?: Maybe<DeleteEventPayload>;
+  /** Deletes a single `EventBranding` using a unique key. */
+  deleteEventBranding?: Maybe<DeleteEventBrandingPayload>;
+  /** Deletes a single `EventBranding` using its globally unique id. */
+  deleteEventBrandingByNodeId?: Maybe<DeleteEventBrandingPayload>;
+  /** Deletes a single `Event` using a unique key. */
+  deleteEventByEventBrandingsId?: Maybe<DeleteEventPayload>;
   /** Deletes a single `Event` using its globally unique id. */
   deleteEventByNodeId?: Maybe<DeleteEventPayload>;
   /** Deletes a single `Event` using a unique key. */
@@ -1121,6 +1385,12 @@ export type Mutation = {
   updateAttendeeByNodeId?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Event` using a unique key and a patch. */
   updateEvent?: Maybe<UpdateEventPayload>;
+  /** Updates a single `EventBranding` using a unique key and a patch. */
+  updateEventBranding?: Maybe<UpdateEventBrandingPayload>;
+  /** Updates a single `EventBranding` using its globally unique id and a patch. */
+  updateEventBrandingByNodeId?: Maybe<UpdateEventBrandingPayload>;
+  /** Updates a single `Event` using a unique key and a patch. */
+  updateEventByEventBrandingsId?: Maybe<UpdateEventPayload>;
   /** Updates a single `Event` using its globally unique id and a patch. */
   updateEventByNodeId?: Maybe<UpdateEventPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
@@ -1163,6 +1433,12 @@ export type MutationCreateAttendeeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateEventArgs = {
   input: CreateEventInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateEventBrandingArgs = {
+  input: CreateEventBrandingInput;
 };
 
 
@@ -1211,6 +1487,24 @@ export type MutationDeleteAttendeeByNodeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteEventArgs = {
   input: DeleteEventInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteEventBrandingArgs = {
+  input: DeleteEventBrandingInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteEventBrandingByNodeIdArgs = {
+  input: DeleteEventBrandingByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteEventByEventBrandingsIdArgs = {
+  input: DeleteEventByEventBrandingsIdInput;
 };
 
 
@@ -1349,6 +1643,24 @@ export type MutationUpdateAttendeeByNodeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateEventArgs = {
   input: UpdateEventInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateEventBrandingArgs = {
+  input: UpdateEventBrandingInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateEventBrandingByNodeIdArgs = {
+  input: UpdateEventBrandingByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateEventByEventBrandingsIdArgs = {
+  input: UpdateEventByEventBrandingsIdInput;
 };
 
 
@@ -1779,6 +2091,12 @@ export type Query = Node & {
   currentUserId?: Maybe<Scalars['UUID']>;
   dateTruncFunc?: Maybe<Scalars['Datetime']>;
   event?: Maybe<Event>;
+  eventBranding?: Maybe<EventBranding>;
+  /** Reads a single `EventBranding` using its globally unique `ID`. */
+  eventBrandingByNodeId?: Maybe<EventBranding>;
+  /** Reads and enables pagination through a set of `EventBranding`. */
+  eventBrandings?: Maybe<EventBrandingsConnection>;
+  eventByEventBrandingsId?: Maybe<Event>;
   /** Reads a single `Event` using its globally unique `ID`. */
   eventByNodeId?: Maybe<Event>;
   eventByOrganizationIdAndName?: Maybe<Event>;
@@ -1864,6 +2182,37 @@ export type QueryDateTruncFuncArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryEventArgs = {
   id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryEventBrandingArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryEventBrandingByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryEventBrandingsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<EventBrandingCondition>;
+  filter?: InputMaybe<EventBrandingFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryEventByEventBrandingsIdArgs = {
+  eventBrandingsId: Scalars['UUID'];
 };
 
 
@@ -2068,14 +2417,12 @@ export type Registration = Node & {
   __typename?: 'Registration';
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees: AttendeesConnection;
+  codeId?: Maybe<Scalars['UUID']>;
   createdAt: Scalars['Datetime'];
-  email: Scalars['String'];
   /** Reads a single `Event` that is related to this `Registration`. */
   event?: Maybe<Event>;
   eventId?: Maybe<Scalars['UUID']>;
-  firstname: Scalars['String'];
   id: Scalars['UUID'];
-  lastname: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   updatedAt: Scalars['Datetime'];
@@ -2128,23 +2475,19 @@ export type RegistrationFilter = {
 
 /** An input for mutations affecting `Registration` */
 export type RegistrationInput = {
+  codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
-  email: Scalars['String'];
   eventId?: InputMaybe<Scalars['UUID']>;
-  firstname: Scalars['String'];
   id?: InputMaybe<Scalars['UUID']>;
-  lastname: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
 /** Represents an update to a `Registration`. Fields that are set will be updated. */
 export type RegistrationPatch = {
+  codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
-  email?: InputMaybe<Scalars['String']>;
   eventId?: InputMaybe<Scalars['UUID']>;
-  firstname?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
-  lastname?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
@@ -2303,6 +2646,65 @@ export type UpdateAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
+/** All input for the `updateEventBrandingByNodeId` mutation. */
+export type UpdateEventBrandingByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `EventBranding` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `EventBranding` being updated. */
+  patch: EventBrandingPatch;
+};
+
+/** All input for the `updateEventBranding` mutation. */
+export type UpdateEventBrandingInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `EventBranding` being updated. */
+  patch: EventBrandingPatch;
+};
+
+/** The output of our update `EventBranding` mutation. */
+export type UpdateEventBrandingPayload = {
+  __typename?: 'UpdateEventBrandingPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `EventBranding` that was updated by this mutation. */
+  eventBranding?: Maybe<EventBranding>;
+  /** An edge for our `EventBranding`. May be used by Relay 1. */
+  eventBrandingEdge?: Maybe<EventBrandingsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `EventBranding` mutation. */
+export type UpdateEventBrandingPayloadEventBrandingEdgeArgs = {
+  orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
+};
+
+/** All input for the `updateEventByEventBrandingsId` mutation. */
+export type UpdateEventByEventBrandingsIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  eventBrandingsId: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `Event` being updated. */
+  patch: EventPatch;
+};
+
 /** All input for the `updateEventByNodeId` mutation. */
 export type UpdateEventByNodeIdInput = {
   /**
@@ -2364,6 +2766,8 @@ export type UpdateEventPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** The `Event` that was updated by this mutation. */
   event?: Maybe<Event>;
+  /** Reads a single `EventBranding` that is related to this `Event`. */
+  eventBrandings?: Maybe<EventBranding>;
   /** An edge for our `Event`. May be used by Relay 1. */
   eventEdge?: Maybe<EventsEdge>;
   /** Reads a single `Organization` that is related to this `Event`. */
@@ -2745,7 +3149,7 @@ export enum UsersOrderBy {
 
 export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any };
 
-export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } };
+export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } };
 
 export type OrganizationFragmentFragment = { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any };
 
@@ -2783,21 +3187,21 @@ export type CreateEventMutationVariables = Exact<{
 }>;
 
 
-export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'CreateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
+export type CreateEventMutation = { __typename?: 'Mutation', createEvent?: { __typename?: 'CreateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
 
 export type UpdateEventMutationVariables = Exact<{
   input: UpdateEventInput;
 }>;
 
 
-export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'UpdateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
+export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent?: { __typename?: 'UpdateEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
 
 export type DeleteEventMutationVariables = Exact<{
   input: DeleteEventInput;
 }>;
 
 
-export type DeleteEventMutation = { __typename?: 'Mutation', deleteEvent?: { __typename?: 'DeleteEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
+export type DeleteEventMutation = { __typename?: 'Mutation', deleteEvent?: { __typename?: 'DeleteEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } } | null } | null };
 
 export type CreateOrganizationMutationVariables = Exact<{
   input: CreateOrganizationInput;
@@ -2835,28 +3239,28 @@ export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typena
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, organization?: { __typename?: 'Organization', slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, organization?: { __typename?: 'Organization', slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetAllEventsByOrganizationIdQueryVariables = Exact<{
   organizationId: Scalars['UUID'];
 }>;
 
 
-export type GetAllEventsByOrganizationIdQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } | null };
+export type GetAllEventsByOrganizationIdQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } | null };
 
 export type GetAllEventsByOrganizationSlugQueryVariables = Exact<{
   organizationSlug: Scalars['String'];
 }>;
 
 
-export type GetAllEventsByOrganizationSlugQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } | null };
+export type GetAllEventsByOrganizationSlugQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } | null };
 
 export type GetEventByIdQueryVariables = Exact<{
   eventId: Scalars['UUID'];
 }>;
 
 
-export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -2864,7 +3268,7 @@ export type GetEventBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetAttendeeByEventSlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -2899,7 +3303,7 @@ export type GetOrganizationByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } } | null };
+export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }> } } | null };
 
 export type GetOrganizationBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -2913,7 +3317,7 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, happeningAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email: string, createdAt: any, updatedAt: any, status: EventStatus, eventId: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export const MyAttendeeFragmentDoc = gql`
     fragment MyAttendee on Attendee {
@@ -2938,7 +3342,7 @@ export const MyEventFragmentDoc = gql`
   city
   zipCode
   country
-  happeningAt
+  startsAt
   bookingStartsAt
   bookingEndsAt
   createdAt

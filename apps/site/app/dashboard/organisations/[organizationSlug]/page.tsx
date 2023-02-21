@@ -9,6 +9,7 @@ import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../components/table/Collection";
 
+
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
@@ -23,7 +24,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
   const headerEvent: IHeader[] = [
     { title: "Nom", value: "name", type: Type?.string, isSortable: false, isVisible: true },
     { title: "Lieu", value: "city", type: Type?.string, isSortable: true, isVisible: true },
-    { title: "Début le", value: "happeningAt", type: Type?.date, isSortable: true, isVisible: true },
+    { title: "Début le", value: "startsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
@@ -32,15 +33,15 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
   ];
 
   const rawEvent: IData[] = organization?.events?.nodes.map(
-    ({ name, city, happeningAt, bookingStartsAt, bookingEndsAt, attendees, slug }) => ({
+    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, attendees, slug }) => ({
       Nom: name,
       Lieu: city,
       "Début le": (
         <div className="flex flex-col">
-          <div>{dayjs(happeningAt).format("DD/MM/YYYY")}</div>{" "}
+          <div>{dayjs(startsAt).format("DD/MM/YYYY")}</div>{" "}
           <div>
             {" à "}
-            {dayjs(happeningAt).format("HH:mm")}
+            {dayjs(startsAt).format("HH:mm")}
           </div>
         </div>
       ),
@@ -59,7 +60,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           {organization?.name}
         </h1>
         <Link
-          href={`/organisations/${organization?.slug}/infos`}
+          href={`/dashboard/organisations/${organization?.slug}/infos`}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           <Cog aria-hidden className="w-8 h-8" />
@@ -71,7 +72,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           Tous les évènements
         </h2>
         <Link
-          href={`/organizations/${organization?.slug}/create-event`}
+          href={`/dashboard/organizations/${organization?.slug}/create-event`}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
@@ -84,14 +85,14 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           header={headerEvent}
           data={rawEvent}
           initLimit={initLimit}
-          routerPath="/evenements"
+          routerPath="/dashboard/evenements"
         />
       ) : (
         <div className="flex flex-col items-start gap-4">
           <p>
             Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
           </p>
-          <Link href={`/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+          <Link href={`/dashboard/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
             <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
           </Link>
         </div>
