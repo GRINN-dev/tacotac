@@ -15,13 +15,13 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
   const headerOrga: IHeader[] = [
     { title: "Nom", value: "name", type: Type?.string, isSortable: true, isVisible: true },
     { title: "Description", value: "description", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "firstSlug", value: "firstSlug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawOrga: IData[] = organizations.nodes.map(({ name, description, slug }) => ({
     Nom: name,
     Description: description,
-    firstSlug: slug,
+    slug: slug + "/evenements",
   }));
 
   return (
@@ -30,7 +30,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           Toutes les organizations
         </h1>
-        <Link href={"/dashboard/organisations/create"} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link  href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "link" })}>
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>

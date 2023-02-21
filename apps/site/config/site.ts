@@ -26,14 +26,6 @@ export const siteConfig: SiteConfig = {
       title: "Organisations",
       href: "/dashboard/organisations",
     },
-    {
-      title: "Événements",
-      href: "/dashboard/evenements",
-    },
-    {
-      title: "Participants",
-      href: "/dashboard/participants",
-    },
   ],
   links: {
     twitter: "https://twitter.com/shadcn",

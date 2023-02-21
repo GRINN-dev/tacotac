@@ -2,13 +2,10 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
-import { Collection } from "../../../../components/table/Collection";
-
+import { Collection } from "../../../../../components/table/Collection";
 
 const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
@@ -28,8 +25,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
-    { title: "firstSlug", value: "firstSlug", type: Type?.string, isSortable: false, isVisible: false },
-    { title: "secondSlug", value: "secondSlug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawEvent: IData[] = organization?.events?.nodes.map(
@@ -48,8 +44,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
       "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
       "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
       Participants: attendees?.nodes?.length,
-      firstSlug: organization?.slug,
-      secondSlug: slug,
+      slug: slug,
     })
   );
   //pour pr
@@ -60,7 +55,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           {organization?.name}
         </h1>
         <Link
-          href={`/dashboard/organisations/${organization?.slug}/infos`}
+          href={`/dashboard/organisations/${organizationSlug}/infos`}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           <Cog aria-hidden className="w-8 h-8" />
@@ -72,7 +67,7 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           Tous les évènements
         </h2>
         <Link
-          href={`/dashboard/organizations/${organization?.slug}/create-event`}
+          href={`/dashboard/organisations/${organizationSlug}/evenements/create`}
           className={buttonVariants({ size: "lg", variant: "link" })}
         >
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
@@ -85,14 +80,13 @@ const OrganizationPage = async ({ params: { organizationSlug }, searchParams: { 
           header={headerEvent}
           data={rawEvent}
           initLimit={initLimit}
-          routerPath="/dashboard/evenements"
         />
       ) : (
         <div className="flex flex-col items-start gap-4">
           <p>
             Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
           </p>
-          <Link href={`/dashboard/organizations/create-event`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+          <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
             <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
           </Link>
         </div>

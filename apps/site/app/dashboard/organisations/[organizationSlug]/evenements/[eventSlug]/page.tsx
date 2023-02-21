@@ -4,15 +4,15 @@ import { Cog, PlusSquare } from "lucide-react";
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
-import { Collection } from "../../../../../components/table/Collection";
+import { Collection } from "../../../../../../components/table/Collection";
 
 const EventPage = async ({
-  params: { organisationSlug, eventSlug },
+  params: { organizationSlug, eventSlug },
   searchParams: { offset, filter, first, orderBy },
 }) => {
   const { eventBySlug } = await sdk().GetEventBySlug({
     eventSlug: eventSlug,
-    organizationSlug: organisationSlug,
+    organizationSlug: organizationSlug,
   });
 
   const headerAttendees: IHeader[] = [
@@ -21,7 +21,7 @@ const EventPage = async ({
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
     { title: "status", value: "Status", type: Type?.string, isSortable: false, isVisible: true },
     { title: "eventId", value: "Event-id", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "firstSlug", value: "id", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawAttendees: IData[] = eventBySlug?.attendees?.nodes.map(
@@ -31,7 +31,7 @@ const EventPage = async ({
       email: email,
       status: status,
       eventId: eventId,
-      firstSlug: id,
+      slug: "/participant/" + id,
     })
   );
 
@@ -42,16 +42,22 @@ const EventPage = async ({
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           {eventBySlug?.name}
         </h1>
-        <Link href={`/dashboard/evenements/${eventBySlug?.id}/infos`} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link
+          href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/infos`}
+          className={buttonVariants({ size: "lg", variant: "link" })}
+        >
           <Cog aria-hidden className="w-8 h-8" />
           <span className="sr-only">Paramètres</span>
         </Link>
       </div>
       <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
         <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors scroll-m-20 first:mt-0 ">
-          Tous les évènements
+          Tous les participants
         </h2>
-        <Link href={`/evenements/create`} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link
+          href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/create`}
+          className={buttonVariants({ size: "lg", variant: "link" })}
+        >
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
@@ -68,7 +74,10 @@ const EventPage = async ({
           <p>
             Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
           </p>
-          <Link href={`/dashboard/evenements/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+          <Link
+            href={`/dashboard/organisations/${organizationSlug}`}
+            className={buttonVariants({ size: "lg", variant: "outline" })}
+          >
             <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
           </Link>
         </div>

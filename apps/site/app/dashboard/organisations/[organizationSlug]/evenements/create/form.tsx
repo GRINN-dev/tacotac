@@ -13,9 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 
-export const CreateEventForm: FC<{ organizationId: string }> = ({
-  organizationId,
-}) => {
+export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -39,10 +37,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
     });
   });
   return (
-    <form
-      onSubmit={onSubmit}
-      className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}
-    >
+    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 border-b-slate-200 first:mt-0 dark:border-b-slate-700">
         Informations générales
       </h2>
@@ -57,9 +52,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           })}
         />
         {formState.errors?.event?.name && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.name?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.name?.message}</p>
         )}
       </div>
 
@@ -73,9 +66,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           })}
         />
         {formState.errors?.event?.description && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.description?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.description?.message}</p>
         )}
       </div>
       <Separator className="my-8" />
@@ -85,18 +76,18 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
       </h2>
 
       <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="happeningAt">Date</Label>
+        <Label htmlFor="startsAt">Date</Label>
         <Input
           type="datetime-local"
-          id="happeningAt"
+          id="startsAt"
           placeholder="Date"
-          {...register("event.happeningAt", {
+          {...register("event.startsAt", {
             required: "Une date pour l'organisation est requise",
           })}
         />
-        {formState.errors?.event?.happeningAt && (
+        {formState.errors?.event?.startsAt && (
           <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.happeningAt?.message as string}
+            {formState.errors?.event?.startsAt?.message as string}
           </p>
         )}
       </div>
@@ -108,8 +99,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           id="bookingStartsAt"
           placeholder="Date de début des réservations"
           {...register("event.bookingStartsAt", {
-            required:
-              "Une date de début des réservations pour l'organisation est requise",
+            required: "Une date de début des réservations pour l'organisation est requise",
           })}
         />
         {formState.errors?.event?.bookingStartsAt && (
@@ -126,8 +116,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           id="bookingEndsAt"
           placeholder="Date de fin des réservations"
           {...register("event.bookingEndsAt", {
-            required:
-              "Une date de fin des réservations pour l'organisation est requise",
+            required: "Une date de fin des réservations pour l'organisation est requise",
           })}
         />
         {formState.errors?.event?.bookingEndsAt && (
@@ -153,9 +142,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           })}
         />
         {formState.errors?.event?.placeName && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.placeName?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.placeName?.message}</p>
         )}
       </div>
 
@@ -170,24 +157,15 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           })}
         />
         {formState.errors?.event?.addressLine1 && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.addressLine1?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.addressLine1?.message}</p>
         )}
       </div>
 
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="addressLine2">Complément d&apos;adresse</Label>
-        <Input
-          type="text"
-          id="addressLine2"
-          placeholder="Complément d'adresse"
-          {...register("event.addressLine2")}
-        />
+        <Input type="text" id="addressLine2" placeholder="Complément d'adresse" {...register("event.addressLine2")} />
         {formState.errors?.event?.addressLine2 && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.addressLine2?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.addressLine2?.message}</p>
         )}
       </div>
 
@@ -202,9 +180,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           })}
         />
         {formState.errors?.event?.zipCode && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.zipCode?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.zipCode?.message}</p>
         )}
       </div>
 
@@ -219,9 +195,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           })}
         />
         {formState.errors?.event?.city && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.city?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.city?.message}</p>
         )}
       </div>
 
@@ -236,9 +210,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({
           })}
         />
         {formState.errors?.event?.country && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.country?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.country?.message}</p>
         )}
       </div>
 
