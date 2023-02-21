@@ -4,6 +4,7 @@ query GetAllEvents {
       ...MyEvent
       organization {
         slug
+        name
       }
     }
     pageInfo {

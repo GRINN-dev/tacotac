@@ -19,14 +19,14 @@ const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) 
     { title: "Début le", value: "startsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
-    { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
-    { title: "Organisations", value: "organisations", type: Type?.date, isSortable: false, isVisible: true },
-    { title: "firstSlug", value: "firstSlug", type: Type?.string, isSortable: false, isVisible: false },
-    { title: "secondSlug", value: "secondSlug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "Participants", value: "", type: Type?.date, isSortable: false, isVisible: true },
+    { title: "Organisations", value: "", type: Type?.date, isSortable: false, isVisible: true },
+    { title: "firstSlug", value: "", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "secondSlug", value: "", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawEvent: IData[] = events?.nodes.map(
-    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, attendees, slug, organizationId, organization }) => ({
+    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, attendees, slug, organization }) => ({
       Nom: name,
       Lieu: city,
       "Début le": (
@@ -41,7 +41,7 @@ const EventsPage = async ({ searchParams: { offset, filter, first, orderBy } }) 
       "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
       "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
       Participants: attendees?.nodes?.length,
-      organisations: organizationId,
+      Organisations: organization?.name,
       firstSlug: organization.slug,
       secondSlug: slug,
     })

@@ -149,12 +149,15 @@ create table publ.registrations (
 drop table if exists publ.event_brandings cascade;
 create table publ.event_brandings (
   id uuid not null default uuid_generate_v4() primary key unique, 
+  event_id uuid not null unique references publ.events(id)  on delete cascade,
   color_1 text,
   color_2 text,
   font text,
   logo text,
   placeholder json, 
   rich_text text,
+  short_text varchar(32),
+  long_text text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -164,6 +167,7 @@ create table publ.event_brandings (
   create index on publ.event_brandings(created_at);
 
   create index on publ.event_brandings(updated_at);
+  create index on publ.event_brandings(event_id);
   
 
 
@@ -181,8 +185,9 @@ create table publ.event_brandings (
 -- RLS
   alter table publ.event_brandings enable row level security;
   
-  alter table publ.events add column event_brandings_id uuid unique  references publ.event_brandings(id) on delete cascade;
-  create index on publ.events(event_brandings_id);
+  --alter table publ.events add column event_brandings_id uuid not null  references publ.event_brandings(id) on delete cascade;
+  
+  --create index on publ.events(event_brandings_id);
 
 
  create policy no_limit /*TODO: update policy*/
@@ -193,6 +198,8 @@ create table publ.event_brandings (
 
 -- fixtures
   -- fixtures go here
+    insert into publ.event_brandings (event_id, color_1) values ((select id from publ.events where name = 'third'), 'test color');
+
 /*
   END TABLE: publ.event_brandings
 */

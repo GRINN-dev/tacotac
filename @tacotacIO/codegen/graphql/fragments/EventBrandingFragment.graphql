@@ -1,0 +1,14 @@
+fragment EventBrandingFragment on EventBranding {
+  color1
+  color2
+  createdAt
+  eventId
+  font
+  logo
+  id
+  longText
+  placeholder
+  shortText
+  richText
+  updatedAt
+}

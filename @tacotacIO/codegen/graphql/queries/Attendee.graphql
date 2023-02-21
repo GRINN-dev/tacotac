@@ -2,6 +2,9 @@ query GetAllAttendee {
   attendees(orderBy: [CREATED_AT_DESC]) {
     nodes {
       ...MyAttendee
+      event {
+        name
+      }
     }
     totalCount
     pageInfo {
@@ -12,6 +15,7 @@ query GetAllAttendee {
     }
   }
 }
+
 query GetAllAttendeeByEventId($eventId: UUID!) {
   attendees(orderBy: [CREATED_AT_DESC], condition: { eventId: $eventId }) {
     nodes {

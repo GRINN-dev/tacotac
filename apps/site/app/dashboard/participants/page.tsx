@@ -17,16 +17,16 @@ const AttendeesPage = async ({ searchParams: { offset, filter, first, orderBy } 
     { title: "Prenom", value: "Prénom", type: Type?.string, isSortable: false, isVisible: true },
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
     { title: "status", value: "Status", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "eventId", value: "Event-id", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "Evenements", value: "Évenements", type: Type?.string, isSortable: false, isVisible: true },
     { title: "firstSlug", value: "id", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawAttendees: IData[] = attendees.nodes.map(({ id, firstname, lastname, email, status, eventId }) => ({
+  const rawAttendees: IData[] = attendees.nodes.map(({ id, firstname, lastname, email, status, event }) => ({
     Nom: firstname,
     Prenom: lastname,
     email: email,
     status: status,
-    eventId: eventId,
+    Evenements: event?.name,
     firstSlug: id,
   }));
 
