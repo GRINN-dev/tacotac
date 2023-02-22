@@ -41,9 +41,15 @@ export type Attendee = Node & {
   eventId: Scalars['UUID'];
   firstname: Scalars['String'];
   id: Scalars['UUID'];
+  isFundraisingGenerosityOk?: Maybe<Scalars['Boolean']>;
+  isInscriptor?: Maybe<Scalars['Boolean']>;
+  isNewsEventEmail?: Maybe<Scalars['Boolean']>;
+  isNewsFondationEmail?: Maybe<Scalars['Boolean']>;
+  isVip?: Maybe<Scalars['Boolean']>;
   lastname: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  notes?: Maybe<Scalars['String']>;
   /** Reads a single `Registration` that is related to this `Attendee`. */
   registration?: Maybe<Registration>;
   registrationId?: Maybe<Scalars['UUID']>;
@@ -103,7 +109,13 @@ export type AttendeeInput = {
   eventId: Scalars['UUID'];
   firstname: Scalars['String'];
   id?: InputMaybe<Scalars['UUID']>;
+  isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
+  isInscriptor?: InputMaybe<Scalars['Boolean']>;
+  isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
+  isNewsFondationEmail?: InputMaybe<Scalars['Boolean']>;
+  isVip?: InputMaybe<Scalars['Boolean']>;
   lastname: Scalars['String'];
+  notes?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
   status: EventStatus;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
@@ -116,7 +128,13 @@ export type AttendeePatch = {
   eventId?: InputMaybe<Scalars['UUID']>;
   firstname?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
+  isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
+  isInscriptor?: InputMaybe<Scalars['Boolean']>;
+  isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
+  isNewsFondationEmail?: InputMaybe<Scalars['Boolean']>;
+  isVip?: InputMaybe<Scalars['Boolean']>;
   lastname?: InputMaybe<Scalars['String']>;
+  notes?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
   status?: InputMaybe<EventStatus>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
@@ -1176,7 +1194,11 @@ export enum EventStatus {
   /** Présence confirmée à l'évenement */
   Confirmed = 'CONFIRMED',
   /** En attente */
-  Idle = 'IDLE'
+  Idle = 'IDLE',
+  /** Panneau scanné */
+  PanelScan = 'PANEL_SCAN',
+  /** Ticket scanné */
+  TicketScan = 'TICKET_SCAN'
 }
 
 /** A filter to be used against EventStatus fields. All fields are combined with a logical ‘and.’ */

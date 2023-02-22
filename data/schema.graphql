@@ -370,6 +370,12 @@ type Attendee implements Node {
   eventId: UUID!
   registrationId: UUID
   status: EventStatus!
+  notes: String
+  isInscriptor: Boolean
+  isVip: Boolean
+  isFundraisingGenerosityOk: Boolean
+  isNewsEventEmail: Boolean
+  isNewsFondationEmail: Boolean
   createdAt: Datetime!
   updatedAt: Datetime!
 
@@ -394,6 +400,12 @@ enum EventStatus {
 
   """Présence confirmée à l'évenement"""
   CONFIRMED
+
+  """Ticket scanné"""
+  TICKET_SCAN
+
+  """Panneau scanné"""
+  PANEL_SCAN
 }
 
 """
@@ -2283,6 +2295,12 @@ input AttendeeInput {
   eventId: UUID!
   registrationId: UUID
   status: EventStatus!
+  notes: String
+  isInscriptor: Boolean
+  isVip: Boolean
+  isFundraisingGenerosityOk: Boolean
+  isNewsEventEmail: Boolean
+  isNewsFondationEmail: Boolean
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2661,6 +2679,12 @@ input AttendeePatch {
   eventId: UUID
   registrationId: UUID
   status: EventStatus
+  notes: String
+  isInscriptor: Boolean
+  isVip: Boolean
+  isFundraisingGenerosityOk: Boolean
+  isNewsEventEmail: Boolean
+  isNewsFondationEmail: Boolean
   createdAt: Datetime
   updatedAt: Datetime
 }

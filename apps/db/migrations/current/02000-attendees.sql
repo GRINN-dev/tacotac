@@ -8,7 +8,9 @@ comment on table publ.event_status is E'@enum';
 insert into publ.event_status values
     ('IDLE', 'En attente'),
     ('CANCELLED', 'Inscription annulée'),
-    ('CONFIRMED', 'Présence confirmée à l''évenement');
+    ('CONFIRMED', 'Présence confirmée à l''évenement'),
+    ('TICKET_SCAN', 'Ticket scanné'),
+    ('PANEL_SCAN', 'Panneau scanné');
 
 GRANT all on  publ.event_status TO :DATABASE_VISITOR;
 /*
@@ -24,6 +26,12 @@ create table publ.attendees (
     event_id uuid not null references publ.events(id) on delete cascade,
     registration_id uuid  references publ.registrations(id) on delete cascade,
     status text not null references publ.event_status on delete cascade,
+    notes text,
+    is_inscriptor boolean,
+    is_vip boolean,
+    is_fundraising_generosity_ok boolean,
+    is_news_event_email boolean,
+    is_news_fondation_email boolean,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
     constraint attendees_email_event_id_key unique (email, event_id)
