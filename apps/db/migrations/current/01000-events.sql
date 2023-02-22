@@ -94,46 +94,7 @@ $$ language sql stable security definer;
 grant execute on function publ.event_by_slug(text, text) to :DATABASE_VISITOR;
 
 --test
-/*
-  TABLE: publ.registrations
-  DESCRIPTION: la table registration contient les inscriptions d'un evenement
-*/
-drop table if exists publ.registrations cascade;
-create table publ.registrations (
-    id uuid not null default uuid_generate_v4() primary key unique, 
-    event_id uuid  references publ.events(id),
-    hear_about_list text[] default '{"par un mécène", "par une association lauréate", "par le bouche à oreille", "autre", "par Obole, co-organisateur de l''événement", "par la Fondation de France, co-organisateur de l''événement"}',
-    created_at timestamptz not null default now(),
-    updated_at timestamptz not null default now()
-);
 
--- indexes
-  create index on publ.registrations(created_at);
-  create index on publ.registrations(updated_at);
-  create index on publ.registrations(event_id);
-
--- RBAC
-  grant select on publ.registrations to :DATABASE_VISITOR;
-
--- triggers
-  create trigger _100_timestamps
-  before insert or update on publ.registrations
-  for each row
-  execute procedure priv.tg__timestamps();
-
--- RLS
-  alter table publ.registrations enable row level security;
-
- create policy no_limit /*TODO: update policy*/
-   on publ.registrations
-   for all
-   using (true)
-   with check(true);
--- fixtures
-  -- fixtures go here
-/*
-  END TABLE: publ.registrations
-*/
 drop table if exists publ.fonts cascade;
 create table publ.fonts (
     type text primary key,
@@ -217,17 +178,7 @@ comment on function priv.event_branding__insert_with_event() is E'Ensures that e
 -- fixtures
   -- fixtures go here
   --insert into publ.event_brandings(event_id, color_1) values ((select id from publ.events where name = 'third'), 'test color');
-  insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('b9b4b51f-e5e1-4068-a593-4c7212da4e2d','Nantes', 'Chez Daddy', 'Des cafés conviviaux et intergénrationnels pour recréer du lien dans les quartiers', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-    insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('2678d40b-c0ee-4472-b9b1-146374a87fa4','Nantes', 'Canto', 'Le conservatoire du chant populaire', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-    insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('a04700b6-8afc-4ce5-a820-599b6cef5de1','Nantes', 'Napol.io', 'Le meilleur booster de productivité pour la gestion de projet informatique', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-    insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('3d370256-eb3c-42ce-9e8f-fa4dda7ab0fa','Nantes', 'third', 'third', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-    insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('ce860692-57ef-4905-848d-3e22302a6fea','Nantes', 'test', 'test', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-
-    insert into publ.events ( city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ( 'Paris','second test', 'second test', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-    insert into publ.events ( city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ( 'Paris','gfhdfgh', 'gfhdfgh', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-    insert into publ.events ( city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ( 'Paris','wxcvcxv', 'wxcvcxv', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-    insert into publ.events ( city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ( 'Paris','azdaz', 'azdaz', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')),(select timestamp '2023-01-10 20:00:00' + random() * (timestamp '2023-01-20 20:00:00' - timestamp '2023-01-10 10:00:00')));
-
+    
 /*
   END TABLE: publ.event_brandings
 */
