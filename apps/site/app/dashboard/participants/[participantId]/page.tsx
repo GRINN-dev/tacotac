@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { ArrowBigLeft } from "lucide-react";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { UpdateAttendeeForm } from "./UpdateForm";
 
 // import { UpdateOrganizationForm } from "./UpdateForm";
 
 const InfosAttendeePage = async ({ params: { organizationSlug, eventSlug, participantId } }) => {
-  console.log("🚀 ~ file: page.tsx:9 ~ InfosAttendeePage ~ params", participantId);
-  const data = await sdk().GetAttendeeById({ attendeeId: participantId });
-  const { attendee } = data;
+  const { attendee } = await sdk().GetAttendeeById({ attendeeId: participantId });
 
   return (
     <>
