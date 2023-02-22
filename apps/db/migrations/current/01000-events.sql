@@ -93,6 +93,7 @@ $$ language sql stable security definer;
 
 grant execute on function publ.event_by_slug(text, text) to :DATABASE_VISITOR;
 
+--test
 /*
   TABLE: publ.registrations
   DESCRIPTION: la table registration contient les inscriptions d'un evenement
