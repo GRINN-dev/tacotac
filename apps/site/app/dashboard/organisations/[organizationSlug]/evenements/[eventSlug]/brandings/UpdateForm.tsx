@@ -1,18 +1,24 @@
 "use client";
 
 import { FC, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { GetEventByIdQuery, UpdateEventBrandingInput } from "@/../../@tacotacIO/codegen/dist";
-import { useForm } from "react-hook-form";
+import { usePathname, useRouter } from "next/navigation";
+import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@/../../@tacotacIO/codegen/dist";
+import { useToast } from "@/hooks/use-toast";
+import { MinusCircle, PlusCircle } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 interface IUpdateBrandingEvent extends ExtractType<ExtractType<GetEventByIdQuery, "event">, "eventBranding"> {}
+
 export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   id,
   color1,
@@ -22,18 +28,23 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   placeholder,
   richText,
   shortText,
-  longText,
   awardWinningAssoList,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [awardWinning, setAwardWinning] = useState("");
+  const [awardWinningList, setAwardWinningList] = useState<string[]>([]);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
-  const { register, handleSubmit, formState } = useForm<UpdateEventBrandingInput>();
+  const pathname = usePathname();
+  const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
+  const { toast } = useToast();
+
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     data.id = id;
+    data.patch.awardWinningAssoList = awardWinningList;
     await sdk()
       .UpdateEventBranding({
         input: data,
@@ -45,9 +56,21 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push("/organizations");
+      router.push(pathname + "?reload=true");
+
+      toast({
+        title: "Formulaire mis à jour",
+        //description: "Friday, February 10, 2023 at 5:57 PM",
+      });
     });
   });
+
+  const removeItemClick = (index: number) => {
+    const newList = [...awardWinningList];
+    newList.splice(index, 1);
+    setAwardWinningList(newList);
+  };
+
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       <div className="mt-4 grid w-full items-center gap-1.5">
@@ -83,19 +106,27 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
-        <Label htmlFor="font">Police</Label>
-        <Input
-          type="text"
-          id="font"
-          defaultValue={font}
-          placeholder="font"
-          {...register("patch.font", {
-            required: "Un nom pour l'organisation est requis",
-          })}
+        <Controller
+          name={"patch.font"}
+          control={control}
+          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+            <>
+              <Select defaultValue={font} onValueChange={onChange}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Police" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={Fonts.Roboto}>Roboto</SelectItem>
+                    <SelectItem value={Fonts.Montserrat}>Montserrat</SelectItem>
+                    <SelectItem value={Fonts.Opensans}>Open Sans</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
+            </>
+          )}
         />
-        {formState.errors?.patch?.font && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.font?.message}</p>
-        )}
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
@@ -128,21 +159,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.richText?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
-        {/* A remplacer par list */}
-        <Label htmlFor="longText">Long text</Label>
-        <Textarea
-          id="longText"
-          defaultValue={longText}
-          placeholder="type url here"
-          {...register("patch.longText", {
-            required: "Un nom pour l'organisation est requis",
-          })}
-        />
-        {formState.errors?.patch?.longText && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.longText?.message}</p>
-        )}
-      </div>
+
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Label htmlFor="shortText">Court texte</Label>
@@ -158,6 +175,46 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         {formState.errors?.patch?.shortText && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.shortText?.message}</p>
         )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        {/* A remplacer par list */}
+        <Label>Liste des lauréats</Label>
+        <ul className="list-disc pl-4">
+          {awardWinningAssoList?.map((awardWinning) => (
+            <li>{awardWinning}</li>
+          ))}
+        </ul>
+
+        <Label className="mt-2" htmlFor="awardWinningAssoList">
+          Modifier la liste des lauréats
+        </Label>
+        <div className="flex space-x-4">
+          <Input
+            type="text"
+            id="awardWinningAssoList"
+            value={awardWinning}
+            placeholder="Saissir un lauréat"
+            onChange={(evt) => setAwardWinning(evt?.currentTarget?.value)}
+          />
+          <div
+            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+            onClick={() => {
+              if (awardWinning) setAwardWinningList([...awardWinningList, awardWinning]);
+              setAwardWinning("");
+            }}
+          >
+            Ajouter <PlusCircle className="ml-2" />
+          </div>
+        </div>
+
+        {awardWinningList?.map((awardWinning, index) => (
+          <div
+            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+            onClick={() => removeItemClick(index)}
+          >
+            {awardWinning} <MinusCircle className="ml-2" />
+          </div>
+        ))}
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>

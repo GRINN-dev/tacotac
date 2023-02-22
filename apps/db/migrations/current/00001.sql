@@ -48,6 +48,9 @@ grant all on schema public to :DATABASE_OWNER;
 create schema publ;
 create schema priv;
 
+--GRANT USAGE ON SCHEMA publ TO :DATABASE_AUTHENTICATOR;
+--GRANT select ON SCHEMA publ TO :DATABASE_VISITOR;
+
 -- The 'visitor' role (used by PostGraphile to represent an end user) may
 -- access the public, and publ schemas (but _NOT_ the
 -- priv schema).

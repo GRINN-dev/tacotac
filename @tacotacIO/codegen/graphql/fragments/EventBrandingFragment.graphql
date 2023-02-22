@@ -6,7 +6,6 @@ fragment EventBrandingFragment on EventBranding {
   font
   id
   logo
-  longText
   placeholder
   shortText
   richText

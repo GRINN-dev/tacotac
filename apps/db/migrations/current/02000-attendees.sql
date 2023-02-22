@@ -10,6 +10,7 @@ insert into publ.event_status values
     ('CANCELLED', 'Inscription annulée'),
     ('CONFIRMED', 'Présence confirmée à l''évenement');
 
+GRANT all on  publ.event_status TO :DATABASE_VISITOR;
 /*
   TABLE: publ.attendees
   DESCRIPTION: Participants à l'évenement

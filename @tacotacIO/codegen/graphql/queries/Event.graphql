@@ -40,6 +40,9 @@ query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
 query GetEventById($eventId: UUID!) {
   event(id: $eventId) {
     ...MyEvent
+    eventBranding {
+      ...EventBrandingFragment
+    }
     attendees {
       nodes {
         ...MyAttendee
@@ -58,6 +61,9 @@ query GetEventById($eventId: UUID!) {
 query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
+    eventBranding {
+      ...EventBrandingFragment
+    }
     attendees {
       nodes {
         ...MyAttendee

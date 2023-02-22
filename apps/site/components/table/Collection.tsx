@@ -44,7 +44,6 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit, rout
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
-  console.log("🚀 ~ file: Collection.tsx:47 ~ Collection ~ pathname:", pathname);
   const searchParams = useSearchParams();
   const offsetParams = searchParams.get("offset");
   const firstParams = searchParams.get("first");

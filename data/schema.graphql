@@ -1437,18 +1437,28 @@ type EventBranding implements Node {
   eventId: UUID!
   color1: String
   color2: String
-  font: String
+  font: Fonts
   logo: String
   placeholder: JSON
   richText: String
   shortText: String
-  longText: String
   awardWinningAssoList: [String]
   createdAt: Datetime!
   updatedAt: Datetime!
 
   """Reads a single `Event` that is related to this `EventBranding`."""
   event: Event
+}
+
+enum Fonts {
+  """Roboto"""
+  ROBOTO
+
+  """Montserrat"""
+  MONTSERRAT
+
+  """Open Sans"""
+  OPENSANS
 }
 
 """
@@ -2321,12 +2331,11 @@ input EventBrandingInput {
   eventId: UUID!
   color1: String
   color2: String
-  font: String
+  font: Fonts
   logo: String
   placeholder: JSON
   richText: String
   shortText: String
-  longText: String
   awardWinningAssoList: [String]
   createdAt: Datetime
   updatedAt: Datetime
@@ -2740,12 +2749,11 @@ input EventBrandingPatch {
   eventId: UUID
   color1: String
   color2: String
-  font: String
+  font: Fonts
   logo: String
   placeholder: JSON
   richText: String
   shortText: String
-  longText: String
   awardWinningAssoList: [String]
   createdAt: Datetime
   updatedAt: Datetime

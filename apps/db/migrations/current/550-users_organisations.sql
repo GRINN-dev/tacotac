@@ -13,6 +13,8 @@ insert into publ.organization_memberships_roles_enum values
     ('CLIENT', 'Client of the organization'),
     ('GUEST', 'Guest of the organization');
 
+GRANT all ON "publ"."organization_memberships_roles_enum" TO :DATABASE_VISITOR;
+
 
 /*
   TABLE: publ.organization_memberships

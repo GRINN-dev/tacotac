@@ -6290,8 +6290,8 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "Fonts",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6335,18 +6335,6 @@
             },
             {
               "name": "shortText",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "longText",
               "description": null,
               "args": [],
               "type": {
@@ -6427,6 +6415,35 @@
             }
           ],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "Fonts",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "ROBOTO",
+              "description": "Roboto",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MONTSERRAT",
+              "description": "Montserrat",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "OPENSANS",
+              "description": "Open Sans",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -9655,8 +9672,8 @@
               "name": "font",
               "description": null,
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "Fonts",
                 "ofType": null
               },
               "defaultValue": null
@@ -9693,16 +9710,6 @@
             },
             {
               "name": "shortText",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "longText",
               "description": null,
               "type": {
                 "kind": "SCALAR",
@@ -11499,8 +11506,8 @@
               "name": "font",
               "description": null,
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "Fonts",
                 "ofType": null
               },
               "defaultValue": null
@@ -11537,16 +11544,6 @@
             },
             {
               "name": "shortText",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "longText",
               "description": null,
               "type": {
                 "kind": "SCALAR",
