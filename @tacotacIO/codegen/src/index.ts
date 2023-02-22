@@ -53,6 +53,7 @@ export type Attendee = Node & {
   /** Reads a single `Registration` that is related to this `Attendee`. */
   registration?: Maybe<Registration>;
   registrationId?: Maybe<Scalars['UUID']>;
+  signCode?: Maybe<Scalars['UUID']>;
   status: EventStatus;
   updatedAt: Scalars['Datetime'];
 };
@@ -117,6 +118,7 @@ export type AttendeeInput = {
   lastname: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
+  signCode?: InputMaybe<Scalars['UUID']>;
   status: EventStatus;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
@@ -136,6 +138,7 @@ export type AttendeePatch = {
   lastname?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
+  signCode?: InputMaybe<Scalars['UUID']>;
   status?: InputMaybe<EventStatus>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };

@@ -27,6 +27,7 @@ create table publ.attendees (
     registration_id uuid  references publ.registrations(id) on delete cascade,
     status text not null references publ.event_status on delete cascade,
     notes text,
+    sign_code uuid,
     is_inscriptor boolean,
     is_vip boolean,
     is_fundraising_generosity_ok boolean,

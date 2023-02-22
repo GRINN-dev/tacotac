@@ -100,7 +100,6 @@ grant execute on function publ.event_by_slug(text, text) to :DATABASE_VISITOR;
 drop table if exists publ.registrations cascade;
 create table publ.registrations (
     id uuid not null default uuid_generate_v4() primary key unique, 
-    code_id uuid,
     event_id uuid  references publ.events(id),
     hear_about_list text[] default '{"par un mécène", "par une association lauréate", "par le bouche à oreille", "autre", "par Obole, co-organisateur de l''événement", "par la Fondation de France, co-organisateur de l''événement"}',
     created_at timestamptz not null default now(),

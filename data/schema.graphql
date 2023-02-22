@@ -371,6 +371,7 @@ type Attendee implements Node {
   registrationId: UUID
   status: EventStatus!
   notes: String
+  signCode: UUID
   isInscriptor: Boolean
   isVip: Boolean
   isFundraisingGenerosityOk: Boolean
@@ -1203,7 +1204,6 @@ type Registration implements Node {
   """
   nodeId: ID!
   id: UUID!
-  codeId: UUID
   eventId: UUID
   hearAboutList: [String]
   createdAt: Datetime!
@@ -2296,6 +2296,7 @@ input AttendeeInput {
   registrationId: UUID
   status: EventStatus!
   notes: String
+  signCode: UUID
   isInscriptor: Boolean
   isVip: Boolean
   isFundraisingGenerosityOk: Boolean
@@ -2566,7 +2567,6 @@ input CreateRegistrationInput {
 """An input for mutations affecting `Registration`"""
 input RegistrationInput {
   id: UUID
-  codeId: UUID
   eventId: UUID
   hearAboutList: [String]
   createdAt: Datetime
@@ -2680,6 +2680,7 @@ input AttendeePatch {
   registrationId: UUID
   status: EventStatus
   notes: String
+  signCode: UUID
   isInscriptor: Boolean
   isVip: Boolean
   isFundraisingGenerosityOk: Boolean
@@ -3181,7 +3182,6 @@ Represents an update to a `Registration`. Fields that are set will be updated.
 """
 input RegistrationPatch {
   id: UUID
-  codeId: UUID
   eventId: UUID
   hearAboutList: [String]
   createdAt: Datetime
