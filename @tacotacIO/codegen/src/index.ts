@@ -2457,7 +2457,6 @@ export type Registration = Node & {
   __typename?: 'Registration';
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees: AttendeesConnection;
-  codeId?: Maybe<Scalars['UUID']>;
   createdAt: Scalars['Datetime'];
   /** Reads a single `Event` that is related to this `Registration`. */
   event?: Maybe<Event>;
@@ -2516,7 +2515,6 @@ export type RegistrationFilter = {
 
 /** An input for mutations affecting `Registration` */
 export type RegistrationInput = {
-  codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -2526,7 +2524,6 @@ export type RegistrationInput = {
 
 /** Represents an update to a `Registration`. Fields that are set will be updated. */
 export type RegistrationPatch = {
-  codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
