@@ -46,40 +46,42 @@ export default function EventsLayout({
                   <div className="ml-4 text-sm font-medium underline">{organizationSlug}</div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem className="self-center">
                     <Link
                       href={`/dashboard/organisations/${organizationSlug}/evenements/`}
                       className={cn(
                         "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                       )}
                     >
+                  <DropdownMenuItem className="self-center">
                       Mes événements
-                    </Link>
                   </DropdownMenuItem>
 
+                    </Link>
+
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="self-center">
                     <Link
                       href={`/dashboard/organisations/${organizationSlug}/infos`}
                       className={cn(
                         "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                       )}
                     >
+                  <DropdownMenuItem className="self-center">
                       <Cog aria-hidden className="w-4 h-4 mr-4" />
                       Infos organisation
-                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="self-center">
+
+                    </Link>
                     <Link
                       href={`/dashboard/organisations/${organizationSlug}/evenements/create`}
                       className={cn(
                         "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                       )}
                     >
+                  <DropdownMenuItem className="self-center">
                       <PlusSquare className="w-4 h-4 mr-4" />
                       Créer un événement
-                    </Link>
                   </DropdownMenuItem>
+                    </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
