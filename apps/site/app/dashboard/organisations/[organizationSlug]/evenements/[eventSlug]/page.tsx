@@ -17,7 +17,6 @@ const EventPage = async ({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
-  console.log("🚀 ~ file: page.tsx:17 ~ const{eventBySlug}=awaitsdk ~ eventBySlug:", eventBySlug?.attendees);
 
   const headerAttendees: IHeader[] = [
     { title: "Nom", value: "lastname", type: Type?.string, isSortable: true, isVisible: true },
