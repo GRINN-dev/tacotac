@@ -3,7 +3,7 @@ DECLARE code text;
 
 begin
 code :=  substring(uuid_generate_v4()::text, 1, 6);
-    if exists (select booking_starts_at, booking_ends_at,id from publ.events where id=NEW.event_id and  (booking_starts_at <= NOW() and booking_ends_at >= now())) then
+    if exists (select booking_starts_at, booking_ends_at from publ.events where id=NEW.event_id and  (booking_starts_at <= NOW() and booking_ends_at >= now())) then
         update publ.attendees
         set registration_id = publ.registrations.id -- ou SET registration_id = NEW.registration_id
         from publ.registrations
@@ -16,7 +16,13 @@ code :=  substring(uuid_generate_v4()::text, 1, 6);
           from publ.registrations
           where publ.registrations.event_id = NEW.event_id 
           and publ.attendees.id = NEW.id;
-      end if;
+    elseif NEW.status='CANCELLED' then
+        update publ.attendees
+          set registration_id = null-- ou SET registration_id = NEW.registration_id
+          from publ.registrations
+          where publ.registrations.event_id = NEW.event_id 
+          and publ.attendees.id = NEW.id;
+      end if ;
     end if;
   return NEW;
 end;
