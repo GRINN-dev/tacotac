@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
+
 
 const EventPage = async ({
   params: { organizationSlug, eventSlug },
@@ -20,7 +23,7 @@ const EventPage = async ({
     { title: "Prenom", value: "Prénom", type: Type?.string, isSortable: false, isVisible: true },
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
     { title: "status", value: "Status", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "eventId", value: "Event-id", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "eventId", value: "Event-id", type: Type?.string, isSortable: false, isVisible: false },
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 

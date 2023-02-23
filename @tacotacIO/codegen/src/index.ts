@@ -34,21 +34,32 @@ export type Scalars = {
 
 export type Attendee = Node & {
   __typename?: 'Attendee';
+  civility: CivilityStatus;
   createdAt: Scalars['Datetime'];
   email: Scalars['String'];
   /** Reads a single `Event` that is related to this `Attendee`. */
   event?: Maybe<Event>;
   eventId: Scalars['UUID'];
   firstname: Scalars['String'];
+  hearAbout: Scalars['String'];
   id: Scalars['UUID'];
+  isFundraisingGenerosityOk: Scalars['Boolean'];
+  isInscriptor?: Maybe<Scalars['Boolean']>;
+  isNewsEventEmail?: Maybe<Scalars['Boolean']>;
+  isNewsFondationEmail?: Maybe<Scalars['Boolean']>;
+  isVip?: Maybe<Scalars['Boolean']>;
   lastname: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  notes?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
   /** Reads a single `Registration` that is related to this `Attendee`. */
   registration?: Maybe<Registration>;
   registrationId?: Maybe<Scalars['UUID']>;
+  signCode?: Maybe<Scalars['String']>;
   status: EventStatus;
   updatedAt: Scalars['Datetime'];
+  zipCode: Scalars['String'];
 };
 
 /**
@@ -56,6 +67,8 @@ export type Attendee = Node & {
  * for equality and combined with a logical ‘and.’
  */
 export type AttendeeCondition = {
+  /** Checks for equality with the object’s `civility` field. */
+  civility?: InputMaybe<CivilityStatus>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `email` field. */
@@ -64,18 +77,24 @@ export type AttendeeCondition = {
   eventId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `phoneNumber` field. */
+  phoneNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `registrationId` field. */
   registrationId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<EventStatus>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `zipCode` field. */
+  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Attendee` object types. All fields are combined with a logical ‘and.’ */
 export type AttendeeFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<AttendeeFilter>>;
+  /** Filter by the object’s `civility` field. */
+  civility?: InputMaybe<CivilityStatusFilter>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `email` field. */
@@ -88,38 +107,64 @@ export type AttendeeFilter = {
   not?: InputMaybe<AttendeeFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<AttendeeFilter>>;
+  /** Filter by the object’s `phoneNumber` field. */
+  phoneNumber?: InputMaybe<StringFilter>;
   /** Filter by the object’s `registrationId` field. */
   registrationId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<EventStatusFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `zipCode` field. */
+  zipCode?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `Attendee` */
 export type AttendeeInput = {
+  civility: CivilityStatus;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   email: Scalars['String'];
   eventId: Scalars['UUID'];
   firstname: Scalars['String'];
+  hearAbout: Scalars['String'];
   id?: InputMaybe<Scalars['UUID']>;
+  isFundraisingGenerosityOk: Scalars['Boolean'];
+  isInscriptor?: InputMaybe<Scalars['Boolean']>;
+  isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
+  isNewsFondationEmail?: InputMaybe<Scalars['Boolean']>;
+  isVip?: InputMaybe<Scalars['Boolean']>;
   lastname: Scalars['String'];
+  notes?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
+  signCode?: InputMaybe<Scalars['String']>;
   status: EventStatus;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  zipCode: Scalars['String'];
 };
 
 /** Represents an update to a `Attendee`. Fields that are set will be updated. */
 export type AttendeePatch = {
+  civility?: InputMaybe<CivilityStatus>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   email?: InputMaybe<Scalars['String']>;
   eventId?: InputMaybe<Scalars['UUID']>;
   firstname?: InputMaybe<Scalars['String']>;
+  hearAbout?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
+  isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
+  isInscriptor?: InputMaybe<Scalars['Boolean']>;
+  isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
+  isNewsFondationEmail?: InputMaybe<Scalars['Boolean']>;
+  isVip?: InputMaybe<Scalars['Boolean']>;
   lastname?: InputMaybe<Scalars['String']>;
+  notes?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
+  signCode?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<EventStatus>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `Attendee` values. */
@@ -146,6 +191,8 @@ export type AttendeesEdge = {
 
 /** Methods to use when ordering `Attendee`. */
 export enum AttendeesOrderBy {
+  CivilityAsc = 'CIVILITY_ASC',
+  CivilityDesc = 'CIVILITY_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   EmailAsc = 'EMAIL_ASC',
@@ -155,6 +202,8 @@ export enum AttendeesOrderBy {
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
+  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
+  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RegistrationIdAsc = 'REGISTRATION_ID_ASC',
@@ -162,7 +211,9 @@ export enum AttendeesOrderBy {
   StatusAsc = 'STATUS_ASC',
   StatusDesc = 'STATUS_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  ZipCodeAsc = 'ZIP_CODE_ASC',
+  ZipCodeDesc = 'ZIP_CODE_DESC'
 }
 
 /** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
@@ -189,6 +240,39 @@ export type BooleanFilter = {
   notEqualTo?: InputMaybe<Scalars['Boolean']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
+export enum CivilityStatus {
+  /** Madame */
+  Mme = 'MME',
+  /** Monsieur */
+  Mr = 'MR'
+}
+
+/** A filter to be used against CivilityStatus fields. All fields are combined with a logical ‘and.’ */
+export type CivilityStatusFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<CivilityStatus>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<CivilityStatus>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<CivilityStatus>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<CivilityStatus>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<CivilityStatus>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<CivilityStatus>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<CivilityStatus>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<CivilityStatus>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<CivilityStatus>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<CivilityStatus>>;
 };
 
 /** All input for the create `Attendee` mutation. */
@@ -1176,7 +1260,11 @@ export enum EventStatus {
   /** Présence confirmée à l'évenement */
   Confirmed = 'CONFIRMED',
   /** En attente */
-  Idle = 'IDLE'
+  Idle = 'IDLE',
+  /** Panneau scanné */
+  PanelScan = 'PANEL_SCAN',
+  /** Ticket scanné */
+  TicketScan = 'TICKET_SCAN'
 }
 
 /** A filter to be used against EventStatus fields. All fields are combined with a logical ‘and.’ */
@@ -2432,7 +2520,6 @@ export type Registration = Node & {
   __typename?: 'Registration';
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees: AttendeesConnection;
-  codeId?: Maybe<Scalars['UUID']>;
   createdAt: Scalars['Datetime'];
   /** Reads a single `Event` that is related to this `Registration`. */
   event?: Maybe<Event>;
@@ -2491,7 +2578,6 @@ export type RegistrationFilter = {
 
 /** An input for mutations affecting `Registration` */
 export type RegistrationInput = {
-  codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -2501,7 +2587,6 @@ export type RegistrationInput = {
 
 /** Represents an update to a `Registration`. Fields that are set will be updated. */
 export type RegistrationPatch = {
-  codeId?: InputMaybe<Scalars['UUID']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;

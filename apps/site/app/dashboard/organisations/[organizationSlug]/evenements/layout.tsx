@@ -22,7 +22,7 @@ export default function EventsLayout({
 }) {
   return (
     <section className="flex flex-wrap mt-4 ml-4">
-      <nav className="flex" aria-label="Breadcrumb">
+      <nav className="flex flex-col" aria-label="Breadcrumb">
         <ol role="list" className="flex space-x-4  px-6 shadow">
           <li className="flex">
             <div className="flex items-center">
