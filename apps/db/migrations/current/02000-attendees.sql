@@ -48,6 +48,7 @@ create table publ.attendees (
     is_vip boolean,
     is_news_event_email boolean,
     is_news_fondation_email boolean,
+    panel_number int,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
     constraint attendees_email_event_id_key unique (email, event_id)

@@ -17,22 +17,25 @@ const EventPage = async ({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
+  console.log("🚀 ~ file: page.tsx:17 ~ const{eventBySlug}=awaitsdk ~ eventBySlug:", eventBySlug?.attendees);
 
   const headerAttendees: IHeader[] = [
-    { title: "Nom", value: "Nom", type: Type?.string, isSortable: true, isVisible: true },
-    { title: "Prenom", value: "Prénom", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "Nom", value: "lastname", type: Type?.string, isSortable: true, isVisible: true },
+    { title: "Prenom", value: "firstname", type: Type?.string, isSortable: false, isVisible: true },
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "status", value: "Status", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "eventId", value: "Event-id", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "status", value: "status", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "N° Panneau", value: "panelNumber", type: Type.number, isSortable: false, isVisible: true },
+    { title: "eventId", value: "eventId", type: Type?.string, isSortable: false, isVisible: false },
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawAttendees: IData[] = eventBySlug?.attendees?.nodes.map(
-    ({ id, firstname, lastname, email, status, eventId }) => ({
-      Nom: firstname,
-      Prenom: lastname,
+    ({ id, firstname, lastname, email, status, eventId, panelNumber }) => ({
+      Nom: lastname,
+      Prenom: firstname,
       email: email,
       status: status,
+      "N° Panneau": panelNumber,
       eventId: eventId,
       slug: "/participant/" + id,
     })

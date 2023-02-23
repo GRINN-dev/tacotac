@@ -381,6 +381,7 @@ type Attendee implements Node {
   isVip: Boolean
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
+  panelNumber: Int
   createdAt: Datetime!
   updatedAt: Datetime!
 
@@ -2384,6 +2385,7 @@ input AttendeeInput {
   isVip: Boolean
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
+  panelNumber: Int
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2772,6 +2774,7 @@ input AttendeePatch {
   isVip: Boolean
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
+  panelNumber: Int
   createdAt: Datetime
   updatedAt: Datetime
 }
