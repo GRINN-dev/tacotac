@@ -5,7 +5,7 @@ begin
 code :=  substring(uuid_generate_v4()::text, 1, 6);
     if exists (select booking_starts_at, booking_ends_at from publ.events where id=NEW.event_id and  (booking_starts_at <= NOW() and booking_ends_at >= now())) then
         update publ.attendees
-        set registration_id = publ.registrations.id -- ou SET registration_id = NEW.registration_id
+        set registration_id = publ.registrations.id 
         from publ.registrations
         where publ.registrations.event_id = NEW.event_id 
         and publ.attendees.id = NEW.id;
@@ -16,14 +16,16 @@ code :=  substring(uuid_generate_v4()::text, 1, 6);
           from publ.registrations
           where publ.registrations.event_id = NEW.event_id 
           and publ.attendees.id = NEW.id;
-    elseif NEW.status='CANCELLED' then
+      end if;
+    end if ;
+     if NEW.status='CANCELLED' then
+     raise notice 'hola';
         update publ.attendees
-          set registration_id = null-- ou SET registration_id = NEW.registration_id
+          set registration_id = null, sign_code=null
           from publ.registrations
           where publ.registrations.event_id = NEW.event_id 
           and publ.attendees.id = NEW.id;
       end if ;
-    end if;
   return NEW;
 end;
 $$ language plpgsql volatile security definer set search_path to pg_catalog, public, pg_temp;
