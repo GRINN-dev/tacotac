@@ -364,9 +364,14 @@ type Attendee implements Node {
   """
   nodeId: ID!
   id: UUID!
+  civility: CivilityStatus!
   firstname: String!
   lastname: String!
   email: String!
+  phoneNumber: String
+  zipCode: String!
+  hearAbout: String!
+  isFundraisingGenerosityOk: Boolean!
   eventId: UUID!
   registrationId: UUID
   status: EventStatus!
@@ -374,7 +379,6 @@ type Attendee implements Node {
   signCode: String
   isInscriptor: Boolean
   isVip: Boolean
-  isFundraisingGenerosityOk: Boolean
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
   createdAt: Datetime!
@@ -391,6 +395,14 @@ type Attendee implements Node {
 A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
 """
 scalar UUID
+
+enum CivilityStatus {
+  """Monsieur"""
+  MR
+
+  """Madame"""
+  MME
+}
 
 enum EventStatus {
   """En attente"""
@@ -1290,8 +1302,14 @@ enum AttendeesOrderBy {
   NATURAL
   ID_ASC
   ID_DESC
+  CIVILITY_ASC
+  CIVILITY_DESC
   EMAIL_ASC
   EMAIL_DESC
+  PHONE_NUMBER_ASC
+  PHONE_NUMBER_DESC
+  ZIP_CODE_ASC
+  ZIP_CODE_DESC
   EVENT_ID_ASC
   EVENT_ID_DESC
   REGISTRATION_ID_ASC
@@ -1314,8 +1332,17 @@ input AttendeeCondition {
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
+  """Checks for equality with the object’s `civility` field."""
+  civility: CivilityStatus
+
   """Checks for equality with the object’s `email` field."""
   email: String
+
+  """Checks for equality with the object’s `phoneNumber` field."""
+  phoneNumber: String
+
+  """Checks for equality with the object’s `zipCode` field."""
+  zipCode: String
 
   """Checks for equality with the object’s `eventId` field."""
   eventId: UUID
@@ -1340,8 +1367,17 @@ input AttendeeFilter {
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
+  """Filter by the object’s `civility` field."""
+  civility: CivilityStatusFilter
+
   """Filter by the object’s `email` field."""
   email: StringFilter
+
+  """Filter by the object’s `phoneNumber` field."""
+  phoneNumber: StringFilter
+
+  """Filter by the object’s `zipCode` field."""
+  zipCode: StringFilter
 
   """Filter by the object’s `eventId` field."""
   eventId: UUIDFilter
@@ -1366,6 +1402,48 @@ input AttendeeFilter {
 
   """Negates the expression."""
   not: AttendeeFilter
+}
+
+"""
+A filter to be used against CivilityStatus fields. All fields are combined with a logical ‘and.’
+"""
+input CivilityStatusFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: CivilityStatus
+
+  """Not equal to the specified value."""
+  notEqualTo: CivilityStatus
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: CivilityStatus
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: CivilityStatus
+
+  """Included in the specified list."""
+  in: [CivilityStatus!]
+
+  """Not included in the specified list."""
+  notIn: [CivilityStatus!]
+
+  """Less than the specified value."""
+  lessThan: CivilityStatus
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: CivilityStatus
+
+  """Greater than the specified value."""
+  greaterThan: CivilityStatus
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: CivilityStatus
 }
 
 """
@@ -2289,9 +2367,14 @@ input CreateAttendeeInput {
 """An input for mutations affecting `Attendee`"""
 input AttendeeInput {
   id: UUID
+  civility: CivilityStatus!
   firstname: String!
   lastname: String!
   email: String!
+  phoneNumber: String
+  zipCode: String!
+  hearAbout: String!
+  isFundraisingGenerosityOk: Boolean!
   eventId: UUID!
   registrationId: UUID
   status: EventStatus!
@@ -2299,7 +2382,6 @@ input AttendeeInput {
   signCode: String
   isInscriptor: Boolean
   isVip: Boolean
-  isFundraisingGenerosityOk: Boolean
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
   createdAt: Datetime
@@ -2673,9 +2755,14 @@ Represents an update to a `Attendee`. Fields that are set will be updated.
 """
 input AttendeePatch {
   id: UUID
+  civility: CivilityStatus
   firstname: String
   lastname: String
   email: String
+  phoneNumber: String
+  zipCode: String
+  hearAbout: String
+  isFundraisingGenerosityOk: Boolean
   eventId: UUID
   registrationId: UUID
   status: EventStatus
@@ -2683,7 +2770,6 @@ input AttendeePatch {
   signCode: String
   isInscriptor: Boolean
   isVip: Boolean
-  isFundraisingGenerosityOk: Boolean
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
   createdAt: Datetime
