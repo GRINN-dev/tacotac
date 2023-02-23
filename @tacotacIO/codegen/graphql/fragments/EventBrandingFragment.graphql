@@ -1,0 +1,13 @@
+fragment EventBrandingFragment on EventBranding {
+  awardWinningAssoList
+  color1
+  color2
+  createdAt
+  font
+  id
+  logo
+  placeholder
+  shortText
+  richText
+  updatedAt
+}

@@ -2,9 +2,6 @@ query GetAllEvents {
   events(orderBy: [CREATED_AT_DESC]) {
     nodes {
       ...MyEvent
-      organization {
-        slug
-      }
     }
     pageInfo {
       hasNextPage
@@ -30,12 +27,22 @@ query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
     nodes {
       ...MyEvent
     }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
   }
 }
 
 query GetEventById($eventId: UUID!) {
   event(id: $eventId) {
     ...MyEvent
+    eventBranding {
+      ...EventBrandingFragment
+    }
     attendees {
       nodes {
         ...MyAttendee
@@ -54,45 +61,10 @@ query GetEventById($eventId: UUID!) {
 query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
-    attendees {
-      nodes {
-        ...MyAttendee
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-      }
-      totalCount
+    eventBranding {
+      ...EventBrandingFragment
     }
-  }
-}
-
-query GetAttendeeByEventSlug(
-  $eventSlug: String!
-  $organizationSlug: String!
-  $after: Cursor
-  $first: Int
-  $before: Cursor
-  $last: Int
-  $offset: Int
-  $filter: AttendeeFilter = {}
-  $orderBy: [AttendeesOrderBy!] = NATURAL
-) {
-  eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
-    name
-    slug
-    id
-    attendees(
-      first: $first
-      after: $after
-      last: $last
-      before: $before
-      offset: $offset
-      filter: $filter
-      orderBy: $orderBy
-    ) {
+    attendees {
       nodes {
         ...MyAttendee
       }

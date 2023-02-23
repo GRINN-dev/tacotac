@@ -84,6 +84,7 @@ const getPostgraphileOptions = (rootPgPool: Pool): PostGraphileOptions => {
       req,
       res
     ): Promise<Partial<OurGraphQLContext>> => {
+      console.log();
       return { rootPgPool, req, res };
     },
     ...(isDev ? postgraphileDevelopmentOptions : postgraphileProductionOptions),
@@ -95,6 +96,7 @@ export const installPostgraphile = (app: Express) => {
   const rootPgPool = getRootPgPool(app);
   app.use(
     postgraphile(
+      //process.env.DATABASE_AUTHENTICATOR_URL,
       process.env.DATABASE_URL,
       "publ",
       getPostgraphileOptions(rootPgPool)

@@ -1,12 +1,9 @@
 "use client";
 
 import { FC, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import {
-  EventStatus,
-  GetAttendeeByIdQuery,
-  UpdateAttendeeInput,
-} from "@/../../@tacotacIO/codegen/dist";
+import { usePathname, useRouter } from "next/navigation";
+import { EventStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@/../../@tacotacIO/codegen/dist";
+import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -24,24 +21,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface iUpdateAttendee
-  extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
+interface iUpdateAttendee extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
 
-export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
-  id,
-  firstname,
-  lastname,
-  email,
-  status,
-  eventId,
-}) => {
+export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastname, email, status, eventId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
-  const { register, handleSubmit, formState, control } =
-    useForm<UpdateAttendeeInput>();
+  const pathname = usePathname();
+  const { register, handleSubmit, formState, control } = useForm<UpdateAttendeeInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     data.id = id;
@@ -56,22 +45,21 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
       });
     setIsLoading(false);
     startTransition(() => {
-      router.back();
+      router.push(pathname + "?reload=true");
+
+      toast({
+        title: "Participant mis à jour",
+        //description: "Friday, February 10, 2023 at 5:57 PM",
+      });
     });
   });
   return (
-    <form
-      onSubmit={onSubmit}
-      className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}
-    >
+    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Controller
           name={"patch.status"}
           control={control}
-          render={({
-            field: { onChange, onBlur, value, ref, name },
-            fieldState: { error },
-          }) => (
+          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
             <>
               <Select defaultValue={status} onValueChange={onChange}>
                 <SelectTrigger>
@@ -81,20 +69,12 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
                   <SelectGroup>
                     <SelectLabel>Status</SelectLabel>
                     <SelectItem value={EventStatus.Idle}>En attente</SelectItem>
-                    <SelectItem value={EventStatus.Cancelled}>
-                      Annulé
-                    </SelectItem>
-                    <SelectItem value={EventStatus.Confirmed}>
-                      Confirmé
-                    </SelectItem>
+                    <SelectItem value={EventStatus.Cancelled}>Annulé</SelectItem>
+                    <SelectItem value={EventStatus.Confirmed}>Confirmé</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              {error?.message && (
-                <p className="text-sm text-red-800 dark:text-red-300">
-                  {error?.message}
-                </p>
-              )}
+              {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
             </>
           )}
         />
@@ -111,9 +91,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           })}
         />
         {formState.errors?.patch?.firstname && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.patch?.firstname?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.firstname?.message}</p>
         )}
       </div>
 
@@ -129,9 +107,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           })}
         />
         {formState.errors?.patch?.lastname && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.patch?.lastname?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.lastname?.message}</p>
         )}
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
@@ -146,9 +122,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           })}
         />
         {formState.errors?.patch?.email && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.patch?.email?.message}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.email?.message}</p>
         )}
       </div>
 

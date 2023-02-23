@@ -1,14 +1,12 @@
 "use client";
 
 import { FC, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import {
-  GetEventByIdQuery,
-  GetOrganizationBySlugQuery,
-  UpdateEventInput,
-  UpdateOrganizationInput,
-} from "@/../../@tacotacIO/codegen/dist";
+import { usePathname, useRouter } from "next/navigation";
+import { GetEventByIdQuery, GetOrganizationBySlugQuery, UpdateEventInput, UpdateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
+import { toast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -17,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
+
 interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +23,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => 
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
   const { register, handleSubmit, formState } = useForm<UpdateEventInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
@@ -39,7 +39,12 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => 
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push("/organizations");
+      router.push(pathname + "?reload=true");
+
+      toast({
+        title: "Événement mis à jour",
+        //description: "Friday, February 10, 2023 at 5:57 PM",
+      });
     });
   });
   return (

@@ -302,9 +302,7 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit, rout
                 <tr
                   className="flex items-start hover:cursor-pointer"
                   onClick={() => {
-                    router.push(
-                      `${routerPath ?? pathname}/${row?.firstSlug}${row?.secondSlug ? `/${row?.secondSlug}` : ""}`
-                    );
+                    router.push(`${pathname}/${row?.slug}`);
                   }}
                   key={"row-" + index}
                 >

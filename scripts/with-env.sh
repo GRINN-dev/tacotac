@@ -64,11 +64,16 @@ if [ -z "${DATABASE_VISITOR:-}" ]; then
   export DATABASE_VISITOR
 fi
 
+
 if [ -z "${DATABASE_AUTHENTICATOR:-}" ]; then
   DATABASE_AUTHENTICATOR="${DATABASE_NAME}_authenticator"
   export DATABASE_AUTHENTICATOR
 fi
 
+if [ -z "${DATABASE_AUTHENTICATOR_URL:-}" ]; then
+  DATABASE_AUTHENTICATOR_URL="postgres://${DATABASE_AUTHENTICATOR}:${DATABASE_AUTHENTICATOR_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}"
+  export DATABASE_AUTHENTICATOR_URL
+fi
 
 # check if -s or --show-env flag is passed as an argument
 if [[ "$@" == *"--show-env"* ]] || [[ "$@" == *"-s"* ]]; then

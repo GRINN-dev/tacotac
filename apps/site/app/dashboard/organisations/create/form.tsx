@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import { CreateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
 import { useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+
 
 export const CreateOrganizationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +36,7 @@ export const CreateOrganizationForm = () => {
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push("/organizations");
+      router.back();
     });
   });
   return (

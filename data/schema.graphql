@@ -259,10 +259,10 @@ type Query implements Node {
   attendee(id: UUID!): Attendee
   attendeeByEmailAndEventId(email: String!, eventId: UUID!): Attendee
   eventBranding(id: UUID!): EventBranding
+  eventBrandingByEventId(eventId: UUID!): EventBranding
   event(id: UUID!): Event
   eventByOrganizationIdAndName(organizationId: UUID!, name: String!): Event
   eventByOrganizationIdAndSlug(organizationId: UUID!, slug: String!): Event
-  eventByEventBrandingsId(eventBrandingsId: UUID!): Event
   organizationMembership(id: UUID!): OrganizationMembership
   organizationMembershipByOrganizationIdAndUserId(organizationId: UUID!, userId: UUID!): OrganizationMembership
   organization(id: UUID!): Organization
@@ -428,13 +428,9 @@ type Event implements Node {
   isVip: Boolean
   createdAt: Datetime!
   updatedAt: Datetime!
-  eventBrandingsId: UUID
 
   """Reads a single `Organization` that is related to this `Event`."""
   organization: Organization
-
-  """Reads a single `EventBranding` that is related to this `Event`."""
-  eventBrandings: EventBranding
 
   """Reads and enables pagination through a set of `Registration`."""
   registrations(
@@ -469,6 +465,9 @@ type Event implements Node {
     """
     filter: RegistrationFilter
   ): RegistrationsConnection!
+
+  """Reads a single `EventBranding` that is related to this `Event`."""
+  eventBranding: EventBranding
 
   """Reads and enables pagination through a set of `Attendee`."""
   attendees(
@@ -987,8 +986,6 @@ enum EventsOrderBy {
   CREATED_AT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
-  EVENT_BRANDINGS_ID_ASC
-  EVENT_BRANDINGS_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
 }
@@ -1032,9 +1029,6 @@ input EventCondition {
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
-
-  """Checks for equality with the object’s `eventBrandingsId` field."""
-  eventBrandingsId: UUID
 }
 
 """
@@ -1076,9 +1070,6 @@ input EventFilter {
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
-
-  """Filter by the object’s `eventBrandingsId` field."""
-  eventBrandingsId: UUIDFilter
 
   """Checks for all expressions in this list."""
   and: [EventFilter!]
@@ -1177,30 +1168,6 @@ input IntFilter {
   greaterThanOrEqualTo: Int
 }
 
-type EventBranding implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: UUID!
-  color1: String
-  color2: String
-  font: String
-  logo: String
-  placeholder: JSON
-  richText: String
-  createdAt: Datetime!
-  updatedAt: Datetime!
-
-  """Reads a single `Event` that is related to this `EventBranding`."""
-  eventByEventBrandingsId: Event
-}
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
-
 """A connection to a list of `Registration` values."""
 type RegistrationsConnection {
   """A list of `Registration` objects."""
@@ -1226,6 +1193,7 @@ type Registration implements Node {
   id: UUID!
   codeId: UUID
   eventId: UUID
+  hearAboutList: [String]
   createdAt: Datetime!
   updatedAt: Datetime!
 
@@ -1460,6 +1428,44 @@ input RegistrationFilter {
   not: RegistrationFilter
 }
 
+type EventBranding implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  eventId: UUID!
+  color1: String
+  color2: String
+  font: Fonts
+  logo: String
+  placeholder: JSON
+  richText: String
+  shortText: String
+  awardWinningAssoList: [String]
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Event` that is related to this `EventBranding`."""
+  event: Event
+}
+
+enum Fonts {
+  """Roboto"""
+  ROBOTO
+
+  """Montserrat"""
+  MONTSERRAT
+
+  """Open Sans"""
+  OPENSANS
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
 """A `Attendee` edge in the connection."""
 type AttendeesEdge {
   """A cursor for use in pagination."""
@@ -1500,6 +1506,8 @@ enum EventBrandingsOrderBy {
   NATURAL
   ID_ASC
   ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -1516,6 +1524,9 @@ input EventBrandingCondition {
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: UUID
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -1529,6 +1540,9 @@ A filter to be used against `EventBranding` object types. All fields are combine
 input EventBrandingFilter {
   """Filter by the object’s `id` field."""
   id: UUIDFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: UUIDFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -1870,6 +1884,14 @@ type Mutation {
     input: UpdateEventBrandingInput!
   ): UpdateEventBrandingPayload
 
+  """Updates a single `EventBranding` using a unique key and a patch."""
+  updateEventBrandingByEventId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEventBrandingByEventIdInput!
+  ): UpdateEventBrandingPayload
+
   """Updates a single `Event` using its globally unique id and a patch."""
   updateEventByNodeId(
     """
@@ -1900,14 +1922,6 @@ type Mutation {
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: UpdateEventByOrganizationIdAndSlugInput!
-  ): UpdateEventPayload
-
-  """Updates a single `Event` using a unique key and a patch."""
-  updateEventByEventBrandingsId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateEventByEventBrandingsIdInput!
   ): UpdateEventPayload
 
   """
@@ -2056,6 +2070,14 @@ type Mutation {
     input: DeleteEventBrandingInput!
   ): DeleteEventBrandingPayload
 
+  """Deletes a single `EventBranding` using a unique key."""
+  deleteEventBrandingByEventId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEventBrandingByEventIdInput!
+  ): DeleteEventBrandingPayload
+
   """Deletes a single `Event` using its globally unique id."""
   deleteEventByNodeId(
     """
@@ -2086,14 +2108,6 @@ type Mutation {
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: DeleteEventByOrganizationIdAndSlugInput!
-  ): DeleteEventPayload
-
-  """Deletes a single `Event` using a unique key."""
-  deleteEventByEventBrandingsId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteEventByEventBrandingsIdInput!
   ): DeleteEventPayload
 
   """
@@ -2289,6 +2303,9 @@ type CreateEventBrandingPayload {
   """
   query: Query
 
+  """Reads a single `Event` that is related to this `EventBranding`."""
+  event: Event
+
   """An edge for our `EventBranding`. May be used by Relay 1."""
   eventBrandingEdge(
     """The method to use when ordering `EventBranding`."""
@@ -2311,12 +2328,15 @@ input CreateEventBrandingInput {
 """An input for mutations affecting `EventBranding`"""
 input EventBrandingInput {
   id: UUID
+  eventId: UUID!
   color1: String
   color2: String
-  font: String
+  font: Fonts
   logo: String
   placeholder: JSON
   richText: String
+  shortText: String
+  awardWinningAssoList: [String]
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2339,9 +2359,6 @@ type CreateEventPayload {
 
   """Reads a single `Organization` that is related to this `Event`."""
   organization: Organization
-
-  """Reads a single `EventBranding` that is related to this `Event`."""
-  eventBrandings: EventBranding
 
   """An edge for our `Event`. May be used by Relay 1."""
   eventEdge(
@@ -2385,7 +2402,6 @@ input EventInput {
   isVip: Boolean
   createdAt: Datetime
   updatedAt: Datetime
-  eventBrandingsId: UUID
 }
 
 """The output of our create `OrganizationMembership` mutation."""
@@ -2534,6 +2550,7 @@ input RegistrationInput {
   id: UUID
   codeId: UUID
   eventId: UUID
+  hearAboutList: [String]
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2695,6 +2712,9 @@ type UpdateEventBrandingPayload {
   """
   query: Query
 
+  """Reads a single `Event` that is related to this `EventBranding`."""
+  event: Event
+
   """An edge for our `EventBranding`. May be used by Relay 1."""
   eventBrandingEdge(
     """The method to use when ordering `EventBranding`."""
@@ -2726,12 +2746,15 @@ Represents an update to a `EventBranding`. Fields that are set will be updated.
 """
 input EventBrandingPatch {
   id: UUID
+  eventId: UUID
   color1: String
   color2: String
-  font: String
+  font: Fonts
   logo: String
   placeholder: JSON
   richText: String
+  shortText: String
+  awardWinningAssoList: [String]
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2749,6 +2772,21 @@ input UpdateEventBrandingInput {
   """
   patch: EventBrandingPatch!
   id: UUID!
+}
+
+"""All input for the `updateEventBrandingByEventId` mutation."""
+input UpdateEventBrandingByEventIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `EventBranding` being updated.
+  """
+  patch: EventBrandingPatch!
+  eventId: UUID!
 }
 
 """The output of our update `Event` mutation."""
@@ -2769,9 +2807,6 @@ type UpdateEventPayload {
 
   """Reads a single `Organization` that is related to this `Event`."""
   organization: Organization
-
-  """Reads a single `EventBranding` that is related to this `Event`."""
-  eventBrandings: EventBranding
 
   """An edge for our `Event`. May be used by Relay 1."""
   eventEdge(
@@ -2824,7 +2859,6 @@ input EventPatch {
   isVip: Boolean
   createdAt: Datetime
   updatedAt: Datetime
-  eventBrandingsId: UUID
 }
 
 """All input for the `updateEvent` mutation."""
@@ -2872,21 +2906,6 @@ input UpdateEventByOrganizationIdAndSlugInput {
   patch: EventPatch!
   organizationId: UUID!
   slug: String!
-}
-
-"""All input for the `updateEventByEventBrandingsId` mutation."""
-input UpdateEventByEventBrandingsIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `Event` being updated.
-  """
-  patch: EventPatch!
-  eventBrandingsId: UUID!
 }
 
 """The output of our update `OrganizationMembership` mutation."""
@@ -3140,6 +3159,7 @@ input RegistrationPatch {
   id: UUID
   codeId: UUID
   eventId: UUID
+  hearAboutList: [String]
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -3325,6 +3345,9 @@ type DeleteEventBrandingPayload {
   """
   query: Query
 
+  """Reads a single `Event` that is related to this `EventBranding`."""
+  event: Event
+
   """An edge for our `EventBranding`. May be used by Relay 1."""
   eventBrandingEdge(
     """The method to use when ordering `EventBranding`."""
@@ -3356,6 +3379,16 @@ input DeleteEventBrandingInput {
   id: UUID!
 }
 
+"""All input for the `deleteEventBrandingByEventId` mutation."""
+input DeleteEventBrandingByEventIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  eventId: UUID!
+}
+
 """The output of our delete `Event` mutation."""
 type DeleteEventPayload {
   """
@@ -3375,9 +3408,6 @@ type DeleteEventPayload {
 
   """Reads a single `Organization` that is related to this `Event`."""
   organization: Organization
-
-  """Reads a single `EventBranding` that is related to this `Event`."""
-  eventBrandings: EventBranding
 
   """An edge for our `Event`. May be used by Relay 1."""
   eventEdge(
@@ -3430,16 +3460,6 @@ input DeleteEventByOrganizationIdAndSlugInput {
   clientMutationId: String
   organizationId: UUID!
   slug: String!
-}
-
-"""All input for the `deleteEventByEventBrandingsId` mutation."""
-input DeleteEventByEventBrandingsIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  eventBrandingsId: UUID!
 }
 
 """The output of our delete `OrganizationMembership` mutation."""
