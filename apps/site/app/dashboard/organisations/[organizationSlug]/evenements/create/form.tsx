@@ -1,17 +1,19 @@
 "use client";
 
 import { FC, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { CreateEventInput } from "@/../../@tacotacIO/codegen/dist";
+import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastAction } from "@/components/ui/toast";
 
 export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +21,9 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
   const { register, handleSubmit, formState } = useForm<CreateEventInput>();
+  const { toast } = useToast();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     await sdk()
@@ -33,7 +37,20 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
       });
     setIsLoading(false);
     startTransition(() => {
-      router.back();
+      router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true");
+      // toast({
+      //   title: "Événement crée !",
+      //   description: "Vous pouvez vérifier vos informations ou retourner a la page précedente",
+      //   action: (
+      //     <ToastAction
+      //       onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1))}
+      //       altText="Retour"
+      //     >
+      //       Retour
+      //     </ToastAction>
+      //   ),
+      // });
+      //router.push(pathname);
     });
   });
   return (

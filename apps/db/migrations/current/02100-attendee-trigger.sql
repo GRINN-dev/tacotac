@@ -23,7 +23,7 @@ end;
 $$ language plpgsql volatile security definer set search_path to pg_catalog, public, pg_temp;
 
 create trigger _500_insert_registration
-  after insert on publ.attendees
+  after insert or update on publ.attendees
   for each row
   execute procedure priv.attendee__insert_create_registration();
 comment on function priv.attendee__insert_create_registration() is E'Ensures that every create attendees insert registration_id from registration';

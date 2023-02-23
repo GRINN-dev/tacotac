@@ -68,8 +68,8 @@ create table publ.attendees (
 
 -- RBAC
   grant select on publ.attendees to :DATABASE_VISITOR;
-    grant insert(civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, event_id, registration_id, status) on publ.attendees to :DATABASE_VISITOR;
-    grant update(civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, event_id, registration_id, status) on publ.attendees to :DATABASE_VISITOR;
+    grant insert( civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, event_id, status, is_inscriptor, is_vip) on publ.attendees to :DATABASE_VISITOR;
+    grant update(civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, event_id, registration_id, status) on publ.attendees to :DATABASE_VISITOR;
     grant delete on publ.attendees to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
