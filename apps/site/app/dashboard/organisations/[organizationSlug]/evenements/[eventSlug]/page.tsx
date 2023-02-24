@@ -28,18 +28,17 @@ const EventPage = async ({
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawAttendees: IData[] = eventBySlug?.attendees?.nodes.map(
-    ({ id, firstname, lastname, email, status, eventId, panelNumber }) => ({
-      Nom: lastname,
-      Prenom: firstname,
-      email: email,
-      status: status,
-      "N° Panneau": panelNumber,
-      eventId: eventId,
-      slug: "/participant/" + id,
-    })
-  );
-
+const rawAttendees: IData[] = eventBySlug?.attendees?.nodes.map(
+  ({ id, firstname, lastname, email, status, eventId, panelNumber }) => ({
+    Nom: lastname,
+    Prenom: firstname,
+    email: email,
+    status: status,
+    "N° Panneau": panelNumber,
+    eventId: eventId,
+    slug: "/participant/" + id,
+  })
+);
   //pour pr
   return (
     <section className="w-full container grid items-center gap-6 pt-6 pb-8 md:py-10">

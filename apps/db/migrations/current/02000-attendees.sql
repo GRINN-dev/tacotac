@@ -36,40 +36,36 @@ create table publ.attendees (
     lastname text not null,
     email citext not null check (email ~ '[^@]+@[^@]+\.[^@]+'),
     phone_number text check(length(phone_number) between 5 and 15),
+    event_id uuid  references publ.events(id) on delete cascade,
     zip_code text not null,
     hear_about text not null,
     is_fundraising_generosity_ok boolean not null,
-    event_id uuid not null references publ.events(id) on delete cascade,
-    registration_id uuid  references publ.registrations(id) on delete cascade,
     status text not null references publ.event_status on delete cascade,
     notes text,
-    sign_code text,
     is_inscriptor boolean default false,
     is_vip boolean,
     is_news_event_email boolean,
     is_news_fondation_email boolean,
     panel_number int,
     created_at timestamptz not null default now(),
-    updated_at timestamptz not null default now(),
-    constraint attendees_email_event_id_key unique (email, event_id)
+    updated_at timestamptz not null default now()
 );
 
 -- indexes
   create index on publ.attendees(created_at);
   create index on publ.attendees(updated_at);
-  create index on publ.attendees(event_id);
   create index on publ.attendees(status);
   create index on publ.attendees(email);
-  create index on publ.attendees(registration_id);
   create index on publ.attendees(civility);
+  create index on publ.attendees(event_id);
   create index on publ.attendees(phone_number);
   create index on publ.attendees(zip_code);
 
 
 -- RBAC
   grant select on publ.attendees to :DATABASE_VISITOR;
-    grant insert( civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, event_id, status, is_inscriptor, is_vip) on publ.attendees to :DATABASE_VISITOR;
-    grant update(civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, event_id, registration_id, status) on publ.attendees to :DATABASE_VISITOR;
+  grant insert(event_id, civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status, is_inscriptor, is_vip) on publ.attendees to :DATABASE_VISITOR;
+  grant update(civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) on publ.attendees to :DATABASE_VISITOR;
     grant delete on publ.attendees to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
@@ -93,3 +89,4 @@ create table publ.attendees (
 /*
   END TABLE: publ.attendees
 */
+

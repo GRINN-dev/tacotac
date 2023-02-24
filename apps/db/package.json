@@ -1,7 +1,8 @@
 {
   "name": "db",
   "dependencies": {
-    "graphile-migrate": "^1.4.1"
+    "graphile-migrate": "^1.4.1",
+    "graphile-worker": "^0.13.0"
   },
   "scripts": {
     "gm": "pnpm graphile-migrate",

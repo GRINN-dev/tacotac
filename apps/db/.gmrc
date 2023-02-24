@@ -39,8 +39,11 @@
    */
 
   "afterReset": [
-    "afterReset.sql"
-    // { "_": "command", "command": "graphile-worker --schema-only" },
+    "afterReset.sql",
+    {
+      "_": "command",
+      "command": "node scripts/migrate-graphile-worker.js"
+    }
   ],
 
   /*
