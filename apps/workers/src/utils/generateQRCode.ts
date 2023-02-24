@@ -13,51 +13,10 @@ export interface IGeneratePdfFilesPayload {
 }
 
 interface CreateAttestationPayload {
-  certificate: {
-    /* 
-    id
-    */
+  temp: {
     id?: string;
-    /* 
-    prénom
-    */
     first_name?: string;
-    /* 
-    nom de famille
-    */
     last_name?: string;
-    /* 
-    emprunteur : seul ou à deux
-    */
-    as_co_borrower?: string;
-    /* 
-    montant du bien souhaité
-    */
-    project_price: string;
-    /* 
-    crédits mensuels
-    */
-    monthly_reimbursements?: number;
-    /* 
-    type de bien : neuf ou ancien
-    */
-    property_type?: string;
-    /* 
-    revenus mensuels
-    */
-    monthly_income?: number;
-    /* 
-    apport personnel
-    */
-    financial_contribution?: number;
-    /* 
-    type de parcours choisi
-    */
-    type_of_path?: number;
-    /*
-    montant total du prêt
-    */
-    loan_total_amount?: string;
   };
 }
 
@@ -78,7 +37,7 @@ const generatePdfFilePayload: IGeneratePdfFilesPayload = {
   pdfData: {
     template: createHtmlTemplate<CreateAttestationPayload>(
       {
-        certificate: null,
+        temp: null,
       },
       "invitation"
     ),
