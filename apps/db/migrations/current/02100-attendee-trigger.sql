@@ -19,7 +19,6 @@ code :=  substring(uuid_generate_v4()::text, 1, 6);
       end if;
     end if ;
      if NEW.status='CANCELLED' then
-     raise notice 'hola';
         update publ.attendees
           set registration_id = null, sign_code=null
           from publ.registrations
