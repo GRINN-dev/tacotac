@@ -6,5 +6,6 @@ fragment MyAttendee on Attendee {
   createdAt
   updatedAt
   status
+  panelNumber
   eventId
 }

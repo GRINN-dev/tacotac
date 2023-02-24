@@ -14,7 +14,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-
+import { ToastAction } from "@/components/ui/toast";
 
 interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => {
@@ -29,7 +29,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => 
     setIsLoading(true);
     data.id = id;
     await sdk()
-      .UpdateOrganization({
+      .UpdateEvent({
         input: data,
       })
       .catch((error) => {
@@ -43,7 +43,14 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => 
 
       toast({
         title: "Événement mis à jour",
-        //description: "Friday, February 10, 2023 at 5:57 PM",
+        action: (
+          <ToastAction
+            onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true")}
+            altText="Retour"
+          >
+            Retour
+          </ToastAction>
+        ),
       });
     });
   });
@@ -64,7 +71,22 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => 
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.name?.message}</p>
         )}
       </div>
-
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="bookingStartsAt">Debut reservation</Label>
+        <Input
+          type="datetime-local"
+          id="bookingStartsAt"
+          placeholder="Date"
+          {...register("patch.bookingStartsAt", {
+            required: "Une date pour l'organisation est requise",
+          })}
+        />
+        {formState.errors?.patch?.bookingStartsAt && (
+          <p className="text-sm text-red-800 dark:text-red-300">
+            {formState.errors?.patch?.bookingStartsAt?.message as string}
+          </p>
+        )}
+      </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="description">Description</Label>
         <Textarea

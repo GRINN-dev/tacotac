@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { CreateEventInput } from "@/../../@tacotacIO/codegen/dist";
 import { useForm } from "react-hook-form";
 
@@ -19,6 +19,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
   const { register, handleSubmit, formState } = useForm<CreateEventInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
@@ -33,7 +34,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
       });
     setIsLoading(false);
     startTransition(() => {
-      router.back();
+      router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true");
     });
   });
   return (

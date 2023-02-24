@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
+
 
 const EventPage = async ({
   params: { organizationSlug, eventSlug },
@@ -16,20 +19,22 @@ const EventPage = async ({
   });
 
   const headerAttendees: IHeader[] = [
-    { title: "Nom", value: "Nom", type: Type?.string, isSortable: true, isVisible: true },
-    { title: "Prenom", value: "Prénom", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "Nom", value: "lastname", type: Type?.string, isSortable: true, isVisible: true },
+    { title: "Prenom", value: "firstname", type: Type?.string, isSortable: false, isVisible: true },
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "status", value: "Status", type: Type?.string, isSortable: false, isVisible: true },
-    { title: "eventId", value: "Event-id", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "status", value: "status", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "N° Panneau", value: "panelNumber", type: Type.number, isSortable: false, isVisible: true },
+    { title: "eventId", value: "eventId", type: Type?.string, isSortable: false, isVisible: false },
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawAttendees: IData[] = eventBySlug?.attendees?.nodes.map(
-    ({ id, firstname, lastname, email, status, eventId }) => ({
-      Nom: firstname,
-      Prenom: lastname,
+    ({ id, firstname, lastname, email, status, eventId, panelNumber }) => ({
+      Nom: lastname,
+      Prenom: firstname,
       email: email,
       status: status,
+      "N° Panneau": panelNumber,
       eventId: eventId,
       slug: "/participant/" + id,
     })

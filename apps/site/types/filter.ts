@@ -24,6 +24,7 @@ export interface IData {
 export enum Type {
   "string" = "string",
   "date" = "date",
+  "number" = "number",
 }
 
 export interface IHeader {
