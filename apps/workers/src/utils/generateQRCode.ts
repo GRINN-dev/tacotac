@@ -49,7 +49,7 @@ const generatePdfFilePayload: IGeneratePdfFilesPayload = {
 export const generateQRCode = async text => {
   try {
     // a delete quand test fini
-    const filePath = path.join(__dirname, "Machin.png");
+    const filePath = path.join(__dirname, "qr_invit.png");
     const test = await QRCode.toFile(filePath, text, {
       type: "png",
       errorCorrectionLevel: "M",
