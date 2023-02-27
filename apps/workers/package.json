@@ -7,12 +7,13 @@
     "dev": "tsup-node src/index.ts --watch --onSuccess \"node dist/index.js\""
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "dayjs": "^1.11.7",
     "graphile-worker": "^0.13.0",
-    "qrcode": "^1.5.1",
-    "puppeteer": "^19.7.2",
     "handlebars": "^4.7.7",
     "moment": "^2.29.4",
-    "@sendgrid/mail": "^7.7.0"
+    "puppeteer": "^19.7.2",
+    "qrcode": "^1.5.1"
   },
   "devDependencies": {
     "tsup": "^6.5.0",

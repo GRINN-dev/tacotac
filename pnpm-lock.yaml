@@ -200,6 +200,7 @@ importers:
   apps/workers:
     specifiers:
       '@sendgrid/mail': ^7.7.0
+      dayjs: ^1.11.7
       graphile-worker: ^0.13.0
       handlebars: ^4.7.7
       moment: ^2.29.4
@@ -209,6 +210,7 @@ importers:
       typescript: ^4.9.4
     dependencies:
       '@sendgrid/mail': 7.7.0
+      dayjs: 1.11.7
       graphile-worker: 0.13.0
       handlebars: 4.7.7
       moment: 2.29.4
