@@ -1,5 +1,5 @@
 import { run } from "graphile-worker";
-import { sayHi } from "./tasks";
+import { qrCodeGen, sendEmail } from "./tasks";
 
 const main = async () => {
   const runner = await run({
@@ -7,7 +7,7 @@ const main = async () => {
     concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
-    taskList: { say_hi: sayHi },
+    taskList: { qrCodeGen: qrCodeGen, sendEmail: sendEmail },
   });
   await runner.promise;
 };

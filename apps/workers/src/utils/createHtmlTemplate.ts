@@ -6,11 +6,6 @@ import moment from "moment";
 moment.locale("fr");
 
 export function createHtmlTemplate<T>(data: T, templateName: string) {
-  console.log(
-    "🚀 ~ file: createHtmlTemplate.ts:12 ~ __dirname:",
-    __dirname.substring(0, __dirname.lastIndexOf("/") + 1)
-  );
-
   const html = fs.readFileSync(
     path.join(
       __dirname.substring(0, __dirname.lastIndexOf("/") + 1),

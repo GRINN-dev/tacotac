@@ -1,7 +1,7 @@
 import { Task } from "graphile-worker";
 import sgMail, { MailDataRequired } from "@sendgrid/mail";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -14,7 +14,7 @@ export const sendEmail: Task = async payload => {
   await sgMail
     .send({
       ...mailData,
-      mailSettings: { sandboxMode: { enable: isDev } },
+      mailSettings: { sandboxMode: { enable: false } },
     })
     .then((response: any) => {
       console.log(response[0].statusCode);
