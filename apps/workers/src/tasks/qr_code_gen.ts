@@ -4,8 +4,7 @@ import { BILLET_TEMPLATE } from "../utils/emailTemplates";
 import { generateQRCode } from "../utils/generateQRCode";
 
 import dayjs from "dayjs";
-import { generateUrl } from "../utils/uploadFilesWorkers";
-import { S3 } from "@aws-sdk/client-s3";
+import { generateBase64Buffer, putToS3 } from "../utils/functionDivers";
 require("dayjs/locale/fr");
 dayjs.locale("fr");
 interface SendEmailPayload {
@@ -25,17 +24,6 @@ interface IPayloadQrCodeGen {
   placeName: string;
   startsAt: string;
   endsAt: string;
-}
-
-function generateBase64Buffer(data: string) {
-  const base64Data = Buffer.from(
-    data.replace(/^data:image\/\w+;base64,/, ""),
-    "base64"
-  );
-  const type = data.split(";")[0].split("/")[1];
-  const image_name = Date.now() + "-" + Math.floor(Math.random() * 1000);
-
-  return { base64Data, type, image_name };
 }
 
 export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
@@ -61,59 +49,26 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
       email: email,
     })
   );
-  const s3 = new S3({
-    endpoint: "https://cellar-c2.services.clever-cloud.com",
-    region: "EU",
-    credentials: {
-      accessKeyId: process.env.BUCKET_KEY!,
-      secretAccessKey: process.env.BUCKET_SECRET!,
-    },
-  });
+
   // Créer un flux de données à partir de la chaîne de caractères du QR Code
 
   // a "key" is the name of the file stored into our bucket
 
-  try {
-    const { base64Data, type, image_name } =
-      generateBase64Buffer(dataUrlQrCode);
-    let key = `Qr_Code_${ticketNumber}_${image_name}.${type}`;
+  const { base64Data, type, image_name } = generateBase64Buffer(dataUrlQrCode);
+  let key = `Qr_Code_${ticketNumber}_${image_name}.${type}`;
 
-    let urlS3QrCode = `https://cellar-c2.services.clever-cloud.com/${process.env.BUCKET_NAME}/${key}`;
+  let urlS3QrCode = `${process.env.BUCKET_HOST}/${process.env.BUCKET_NAME}/${key}`;
 
-    const s3Params = {
-      Bucket: process.env.BUCKET_NAME!,
-      Key: key,
-      Body: base64Data,
-      ACL: "public-read",
-      ContentEncoding: "base64", // required
-      ContentType: `image/${type}`, // required. Notice the back ticks
-    };
-    await s3.putObject(s3Params, (err: any, data: any) => {
-      if (err) {
-        console.log("err: ", err.message);
-      } else {
-        console.log("finalUrl S3: ", urlS3QrCode);
-      }
-    });
-    const { rows } = await withPgClient(pgClient =>
-      pgClient.query(
-        `update publ.registrations
+  await putToS3(key, base64Data, `image/${type}`);
+
+  const { rows } = await withPgClient(pgClient =>
+    pgClient.query(
+      `update publ.registrations
         set qr_code_url = $1
         where publ.registrations.id = $2;`,
-        [urlS3QrCode, registrationId]
-      )
-    );
-  } catch (error) {
-    console.log(
-      "🚀 ~ file: qr_code_gen.ts:70 ~ constqrCodeGen:Task= ~ error:",
-      error
-    );
-  }
-
-  // return {
-  //   url: url.url + process.env.BUCKET_NAME!,
-  //   fields: url.fields,
-  // };
+      [urlS3QrCode, registrationId]
+    )
+  );
 
   const sendEmailPayload: SendEmailPayload = {
     mailData: {
@@ -134,14 +89,14 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
         Place_Name: placeName,
         Address: "Lille",
         Detail: "blabla",
-        qrcode: dataUrlQrCode,
+        Qr_Code: urlS3QrCode,
         Cancel: "test",
         Current_Year: dayjs(startsAt).format("YYYY"),
       },
     },
   };
 
-  //addJob("sendEmail", { registrationId, sendEmailPayload });
+  addJob("sendEmail", { registrationId, sendEmailPayload });
   console.log("🚀 ~ file: qrCodeGen.ts:9 ~ constsayHi:Task= ~ qrcode:", qrCode);
   //!name && addJob("say_hi", { name: "stranger" }); //addJob permet de chainer des jobs : exécuter un job depuis un job en cours d'execution
 };
