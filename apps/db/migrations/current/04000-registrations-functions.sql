@@ -11,10 +11,11 @@ DECLARE
     ends_at timestamp;
     attendee_email text;
     reg_id uuid;
+    code_invit text;
  begin
 
-  select reg.id, ticket_number, att.firstname, att.lastname, att.email, evt.name, evt.slug, evt.place_name, evt.starts_at, evt.ends_at 
-  into reg_id, ticket_num, first_name, last_name, attendee_email, event_name, event_slug, place_name, starts_at, ends_at
+  select reg.id, reg.ticket_number, reg.sign_code, att.firstname, att.lastname, att.email, evt.name, evt.slug, evt.place_name, evt.starts_at, evt.ends_at 
+  into reg_id, ticket_num, code_invit, first_name, last_name, attendee_email, event_name, event_slug, place_name, starts_at, ends_at
   from publ.registrations reg 
   inner join publ.attendees att on att.id = reg.attendee_id 
   inner join publ.events evt on evt.id = reg.event_id 
@@ -32,7 +33,8 @@ DECLARE
           'slug',event_slug,
           'placeName',place_name,
           'startsAt',starts_at,
-          'endsAt',ends_at
+          'endsAt',ends_at,
+          'signCode',code_invit
         ));
 end;
 $$ language plpgsql strict volatile security definer;

@@ -4,7 +4,7 @@ import { BILLET_TEMPLATE } from "../utils/emailTemplates";
 import { generateQRCode } from "../utils/generateQRCode";
 
 import dayjs from "dayjs";
-import { generateBase64Buffer, putToS3 } from "../utils/functionDivers";
+import { generateBase64Buffer, putToS3 } from "../utils/sendToS3";
 require("dayjs/locale/fr");
 dayjs.locale("fr");
 interface SendEmailPayload {
@@ -24,6 +24,7 @@ interface IPayloadQrCodeGen {
   placeName: string;
   startsAt: string;
   endsAt: string;
+  signCode: string;
 }
 
 export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
@@ -40,13 +41,18 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
     placeName,
     startsAt,
     endsAt,
+    signCode,
   } = payload as IPayloadQrCodeGen;
   console.log("🚀 ~ file: qrCodeGen.ts:5 ~ payload:", payload);
   const { qrCode, dataUrlQrCode, qrCodeFile } = await generateQRCode(
     JSON.stringify({
       ticketNumber: ticketNumber,
-      eventName: eventName,
+      firstname: firstname,
+      lastname: lastname,
       email: email,
+      attendeeId: attendeeId,
+      eventId: eventId,
+      registrationId: registrationId,
     })
   );
 
@@ -90,6 +96,7 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
         Address: "Lille",
         Detail: "blabla",
         Qr_Code: urlS3QrCode,
+        Code_Invit: signCode,
         Cancel: "test",
         Current_Year: dayjs(startsAt).format("YYYY"),
       },
@@ -98,7 +105,6 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
 
   addJob("sendEmail", { registrationId, sendEmailPayload });
   console.log("🚀 ~ file: qrCodeGen.ts:9 ~ constsayHi:Task= ~ qrcode:", qrCode);
-  //!name && addJob("say_hi", { name: "stranger" }); //addJob permet de chainer des jobs : exécuter un job depuis un job en cours d'execution
 };
 
 // avec helpers

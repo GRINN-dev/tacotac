@@ -38,6 +38,4 @@ export const putToS3 = async (key, body, contentType) => {
       console.log("err: ", err.message);
     }
   });
-
-  return { errorMessage };
 };
