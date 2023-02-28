@@ -1452,6 +1452,7 @@ export type Mutation = {
   generatePresignedPost?: Maybe<GeneratePresignedPostPayload>;
   login?: Maybe<LoginPayload>;
   register?: Maybe<RegisterPayload>;
+  sendEmailConfirmationById?: Maybe<SendEmailConfirmationByIdPayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
@@ -1686,6 +1687,12 @@ export type MutationLoginArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterArgs = {
   input: RegisterInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationSendEmailConfirmationByIdArgs = {
+  input: SendEmailConfirmationByIdInput;
 };
 
 
@@ -2475,9 +2482,10 @@ export type Registration = Node & {
   eventId?: Maybe<Scalars['UUID']>;
   hearAboutList?: Maybe<Array<Maybe<Scalars['String']>>>;
   id: Scalars['UUID'];
+  isEmailSent?: Maybe<Scalars['Boolean']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
-  qrCode?: Maybe<Scalars['String']>;
+  qrCodeUrl?: Maybe<Scalars['String']>;
   signCode?: Maybe<Scalars['String']>;
   ticketNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
@@ -2523,7 +2531,8 @@ export type RegistrationInput = {
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
-  qrCode?: InputMaybe<Scalars['String']>;
+  isEmailSent?: InputMaybe<Scalars['Boolean']>;
+  qrCodeUrl?: InputMaybe<Scalars['String']>;
   signCode?: InputMaybe<Scalars['String']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
@@ -2536,7 +2545,8 @@ export type RegistrationPatch = {
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
-  qrCode?: InputMaybe<Scalars['String']>;
+  isEmailSent?: InputMaybe<Scalars['Boolean']>;
+  qrCodeUrl?: InputMaybe<Scalars['String']>;
   signCode?: InputMaybe<Scalars['String']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
@@ -2578,6 +2588,29 @@ export enum RegistrationsOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
+
+/** All input for the `sendEmailConfirmationById` mutation. */
+export type SendEmailConfirmationByIdInput = {
+  attId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  evtId: Scalars['UUID'];
+};
+
+/** The output of our `sendEmailConfirmationById` mutation. */
+export type SendEmailConfirmationByIdPayload = {
+  __typename?: 'SendEmailConfirmationByIdPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {

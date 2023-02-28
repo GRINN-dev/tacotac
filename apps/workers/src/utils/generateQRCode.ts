@@ -49,8 +49,8 @@ const generatePdfFilePayload: IGeneratePdfFilesPayload = {
 export const generateQRCode = async text => {
   try {
     // a delete quand test fini
-    const filePath = path.join(__dirname, "Machin.png");
-    const test = await QRCode.toFile(filePath, text, {
+    const filePath = path.join(__dirname, "Qr-Code.png");
+    const qrCodeFile = await QRCode.toFile(filePath, text, {
       type: "png",
       errorCorrectionLevel: "M",
       margin: 1,
@@ -64,9 +64,10 @@ export const generateQRCode = async text => {
     });
     //a garder
     const qrCode = await QRCode.toString(text);
+    const dataUrlQrCode = await QRCode.toDataURL(text);
 
     // Renvoyer le résultat si nécessaire
-    return qrCode;
+    return { qrCode, dataUrlQrCode, qrCodeFile };
   } catch (error) {
     console.error("Erreur lors de la génération du QR code : ", error);
     throw error;

@@ -53,36 +53,6 @@ create trigger _500_update_registration
 comment on function priv.attendee__update_registration() is E'Ensures that every create attendees insert registration_id from registration';
 
 
---transformer cette fonction en mutation pour envoi via iframe
-create function priv.registration_insert_generate_QR_code() returns trigger as $$
-
-begin
- 
-
-    perform graphile_worker.add_job('qrCodeGen', json_build_object(
-          'registrationId',NEW.id,
-          'ticketNumber',NEW.ticket_number,
-          'eventId', NEW.event_id,
-          'attendeeId', NEW.attendee_id,
-          'email',(select email from publ.attendees att where att.id = NEW.attendee_id),
-          'firstname',(select firstname from publ.attendees att where att.id = NEW.attendee_id),
-          'lastname',(select lastname from publ.attendees att where att.id = NEW.attendee_id),
-          'eventName',(select name from publ.events evt where evt.id = NEW.event_id),
-          'slug',(select slug from publ.events evt where evt.id = NEW.event_id),
-          'placeName',(select place_name from publ.events evt where evt.id = NEW.event_id),
-          'startsAt',(select starts_at from publ.events evt where evt.id = NEW.event_id),
-          'endsAt',(select ends_at from publ.events evt where evt.id = NEW.event_id)
-        ));
-
-    return new;
-end;
-$$ language plpgsql volatile security definer set search_path to pg_catalog, public, pg_temp;
-
-create trigger _500_generate_QR_code
-  after update on publ.registrations
-  for each row
-  execute procedure priv.registration_insert_generate_QR_code();
-comment on function priv.registration_insert_generate_QR_code() is E'Ensures that every  insert registration generate a qr_code';
 
 -- fixtures
   -- fixtures go here

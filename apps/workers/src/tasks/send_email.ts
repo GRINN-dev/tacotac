@@ -9,22 +9,40 @@ export interface SendEmailPayload {
   mailData: MailDataRequired;
 }
 
-export const sendEmail: Task = async payload => {
-  const { mailData } = payload as SendEmailPayload;
+export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
+  console.log(
+    "🚀 ~ file: send_email.ts:13 ~ constsendEmail:Task= ~ payload:",
+    payload
+  );
+  const { sendEmailPayload, registrationId } = payload as {
+    registrationId: string;
+    sendEmailPayload: SendEmailPayload;
+  };
   await sgMail
     .send({
-      ...mailData,
+      ...sendEmailPayload.mailData,
       mailSettings: { sandboxMode: { enable: false } },
     })
-    .then((response: any) => {
+    .then(async (response: any) => {
       console.log(response[0].statusCode);
       console.log(response[0].headers);
       console.log("Email sent successfully");
+      const { rows } = await withPgClient(pgClient =>
+        pgClient.query(
+          `update publ.registrations
+          set is_email_sent = true
+          where publ.registrations.id = $1;`,
+          [registrationId]
+        )
+      );
     })
     .catch((error: any) => {
       console.error(error);
     });
   if (isDev) {
-    console.log(mailData.subject, mailData.dynamicTemplateData, mailData.to);
+    console.log(
+      sendEmailPayload.mailData.dynamicTemplateData,
+      sendEmailPayload.mailData.to
+    );
   }
 };
