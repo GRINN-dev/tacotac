@@ -4,7 +4,8 @@ import { BILLET_TEMPLATE } from "../utils/emailTemplates";
 import { generateQRCode } from "../utils/generateQRCode";
 
 import dayjs from "dayjs";
-import { generateBase64Buffer, putToS3 } from "../utils/sendToS3";
+import { generateBase64BufferForQrCode, putToS3 } from "../utils/sendToS3";
+import { generatePdf } from "../utils/generatePdf";
 require("dayjs/locale/fr");
 dayjs.locale("fr");
 interface SendEmailPayload {
@@ -44,7 +45,7 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
     signCode,
   } = payload as IPayloadQrCodeGen;
   console.log("🚀 ~ file: qrCodeGen.ts:5 ~ payload:", payload);
-  const { qrCode, dataUrlQrCode, qrCodeFile } = await generateQRCode(
+  const { dataUrlQrCode } = await generateQRCode(
     JSON.stringify({
       ticketNumber: ticketNumber,
       firstname: firstname,
@@ -56,23 +57,36 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
     })
   );
 
-  // Créer un flux de données à partir de la chaîne de caractères du QR Code
+  let qrCodeKey;
+  let urlS3QrCode;
+  let pdfKey;
+  let urlS3Pdf;
+  try {
+    const buffer = await generatePdf("test");
+    const { base64Data, type, image_name } =
+      await generateBase64BufferForQrCode(dataUrlQrCode);
 
-  // a "key" is the name of the file stored into our bucket
+    qrCodeKey = `Qr_Code_${ticketNumber}_${image_name}.${type}`;
+    urlS3QrCode = `${process.env.BUCKET_HOST}/${process.env.BUCKET_NAME}/${qrCodeKey}`;
 
-  const { base64Data, type, image_name } = generateBase64Buffer(dataUrlQrCode);
-  let key = `Qr_Code_${ticketNumber}_${image_name}.${type}`;
+    pdfKey = `PDF_${ticketNumber}.pdf`;
+    urlS3Pdf = `${process.env.BUCKET_HOST}/${process.env.BUCKET_NAME}/${pdfKey}`;
 
-  let urlS3QrCode = `${process.env.BUCKET_HOST}/${process.env.BUCKET_NAME}/${key}`;
-
-  await putToS3(key, base64Data, `image/${type}`);
+    await putToS3(qrCodeKey, base64Data, `image/${type}`, "base64");
+    await putToS3(pdfKey, buffer, "application/pdf", "identity");
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: qr_code_gen.ts:85 ~ constqrCodeGen:Task= ~ error:",
+      error
+    );
+  }
 
   const { rows } = await withPgClient(pgClient =>
     pgClient.query(
       `update publ.registrations
-        set qr_code_url = $1
-        where publ.registrations.id = $2;`,
-      [urlS3QrCode, registrationId]
+        set qr_code_url = $1, pdf_link=$2
+        where publ.registrations.id = $3;`,
+      [urlS3QrCode, urlS3Pdf, registrationId]
     )
   );
 
@@ -97,6 +111,7 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
         Detail: "blabla",
         Qr_Code: urlS3QrCode,
         Code_Invit: signCode,
+        Pdf_Link: urlS3Pdf,
         Cancel: "test",
         Current_Year: dayjs(startsAt).format("YYYY"),
       },
@@ -104,7 +119,6 @@ export const qrCodeGen: Task = async (payload, { addJob, withPgClient }) => {
   };
 
   addJob("sendEmail", { registrationId, sendEmailPayload });
-  console.log("🚀 ~ file: qrCodeGen.ts:9 ~ constsayHi:Task= ~ qrcode:", qrCode);
 };
 
 // avec helpers

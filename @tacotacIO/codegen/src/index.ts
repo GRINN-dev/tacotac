@@ -2485,6 +2485,7 @@ export type Registration = Node & {
   isEmailSent?: Maybe<Scalars['Boolean']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  pdfLink?: Maybe<Scalars['String']>;
   qrCodeUrl?: Maybe<Scalars['String']>;
   signCode?: Maybe<Scalars['String']>;
   ticketNumber?: Maybe<Scalars['String']>;
@@ -2532,6 +2533,7 @@ export type RegistrationInput = {
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
   isEmailSent?: InputMaybe<Scalars['Boolean']>;
+  pdfLink?: InputMaybe<Scalars['String']>;
   qrCodeUrl?: InputMaybe<Scalars['String']>;
   signCode?: InputMaybe<Scalars['String']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
@@ -2546,6 +2548,7 @@ export type RegistrationPatch = {
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
   isEmailSent?: InputMaybe<Scalars['Boolean']>;
+  pdfLink?: InputMaybe<Scalars['String']>;
   qrCodeUrl?: InputMaybe<Scalars['String']>;
   signCode?: InputMaybe<Scalars['String']>;
   ticketNumber?: InputMaybe<Scalars['String']>;

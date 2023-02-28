@@ -1437,6 +1437,7 @@ type Registration implements Node {
   ticketNumber: String
   isEmailSent: Boolean
   qrCodeUrl: String
+  pdfLink: String
   signCode: String
   hearAboutList: [String]
   createdAt: Datetime!
@@ -2598,6 +2599,7 @@ input RegistrationInput {
   ticketNumber: String
   isEmailSent: Boolean
   qrCodeUrl: String
+  pdfLink: String
   signCode: String
   hearAboutList: [String]
   createdAt: Datetime
@@ -3202,6 +3204,7 @@ input RegistrationPatch {
   ticketNumber: String
   isEmailSent: Boolean
   qrCodeUrl: String
+  pdfLink: String
   signCode: String
   hearAboutList: [String]
   createdAt: Datetime

@@ -10,6 +10,7 @@ create table publ.registrations (
     ticket_number text,
     is_email_sent boolean,
     qr_code_url text,
+    pdf_link text,
     sign_code text,
     hear_about_list text[] default '{"par un mécène", "par une association lauréate", "par le bouche à oreille", "autre", "par Obole, co-organisateur de l''événement", "par la Fondation de France, co-organisateur de l''événement"}',
     created_at timestamptz not null default now(),
