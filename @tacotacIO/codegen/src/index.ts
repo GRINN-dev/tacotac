@@ -3300,6 +3300,13 @@ export type DeleteEventBrandingMutationVariables = Exact<{
 
 export type DeleteEventBrandingMutation = { __typename?: 'Mutation', deleteEventBranding?: { __typename?: 'DeleteEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
 
+export type GeneratePresignedPostMutationVariables = Exact<{
+  key: Scalars['String'];
+}>;
+
+
+export type GeneratePresignedPostMutation = { __typename?: 'Mutation', generatePresignedPost?: { __typename?: 'GeneratePresignedPostPayload', fields?: any | null, url?: string | null } | null };
+
 export type CreateOrganizationMutationVariables = Exact<{
   input: CreateOrganizationInput;
 }>;
@@ -3558,6 +3565,14 @@ export const DeleteEventBrandingDocument = gql`
   }
 }
     ${EventBrandingFragmentFragmentDoc}`;
+export const GeneratePresignedPostDocument = gql`
+    mutation GeneratePresignedPost($key: String!) {
+  generatePresignedPost(input: {key: $key}) {
+    fields
+    url
+  }
+}
+    `;
 export const CreateOrganizationDocument = gql`
     mutation CreateOrganization($input: CreateOrganizationInput!) {
   createOrganization(input: $input) {
@@ -3794,6 +3809,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeleteEventBranding(variables: DeleteEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteEventBrandingMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteEventBrandingMutation>(DeleteEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteEventBranding', 'mutation');
+    },
+    GeneratePresignedPost(variables: GeneratePresignedPostMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GeneratePresignedPostMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GeneratePresignedPostMutation>(GeneratePresignedPostDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GeneratePresignedPost', 'mutation');
     },
     CreateOrganization(variables: CreateOrganizationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateOrganizationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateOrganizationMutation>(CreateOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateOrganization', 'mutation');

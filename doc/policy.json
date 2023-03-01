@@ -19,8 +19,8 @@
       ],
       "Effect": "Allow",
       "Resource": [
-        "arn:aws:s3:::dev-izicredit",
-        "arn:aws:s3:::dev-izicredit/*"
+        "arn:aws:s3:::kaypi",
+        "arn:aws:s3:::kaypi/*"
       ],
       "Principal": "*"
     }

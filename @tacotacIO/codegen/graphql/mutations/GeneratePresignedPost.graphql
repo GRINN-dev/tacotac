@@ -1,0 +1,6 @@
+mutation GeneratePresignedPost($key: String!) {
+  generatePresignedPost(input: { key: $key }) {
+    fields
+    url
+  }
+}
