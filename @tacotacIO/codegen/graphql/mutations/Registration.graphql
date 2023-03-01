@@ -1,0 +1,8 @@
+mutation CreateRegistration($registration: RegistrationInput!) {
+  createRegistration(input: { registration: $registration }) {
+    clientMutationId
+    registration {
+      id
+    }
+  }
+}

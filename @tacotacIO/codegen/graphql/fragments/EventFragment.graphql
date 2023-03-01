@@ -15,9 +15,4 @@ fragment MyEvent on Event {
   updatedAt
   placeName
   organizationId
-  attendees {
-    nodes {
-      ...MyAttendee
-    }
-  }
 }

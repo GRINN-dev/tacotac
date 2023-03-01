@@ -5,6 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { CivilityStatus, CreateAttendeeInput, EventStatus, GetEventByIdQuery } from "@/../../@tacotacIO/codegen/dist";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -25,7 +27,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   const { register, handleSubmit, formState, control } = useForm<CreateAttendeeInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    data.attendee.eventId = id;
+    //data.attendee.eventId = id;
+    const { createRegistration } = await sdk().CreateRegistration({ registration: { eventId: id } });
+    data.attendee.registrationId = createRegistration?.registration?.id;
     await sdk()
       .CreateAttendee({
         input: data,
@@ -35,6 +39,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
         setIsLoading(false);
         throw error;
       });
+
     setIsLoading(false);
     startTransition(() => {
       router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
