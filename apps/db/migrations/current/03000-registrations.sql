@@ -8,7 +8,7 @@ create table publ.registrations (
     event_id uuid  references publ.events(id),
     attendee_id uuid  references publ.attendees(id),
     ticket_number text,
-    is_email_sent boolean,
+    is_email_sent boolean default false,
     qr_code_url text,
     pdf_link text,
     sign_code text,

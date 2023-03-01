@@ -70,6 +70,20 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.description?.message}</p>
         )}
       </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="city">Capacité</Label>
+        <Input
+          type="number"
+          id="capacity"
+          placeholder="Ville"
+          {...register("event.capacity", {
+            required: "Une capacité est requise",
+          })}
+        />
+        {formState.errors?.event?.capacity && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.capacity?.message}</p>
+        )}
+      </div>
       <Separator className="my-8" />
 
       <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 border-b-slate-200 first:mt-0 dark:border-b-slate-700">
@@ -77,7 +91,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
       </h2>
 
       <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="startsAt">Date</Label>
+        <Label htmlFor="startsAt">Début</Label>
         <Input
           type="datetime-local"
           id="startsAt"
@@ -89,6 +103,22 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         {formState.errors?.event?.startsAt && (
           <p className="text-sm text-red-800 dark:text-red-300">
             {formState.errors?.event?.startsAt?.message as string}
+          </p>
+        )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="endsAt">Fin</Label>
+        <Input
+          type="datetime-local"
+          id="endsAt"
+          placeholder="Date"
+          {...register("event.endsAt", {
+            required: "Une date pour l'organisation est requise",
+          })}
+        />
+        {formState.errors?.event?.endsAt && (
+          <p className="text-sm text-red-800 dark:text-red-300">
+            {formState.errors?.event?.endsAt?.message as string}
           </p>
         )}
       </div>
