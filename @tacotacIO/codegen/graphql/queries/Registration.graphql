@@ -1,28 +1,29 @@
 query GetRegistrationByEventSlug($eventSlug: String) {
   registrationByEventSlug(eventSlug: $eventSlug) {
-    nodes {
-      attendee {
-        id
+    eventId
+    attendees {
+      nodes {
         firstname
-        lastname
         email
-        status
+        id
         panelNumber
+        phoneNumber
+        registrationId
+        status
+        zipCode
+        isInscriptor
+        hearAbout
+        civility
+        lastname
+        isVip
       }
-      id
-      eventId
-      isEmailSent
-      qrCodeUrl
-      ticketNumber
-      updatedAt
-      pdfLink
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+      totalCount
     }
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
   }
 }

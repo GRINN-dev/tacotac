@@ -41,10 +41,6 @@ create table publ.registrations (
    using (true)
    with check(true);
 
-
-  --alter table publ.attendees add column registration_id uuid unique references publ.registrations(id) on delete cascade;
-  --create index on publ.attendees(registration_id);
-
   /*
   END TABLE: publ.registrations
 */ 

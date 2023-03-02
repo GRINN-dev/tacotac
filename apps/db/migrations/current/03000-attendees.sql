@@ -51,7 +51,6 @@ create table publ.attendees (
     updated_at timestamptz not null default now()
 );
 
---alter table publ.registrations add column attendee_id  uuid  references publ.attendees(id) on delete cascade;
 -- indexes
   create index on publ.attendees(created_at);
   create index on publ.attendees(updated_at);
@@ -67,7 +66,7 @@ create table publ.attendees (
   grant select on publ.attendees to :DATABASE_VISITOR;
   grant insert(registration_id, civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status, is_inscriptor, is_vip) on publ.attendees to :DATABASE_VISITOR;
   grant update(civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) on publ.attendees to :DATABASE_VISITOR;
-    grant delete on publ.attendees to :DATABASE_VISITOR;
+  grant delete on publ.attendees to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
   before insert or update on publ.attendees

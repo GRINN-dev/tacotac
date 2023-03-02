@@ -2258,6 +2258,12 @@ type Mutation {
     """
     input: RegisterInput!
   ): RegisterPayload
+  sendEmailConfirmationByRegistrationId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SendEmailConfirmationByRegistrationIdInput!
+  ): SendEmailConfirmationByRegistrationIdPayload
   generatePresignedPost(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -3825,6 +3831,30 @@ input RegisterInput {
   lastname: String
   password: String
   avatarUrl: String
+}
+
+"""The output of our `sendEmailConfirmationByRegistrationId` mutation."""
+type SendEmailConfirmationByRegistrationIdPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `sendEmailConfirmationByRegistrationId` mutation."""
+input SendEmailConfirmationByRegistrationIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  regId: UUID!
 }
 
 type GeneratePresignedPostPayload {

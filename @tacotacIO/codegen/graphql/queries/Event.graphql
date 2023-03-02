@@ -54,8 +54,10 @@ query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
     }
     registrations {
       nodes {
-        attendee {
-          ...MyAttendee
+        attendees {
+          nodes {
+            ...MyAttendee
+          }
         }
       }
       pageInfo {

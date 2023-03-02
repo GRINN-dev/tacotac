@@ -6,3 +6,11 @@ mutation CreateRegistration($registration: RegistrationInput!) {
     }
   }
 }
+
+mutation SendEmailConfirmationByRegistrationId($registrationId: UUID!) {
+  sendEmailConfirmationByRegistrationId(
+    input: { regId: $registrationId }
+  ) {
+    clientMutationId
+  }
+}
