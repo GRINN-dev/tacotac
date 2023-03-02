@@ -2,7 +2,14 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CivilityStatus, CreateAttendeeInput, EventStatus, GetEventByIdQuery } from "@/../../@tacotacIO/codegen/dist";
+import {
+  Attendee,
+  CivilityStatus,
+  CreateAttendeeInput,
+  EventStatus,
+  GetEventByIdQuery,
+  MyAttendeeFragment,
+} from "@/../../@tacotacIO/codegen/dist";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -35,14 +42,11 @@ export const CreateOtherAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
             firstname: data?.attendee?.firstname,
             lastname: data?.attendee?.lastname,
             email: data?.attendee?.email,
-            // zipCode: data?.attendee?.zipCode,
-            // hearAbout: data?.attendee?.hearAbout,
             eventId: id,
             zipCode: "",
             hearAbout: "",
             isInscriptor: false,
             isFundraisingGenerosityOk: true,
-            // isInscriptor: data?.attendee?.isInscriptor,
             isVip: data?.attendee?.isVip,
           },
         },
@@ -52,6 +56,7 @@ export const CreateOtherAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
         setIsLoading(false);
         throw error;
       });
+
     setIsLoading(false);
     startTransition(() => {
       router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
@@ -60,31 +65,6 @@ export const CreateOtherAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   return (
     <div className="flex flex-col">
       <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-        {/* <div className="mt-4 grid w-full items-center gap-1.5">
-      <Controller
-        name={"attendee.status"}
-        control={control}
-        render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
-          <>
-            <Select onValueChange={onChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={EventStatus.Idle}>En attente</SelectItem>
-                  <SelectItem value={EventStatus.Confirmed}>Confirmé</SelectItem>
-                  <SelectItem value={EventStatus.Cancelled}>Annulé</SelectItem>
-                  <SelectItem value={EventStatus.TicketScan}>Billet scanné</SelectItem>
-                  <SelectItem value={EventStatus.PanelScan}>Panneau scanné</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
-          </>
-        )}
-      />
-    </div> */}
         <div className="mt-4 grid w-full items-center gap-1.5">
           <Controller
             name={"attendee.civility"}
@@ -165,20 +145,7 @@ export const CreateOtherAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
             <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.phoneNumber?.message}</p>
           )}
         </div>
-        {/* <div className="mt-4 grid w-full items-center gap-1.5">
-          <Label htmlFor="zipCode">Code postal</Label>
-          <Input
-            type="number"
-            id="zipCode"
-            placeholder="44000"
-            {...register("attendee.zipCode", {
-              required: "Un code postal pour le participant est requis",
-            })}
-          />
-          {formState.errors?.attendee?.zipCode && (
-            <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.zipCode?.message}</p>
-          )}
-        </div> */}
+
         <div className="mt-4 grid w-full items-center gap-1.5">
           <Controller
             name={"attendee.hearAbout"}

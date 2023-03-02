@@ -2,7 +2,15 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CivilityStatus, CreateAttendeeInput, EventStatus, GetEventByIdQuery } from "@/../../@tacotacIO/codegen/dist";
+import {
+  Attendee,
+  AttendeeInput,
+  CivilityStatus,
+  CreateAttendeeInput,
+  EventStatus,
+  GetEventByIdQuery,
+  MyAttendeeFragment,
+} from "@/../../@tacotacIO/codegen/dist";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -17,6 +25,7 @@ interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 
 export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [attendeeData, setAttendeeData] = useState<AttendeeInput[]>([]);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
@@ -51,6 +60,11 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
         throw error;
       });
     setIsLoading(false);
+    const result = { ...data };
+    const newAttendeeData = result.attendee;
+    setAttendeeData((prevState) => prevState.concat(newAttendeeData));
+    //créer un contexte sûrement ici pour garder en mémoire tous les attendees
+    console.log(newAttendeeData);
     startTransition(() => {
       router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
     });
