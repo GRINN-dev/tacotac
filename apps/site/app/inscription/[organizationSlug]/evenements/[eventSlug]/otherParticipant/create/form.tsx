@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 
-export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
+export const CreateOtherAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -35,12 +35,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
             firstname: data?.attendee?.firstname,
             lastname: data?.attendee?.lastname,
             email: data?.attendee?.email,
-            phoneNumber: data?.attendee?.phoneNumber,
-            zipCode: data?.attendee?.zipCode,
-            hearAbout: data?.attendee?.hearAbout,
+            // zipCode: data?.attendee?.zipCode,
+            // hearAbout: data?.attendee?.hearAbout,
             eventId: id,
-            isFundraisingGenerosityOk: data?.attendee?.isFundraisingGenerosityOk,
-            isInscriptor: data?.attendee?.isInscriptor,
+            zipCode: "",
+            hearAbout: "",
+            isInscriptor: false,
+            isFundraisingGenerosityOk: true,
+            // isInscriptor: data?.attendee?.isInscriptor,
             isVip: data?.attendee?.isVip,
           },
         },
@@ -163,7 +165,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
             <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.phoneNumber?.message}</p>
           )}
         </div>
-        <div className="mt-4 grid w-full items-center gap-1.5">
+        {/* <div className="mt-4 grid w-full items-center gap-1.5">
           <Label htmlFor="zipCode">Code postal</Label>
           <Input
             type="number"
@@ -176,7 +178,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
           {formState.errors?.attendee?.zipCode && (
             <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.zipCode?.message}</p>
           )}
-        </div>
+        </div> */}
         <div className="mt-4 grid w-full items-center gap-1.5">
           <Controller
             name={"attendee.hearAbout"}
@@ -200,7 +202,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
             )}
           />
         </div>
-        <div className="mt-4 flex w-full items-center gap-1.5">
+        {/* <div className="mt-4 flex w-full items-center gap-1.5">
           <Input
             type="checkbox"
             id="isFundraisingGenerosityOk"
@@ -214,8 +216,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
               "J'ai bien compris qu'il s'agit d'une soirée de levée de dons et que les associations comptent sur la générosité des participants."
             }
           </Label>
-        </div>
-        <div className="mt-4 flex w-full items-center gap-1.5">
+        </div> */}
+        {/* <div className="mt-4 flex w-full items-center gap-1.5">
           <Input type="checkbox" id="isInscriptor" className="w-4 h-4 " {...register("attendee.isInscriptor", {})} />
           {formState.errors?.attendee?.isInscriptor && (
             <p className="text-sm text-red-800 dark:text-red-300">
@@ -223,7 +225,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
             </p>
           )}
           <Label htmlFor="isInscriptor">{"Inscripteur"}</Label>
-        </div>
+        </div> */}
         <div className="mt-4 flex w-full items-center gap-1.5">
           <Input type="checkbox" id="isVip" className="w-4 h-4 " {...register("attendee.isVip", {})} />
           {formState.errors?.attendee?.isVip && (
@@ -252,12 +254,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
         )}
       </form>
       <div className="flex flex-col w-4/12 mt-4">
-        <button
-          type="submit"
-          className={buttonVariants({ size: "lg" })}
-          onClick={() => router.push(`inscription/${slug}/evenements/${slug}/otherParticipant/create`)}
-          //le deuxième slug renvoie à eventSlug donc trouver orgaSlug
-        >
+        <button type="submit" className={buttonVariants({ size: "lg" })}>
           Ajouter un participant
         </button>
       </div>
