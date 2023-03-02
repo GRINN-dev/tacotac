@@ -18,36 +18,38 @@ $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 grant execute on function publ.registration_by_event_slug( text) to :DATABASE_VISITOR;
 
-create or replace function publ.create_registration_by_event_id_and_attendee_id(event_id uuid, attendee_id uuid) returns void as $$
+create or replace function publ.register_attendees(event_id uuid, attendees publ.attendees[]) returns publ.registrations as $$
 DECLARE 
-  code text;
-  ticket_num TEXT;
-  new_registration_id UUID;
+  v_registration publ.registrations;
+  v_event publ.events;
+  v_iter int;
+  
 begin
 
-code :=  substring(uuid_generate_v4()::text, 1, 6);
-ticket_num := 'TICKET_' || md5(random()::text || clock_timestamp()::text);
+    -- select l'event dans v_event
+  select * from publ.events where id = event_id into v_event;
 
-    if exists (select booking_starts_at, booking_ends_at from publ.events where id=event_id and  (booking_starts_at <= NOW() and booking_ends_at >= now())) then
-    
-        insert into publ.registrations(event_id) values (event_id) on conflict do nothing returning id INTO new_registration_id;
+  -- check des registration date de l'event
+  if    v_event.booking_starts_at <= NOW() and v_event.booking_ends_at >= now() then
+      raise exception 'Registration not started yet' using errcode = 'RGNST';
+  end if;
 
-        update publ.attendees attds set registration_id = new_registration_id where attds.id=attendee_id;
+  -- creation de la registration et stockage du resultat dans la variable
+    insert into publ.registrations (event_id ) values (event_id) returning * into v_registration;
 
---certainement a delete check
-      if exists (select is_inscriptor from publ.attendees att where att.id=attendee_id ) then
-          update publ.registrations regs
-          set sign_code = code, ticket_number = ticket_num
-          where regs.id in (select registration_id from publ.attendees atts where atts.id=attendee_id );
-      end if;
-      
-    end if ;
-     
-  return;
+
+  -- creation des attendees avec une boucle for, le premier attendee créé (le premier du tableau) est l'inscripteur
+    for v_iter in 1..array_length(attendees, 1) loop
+        insert into publ.attendees (civility, hear_about, zip_code, is_fundraising_generosity_ok, status, registration_id, firstname, lastname, email, phone_number, is_inscriptor, ticket_number, sign_code)
+        values (attendees[v_iter].civility, attendees[v_iter].hear_about ,attendees[v_iter].zip_code,attendees[v_iter].is_fundraising_generosity_ok ,attendees[v_iter].status, v_registration.id, attendees[v_iter].firstname, attendees[v_iter].lastname, attendees[v_iter].email, attendees[v_iter].phone_number, v_iter = 1,'TICKET_' || md5(random()::text || clock_timestamp()::text),substring(uuid_generate_v4()::text, 1, 6));
+    end loop;
+  
+  return v_registration;
 end;
-$$ language plpgsql VOLATILE SECURITY DEFINER SET search_path TO pg_catalog, public, pg_temp;
-
-grant execute on function publ.create_registration_by_event_id_and_attendee_id( uuid, uuid) to :DATABASE_VISITOR;
+$$ language plpgsql VOLATILE SECURITY DEFINER
+;
+comment on function register_attendees(event_id uuid, attendees publ.attendees[]) is E'@arg1variant patch';
+grant execute on function publ.register_attendees(uuid, publ.attendees[]) to :DATABASE_VISITOR;
 
 
 

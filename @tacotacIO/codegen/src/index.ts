@@ -40,6 +40,7 @@ export type Attendee = Node & {
   firstname: Scalars['String'];
   hearAbout: Scalars['String'];
   id: Scalars['UUID'];
+  isEmailSent?: Maybe<Scalars['Boolean']>;
   isFundraisingGenerosityOk: Scalars['Boolean'];
   isInscriptor?: Maybe<Scalars['Boolean']>;
   isNewsEventEmail?: Maybe<Scalars['Boolean']>;
@@ -50,11 +51,15 @@ export type Attendee = Node & {
   nodeId: Scalars['ID'];
   notes?: Maybe<Scalars['String']>;
   panelNumber?: Maybe<Scalars['Int']>;
+  pdfLink?: Maybe<Scalars['String']>;
   phoneNumber?: Maybe<Scalars['String']>;
+  qrCodeUrl?: Maybe<Scalars['String']>;
   /** Reads a single `Registration` that is related to this `Attendee`. */
   registration?: Maybe<Registration>;
   registrationId?: Maybe<Scalars['UUID']>;
+  signCode?: Maybe<Scalars['String']>;
   status: EventStatus;
+  ticketNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
   zipCode: Scalars['String'];
 };
@@ -120,6 +125,7 @@ export type AttendeeInput = {
   firstname: Scalars['String'];
   hearAbout: Scalars['String'];
   id?: InputMaybe<Scalars['UUID']>;
+  isEmailSent?: InputMaybe<Scalars['Boolean']>;
   isFundraisingGenerosityOk: Scalars['Boolean'];
   isInscriptor?: InputMaybe<Scalars['Boolean']>;
   isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
@@ -128,9 +134,13 @@ export type AttendeeInput = {
   lastname: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
+  pdfLink?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
+  qrCodeUrl?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
+  signCode?: InputMaybe<Scalars['String']>;
   status: EventStatus;
+  ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   zipCode: Scalars['String'];
 };
@@ -143,6 +153,7 @@ export type AttendeePatch = {
   firstname?: InputMaybe<Scalars['String']>;
   hearAbout?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
+  isEmailSent?: InputMaybe<Scalars['Boolean']>;
   isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
   isInscriptor?: InputMaybe<Scalars['Boolean']>;
   isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
@@ -151,9 +162,13 @@ export type AttendeePatch = {
   lastname?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
+  pdfLink?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
+  qrCodeUrl?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
+  signCode?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<EventStatus>;
+  ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -437,29 +452,6 @@ export type CreateOrganizationPayload = {
 /** The output of our create `Organization` mutation. */
 export type CreateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
-};
-
-/** All input for the `createRegistrationByEventIdAndAttendeeId` mutation. */
-export type CreateRegistrationByEventIdAndAttendeeIdInput = {
-  attendeeId?: InputMaybe<Scalars['UUID']>;
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
-};
-
-/** The output of our `createRegistrationByEventIdAndAttendeeId` mutation. */
-export type CreateRegistrationByEventIdAndAttendeeIdPayload = {
-  __typename?: 'CreateRegistrationByEventIdAndAttendeeIdPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
 };
 
 /** All input for the create `Registration` mutation. */
@@ -1413,7 +1405,6 @@ export type Mutation = {
   createOrganizationMembership?: Maybe<CreateOrganizationMembershipPayload>;
   /** Creates a single `Registration`. */
   createRegistration?: Maybe<CreateRegistrationPayload>;
-  createRegistrationByEventIdAndAttendeeId?: Maybe<CreateRegistrationByEventIdAndAttendeeIdPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
   /** Deletes a single `Attendee` using a unique key. */
@@ -1462,6 +1453,7 @@ export type Mutation = {
   generatePresignedPost?: Maybe<GeneratePresignedPostPayload>;
   login?: Maybe<LoginPayload>;
   register?: Maybe<RegisterPayload>;
+  registerAttendees?: Maybe<RegisterAttendeesPayload>;
   sendEmailConfirmationByRegistrationId?: Maybe<SendEmailConfirmationByRegistrationIdPayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
@@ -1541,12 +1533,6 @@ export type MutationCreateOrganizationMembershipArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateRegistrationArgs = {
   input: CreateRegistrationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateRegistrationByEventIdAndAttendeeIdArgs = {
-  input: CreateRegistrationByEventIdAndAttendeeIdInput;
 };
 
 
@@ -1703,6 +1689,12 @@ export type MutationLoginArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterArgs = {
   input: RegisterInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRegisterAttendeesArgs = {
+  input: RegisterAttendeesInput;
 };
 
 
@@ -2469,6 +2461,40 @@ export type QueryUsersArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
+/** All input for the `registerAttendees` mutation. */
+export type RegisterAttendeesInput = {
+  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `registerAttendees` mutation. */
+export type RegisterAttendeesPayload = {
+  __typename?: 'RegisterAttendeesPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `Registration`. */
+  event?: Maybe<Event>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
+};
+
+
+/** The output of our `registerAttendees` mutation. */
+export type RegisterAttendeesPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
 /** All input for the `register` mutation. */
 export type RegisterInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
@@ -2506,13 +2532,8 @@ export type Registration = Node & {
   eventId?: Maybe<Scalars['UUID']>;
   hearAboutList?: Maybe<Array<Maybe<Scalars['String']>>>;
   id: Scalars['UUID'];
-  isEmailSent?: Maybe<Scalars['Boolean']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
-  pdfLink?: Maybe<Scalars['String']>;
-  qrCodeUrl?: Maybe<Scalars['String']>;
-  signCode?: Maybe<Scalars['String']>;
-  ticketNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
 };
 
@@ -2567,11 +2588,6 @@ export type RegistrationInput = {
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
-  isEmailSent?: InputMaybe<Scalars['Boolean']>;
-  pdfLink?: InputMaybe<Scalars['String']>;
-  qrCodeUrl?: InputMaybe<Scalars['String']>;
-  signCode?: InputMaybe<Scalars['String']>;
-  ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
@@ -2581,11 +2597,6 @@ export type RegistrationPatch = {
   eventId?: InputMaybe<Scalars['UUID']>;
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
-  isEmailSent?: InputMaybe<Scalars['Boolean']>;
-  pdfLink?: InputMaybe<Scalars['String']>;
-  qrCodeUrl?: InputMaybe<Scalars['String']>;
-  signCode?: InputMaybe<Scalars['String']>;
-  ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 

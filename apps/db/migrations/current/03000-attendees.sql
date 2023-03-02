@@ -47,6 +47,11 @@ create table publ.attendees (
     is_news_event_email boolean,
     is_news_fondation_email boolean,
     panel_number int,
+     ticket_number text,
+    is_email_sent boolean default false,
+    qr_code_url text,
+    pdf_link text,
+    sign_code text,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );
