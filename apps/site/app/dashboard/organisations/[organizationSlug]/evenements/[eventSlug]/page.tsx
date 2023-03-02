@@ -13,9 +13,8 @@ const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
   searchParams: { offset, filter, first, orderBy },
 }) => {
-  const { eventBySlug } = await sdk().GetEventBySlug({
+  const { registrationByEventSlug } = await sdk().GetRegistrationByEventSlug({
     eventSlug: eventSlug,
-    organizationSlug: organizationSlug,
   });
 
   const headerAttendees: IHeader[] = [
@@ -28,8 +27,8 @@ const AttendeesPage = async ({
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawAttendees: IData[] = eventBySlug?.attendees?.nodes.map(
-    ({ id, firstname, lastname, email, status, eventId, panelNumber }) => ({
+  const rawAttendees: IData[] = registrationByEventSlug?.nodes.map(
+    ({ id: eventId, attendee: { id, lastname, firstname, email, status, panelNumber } }) => ({
       Nom: lastname,
       Prenom: firstname,
       email: email,
@@ -47,10 +46,10 @@ const AttendeesPage = async ({
           Tous les participants
         </h2>
       </div>
-      {eventBySlug?.attendees?.nodes?.length > 0 ? (
+      {registrationByEventSlug?.nodes?.length > 0 ? (
         <Collection
-          totalCount={eventBySlug?.attendees?.totalCount}
-          pageInfo={eventBySlug?.attendees?.pageInfo}
+          totalCount={registrationByEventSlug?.totalCount}
+          pageInfo={registrationByEventSlug?.pageInfo}
           header={headerAttendees}
           data={rawAttendees}
           initLimit={initLimit}

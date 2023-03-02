@@ -36,7 +36,7 @@ create table publ.attendees (
     lastname text not null,
     email citext not null check (email ~ '[^@]+@[^@]+\.[^@]+'),
     phone_number text check(length(phone_number) between 5 and 15),
-    registration_id uuid  references publ.registrations(id) on delete cascade,
+    registration_id uuid references publ.registrations(id) on delete cascade,
     zip_code text not null,
     hear_about text not null,
     is_fundraising_generosity_ok boolean not null,
@@ -51,6 +51,7 @@ create table publ.attendees (
     updated_at timestamptz not null default now()
 );
 
+--alter table publ.registrations add column attendee_id  uuid  references publ.attendees(id) on delete cascade;
 -- indexes
   create index on publ.attendees(created_at);
   create index on publ.attendees(updated_at);

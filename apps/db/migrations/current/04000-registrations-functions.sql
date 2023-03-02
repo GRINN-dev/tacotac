@@ -1,15 +1,37 @@
-create or replace function publ.registration_by_event_slug(event_slug text) returns setof publ.attendees as $$
-    declare
-        attendees publ.attendees%rowtype;
-    begin
-        select * from publ.events evt
-        inner join publ.registrations reg on reg.event_id = evt.id
-        inner join publ.attendees att on att.registration_id = reg.id
-        where evt.slug = event_slug into attendees;
 
-        return next attendees;
-    end;
-$$ language plpgsql stable security definer;
+
+-- CREATE OR REPLACE FUNCTION publ.registration_by_event_slug(event_slug text) 
+-- RETURNS SETOF publ.registrations AS $$
+-- BEGIN
+--   RETURN QUERY 
+--     SELECT reg
+--     FROM publ.registrations reg
+--     INNER JOIN publ.events evt ON evt.id = reg.event_id
+--     INNER JOIN publ.attendees att ON att.registration_id = reg.id
+--     WHERE evt.slug = event_slug;
+-- END;
+-- $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION publ.registration_by_event_slug(event_slug text)
+RETURNS  publ.registrations AS $$
+DECLARE
+  attendees publ.registrations%ROWTYPE;
+BEGIN
+  --FOR attendees IN
+    SELECT reg.*
+    FROM publ.registrations reg
+    INNER JOIN publ.events evt ON evt.id = reg.event_id
+    INNER JOIN publ.attendees att ON att.registration_id = reg.id
+    WHERE evt.slug = event_slug into attendees;
+  --LOOP
+    RETURN  attendees;
+  --END LOOP;
+  --RETURN;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+grant execute on function publ.registration_by_event_slug( text) to :DATABASE_VISITOR;
 
 -- create function publ.create_registration() returns trigger as $$
 -- DECLARE 

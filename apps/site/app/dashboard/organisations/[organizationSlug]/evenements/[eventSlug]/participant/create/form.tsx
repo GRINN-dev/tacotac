@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+
 interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 
 export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
@@ -28,8 +29,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     //data.attendee.eventId = id;
-    const { createRegistration } = await sdk().CreateRegistration({ registration: { eventId: id } });
-    data.attendee.registrationId = createRegistration?.registration?.id;
+    // const { createRegistration } = await sdk().CreateRegistration({ registration: { eventId: id } });
+    // data.attendee.registrationId = createRegistration?.registration?.id;
     await sdk()
       .CreateAttendee({
         input: data,
