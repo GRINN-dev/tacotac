@@ -42,7 +42,7 @@ const EventPage = async ({
     <section className="container grid items-center w-full gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
         <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors scroll-m-20 first:mt-0 ">
-          Tous les participants
+          Inscription
         </h2>
       </div>
       {eventBySlug?.attendees?.nodes?.length > 0 ? (

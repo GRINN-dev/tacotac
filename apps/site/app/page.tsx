@@ -1,11 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 
-
-
 import { siteConfig } from "@/config/site";
 import { buttonVariants } from "@/components/ui/button";
-
 
 export default function IndexPage() {
   return (
@@ -31,6 +28,9 @@ export default function IndexPage() {
         <div className="flex gap-4">
           <Link href={siteConfig.links.dashboard} className={buttonVariants({ size: "lg" })}>
             dashboard
+          </Link>
+          <Link href={siteConfig.links.dashboard} className={buttonVariants({ size: "lg" })}>
+            inscription
           </Link>
           <Link
             target="_blank"

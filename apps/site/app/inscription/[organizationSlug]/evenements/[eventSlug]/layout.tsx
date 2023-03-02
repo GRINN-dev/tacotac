@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { ChevronRight, Clipboard, Cog, Home, PlusSquare } from "lucide-react";
 
-
-
 import { cn } from "@/lib/utils";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function AttendeesLayout({
   children,
@@ -20,10 +24,10 @@ export default function AttendeesLayout({
   return (
     <>
       <nav className="flex" aria-label="Breadcrumb">
-        <ol role="list" className="flex space-x-4 rounded-md  shadow">
+        <ol role="list" className="flex space-x-4 rounded-md shadow">
           <li className="flex">
             <div className="flex items-center">
-              <ChevronRight className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+              <ChevronRight className="flex-shrink-0 w-3 h-3" aria-hidden="true" />
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   {" "}
@@ -31,7 +35,7 @@ export default function AttendeesLayout({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <Link
-                    href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}`}
+                    href={`/inscription/${organizationSlug}/evenements/${eventSlug}`}
                     className={cn(
                       "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                     )}
@@ -40,7 +44,7 @@ export default function AttendeesLayout({
                   </Link>
                   <DropdownMenuSeparator />
                   <Link
-                    href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/infos`}
+                    href={`/inscription/${organizationSlug}/evenements/${eventSlug}/infos`}
                     className={cn(
                       "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                     )}
@@ -51,7 +55,7 @@ export default function AttendeesLayout({
                     </DropdownMenuItem>
                   </Link>
                   <Link
-                    href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/create`}
+                    href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant/create`}
                     className={cn(
                       "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                     )}
@@ -63,7 +67,7 @@ export default function AttendeesLayout({
                   </Link>
 
                   <Link
-                    href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/brandings`}
+                    href={`/inscription/${organizationSlug}/evenements/${eventSlug}/brandings`}
                     className={cn(
                       "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                     )}

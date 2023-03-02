@@ -23,7 +23,7 @@ export default function EventsLayout({
   return (
     <section className="flex flex-wrap mt-4 ml-4">
       <nav className="flex flex-col" aria-label="Breadcrumb">
-        <ol role="list" className="flex space-x-4  px-6 shadow">
+        <ol role="list" className="flex px-6 space-x-4 shadow">
           <li className="flex">
             <div className="flex items-center">
               <Link
@@ -32,56 +32,52 @@ export default function EventsLayout({
                   "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                 )}
               >
-                <Home className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+                <Home className="flex-shrink-0 w-3 h-3" aria-hidden="true" />
                 <span className="sr-only">Home</span>
               </Link>
             </div>
           </li>
           <li className="flex">
             <div className="flex items-center">
-              <ChevronRight className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+              <ChevronRight className="flex-shrink-0 w-3 h-3" aria-hidden="true" />
 
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <div className="ml-4 text-sm font-medium underline">{organizationSlug}</div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <Link
-                      href={`/dashboard/organisations/${organizationSlug}/evenements/`}
-                      className={cn(
-                        "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                      )}
-                    >
-                  <DropdownMenuItem className="self-center">
-                      Mes événements
-                  </DropdownMenuItem>
-
-                    </Link>
+                  <Link
+                    href={`/inscription/${organizationSlug}/evenements/`}
+                    className={cn(
+                      "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                    )}
+                  >
+                    <DropdownMenuItem className="self-center">Mes événements</DropdownMenuItem>
+                  </Link>
 
                   <DropdownMenuSeparator />
-                    <Link
-                      href={`/dashboard/organisations/${organizationSlug}/infos`}
-                      className={cn(
-                        "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                      )}
-                    >
-                  <DropdownMenuItem className="self-center">
+                  <Link
+                    href={`/inscription/${organizationSlug}/infos`}
+                    className={cn(
+                      "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                    )}
+                  >
+                    <DropdownMenuItem className="self-center">
                       <Cog aria-hidden className="w-4 h-4 mr-4" />
                       Infos organisation
-                  </DropdownMenuItem>
-
-                    </Link>
-                    <Link
-                      href={`/dashboard/organisations/${organizationSlug}/evenements/create`}
-                      className={cn(
-                        "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
-                      )}
-                    >
-                  <DropdownMenuItem className="self-center">
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link
+                    href={`/dashboard/${organizationSlug}/evenements/create`}
+                    className={cn(
+                      "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                    )}
+                  >
+                    <DropdownMenuItem className="self-center">
                       <PlusSquare className="w-4 h-4 mr-4" />
                       Créer un événement
-                  </DropdownMenuItem>
-                    </Link>
+                    </DropdownMenuItem>
+                  </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
