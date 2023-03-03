@@ -142,22 +142,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                     </p>
                   )}
                 </div>
-                {i > 0 ? (
-                  <div className="mt-4 grid w-full items-center gap-1.5">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      type="text"
-                      id="email"
-                      placeholder="jeanned@mail.com"
-                      {...register(`attendees.${i}.email`)}
-                    />
-                    {formState.errors?.attendees?.[i].email && (
-                      <p className="text-sm text-red-800 dark:text-red-300">
-                        {formState.errors?.attendees?.[i]?.email?.message}
-                      </p>
-                    )}
-                  </div>
-                ) : null}
+
                 {i === 0 ? (
                   <>
                     <div className="mt-4 grid w-full items-center gap-1.5">
@@ -278,7 +263,20 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                     </div>
                   </>
                 ) : (
-                  ""
+                  <div className="mt-4 grid w-full items-center gap-1.5">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      type="text"
+                      id="email"
+                      placeholder="jeanned@mail.com"
+                      {...register(`attendees.${i}.email`)}
+                    />
+                    {formState.errors?.attendees?.[i].email && (
+                      <p className="text-sm text-red-800 dark:text-red-300">
+                        {formState.errors?.attendees?.[i]?.email?.message}
+                      </p>
+                    )}
+                  </div>
                 )}
               </AccordionContent>
             </AccordionItem>
