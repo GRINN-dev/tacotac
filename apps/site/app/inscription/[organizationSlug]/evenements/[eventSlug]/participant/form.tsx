@@ -5,13 +5,15 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   Attendee,
   AttendeeInput,
+  AttendeePatch,
   CivilityStatus,
   CreateAttendeeInput,
   EventStatus,
   GetEventByIdQuery,
   MyAttendeeFragment,
+  RegisterAttendeesInput,
 } from "@/../../@tacotacIO/codegen/dist";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -26,61 +28,45 @@ interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 
 export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [items, setItems] = useState<string[]>(["numéro 1"]);
-  const [attendeeData, setAttendeeData] = useState<AttendeeInput[]>([]);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const formRef = useRef(null);
-  // const handleDeleteNewParticipant = (index: number) => {
-  //   const newItems = [...items];
-  //   newItems.splice(index, 1);
-  //   setItems(newItems);
-  // };
-  const { register, handleSubmit, formState, control, reset } = useForm<CreateAttendeeInput>({
+
+  const { register, handleSubmit, formState, control, reset } = useForm<RegisterAttendeesInput>({
     defaultValues: {
-      attendee: {
-        civility: null,
-        firstname: "",
-        lastname: "",
-        phoneNumber: "",
-        zipCode: "",
-        email: "",
-        hearAbout: "",
-        isFundraisingGenerosityOk: false,
-        isInscriptor: false,
-        isVip: false,
-      },
+      attendees: [
+        {
+          civility: null,
+          firstname: "",
+          lastname: "",
+          phoneNumber: "",
+          zipCode: "",
+          email: "",
+          hearAbout: "",
+          isFundraisingGenerosityOk: false,
+          isInscriptor: false,
+          isVip: false,
+          status: EventStatus.Idle,
+        },
+      ],
     },
+  });
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+    control,
+    name: "attendees",
   });
 
   const handleAddParticipant = () => {
-    setItems([...items, `numéro ${items.length + 1}`]);
-    reset();
+    append({ status: EventStatus.Idle });
   };
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
     setIsLoading(true);
-    // data.attendee.eventId = id;
     await sdk()
-      .CreateAttendee({
-        input: {
-          attendee: {
-            status: EventStatus.Idle,
-            civility: data?.attendee?.civility,
-            firstname: data?.attendee?.firstname,
-            lastname: data?.attendee?.lastname,
-            email: data?.attendee?.email,
-            phoneNumber: data?.attendee?.phoneNumber,
-            zipCode: data?.attendee?.zipCode,
-            hearAbout: data?.attendee?.hearAbout,
-            // eventId: id,
-            isFundraisingGenerosityOk: data?.attendee?.isFundraisingGenerosityOk,
-            isInscriptor: data?.attendee?.isInscriptor,
-            isVip: data?.attendee?.isVip,
-          },
-        },
+      .RegisterAttendees({
+        input: data,
       })
       .catch((error) => {
         setError(error);
@@ -88,25 +74,22 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
         throw error;
       });
     setIsLoading(false);
-    const result = { ...data };
-    const newAttendeeData = result.attendee;
-    setAttendeeData((prevState) => prevState.concat(newAttendeeData));
-    console.log(newAttendeeData);
+
     startTransition(() => {
       router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
     });
   });
   return (
     <div className="flex flex-col w-full">
-      <Accordion type="single" collapsible>
-        {items.map((item) => (
-          <AccordionItem key={item} value={item}>
-            <AccordionTrigger>{`Participant ${item}`}</AccordionTrigger>
-            <AccordionContent>
-              <form ref={formRef} onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
+      <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
+        <Accordion type="single" collapsible>
+          {fields.map((item, i) => (
+            <AccordionItem key={i} value={i.toString()}>
+              <AccordionTrigger>{i > 0 ? `Participant ${i}` : "Participant principal"}</AccordionTrigger>
+              <AccordionContent>
                 <div className="mt-4 grid w-full items-center gap-1.5">
                   <Controller
-                    name={"attendee.civility"}
+                    name={`attendees.${i}.civility`}
                     control={control}
                     render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                       <>
@@ -132,13 +115,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
                     type="text"
                     id="firstname"
                     placeholder="Jeanne"
-                    {...register("attendee.firstname", {
+                    {...register(`attendees.${i}.firstname`, {
                       required: "Un prénom pour le participant est requis",
                     })}
                   />
-                  {formState.errors?.attendee?.firstname && (
+                  {formState.errors?.attendees?.[i]?.firstname && (
                     <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendee?.firstname?.message}
+                      {formState.errors?.attendees?.[i]?.firstname?.message}
                     </p>
                   )}
                 </div>
@@ -149,30 +132,29 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
                     type="text"
                     id="lastname"
                     placeholder="Dupond"
-                    {...register("attendee.lastname", {
+                    {...register(`attendees.${i}.lastname`, {
                       required: "Un nom pour le participant est requis",
                     })}
                   />
-                  {formState.errors?.attendee?.lastname && (
+                  {formState.errors?.attendees?.[i]?.lastname && (
                     <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendee?.lastname?.message}
+                      {formState.errors?.attendees?.[i].lastname?.message}
                     </p>
                   )}
                 </div>
-
                 <div className="mt-4 grid w-full items-center gap-1.5">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     type="text"
                     id="email"
                     placeholder="jeanned@mail.com"
-                    {...register("attendee.email", {
+                    {...register(`attendees.${i}.email`, {
                       required: "Un email pour le participant est requis",
                     })}
                   />
-                  {formState.errors?.attendee?.email && (
+                  {formState.errors?.attendees?.[i].email && (
                     <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendee?.email?.message}
+                      {formState.errors?.attendees?.[i]?.email?.message}
                     </p>
                   )}
                 </div>
@@ -182,13 +164,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
                     type="number"
                     id="phoneNumber"
                     placeholder="Entrez un numéro de téléphone"
-                    {...register("attendee.phoneNumber", {
+                    {...register(`attendees.${i}.phoneNumber`, {
                       required: "Un téléphone pour le participant est requis",
                     })}
                   />
-                  {formState.errors?.attendee?.phoneNumber && (
+                  {formState.errors?.attendees?.[i]?.phoneNumber && (
                     <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendee?.phoneNumber?.message}
+                      {formState.errors?.attendees?.[i]?.phoneNumber?.message}
                     </p>
                   )}
                 </div>
@@ -198,13 +180,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
                     type="number"
                     id="zipCode"
                     placeholder="44000"
-                    {...register("attendee.zipCode", {
+                    {...register(`attendees.${i}.zipCode`, {
                       required: "Un code postal pour le participant est requis",
                     })}
                   />
-                  {formState.errors?.attendee?.zipCode && (
+                  {formState.errors?.attendees?.[i]?.zipCode && (
                     <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendee?.zipCode?.message}
+                      {formState.errors?.attendees?.[i]?.zipCode?.message}
                     </p>
                   )}
                 </div>
@@ -212,7 +194,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
                   <Controller
                     name={"attendee.hearAbout"}
                     control={control}
-                    {...register("attendee.hearAbout")}
+                    {...register(`attendees.${i}.hearAbout`)}
                     render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                       <>
                         <Select onValueChange={onChange}>
@@ -236,7 +218,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
                     type="checkbox"
                     id="isFundraisingGenerosityOk"
                     className="w-4 h-4 "
-                    {...register("attendee.isFundraisingGenerosityOk", {
+                    {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
                       required: "Cette info pour le participant est requise",
                     })}
                   />
@@ -251,49 +233,48 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, slug, name }) => {
                     type="checkbox"
                     id="isInscriptor"
                     className="w-4 h-4 "
-                    {...register("attendee.isInscriptor", {})}
+                    {...register(`attendees.${i}.isInscriptor`, {})}
                   />
-                  {formState.errors?.attendee?.isInscriptor && (
+                  {formState.errors?.attendees?.[i]?.isInscriptor && (
                     <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendee?.isInscriptor?.message}
+                      {formState.errors?.attendees?.[i]?.isInscriptor?.message}
                     </p>
                   )}
                   <Label htmlFor="isInscriptor">{"Inscripteur"}</Label>
                 </div>
                 <div className="mt-4 flex w-full items-center gap-1.5">
-                  <Input type="checkbox" id="isVip" className="w-4 h-4 " {...register("attendee.isVip", {})} />
-                  {formState.errors?.attendee?.isVip && (
+                  <Input type="checkbox" id="isVip" className="w-4 h-4 " {...register(`attendees.${i}.isVip`, {})} />
+                  {formState.errors?.attendees?.[i]?.isVip && (
                     <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendee?.isVip?.message}
+                      {formState.errors?.attendees?.[i]?.isVip?.message}
                     </p>
                   )}
                   <Label htmlFor="isVip">{"Vip"}</Label>
                 </div>
-                <div className="flex gap-2 mt-8">
-                  <button type="submit" className={buttonVariants({ size: "lg" })}>
-                    Continuer
-                  </button>
-                </div>
-
-                {error && (
-                  <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
-                    {JSON.stringify(
-                      error,
-                      (key, value) => {
-                        if (key === "response") {
-                          return undefined;
-                        }
-                        return value;
-                      },
-                      2
-                    )}
-                  </p>
-                )}
-              </form>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+        <div className="flex gap-2 mt-8">
+          <button type="submit" className={buttonVariants({ size: "lg" })}>
+            Continuer
+          </button>
+        </div>
+        {error && (
+          <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+            {JSON.stringify(
+              error,
+              (key, value) => {
+                if (key === "response") {
+                  return undefined;
+                }
+                return value;
+              },
+              2
+            )}
+          </p>
+        )}
+      </form>
       <div className="flex flex-col w-6/12 mx-auto my-4">
         <button className={buttonVariants({ size: "lg" })} onClick={handleAddParticipant}>
           Ajouter un participant
