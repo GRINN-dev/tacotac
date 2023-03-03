@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import puppeteer from "puppeteer";
-
+import { PDFDocument, rgb } from "pdf-lib";
 import { createHtmlTemplate } from "./createHtmlTemplate";
 
 interface IGeneratePdfFilesPayload {
@@ -46,6 +46,25 @@ export const generatePdf = async (htmlContent: any): Promise<Buffer> => {
     return buffer;
   } catch (error) {
     console.error("Erreur lors de la génération du PDF : ", error);
+    throw error;
+  }
+};
+
+export const mergePDFBuffers = async (pdfs: any): Promise<Uint8Array> => {
+  try {
+    const mergedPdf = await PDFDocument.create();
+    for (const pdf of pdfs) {
+      const pdfDoc = await PDFDocument.load(pdf);
+      const copiedPages = await mergedPdf.copyPages(
+        pdfDoc,
+        pdfDoc.getPageIndices()
+      );
+      copiedPages.forEach(page => mergedPdf.addPage(page));
+    }
+    const mergedPdfBuffer = await mergedPdf.save();
+    return mergedPdfBuffer;
+  } catch (error) {
+    console.error("Erreur lors du merge PDF : ", error);
     throw error;
   }
 };

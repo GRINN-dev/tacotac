@@ -961,6 +961,7 @@ export type Event = Node & {
   country?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
   description: Scalars['String'];
+  details?: Maybe<Scalars['String']>;
   endsAt?: Maybe<Scalars['Datetime']>;
   /** Reads a single `EventBranding` that is related to this `Event`. */
   eventBranding?: Maybe<EventBranding>;
@@ -1190,6 +1191,7 @@ export type EventInput = {
   country?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   description: Scalars['String'];
+  details?: InputMaybe<Scalars['String']>;
   endsAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
   isVip?: InputMaybe<Scalars['Boolean']>;
@@ -1215,6 +1217,7 @@ export type EventPatch = {
   country?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   description?: InputMaybe<Scalars['String']>;
+  details?: InputMaybe<Scalars['String']>;
   endsAt?: InputMaybe<Scalars['Datetime']>;
   id?: InputMaybe<Scalars['UUID']>;
   isVip?: InputMaybe<Scalars['Boolean']>;

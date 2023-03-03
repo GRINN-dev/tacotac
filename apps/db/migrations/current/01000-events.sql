@@ -24,6 +24,7 @@ create table publ.events (
     booking_ends_at timestamptz,
     capacity int,
     is_vip boolean,
+    details text,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
     

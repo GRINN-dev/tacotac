@@ -14,10 +14,11 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     "🚀 ~ file: send_email.ts:13 ~ constsendEmail:Task= ~ payload:",
     payload
   );
-  const { sendEmailPayload, registrationId } = payload as {
-    registrationId: string;
+  const { sendEmailPayload, attendeeId } = payload as {
+    attendeeId: string;
     sendEmailPayload: SendEmailPayload;
   };
+
   await sgMail
     .send({
       ...sendEmailPayload.mailData,
@@ -29,10 +30,10 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
       console.log("Email sent successfully");
       const { rows } = await withPgClient(pgClient =>
         pgClient.query(
-          `update publ.registrations
+          `update publ.attendees atts
           set is_email_sent = true
-          where publ.registrations.id = $1;`,
-          [registrationId]
+          where atts.id = $1;`,
+          [attendeeId]
         )
       );
     })
@@ -40,9 +41,9 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
       console.error(error);
     });
   if (isDev) {
-    console.log(
-      sendEmailPayload.mailData.dynamicTemplateData,
-      sendEmailPayload.mailData.to
-    );
+    // console.log(
+    //   sendEmailPayload.mailData.dynamicTemplateData,
+    //   sendEmailPayload.mailData.to
+    // );
   }
 };
