@@ -38,10 +38,10 @@ export type Attendee = Node & {
   createdAt: Scalars['Datetime'];
   email?: Maybe<Scalars['String']>;
   firstname: Scalars['String'];
-  hearAbout: Scalars['String'];
+  hearAbout?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   isEmailSent?: Maybe<Scalars['Boolean']>;
-  isFundraisingGenerosityOk: Scalars['Boolean'];
+  isFundraisingGenerosityOk?: Maybe<Scalars['Boolean']>;
   isInscriptor?: Maybe<Scalars['Boolean']>;
   isNewsEventEmail?: Maybe<Scalars['Boolean']>;
   isNewsFondationEmail?: Maybe<Scalars['Boolean']>;
@@ -61,7 +61,7 @@ export type Attendee = Node & {
   status: EventStatus;
   ticketNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
-  zipCode: Scalars['String'];
+  zipCode?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -123,10 +123,10 @@ export type AttendeeInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   email?: InputMaybe<Scalars['String']>;
   firstname: Scalars['String'];
-  hearAbout: Scalars['String'];
+  hearAbout?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   isEmailSent?: InputMaybe<Scalars['Boolean']>;
-  isFundraisingGenerosityOk: Scalars['Boolean'];
+  isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
   isInscriptor?: InputMaybe<Scalars['Boolean']>;
   isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
   isNewsFondationEmail?: InputMaybe<Scalars['Boolean']>;
@@ -142,7 +142,7 @@ export type AttendeeInput = {
   status: EventStatus;
   ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  zipCode: Scalars['String'];
+  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `Attendee`. Fields that are set will be updated. */
@@ -3471,7 +3471,7 @@ export type GetRegistrationByEventSlugQueryVariables = Exact<{
 }>;
 
 
-export type GetRegistrationByEventSlugQuery = { __typename?: 'Query', registrationByEventSlug?: { __typename?: 'Registration', eventId?: any | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', firstname: string, email?: string | null, id: any, panelNumber?: number | null, phoneNumber?: string | null, registrationId?: any | null, status: EventStatus, zipCode: string, isInscriptor?: boolean | null, hearAbout: string, civility: CivilityStatus, lastname: string, isVip?: boolean | null }>, pageInfo: { __typename?: 'PageInfo', endCursor?: any | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null } } } | null };
+export type GetRegistrationByEventSlugQuery = { __typename?: 'Query', registrationByEventSlug?: { __typename?: 'Registration', eventId?: any | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', firstname: string, email?: string | null, id: any, panelNumber?: number | null, phoneNumber?: string | null, registrationId?: any | null, status: EventStatus, zipCode?: string | null, isInscriptor?: boolean | null, hearAbout?: string | null, civility: CivilityStatus, lastname: string, isVip?: boolean | null }>, pageInfo: { __typename?: 'PageInfo', endCursor?: any | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null } } } | null };
 
 export const MyAttendeeFragmentDoc = gql`
     fragment MyAttendee on Attendee {
