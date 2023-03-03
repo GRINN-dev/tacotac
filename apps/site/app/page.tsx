@@ -29,7 +29,7 @@ export default function IndexPage() {
           <Link href={siteConfig.links.dashboard} className={buttonVariants({ size: "lg" })}>
             dashboard
           </Link>
-          <Link href={siteConfig.links.dashboard} className={buttonVariants({ size: "lg" })}>
+          <Link href={siteConfig.links.inscription} className={buttonVariants({ size: "lg" })}>
             inscription
           </Link>
           <Link

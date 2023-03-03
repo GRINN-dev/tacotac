@@ -35,7 +35,7 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/shadcn",
     github: "https://github.com/shadcn/ui",
     docs: "https://ui.shadcn.com",
-    dashboard: "/organizations",
+    dashboard: "/dashboard/organisations",
     scanner: "/scanner",
     inscription: "/inscription",
   },
