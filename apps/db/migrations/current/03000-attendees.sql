@@ -34,7 +34,7 @@ create table publ.attendees (
     civility text not null references publ.civility_status on delete cascade,
     firstname text not null,
     lastname text not null,
-    email citext not null check (email ~ '[^@]+@[^@]+\.[^@]+'),
+    email citext ,
     phone_number text check(length(phone_number) between 5 and 15),
     registration_id uuid references publ.registrations(id) on delete cascade,
     zip_code text not null,

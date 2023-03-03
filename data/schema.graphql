@@ -367,7 +367,7 @@ type Attendee implements Node {
   civility: CivilityStatus!
   firstname: String!
   lastname: String!
-  email: String!
+  email: String
   phoneNumber: String
   registrationId: UUID
   zipCode: String!
@@ -2322,7 +2322,7 @@ input AttendeeInput {
   civility: CivilityStatus!
   firstname: String!
   lastname: String!
-  email: String!
+  email: String
   phoneNumber: String
   registrationId: UUID
   zipCode: String!
