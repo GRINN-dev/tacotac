@@ -1,6 +1,6 @@
 /*
   TABLE: publ.registrations
-  DESCRIPTION: la table registration contient les inscriptions d'un evenement
+  DESCRIPTION: la table registration contient les inscriptions d''un evenement
 */
 drop table if exists publ.registrations cascade;
 create table publ.registrations (
@@ -10,15 +10,17 @@ create table publ.registrations (
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );
-
+--test
 -- indexes
   create index on publ.registrations(created_at);
   create index on publ.registrations(updated_at);
   create index on publ.registrations(event_id);
 
 -- RBAC
-  grant select on publ.registrations to :DATABASE_VISITOR;
-
+    grant select on publ.registrations to :DATABASE_VISITOR;
+    grant insert(event_id) on publ.registrations to :DATABASE_VISITOR;
+    grant update(event_id) on publ.registrations to :DATABASE_VISITOR;
+    grant delete on publ.registrations to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
   before insert or update on publ.registrations
@@ -33,8 +35,12 @@ create table publ.registrations (
    for all
    using (true)
    with check(true);
+
+  /*
+  END TABLE: publ.registrations
+*/ 
 -- fixtures
   -- fixtures go here
-/*
-  END TABLE: publ.registrations
-*/
+
+
+   

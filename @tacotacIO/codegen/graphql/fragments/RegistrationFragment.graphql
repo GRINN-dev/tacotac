@@ -1,0 +1,7 @@
+fragment RegistrationFragment on Registration {
+  eventId
+  createdAt
+  hearAboutList
+  id
+  updatedAt
+}

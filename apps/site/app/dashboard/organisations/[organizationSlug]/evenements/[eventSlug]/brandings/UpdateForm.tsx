@@ -1,21 +1,22 @@
 "use client";
 
-import { FC, useState, useTransition } from "react";
+import { FC, useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@/../../@tacotacIO/codegen/dist";
 import { useToast } from "@/hooks/use-toast";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
+import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+
+
 
 interface IUpdateBrandingEvent extends ExtractType<ExtractType<GetEventByIdQuery, "event">, "eventBranding"> {}
 
@@ -32,6 +33,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
+  const [image, setImage] = useState({ local: null, dev: null });
+  const [files, setFiles] = useState<File[]>([]);
   const [awardWinningList, setAwardWinningList] = useState<string[]>([]);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -41,9 +44,30 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
 
+  const uploadToS3 = async (file: File): Promise<string> => {
+    // générer l'url présignée
+    const { generatePresignedPost } = await sdk().GeneratePresignedPost({
+      key: "Logo_event_" + file.name,
+    });
+    // poster dans s3 l'url présignée générée
+
+    const formData = new FormData();
+    formData.append("Content-type", file.type);
+    Object.entries(generatePresignedPost.fields).forEach(([k, value]: any) => {
+      formData.append(k, value);
+    });
+    formData.append("file", file);
+    await fetch(generatePresignedPost.url, {
+      method: "POST",
+      body: formData,
+    });
+    return generatePresignedPost.url + "/" + generatePresignedPost.fields.key;
+  };
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
+    const url = await uploadToS3(files.at(0));
     data.id = id;
+    data.patch.logo = url;
     data.patch.awardWinningAssoList = awardWinningList;
     await sdk()
       .UpdateEventBranding({
@@ -129,17 +153,28 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         />
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
-        {/* A remplacer par list */}
         <Label htmlFor="logo">Logo</Label>
-        <Input
-          type="text"
-          id="logo"
-          defaultValue={logo}
-          placeholder="type url here"
-          {...register("patch.logo", {
-            required: "Un nom pour l'organisation est requis",
-          })}
-        />
+        <div className="flex flex-row space-x-4">
+          <FileDragNDrop
+            id={"fileDnD" + id}
+            title={"Logo"}
+            onFileUpload={(file) => {
+              setFiles(file);
+            }}
+          />
+          {files.length > 0 ? (
+            <img
+              className="w-1/2 aspect-[3/2] rounded-2xl object-cover"
+              src={URL.createObjectURL(files[0])}
+              alt="preview logo"
+            />
+          ) : logo ? (
+            <img className="w-1/2 aspect-[3/2] rounded-2xl object-cover" src={logo} alt="logo" />
+          ) : (
+            <div className="w-1/2 aspect-[3/2] rounded-2xl object-cover border border-dashed"></div>
+          )}
+        </div>
+
         {formState.errors?.patch?.logo && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.logo?.message}</p>
         )}

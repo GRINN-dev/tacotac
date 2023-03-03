@@ -14,6 +14,7 @@ Commande pour modification des policies : s3cmd setpolicy ./policy.json s3://tes
 const client = new S3Client({
   endpoint:
     process.env.BUCKET_HOST || "https://cellar-c2.services.clever-cloud.com",
+  region: process.env.BUCKET_REGION,
   credentials: {
     accessKeyId: process.env.BUCKET_KEY!,
     secretAccessKey: process.env.BUCKET_SECRET!,
@@ -78,7 +79,7 @@ export const GeneratePresignedUrl = makeExtendSchemaPlugin(() => {
               },
             });
             return {
-              url: url.url + process.env.BUCKET_NAME!,
+              url: `${process.env.BUCKET_HOST}/${process.env.BUCKET_NAME}`,
               fields: url.fields,
             };
           } catch (e) {

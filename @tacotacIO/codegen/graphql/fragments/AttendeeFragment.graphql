@@ -7,5 +7,5 @@ fragment MyAttendee on Attendee {
   updatedAt
   status
   panelNumber
-  eventId
+  registrationId
 }

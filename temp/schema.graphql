@@ -278,7 +278,6 @@ type Query implements Node {
   currentUserId: UUID
   dateTruncFunc(unit: String, date: Datetime): Datetime
   eventBySlug(eventSlug: String, organizationSlug: String): Event
-  registrationByEventSlug(eventSlug: String): Registration
 
   """Reads a single `Attendee` using its globally unique `ID`."""
   attendeeByNodeId(
@@ -367,9 +366,9 @@ type Attendee implements Node {
   civility: CivilityStatus!
   firstname: String!
   lastname: String!
-  email: String
+  email: String!
   phoneNumber: String
-  registrationId: UUID
+  eventId: UUID
   zipCode: String!
   hearAbout: String!
   isFundraisingGenerosityOk: Boolean!
@@ -380,16 +379,11 @@ type Attendee implements Node {
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
   panelNumber: Int
-  ticketNumber: String
-  isEmailSent: Boolean
-  qrCodeUrl: String
-  pdfLink: String
-  signCode: String
   createdAt: Datetime!
   updatedAt: Datetime!
 
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
+  """Reads a single `Event` that is related to this `Attendee`."""
+  event: Event
 }
 
 """
@@ -428,19 +422,38 @@ A point in time as described by the [ISO
 """
 scalar Datetime
 
-type Registration implements Node {
+type Event implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   nodeId: ID!
   id: UUID!
-  eventId: UUID
-  hearAboutList: [String]
+  name: String!
+  slug: String
+  description: String!
+  organizationId: UUID!
+  placeName: String
+  addressLine1: String
+  addressLine2: String
+  zipCode: String
+  city: String
+  country: String
+  lat: Float
+  lon: Float
+  startsAt: Datetime
+  endsAt: Datetime
+  bookingStartsAt: Datetime
+  bookingEndsAt: Datetime
+  capacity: Int
+  isVip: Boolean
   createdAt: Datetime!
   updatedAt: Datetime!
 
-  """Reads a single `Event` that is related to this `Registration`."""
-  event: Event
+  """Reads a single `Organization` that is related to this `Event`."""
+  organization: Organization
+
+  """Reads a single `EventBranding` that is related to this `Event`."""
+  eventBranding: EventBranding
 
   """Reads and enables pagination through a set of `Attendee`."""
   attendees(
@@ -475,40 +488,6 @@ type Registration implements Node {
     """
     filter: AttendeeFilter
   ): AttendeesConnection!
-}
-
-type Event implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: UUID!
-  name: String!
-  slug: String
-  description: String!
-  organizationId: UUID!
-  placeName: String
-  addressLine1: String
-  addressLine2: String
-  zipCode: String
-  city: String
-  country: String
-  lat: Float
-  lon: Float
-  startsAt: Datetime
-  endsAt: Datetime
-  bookingStartsAt: Datetime
-  bookingEndsAt: Datetime
-  capacity: Int
-  isVip: Boolean
-  createdAt: Datetime!
-  updatedAt: Datetime!
-
-  """Reads a single `Organization` that is related to this `Event`."""
-  organization: Organization
-
-  """Reads a single `EventBranding` that is related to this `Event`."""
-  eventBranding: EventBranding
 
   """Reads and enables pagination through a set of `Registration`."""
   registrations(
@@ -1247,91 +1226,6 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
-"""A connection to a list of `Registration` values."""
-type RegistrationsConnection {
-  """A list of `Registration` objects."""
-  nodes: [Registration!]!
-
-  """
-  A list of edges which contains the `Registration` and cursor to aid in pagination.
-  """
-  edges: [RegistrationsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Registration` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Registration` edge in the connection."""
-type RegistrationsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Registration` at the end of the edge."""
-  node: Registration!
-}
-
-"""Methods to use when ordering `Registration`."""
-enum RegistrationsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  EVENT_ID_ASC
-  EVENT_ID_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `Registration` object types. All fields are
-tested for equality and combined with a logical ‘and.’
-"""
-input RegistrationCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: UUID
-
-  """Checks for equality with the object’s `eventId` field."""
-  eventId: UUID
-
-  """Checks for equality with the object’s `createdAt` field."""
-  createdAt: Datetime
-
-  """Checks for equality with the object’s `updatedAt` field."""
-  updatedAt: Datetime
-}
-
-"""
-A filter to be used against `Registration` object types. All fields are combined with a logical ‘and.’
-"""
-input RegistrationFilter {
-  """Filter by the object’s `id` field."""
-  id: UUIDFilter
-
-  """Filter by the object’s `eventId` field."""
-  eventId: UUIDFilter
-
-  """Filter by the object’s `createdAt` field."""
-  createdAt: DatetimeFilter
-
-  """Filter by the object’s `updatedAt` field."""
-  updatedAt: DatetimeFilter
-
-  """Checks for all expressions in this list."""
-  and: [RegistrationFilter!]
-
-  """Checks for any expressions in this list."""
-  or: [RegistrationFilter!]
-
-  """Negates the expression."""
-  not: RegistrationFilter
-}
-
 """Methods to use when ordering `Attendee`."""
 enum AttendeesOrderBy {
   NATURAL
@@ -1343,8 +1237,8 @@ enum AttendeesOrderBy {
   EMAIL_DESC
   PHONE_NUMBER_ASC
   PHONE_NUMBER_DESC
-  REGISTRATION_ID_ASC
-  REGISTRATION_ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
   ZIP_CODE_ASC
   ZIP_CODE_DESC
   STATUS_ASC
@@ -1374,8 +1268,8 @@ input AttendeeCondition {
   """Checks for equality with the object’s `phoneNumber` field."""
   phoneNumber: String
 
-  """Checks for equality with the object’s `registrationId` field."""
-  registrationId: UUID
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: UUID
 
   """Checks for equality with the object’s `zipCode` field."""
   zipCode: String
@@ -1406,8 +1300,8 @@ input AttendeeFilter {
   """Filter by the object’s `phoneNumber` field."""
   phoneNumber: StringFilter
 
-  """Filter by the object’s `registrationId` field."""
-  registrationId: UUIDFilter
+  """Filter by the object’s `eventId` field."""
+  eventId: UUIDFilter
 
   """Filter by the object’s `zipCode` field."""
   zipCode: StringFilter
@@ -1513,6 +1407,112 @@ input EventStatusFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: EventStatus
+}
+
+"""A connection to a list of `Registration` values."""
+type RegistrationsConnection {
+  """A list of `Registration` objects."""
+  nodes: [Registration!]!
+
+  """
+  A list of edges which contains the `Registration` and cursor to aid in pagination.
+  """
+  edges: [RegistrationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Registration` you could get from the connection."""
+  totalCount: Int!
+}
+
+type Registration implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  eventId: UUID
+  attendeeId: UUID
+  ticketNumber: String
+  isEmailSent: Boolean
+  qrCodeUrl: String
+  pdfLink: String
+  signCode: String
+  hearAboutList: [String]
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Event` that is related to this `Registration`."""
+  event: Event
+}
+
+"""A `Registration` edge in the connection."""
+type RegistrationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Registration` at the end of the edge."""
+  node: Registration!
+}
+
+"""Methods to use when ordering `Registration`."""
+enum RegistrationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Registration` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input RegistrationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: UUID
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Registration` object types. All fields are combined with a logical ‘and.’
+"""
+input RegistrationFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: UUIDFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Checks for all expressions in this list."""
+  and: [RegistrationFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [RegistrationFilter!]
+
+  """Negates the expression."""
+  not: RegistrationFilter
 }
 
 """A `Attendee` edge in the connection."""
@@ -2252,18 +2252,12 @@ type Mutation {
     """
     input: RegisterInput!
   ): RegisterPayload
-  registerAttendees(
+  sendEmailConfirmationById(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: RegisterAttendeesInput!
-  ): RegisterAttendeesPayload
-  sendEmailConfirmationByRegistrationId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: SendEmailConfirmationByRegistrationIdInput!
-  ): SendEmailConfirmationByRegistrationIdPayload
+    input: SendEmailConfirmationByIdInput!
+  ): SendEmailConfirmationByIdPayload
   generatePresignedPost(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2294,8 +2288,8 @@ type CreateAttendeePayload {
   """
   query: Query
 
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
+  """Reads a single `Event` that is related to this `Attendee`."""
+  event: Event
 
   """An edge for our `Attendee`. May be used by Relay 1."""
   attendeeEdge(
@@ -2322,9 +2316,9 @@ input AttendeeInput {
   civility: CivilityStatus!
   firstname: String!
   lastname: String!
-  email: String
+  email: String!
   phoneNumber: String
-  registrationId: UUID
+  eventId: UUID
   zipCode: String!
   hearAbout: String!
   isFundraisingGenerosityOk: Boolean!
@@ -2335,11 +2329,6 @@ input AttendeeInput {
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
   panelNumber: Int
-  ticketNumber: String
-  isEmailSent: Boolean
-  qrCodeUrl: String
-  pdfLink: String
-  signCode: String
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -2606,6 +2595,12 @@ input CreateRegistrationInput {
 input RegistrationInput {
   id: UUID
   eventId: UUID
+  attendeeId: UUID
+  ticketNumber: String
+  isEmailSent: Boolean
+  qrCodeUrl: String
+  pdfLink: String
+  signCode: String
   hearAboutList: [String]
   createdAt: Datetime
   updatedAt: Datetime
@@ -2674,8 +2669,8 @@ type UpdateAttendeePayload {
   """
   query: Query
 
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
+  """Reads a single `Event` that is related to this `Attendee`."""
+  event: Event
 
   """An edge for our `Attendee`. May be used by Relay 1."""
   attendeeEdge(
@@ -2713,7 +2708,7 @@ input AttendeePatch {
   lastname: String
   email: String
   phoneNumber: String
-  registrationId: UUID
+  eventId: UUID
   zipCode: String
   hearAbout: String
   isFundraisingGenerosityOk: Boolean
@@ -2724,11 +2719,6 @@ input AttendeePatch {
   isNewsEventEmail: Boolean
   isNewsFondationEmail: Boolean
   panelNumber: Int
-  ticketNumber: String
-  isEmailSent: Boolean
-  qrCodeUrl: String
-  pdfLink: String
-  signCode: String
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -3210,6 +3200,12 @@ Represents an update to a `Registration`. Fields that are set will be updated.
 input RegistrationPatch {
   id: UUID
   eventId: UUID
+  attendeeId: UUID
+  ticketNumber: String
+  isEmailSent: Boolean
+  qrCodeUrl: String
+  pdfLink: String
+  signCode: String
   hearAboutList: [String]
   createdAt: Datetime
   updatedAt: Datetime
@@ -3331,8 +3327,8 @@ type DeleteAttendeePayload {
   """
   query: Query
 
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
+  """Reads a single `Event` that is related to this `Attendee`."""
+  event: Event
 
   """An edge for our `Attendee`. May be used by Relay 1."""
   attendeeEdge(
@@ -3808,43 +3804,8 @@ input RegisterInput {
   avatarUrl: String
 }
 
-"""The output of our `registerAttendees` mutation."""
-type RegisterAttendeesPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  registration: Registration
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `Event` that is related to this `Registration`."""
-  event: Event
-
-  """An edge for our `Registration`. May be used by Relay 1."""
-  registrationEdge(
-    """The method to use when ordering `Registration`."""
-    orderBy: [RegistrationsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): RegistrationsEdge
-}
-
-"""All input for the `registerAttendees` mutation."""
-input RegisterAttendeesInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  eventId: UUID
-  attendees: [AttendeePatch]
-}
-
-"""The output of our `sendEmailConfirmationByRegistrationId` mutation."""
-type SendEmailConfirmationByRegistrationIdPayload {
+"""The output of our `sendEmailConfirmationById` mutation."""
+type SendEmailConfirmationByIdPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
@@ -3857,14 +3818,15 @@ type SendEmailConfirmationByRegistrationIdPayload {
   query: Query
 }
 
-"""All input for the `sendEmailConfirmationByRegistrationId` mutation."""
-input SendEmailConfirmationByRegistrationIdInput {
+"""All input for the `sendEmailConfirmationById` mutation."""
+input SendEmailConfirmationByIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  regId: UUID!
+  evtId: UUID!
+  attId: UUID!
 }
 
 type GeneratePresignedPostPayload {

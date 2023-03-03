@@ -9,13 +9,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
 
 
-const EventPage = async ({
+const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
   searchParams: { offset, filter, first, orderBy },
 }) => {
-  const { eventBySlug } = await sdk().GetEventBySlug({
+  const { registrationByEventSlug } = await sdk().GetRegistrationByEventSlug({
     eventSlug: eventSlug,
-    organizationSlug: organizationSlug,
   });
 
   const headerAttendees: IHeader[] = [
@@ -28,18 +27,17 @@ const EventPage = async ({
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawAttendees: IData[] = eventBySlug?.attendees?.nodes.map(
-    ({ id, firstname, lastname, email, status, eventId, panelNumber }) => ({
+  const rawAttendees: IData[] = registrationByEventSlug?.attendees?.nodes.map(
+    ({ id, lastname, firstname, email, status, panelNumber }) => ({
       Nom: lastname,
       Prenom: firstname,
       email: email,
       status: status,
       "N° Panneau": panelNumber,
-      eventId: eventId,
+      eventId: registrationByEventSlug?.eventId,
       slug: "/participant/" + id,
     })
   );
-
   //pour pr
   return (
     <section className="w-full container grid items-center gap-6 pt-6 pb-8 md:py-10">
@@ -48,10 +46,10 @@ const EventPage = async ({
           Tous les participants
         </h2>
       </div>
-      {eventBySlug?.attendees?.nodes?.length > 0 ? (
+      {registrationByEventSlug?.attendees?.nodes?.length > 0 ? (
         <Collection
-          totalCount={eventBySlug?.attendees?.totalCount}
-          pageInfo={eventBySlug?.attendees?.pageInfo}
+          totalCount={registrationByEventSlug?.attendees?.totalCount}
+          pageInfo={registrationByEventSlug?.attendees?.pageInfo}
           header={headerAttendees}
           data={rawAttendees}
           initLimit={initLimit}
@@ -73,4 +71,4 @@ const EventPage = async ({
   );
 };
 
-export default EventPage;
+export default AttendeesPage;
