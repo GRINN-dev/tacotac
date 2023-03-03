@@ -1,13 +1,10 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
-
 
 const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const { organizations } = await sdk().GetAllOrganization();
@@ -28,9 +25,9 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-          Toutes les organizations
+          Toutes les organisations
         </h1>
-        <Link  href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "link" })}>
+        <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "link" })}>
           <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
         </Link>
       </div>
@@ -49,7 +46,10 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
             <p>
               Vous n&apos;avez pas encore créé d&apos;organisation <u>ou</u> aucun ne correspondant a votre recherche.
             </p>
-            <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
+            <Link
+              href={`/dashboard/organisations/create`}
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+            >
               <PlusSquare className="w-4 h-4 mr-2" /> Créer une organisation
             </Link>
           </div>

@@ -85,7 +85,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
         <Accordion type="single" collapsible>
           {fields.map((item, i) => (
             <AccordionItem key={i} value={i.toString()}>
-              <AccordionTrigger>{i > 0 ? `Participant ${i}` : "Participant principal"}</AccordionTrigger>
+              <AccordionTrigger>{i > 0 ? `Participant ${i + 1}` : "Participant principal"}</AccordionTrigger>
               <AccordionContent>
                 <div className="mt-4 grid w-full items-center gap-1.5">
                   <Controller
