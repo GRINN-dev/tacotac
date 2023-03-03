@@ -1,18 +1,13 @@
 import { Inter as FontSans } from "@next/font/google";
 
-
-
 import "@/styles/globals.css";
 import { ServerThemeProvider } from "next-themes";
-
-
 
 import { cn } from "@/lib/utils";
 import { Layout } from "@/components/layout";
 import Providers from "@/components/providers";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
-
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -53,9 +48,7 @@ const RootLayout = ({ children }) => {
             fontSans.variable
           )}
         >
-          <Providers>
-            <Layout>{children}</Layout>
-          </Providers>
+          <Providers>{children}</Providers>
           <Toaster />
 
           <TailwindIndicator />
