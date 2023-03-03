@@ -12,13 +12,7 @@ query GetAllAttendee {
     }
   }
 }
-query GetAllAttendeeByEventId($eventId: UUID!) {
-  attendees(orderBy: [CREATED_AT_DESC], condition: { eventId: $eventId }) {
-    nodes {
-      ...MyAttendee
-    }
-  }
-}
+
 
 query GetAttendeeById($attendeeId: UUID!) {
   attendee(id: $attendeeId) {

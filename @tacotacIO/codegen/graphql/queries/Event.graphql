@@ -43,18 +43,6 @@ query GetEventById($eventId: UUID!) {
     eventBranding {
       ...EventBrandingFragment
     }
-    attendees {
-      nodes {
-        ...MyAttendee
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-      }
-      totalCount
-    }
   }
 }
 
@@ -64,9 +52,13 @@ query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
     eventBranding {
       ...EventBrandingFragment
     }
-    attendees {
+    registrations {
       nodes {
-        ...MyAttendee
+        attendees {
+          nodes {
+            ...MyAttendee
+          }
+        }
       }
       pageInfo {
         hasNextPage
