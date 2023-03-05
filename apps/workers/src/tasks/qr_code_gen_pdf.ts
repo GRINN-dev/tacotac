@@ -108,7 +108,7 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
         )
       );
 
-      const sendEmailPayloadAttendees: SendEmailPayload = {
+      const sendEmailPayload: SendEmailPayload = {
         mailData: {
           to: row.email,
           from: { name: "L'équipe", email: "contact@obole.eu" },
@@ -135,8 +135,8 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
           },
         },
       };
-      if (row.email) {
-        addJob("sendEmail", { attendeeId: row.id, sendEmailPayloadAttendees });
+      if (row?.email) {
+        addJob("sendEmail", { attendeeId: row.id, sendEmailPayload });
       }
     }
   }

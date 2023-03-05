@@ -61,7 +61,7 @@ export const mergePDFBuffers = async (pdfs: any): Promise<Uint8Array> => {
       );
       copiedPages.forEach(page => mergedPdf.addPage(page));
     }
-    const mergedPdfBuffer = await mergedPdf.save();
+    const mergedPdfBuffer = await mergedPdf.save({ useObjectStreams: false });
     return mergedPdfBuffer;
   } catch (error) {
     console.error("Erreur lors du merge PDF : ", error);
