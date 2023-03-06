@@ -23,13 +23,12 @@ interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
-  const [open, setOpen] = useState(true);
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
-  const { register, handleSubmit, formState, control, reset } = useForm<RegisterAttendeesInput>({
+  const { register, handleSubmit, formState, control, reset, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
       attendees: [
         {
@@ -58,6 +57,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
   };
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
     setIsLoading(true);
+
     await sdk()
       .RegisterAttendees({
         input: data,
@@ -67,6 +67,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
         setIsLoading(false);
         throw error;
       });
+
     setIsLoading(false);
 
     startTransition(() => {
@@ -77,12 +78,210 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
     <div className="flex flex-col w-full">
       <div className="flex flex-col w-full">
         <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-          <Accordion type="single" collapsible>
-            {fields.map((item, i) => (
-              <AccordionItem key={i} value={i.toString()}>
-                <AccordionTrigger>{i > 0 ? `Participant ${i + 1}` : "Participant principal"}</AccordionTrigger>
-                <AccordionContent>
-                  <div className="mt-4 grid w-full items-center gap-1.5">
+          {fields?.length > 1 ? (
+            <Accordion type="single" collapsible>
+              {fields.map((item, i) => (
+                <AccordionItem key={i} value={i.toString()}>
+                  <AccordionTrigger className={formState?.errors?.attendees ? "text-red-500" : ""}>
+                    {i > 0 ? `Participant ${i + 1}` : "Participant principal"}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                      <Label htmlFor="civility">Civilité</Label>
+                      <Controller
+                        name={`attendees.${i}.civility`}
+                        control={control}
+                        render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+                          <>
+                            <Select onValueChange={onChange}>
+                              <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Civilité" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectItem value={CivilityStatus.Mr}>Monsieur</SelectItem>
+                                  <SelectItem value={CivilityStatus.Mme}>Madame</SelectItem>
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                            {error?.message && (
+                              <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>
+                            )}
+                          </>
+                        )}
+                      />
+                    </div>
+                    <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                      <Label htmlFor="firstname">Prénom</Label>
+                      <Input
+                        type="text"
+                        id="firstname"
+                        placeholder="Jeanne"
+                        {...register(`attendees.${i}.firstname`, {
+                          required: "Un prénom pour le participant est requis",
+                        })}
+                        className="col-span-2"
+                      />
+                      {formState.errors?.attendees?.[i]?.firstname && (
+                        <p className="text-sm text-red-800 dark:text-red-300">
+                          {formState.errors?.attendees?.[i]?.firstname?.message}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                      <Label htmlFor="lastname">Nom</Label>
+                      <Input
+                        type="text"
+                        id="lastname"
+                        placeholder="Dupond"
+                        {...register(`attendees.${i}.lastname`, {
+                          required: "Un nom pour le participant est requis",
+                        })}
+                        className="col-span-2"
+                      />
+                      {formState.errors?.attendees?.[i]?.lastname && (
+                        <p className="text-sm text-red-800 dark:text-red-300">
+                          {formState.errors?.attendees?.[i].lastname?.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {i === 0 ? (
+                      <>
+                        <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                          <Label htmlFor="email">Email</Label>
+                          <Input
+                            type="text"
+                            id="email"
+                            className="col-span-2"
+                            placeholder="jeanned@mail.com"
+                            {...register(`attendees.${i}.email`, {
+                              required: "Un email pour le participant est requis",
+                            })}
+                          />
+                          {formState.errors?.attendees?.[i].email && (
+                            <p className="text-sm text-red-800 dark:text-red-300">
+                              {formState.errors?.attendees?.[i]?.email?.message}
+                            </p>
+                          )}
+                        </div>
+                        <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                          <Label htmlFor="phoneNumber">Téléphone</Label>
+                          <Input
+                            type="number"
+                            id="phoneNumber"
+                            className="col-span-2"
+                            placeholder="Entrez un numéro de téléphone"
+                            {...register(`attendees.${i}.phoneNumber`, {
+                              required: "Un téléphone pour le participant est requis",
+                            })}
+                          />
+                          {formState.errors?.attendees?.[i]?.phoneNumber && (
+                            <p className="text-sm text-red-800 dark:text-red-300">
+                              {formState.errors?.attendees?.[i]?.phoneNumber?.message}
+                            </p>
+                          )}
+                        </div>
+                        <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                          <Label htmlFor="zipCode">Code postal</Label>
+                          <Input
+                            type="number"
+                            id="zipCode"
+                            placeholder="44000"
+                            className="col-span-2"
+                            {...register(`attendees.${i}.zipCode`, {
+                              required: "Un code postal pour le participant est requis",
+                            })}
+                          />
+                          {formState.errors?.attendees?.[i]?.zipCode && (
+                            <p className="text-sm text-red-800 dark:text-red-300">
+                              {formState.errors?.attendees?.[i]?.zipCode?.message}
+                            </p>
+                          )}
+                        </div>
+                        <div className="mt-4 w-full items-center gap-1.5">
+                          <Label htmlFor="civility" className="my-4">
+                            Comment avez-vous entendu parler de Lille pour le Bien Commun ?
+                          </Label>
+
+                          <Controller
+                            name={"attendee.hearAbout"}
+                            control={control}
+                            {...register(`attendees.${i}.hearAbout`)}
+                            render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+                              <>
+                                <Select onValueChange={onChange}>
+                                  <SelectTrigger className="my-4">
+                                    <SelectValue placeholder="Sélectionnez une réponse" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectGroup>
+                                      <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
+                                      <SelectItem value={"par une association lauréate"}>
+                                        Par une association lauréate
+                                      </SelectItem>
+                                      <SelectItem value={"par Obole, co-organisateur de l''événement"}>
+                                        Par Obole, co-organisateur de l&apos;événement
+                                      </SelectItem>
+                                      <SelectItem value={"par le bouche à oreille"}>Par le bouche à oreille</SelectItem>
+                                      <SelectItem value={"par la Fondation de France, co-organisateur de l''événement"}>
+                                        Par la Fondation de France, co-organisateur de l&apos;événement
+                                      </SelectItem>
+                                      <SelectItem value={"autre"}>Autre</SelectItem>
+                                    </SelectGroup>
+                                  </SelectContent>
+                                </Select>
+                                {error?.message && (
+                                  <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>
+                                )}
+                              </>
+                            )}
+                          />
+                        </div>
+                        <div className="mt-4 flex justify-between w-full items-center gap-1.5">
+                          <Label htmlFor="isFundraisingGenerosityOk" className="col-span-2">
+                            {
+                              "J'ai bien compris qu'il s'agit d'une soirée de levée de dons et que les associations comptent sur la générosité des participants."
+                            }
+                          </Label>{" "}
+                          <Input
+                            type="checkbox"
+                            id="isFundraisingGenerosityOk"
+                            className="flex w-4 h-4 text-right"
+                            {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
+                              required: "Cette info pour le participant est requise",
+                            })}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          type="text"
+                          id="email"
+                          placeholder="jeanned@mail.com"
+                          className="col-span-2"
+                          {...register(`attendees.${i}.email`)}
+                        />
+                        {formState.errors?.attendees?.[i].email && (
+                          <p className="text-sm text-red-800 dark:text-red-300">
+                            {formState.errors?.attendees?.[i]?.email?.message}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          ) : (
+            fields.map((p, i) => {
+              return (
+                <>
+                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                    <Label htmlFor="civility">Civilité</Label>
                     <Controller
                       name={`attendees.${i}.civility`}
                       control={control}
@@ -104,7 +303,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       )}
                     />
                   </div>
-                  <div className="mt-4 grid w-full items-center gap-1.5">
+                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
                     <Label htmlFor="firstname">Prénom</Label>
                     <Input
                       type="text"
@@ -113,6 +312,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       {...register(`attendees.${i}.firstname`, {
                         required: "Un prénom pour le participant est requis",
                       })}
+                      className="col-span-2"
                     />
                     {formState.errors?.attendees?.[i]?.firstname && (
                       <p className="text-sm text-red-800 dark:text-red-300">
@@ -120,8 +320,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       </p>
                     )}
                   </div>
-
-                  <div className="mt-4 grid w-full items-center gap-1.5">
+                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
                     <Label htmlFor="lastname">Nom</Label>
                     <Input
                       type="text"
@@ -130,6 +329,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       {...register(`attendees.${i}.lastname`, {
                         required: "Un nom pour le participant est requis",
                       })}
+                      className="col-span-2"
                     />
                     {formState.errors?.attendees?.[i]?.lastname && (
                       <p className="text-sm text-red-800 dark:text-red-300">
@@ -137,146 +337,114 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       </p>
                     )}
                   </div>
+                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      type="text"
+                      id="email"
+                      className="col-span-2"
+                      placeholder="jeanned@mail.com"
+                      {...register(`attendees.${i}.email`, {
+                        required: "Un email pour le participant est requis",
+                      })}
+                    />
+                    {formState.errors?.attendees?.[i].email && (
+                      <p className="text-sm text-red-800 dark:text-red-300">
+                        {formState.errors?.attendees?.[i]?.email?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                    <Label htmlFor="phoneNumber">Téléphone</Label>
+                    <Input
+                      type="number"
+                      id="phoneNumber"
+                      className="col-span-2"
+                      placeholder="Entrez un numéro de téléphone"
+                      {...register(`attendees.${i}.phoneNumber`, {
+                        required: "Un téléphone pour le participant est requis",
+                      })}
+                    />
+                    {formState.errors?.attendees?.[i]?.phoneNumber && (
+                      <p className="text-sm text-red-800 dark:text-red-300">
+                        {formState.errors?.attendees?.[i]?.phoneNumber?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                    <Label htmlFor="zipCode">Code postal</Label>
+                    <Input
+                      type="number"
+                      id="zipCode"
+                      placeholder="44000"
+                      className="col-span-2"
+                      {...register(`attendees.${i}.zipCode`, {
+                        required: "Un code postal pour le participant est requis",
+                      })}
+                    />
+                    {formState.errors?.attendees?.[i]?.zipCode && (
+                      <p className="text-sm text-red-800 dark:text-red-300">
+                        {formState.errors?.attendees?.[i]?.zipCode?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-4 w-full items-center gap-1.5">
+                    <Label htmlFor="civility" className="my-4">
+                      Comment avez-vous entendu parler de Lille pour le Bien Commun ?
+                    </Label>
 
-                  {i === 0 ? (
-                    <>
-                      <div className="mt-4 grid w-full items-center gap-1.5">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          type="text"
-                          id="email"
-                          placeholder="jeanned@mail.com"
-                          {...register(`attendees.${i}.email`, {
-                            required: "Un email pour le participant est requis",
-                          })}
-                        />
-                        {formState.errors?.attendees?.[i].email && (
-                          <p className="text-sm text-red-800 dark:text-red-300">
-                            {formState.errors?.attendees?.[i]?.email?.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="mt-4 grid w-full items-center gap-1.5">
-                        <Label htmlFor="phoneNumber">Téléphone</Label>
-                        <Input
-                          type="number"
-                          id="phoneNumber"
-                          placeholder="Entrez un numéro de téléphone"
-                          {...register(`attendees.${i}.phoneNumber`, {
-                            required: "Un téléphone pour le participant est requis",
-                          })}
-                        />
-                        {formState.errors?.attendees?.[i]?.phoneNumber && (
-                          <p className="text-sm text-red-800 dark:text-red-300">
-                            {formState.errors?.attendees?.[i]?.phoneNumber?.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="mt-4 grid w-full items-center gap-1.5">
-                        <Label htmlFor="zipCode">Code postal</Label>
-                        <Input
-                          type="number"
-                          id="zipCode"
-                          placeholder="44000"
-                          {...register(`attendees.${i}.zipCode`, {
-                            required: "Un code postal pour le participant est requis",
-                          })}
-                        />
-                        {formState.errors?.attendees?.[i]?.zipCode && (
-                          <p className="text-sm text-red-800 dark:text-red-300">
-                            {formState.errors?.attendees?.[i]?.zipCode?.message}
-                          </p>
-                        )}
-                      </div>
-                      <div className="mt-4 grid w-full items-center gap-1.5">
-                        <Controller
-                          name={"attendee.hearAbout"}
-                          control={control}
-                          {...register(`attendees.${i}.hearAbout`)}
-                          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
-                            <>
-                              <Select onValueChange={onChange}>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Comment avez-vous entendu parler de Lille pour le Bien Commun ?" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectGroup>
-                                    <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
-                                    <SelectItem value={"autre"}>Autre</SelectItem>
-                                  </SelectGroup>
-                                </SelectContent>
-                              </Select>
-                              {error?.message && (
-                                <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>
-                              )}
-                            </>
-                          )}
-                        />
-                      </div>
-                      <div className="mt-4 flex w-full items-center gap-1.5">
-                        <Input
-                          type="checkbox"
-                          id="isFundraisingGenerosityOk"
-                          className="w-4 h-4 "
-                          {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
-                            required: "Cette info pour le participant est requise",
-                          })}
-                        />
-                        <Label htmlFor="isFundraisingGenerosityOk">
-                          {
-                            "J'ai bien compris qu'il s'agit d'une soirée de levée de dons et que les associations comptent sur la générosité des participants."
-                          }
-                        </Label>
-                      </div>
-                      <div className="mt-4 flex w-full items-center gap-1.5">
-                        <Input
-                          type="checkbox"
-                          id="isInscriptor"
-                          className="w-4 h-4 "
-                          {...register(`attendees.${i}.isInscriptor`, {})}
-                        />
-                        {formState.errors?.attendees?.[i]?.isInscriptor && (
-                          <p className="text-sm text-red-800 dark:text-red-300">
-                            {formState.errors?.attendees?.[i]?.isInscriptor?.message}
-                          </p>
-                        )}
-                        <Label htmlFor="isInscriptor">{"Inscripteur"}</Label>
-                      </div>
-                      <div className="mt-4 flex w-full items-center gap-1.5">
-                        <Input
-                          type="checkbox"
-                          id="isVip"
-                          className="w-4 h-4 "
-                          {...register(`attendees.${i}.isVip`, {})}
-                        />
-                        {formState.errors?.attendees?.[i]?.isVip && (
-                          <p className="text-sm text-red-800 dark:text-red-300">
-                            {formState.errors?.attendees?.[i]?.isVip?.message}
-                          </p>
-                        )}
-                        <Label htmlFor="isVip">{"Vip"}</Label>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="mt-4 grid w-full items-center gap-1.5">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        type="text"
-                        id="email"
-                        placeholder="jeanned@mail.com"
-                        {...register(`attendees.${i}.email`)}
-                      />
-                      {formState.errors?.attendees?.[i].email && (
-                        <p className="text-sm text-red-800 dark:text-red-300">
-                          {formState.errors?.attendees?.[i]?.email?.message}
-                        </p>
+                    <Controller
+                      name={"attendee.hearAbout"}
+                      control={control}
+                      {...register(`attendees.${i}.hearAbout`)}
+                      render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+                        <>
+                          <Select onValueChange={onChange}>
+                            <SelectTrigger className="my-4">
+                              <SelectValue placeholder="Sélectionnez une réponse" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
+                                <SelectItem value={"par une association lauréate"}>
+                                  Par une association lauréate
+                                </SelectItem>
+                                <SelectItem value={"par Obole, co-organisateur de l''événement"}>
+                                  Par Obole, co-organisateur de l&apos;événement
+                                </SelectItem>
+                                <SelectItem value={"par le bouche à oreille"}>Par le bouche à oreille</SelectItem>
+                                <SelectItem value={"par la Fondation de France, co-organisateur de l''événement"}>
+                                  Par la Fondation de France, co-organisateur de l&apos;événement
+                                </SelectItem>
+                                <SelectItem value={"autre"}>Autre</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
+                        </>
                       )}
-                    </div>
-                  )}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                    />
+                  </div>
+                  <div className="mt-4 flex justify-between w-full items-center gap-1.5">
+                    <Label htmlFor="isFundraisingGenerosityOk" className="col-span-2">
+                      {
+                        "J'ai bien compris qu'il s'agit d'une soirée de levée de dons et que les associations comptent sur la générosité des participants."
+                      }
+                    </Label>{" "}
+                    <Input
+                      type="checkbox"
+                      id="isFundraisingGenerosityOk"
+                      className="flex w-4 h-4 text-right"
+                      {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
+                        required: "Cette info pour le participant est requise",
+                      })}
+                    />
+                  </div>
+                </>
+              );
+            })
+          )}
+
           <div className="flex items-center gap-2 mt-8">
             <button type="submit" className={buttonVariants({ size: "lg", className: "mr-3" })}>
               Continuer
@@ -304,15 +472,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
           </button>
         </div>
       </div>
-      {fields.length > 0 ? (
-        <div className="flex items-center p-4 border rounded-md">
-          {" "}
-          <span className="flex items-center">
-            <img src="/basket.svg" alt="" className="mr-10 w-14 h-14" /> Votre commande :
-          </span>{" "}
-          <span className="px-2 font-semibold"> {fields.length} x</span> participation
-        </div>
-      ) : null}
     </div>
   );
 };
