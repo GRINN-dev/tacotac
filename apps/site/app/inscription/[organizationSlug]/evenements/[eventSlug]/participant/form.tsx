@@ -57,6 +57,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
   const handleAddParticipant = () => {
     append({ status: EventStatus.Idle });
   };
+
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
     setIsLoading(true);
     setEmail(data?.attendees?.[0].email);
@@ -73,17 +74,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
 
     setIsLoading(false);
     setShowConfirmation(true);
-
-    // startTransition(() => {
-    //   router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
-    // });
   });
   return (
     <div className="flex flex-col w-full">
       <div className={showConfirmation === true ? "hidden" : "flex flex-col w-full"}>
         <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
           {fields?.length > 1 ? (
-            <Accordion type="single" collapsible>
+            <Accordion type="single" collapsible defaultValue={"1"}>
               {fields.map((item, i) => (
                 <AccordionItem key={i} value={i.toString()}>
                   <AccordionTrigger className={formState?.errors?.attendees ? "text-red-500" : ""}>
@@ -91,7 +88,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                      <Label htmlFor="civility">Civilité</Label>
+                      <Label htmlFor="civility">
+                        Civilité <span className="text-red-500">*</span>{" "}
+                      </Label>
                       <Controller
                         name={`attendees.${i}.civility`}
                         control={control}
@@ -116,7 +115,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       />
                     </div>
                     <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                      <Label htmlFor="firstname">Prénom</Label>
+                      <Label htmlFor="firstname">
+                        Prénom <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         type="text"
                         id="firstname"
@@ -134,7 +135,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                     </div>
 
                     <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                      <Label htmlFor="lastname">Nom</Label>
+                      <Label htmlFor="lastname">
+                        Nom <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         type="text"
                         id="lastname"
@@ -154,7 +157,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                     {i === 0 ? (
                       <>
                         <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                          <Label htmlFor="email">Email</Label>
+                          <Label htmlFor="email">
+                            Email <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             type="text"
                             id="email"
@@ -171,7 +176,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                           )}
                         </div>
                         <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                          <Label htmlFor="phoneNumber">Téléphone</Label>
+                          <Label htmlFor="phoneNumber">
+                            Téléphone <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             type="number"
                             id="phoneNumber"
@@ -188,7 +195,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                           )}
                         </div>
                         <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                          <Label htmlFor="zipCode">Code postal</Label>
+                          <Label htmlFor="zipCode">
+                            Code postal <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             type="number"
                             id="zipCode"
@@ -206,7 +215,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                         </div>
                         <div className="mt-4 w-full items-center gap-1.5">
                           <Label htmlFor="civility" className="my-4">
-                            Comment avez-vous entendu parler de Lille pour le Bien Commun ?
+                            Comment avez-vous entendu parler de Lille pour le Bien Commun ?{" "}
+                            <span className="text-red-500">*</span>
                           </Label>
 
                           <Controller
@@ -248,13 +258,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                             {
                               "J'ai bien compris qu'il s'agit d'une soirée de levée de dons et que les associations comptent sur la générosité des participants."
                             }
+                            <span className="text-red-500">*</span>
                           </Label>{" "}
                           <Input
                             type="checkbox"
                             id="isFundraisingGenerosityOk"
                             className="flex w-4 h-4 text-right"
                             {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
-                              required: "Cette info pour le participant est requise",
+                              required: "Cette information pour le participant est requise",
                             })}
                           />
                         </div>
@@ -475,12 +486,26 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
             Ajouter un participant
           </button>
         </div>
+        <div>
+          <div className="flex items-center justify-start">
+            <span className="w-4 h-4 mr-2 border rounded-full"></span>
+            <p>couleur #1</p>
+          </div>
+          <div className="flex items-center justify-start">
+            <span className="w-4 h-4 mr-2 border rounded-full"></span>
+            <p>couleur #2</p>
+          </div>
+          <div className="flex items-center justify-start">
+            <span className="w-4 h-4 mr-2 border rounded-full"></span>
+            <p>police #1</p>
+          </div>
+        </div>
       </div>
       {showConfirmation === true ? (
         <div className="flex flex-col items-center justify-center mt-4 text-xl">
           <img src="/check_ring_round.svg" alt="success" className="w-20 h-20" />
           <h2>Votre inscription est terminée !</h2>
-          <p className="mt-4 text-sm">
+          <p className="pt-8 text-sm">
             Un email de confirmation pour votre inscription XXXXXXXX a été envoyé à {email} . Vérifiez vos courriers
             indésirables si vous ne le recevez pas.
           </p>
