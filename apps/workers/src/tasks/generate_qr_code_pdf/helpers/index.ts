@@ -14,7 +14,7 @@ interface SendEmailPayload {
   mailData: MailDataRequired;
 }
 
-export const generateDataForAttendees = async (
+export const generateDocsForAttendees = async (
   registrationId: string,
   rowData: IRowAttendee,
   withPgClient: WithPgClient,
