@@ -22,6 +22,8 @@ interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 
 export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [email, setEmail] = useState("");
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
@@ -57,26 +59,28 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
   };
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
     setIsLoading(true);
-
+    setEmail(data?.attendees?.[0].email);
     await sdk()
       .RegisterAttendees({
         input: data,
       })
       .catch((error) => {
         setError(error);
+
         setIsLoading(false);
         throw error;
       });
 
     setIsLoading(false);
+    setShowConfirmation(true);
 
-    startTransition(() => {
-      router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
-    });
+    // startTransition(() => {
+    //   router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
+    // });
   });
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-col w-full">
+      <div className={showConfirmation === true ? "hidden" : "flex flex-col w-full"}>
         <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
           {fields?.length > 1 ? (
             <Accordion type="single" collapsible>
@@ -123,7 +127,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                         className="col-span-2"
                       />
                       {formState.errors?.attendees?.[i]?.firstname && (
-                        <p className="text-sm text-red-800 dark:text-red-300">
+                        <p className="text-sm text-right text-red-800 dark:text-red-300">
                           {formState.errors?.attendees?.[i]?.firstname?.message}
                         </p>
                       )}
@@ -141,8 +145,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                         className="col-span-2"
                       />
                       {formState.errors?.attendees?.[i]?.lastname && (
-                        <p className="text-sm text-red-800 dark:text-red-300">
-                          {formState.errors?.attendees?.[i].lastname?.message}
+                        <p className="text-sm text-right text-red-800 dark:text-red-300">
+                          {formState.errors?.attendees?.[i]?.lastname?.message}
                         </p>
                       )}
                     </div>
@@ -472,6 +476,16 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
           </button>
         </div>
       </div>
+      {showConfirmation === true ? (
+        <div className="flex flex-col items-center justify-center mt-4 text-xl">
+          <img src="/check_ring_round.svg" alt="success" className="w-20 h-20" />
+          <h2>Votre inscription est terminée !</h2>
+          <p className="mt-4 text-sm">
+            Un email de confirmation pour votre inscription XXXXXXXX a été envoyé à {email} . Vérifiez vos courriers
+            indésirables si vous ne le recevez pas.
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 };
