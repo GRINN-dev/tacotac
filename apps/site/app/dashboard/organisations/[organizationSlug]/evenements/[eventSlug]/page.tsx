@@ -31,18 +31,20 @@ const AttendeesPage = async ({
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const flattenedArray = eventBySlug?.registrations?.nodes?.reduce((acc, { attendeesList }) => {
+  const flattenedAttendeesFromRegistrations = eventBySlug?.registrations?.nodes?.reduce((acc, { attendeesList }) => {
     return acc.concat(attendeesList);
   }, []);
 
-  const rawAttendees: IData[] = flattenedArray?.map(({ id, lastname, firstname, email, status, panelNumber }) => ({
-    Nom: lastname,
-    Prenom: firstname,
-    email: email,
-    status: status,
-    "N° Panneau": panelNumber,
-    slug: "/participant/" + id,
-  }));
+  const rawAttendees: IData[] = flattenedAttendeesFromRegistrations?.map(
+    ({ id, lastname, firstname, email, status, panelNumber }) => ({
+      Nom: lastname,
+      Prenom: firstname,
+      email: email,
+      status: status,
+      "N° Panneau": panelNumber,
+      slug: "/participant/" + id,
+    })
+  );
   //pour pr
   return (
     <section className="container grid w-full items-center gap-6 pt-6 pb-8 md:py-10">
@@ -51,7 +53,7 @@ const AttendeesPage = async ({
           Tous les participants
         </h2>
       </div>
-      {flattenedArray.length > 0 ? (
+      {flattenedAttendeesFromRegistrations.length > 0 ? (
         <Collection
           totalCount={eventBySlug?.registrations?.totalCount}
           pageInfo={eventBySlug?.registrations?.pageInfo}
