@@ -8,7 +8,6 @@ dayjs.locale("fr");
 
 export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
   const { registrationId } = payload as IPayloadQrCodeGen;
-  console.log("🚀 ~ file: qrCodeGen.ts:5 ~ payload:", payload, registrationId);
 
   const { rows: attendees } = await withPgClient(pgClient =>
     pgClient.query(
@@ -40,10 +39,6 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
     }
   }
   const results = await Promise.all(storePdfBufferForMergedOnInscriptor);
-  console.log(
-    "🚀 ~ file: index.ts:43 ~ constqrCodeGenPdf:Task= ~ results:",
-    results
-  );
 
   if (attendees?.at(0).is_inscriptor) {
     //dans cette condition on vérifie  l'inscripeur et on lui envoie ses données perso plus pdf des pautres particpants si présent

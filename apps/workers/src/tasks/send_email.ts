@@ -10,10 +10,6 @@ export interface SendEmailPayload {
 }
 
 export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
-  console.log(
-    "🚀 ~ file: send_email.ts:13 ~ constsendEmail:Task= ~ payload:",
-    payload
-  );
   const { sendEmailPayload, attendeeId } = payload as {
     attendeeId: string;
     sendEmailPayload: SendEmailPayload;
