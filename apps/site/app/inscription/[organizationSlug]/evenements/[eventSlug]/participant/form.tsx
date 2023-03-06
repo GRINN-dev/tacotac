@@ -54,26 +54,33 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
     name: "attendees",
   });
 
-  const handleAddParticipant = () => {
+  const handleAddParticipant = async () => {
+    const formHasError = await trigger();
+    if (!formHasError) return;
     append({ status: EventStatus.Idle });
   };
 
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
-    setIsLoading(true);
-    setEmail(data?.attendees?.[0].email);
-    await sdk()
-      .RegisterAttendees({
-        input: data,
-      })
-      .catch((error) => {
-        setError(error);
+    const isValid = await trigger();
+    if (isValid) {
+      setIsLoading(true);
+      setEmail(data?.attendees?.[0].email);
+      await sdk()
+        .RegisterAttendees({
+          input: data,
+        })
+        .catch((error) => {
+          setError(error);
 
-        setIsLoading(false);
-        throw error;
-      });
+          setIsLoading(false);
+          throw error;
+        });
 
-    setIsLoading(false);
-    setShowConfirmation(true);
+      setIsLoading(false);
+      setShowConfirmation(true);
+    } else {
+      console.log("invalide");
+    }
   });
   return (
     <div className="flex flex-col w-full">
@@ -280,7 +287,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                           className="col-span-2"
                           {...register(`attendees.${i}.email`)}
                         />
-                        {formState.errors?.attendees?.[i].email && (
+                        {formState.errors?.attendees?.[i]?.email && (
                           <p className="text-sm text-red-800 dark:text-red-300">
                             {formState.errors?.attendees?.[i]?.email?.message}
                           </p>
@@ -464,6 +471,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
             <button type="submit" className={buttonVariants({ size: "lg", className: "mr-3" })}>
               Continuer
             </button>
+
             <p>ou</p>
           </div>
           {error && (
