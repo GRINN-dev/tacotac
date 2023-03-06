@@ -40,21 +40,19 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
   }
   const results = await Promise.all(storePdfBufferForMergedOnInscriptor);
 
-  if (attendees?.at(0).is_inscriptor) {
-    //dans cette condition on vérifie  l'inscripeur et on lui envoie ses données perso plus pdf des pautres particpants si présent
-    const { sendEmailPayload: sendEmailPayloadInscriptor, bufferPdf } =
-      await generateDataForAttendees(
-        registrationId,
-        attendees?.at(0),
-        withPgClient,
-        results
-      );
+  //dans cette condition on gere uniquement le premier inscrit et on lui envoie ses docs plus docs des pautres particpants si présent
+  const { sendEmailPayload: sendEmailPayloadInscriptor, bufferPdf } =
+    await generateDataForAttendees(
+      registrationId,
+      attendees?.at(0),
+      withPgClient,
+      results
+    );
 
-    addJob("sendEmail", {
-      attendeeId: attendees.at(0).id,
-      sendEmailPayload: sendEmailPayloadInscriptor,
-    });
-  }
+  addJob("sendEmail", {
+    attendeeId: attendees.at(0).id,
+    sendEmailPayload: sendEmailPayloadInscriptor,
+  });
 };
 
 // avec helpers
