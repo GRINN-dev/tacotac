@@ -27,12 +27,12 @@ const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset
     { title: "Début le", value: "startsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
-    { title: "Participants", value: "attendees", type: Type?.date, isSortable: false, isVisible: true },
+    { title: "Inscrits", value: "registrations", type: Type?.date, isSortable: false, isVisible: true },
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawEvent: IData[] = organization?.events?.nodes.map(
-    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, attendees, slug }) => ({
+    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, slug, registrations }) => ({
       Nom: name,
       Lieu: city,
       "Début le": (
@@ -46,7 +46,7 @@ const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset
       ),
       "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
       "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
-      Participants: attendees?.nodes?.length,
+      Inscrits: registrations?.totalCount,
       slug: slug,
     })
   );

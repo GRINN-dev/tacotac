@@ -1,23 +1,6 @@
 
 
 
-CREATE OR REPLACE FUNCTION publ.registration_by_event_slug(event_slug text)
-RETURNS  publ.registrations AS $$
-DECLARE
-  attendees publ.registrations%ROWTYPE;
-BEGIN
-    SELECT reg.*
-    FROM publ.registrations reg
-    INNER JOIN publ.events evt ON evt.id = reg.event_id
-    INNER JOIN publ.attendees att ON att.registration_id = reg.id
-    WHERE evt.slug = event_slug into attendees;
-    RETURN  attendees;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-grant execute on function publ.registration_by_event_slug( text) to :DATABASE_VISITOR;
-
 create or replace function publ.register_attendees(event_id uuid, attendees publ.attendees[]) returns publ.registrations as $$
 DECLARE 
   v_registration publ.registrations;

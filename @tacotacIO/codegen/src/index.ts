@@ -32,6 +32,7 @@ export type Scalars = {
   UUID: any;
 };
 
+/** Event from organizations */
 export type Attendee = Node & {
   __typename?: 'Attendee';
   civility: CivilityStatus;
@@ -1457,7 +1458,6 @@ export type Mutation = {
   login?: Maybe<LoginPayload>;
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
-  sendEmailConfirmationByRegistrationId?: Maybe<SendEmailConfirmationByRegistrationIdPayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
@@ -1698,12 +1698,6 @@ export type MutationRegisterArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterAttendeesArgs = {
   input: RegisterAttendeesInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationSendEmailConfirmationByRegistrationIdArgs = {
-  input: SendEmailConfirmationByRegistrationIdInput;
 };
 
 
@@ -2163,6 +2157,8 @@ export type Query = Node & {
   attendeeByNodeId?: Maybe<Attendee>;
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees?: Maybe<AttendeesConnection>;
+  /** Reads a set of `Attendee`. */
+  attendeesList?: Maybe<Array<Attendee>>;
   /** The currently logged in user (or null if not logged in). */
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID. */
@@ -2199,6 +2195,8 @@ export type Query = Node & {
   organizationMemberships?: Maybe<OrganizationMembershipsConnection>;
   /** Reads and enables pagination through a set of `Organization`. */
   organizations?: Maybe<OrganizationsConnection>;
+  /** Reads a set of `Organization`. */
+  organizationsList?: Maybe<Array<Organization>>;
   /**
    * Exposes the root query type nested one level down. This is helpful for Relay 1
    * which can only query top level fields if they are in a particular form.
@@ -2239,6 +2237,16 @@ export type QueryAttendeesArgs = {
   filter?: InputMaybe<AttendeeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAttendeesListArgs = {
+  condition?: InputMaybe<AttendeeCondition>;
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
@@ -2404,6 +2412,16 @@ export type QueryOrganizationsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryOrganizationsListArgs = {
+  condition?: InputMaybe<OrganizationCondition>;
+  filter?: InputMaybe<OrganizationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryRegistrationArgs = {
   id: Scalars['UUID'];
 };
@@ -2529,6 +2547,8 @@ export type Registration = Node & {
   __typename?: 'Registration';
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees: AttendeesConnection;
+  /** Reads and enables pagination through a set of `Attendee`. */
+  attendeesList: Array<Attendee>;
   createdAt: Scalars['Datetime'];
   /** Reads a single `Event` that is related to this `Registration`. */
   event?: Maybe<Event>;
@@ -2548,6 +2568,15 @@ export type RegistrationAttendeesArgs = {
   filter?: InputMaybe<AttendeeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+
+export type RegistrationAttendeesListArgs = {
+  condition?: InputMaybe<AttendeeCondition>;
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
@@ -2639,28 +2668,6 @@ export enum RegistrationsOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
-
-/** All input for the `sendEmailConfirmationByRegistrationId` mutation. */
-export type SendEmailConfirmationByRegistrationIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  regId: Scalars['UUID'];
-};
-
-/** The output of our `sendEmailConfirmationByRegistrationId` mutation. */
-export type SendEmailConfirmationByRegistrationIdPayload = {
-  __typename?: 'SendEmailConfirmationByRegistrationIdPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
@@ -3375,13 +3382,6 @@ export type CreateRegistrationMutationVariables = Exact<{
 
 export type CreateRegistrationMutation = { __typename?: 'Mutation', createRegistration?: { __typename?: 'CreateRegistrationPayload', clientMutationId?: string | null, registration?: { __typename?: 'Registration', id: any } | null } | null };
 
-export type SendEmailConfirmationByRegistrationIdMutationVariables = Exact<{
-  registrationId: Scalars['UUID'];
-}>;
-
-
-export type SendEmailConfirmationByRegistrationIdMutation = { __typename?: 'Mutation', sendEmailConfirmationByRegistrationId?: { __typename?: 'SendEmailConfirmationByRegistrationIdPayload', clientMutationId?: string | null } | null };
-
 export type GetAllAttendeeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3460,7 +3460,7 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetRegistrationByEventSlugQueryVariables = Exact<{
   eventSlug?: InputMaybe<Scalars['String']>;
@@ -3664,13 +3664,6 @@ export const CreateRegistrationDocument = gql`
   }
 }
     `;
-export const SendEmailConfirmationByRegistrationIdDocument = gql`
-    mutation SendEmailConfirmationByRegistrationId($registrationId: UUID!) {
-  sendEmailConfirmationByRegistrationId(input: {regId: $registrationId}) {
-    clientMutationId
-  }
-}
-    `;
 export const GetAllAttendeeDocument = gql`
     query GetAllAttendee {
   attendees(orderBy: [CREATED_AT_DESC]) {
@@ -3830,6 +3823,9 @@ export const GetOrganizationBySlugDocument = gql`
     ) {
       nodes {
         ...MyEvent
+        registrations {
+          totalCount
+        }
       }
       pageInfo {
         hasNextPage
@@ -3923,9 +3919,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     CreateRegistration(variables: CreateRegistrationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateRegistrationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateRegistrationMutation>(CreateRegistrationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateRegistration', 'mutation');
-    },
-    SendEmailConfirmationByRegistrationId(variables: SendEmailConfirmationByRegistrationIdMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SendEmailConfirmationByRegistrationIdMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<SendEmailConfirmationByRegistrationIdMutation>(SendEmailConfirmationByRegistrationIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SendEmailConfirmationByRegistrationId', 'mutation');
     },
     GetAllAttendee(variables?: GetAllAttendeeQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllAttendeeQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllAttendeeQuery>(GetAllAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllAttendee', 'query');
