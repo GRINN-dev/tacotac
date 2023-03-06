@@ -111,7 +111,7 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
       const sendEmailPayload: SendEmailPayload = {
         mailData: {
           to: row.email,
-          from: { name: "L'équipe", email: "contact@obole.eu" },
+          from: { name: "El equipo", email: "contact@obole.eu" },
           templateId: BILLET_TEMPLATE,
           dynamicTemplateData: {
             Event_Name: row.name,
@@ -218,4 +218,3 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
   }
 };
 
-// avec helpers
