@@ -52,7 +52,7 @@ export type Attendee = Node & {
   nodeId: Scalars['ID'];
   notes?: Maybe<Scalars['String']>;
   panelNumber?: Maybe<Scalars['Int']>;
-  pdfLink?: Maybe<Scalars['String']>;
+  pdfUrl?: Maybe<Scalars['String']>;
   phoneNumber?: Maybe<Scalars['String']>;
   qrCodeUrl?: Maybe<Scalars['String']>;
   /** Reads a single `Registration` that is related to this `Attendee`. */
@@ -135,7 +135,7 @@ export type AttendeeInput = {
   lastname: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
-  pdfLink?: InputMaybe<Scalars['String']>;
+  pdfUrl?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   qrCodeUrl?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
@@ -163,7 +163,7 @@ export type AttendeePatch = {
   lastname?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
-  pdfLink?: InputMaybe<Scalars['String']>;
+  pdfUrl?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   qrCodeUrl?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
@@ -2155,10 +2155,6 @@ export type Query = Node & {
   attendee?: Maybe<Attendee>;
   /** Reads a single `Attendee` using its globally unique `ID`. */
   attendeeByNodeId?: Maybe<Attendee>;
-  /** Reads and enables pagination through a set of `Attendee`. */
-  attendees?: Maybe<AttendeesConnection>;
-  /** Reads a set of `Attendee`. */
-  attendeesList?: Maybe<Array<Attendee>>;
   /** The currently logged in user (or null if not logged in). */
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID. */
@@ -2203,7 +2199,6 @@ export type Query = Node & {
    */
   query: Query;
   registration?: Maybe<Registration>;
-  registrationByEventSlug?: Maybe<Registration>;
   /** Reads a single `Registration` using its globally unique `ID`. */
   registrationByNodeId?: Maybe<Registration>;
   /** Reads and enables pagination through a set of `Registration`. */
@@ -2226,29 +2221,6 @@ export type QueryAttendeeArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryAttendeeByNodeIdArgs = {
   nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryAttendeesArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<AttendeeCondition>;
-  filter?: InputMaybe<AttendeeFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryAttendeesListArgs = {
-  condition?: InputMaybe<AttendeeCondition>;
-  filter?: InputMaybe<AttendeeFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
 
@@ -2424,12 +2396,6 @@ export type QueryOrganizationsListArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryRegistrationArgs = {
   id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRegistrationByEventSlugArgs = {
-  eventSlug?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3382,11 +3348,6 @@ export type CreateRegistrationMutationVariables = Exact<{
 
 export type CreateRegistrationMutation = { __typename?: 'Mutation', createRegistration?: { __typename?: 'CreateRegistrationPayload', clientMutationId?: string | null, registration?: { __typename?: 'Registration', id: any } | null } | null };
 
-export type GetAllAttendeeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllAttendeeQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
-
 export type GetAttendeeByIdQueryVariables = Exact<{
   attendeeId: Scalars['UUID'];
 }>;
@@ -3423,10 +3384,14 @@ export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: '
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
   organizationSlug: Scalars['String'];
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy> | AttendeesOrderBy>;
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }> }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
@@ -3461,13 +3426,6 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 
 
 export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
-
-export type GetRegistrationByEventSlugQueryVariables = Exact<{
-  eventSlug?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type GetRegistrationByEventSlugQuery = { __typename?: 'Query', registrationByEventSlug?: { __typename?: 'Registration', eventId?: any | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', firstname: string, email?: string | null, id: any, panelNumber?: number | null, phoneNumber?: string | null, registrationId?: any | null, status: EventStatus, zipCode: string, isInscriptor?: boolean | null, hearAbout: string, civility: CivilityStatus, lastname: string, isVip?: boolean | null }>, pageInfo: { __typename?: 'PageInfo', endCursor?: any | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null } } } | null };
 
 export const MyAttendeeFragmentDoc = gql`
     fragment MyAttendee on Attendee {
@@ -3664,22 +3622,6 @@ export const CreateRegistrationDocument = gql`
   }
 }
     `;
-export const GetAllAttendeeDocument = gql`
-    query GetAllAttendee {
-  attendees(orderBy: [CREATED_AT_DESC]) {
-    nodes {
-      ...MyAttendee
-    }
-    totalCount
-    pageInfo {
-      hasNextPage
-      hasPreviousPage
-      startCursor
-      endCursor
-    }
-  }
-}
-    ${MyAttendeeFragmentDoc}`;
 export const GetAttendeeByIdDocument = gql`
     query GetAttendeeById($attendeeId: UUID!) {
   attendee(id: $attendeeId) {
@@ -3740,7 +3682,7 @@ export const GetEventByIdDocument = gql`
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}`;
 export const GetEventBySlugDocument = gql`
-    query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
+    query GetEventBySlug($eventSlug: String!, $organizationSlug: String!, $filter: AttendeeFilter, $first: Int, $offset: Int, $orderBy: [AttendeesOrderBy!]) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
     eventBranding {
@@ -3748,10 +3690,13 @@ export const GetEventBySlugDocument = gql`
     }
     registrations {
       nodes {
-        attendees {
-          nodes {
-            ...MyAttendee
-          }
+        attendeesList(
+          orderBy: $orderBy
+          offset: $offset
+          first: $first
+          filter: $filter
+        ) {
+          ...MyAttendee
         }
       }
       pageInfo {
@@ -3839,37 +3784,6 @@ export const GetOrganizationBySlugDocument = gql`
 }
     ${OrganizationFragmentFragmentDoc}
 ${MyEventFragmentDoc}`;
-export const GetRegistrationByEventSlugDocument = gql`
-    query GetRegistrationByEventSlug($eventSlug: String) {
-  registrationByEventSlug(eventSlug: $eventSlug) {
-    eventId
-    attendees {
-      nodes {
-        firstname
-        email
-        id
-        panelNumber
-        phoneNumber
-        registrationId
-        status
-        zipCode
-        isInscriptor
-        hearAbout
-        civility
-        lastname
-        isVip
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
-        hasPreviousPage
-        startCursor
-      }
-      totalCount
-    }
-  }
-}
-    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -3920,9 +3834,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     CreateRegistration(variables: CreateRegistrationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateRegistrationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateRegistrationMutation>(CreateRegistrationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateRegistration', 'mutation');
     },
-    GetAllAttendee(variables?: GetAllAttendeeQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllAttendeeQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllAttendeeQuery>(GetAllAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllAttendee', 'query');
-    },
     GetAttendeeById(variables: GetAttendeeByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByIdQuery>(GetAttendeeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeById', 'query');
     },
@@ -3949,9 +3860,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetOrganizationBySlug(variables: GetOrganizationBySlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetOrganizationBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetOrganizationBySlugQuery>(GetOrganizationBySlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetOrganizationBySlug', 'query');
-    },
-    GetRegistrationByEventSlug(variables?: GetRegistrationByEventSlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetRegistrationByEventSlugQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetRegistrationByEventSlugQuery>(GetRegistrationByEventSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetRegistrationByEventSlug', 'query');
     }
   };
 }

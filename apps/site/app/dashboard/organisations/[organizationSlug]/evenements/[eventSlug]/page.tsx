@@ -16,6 +16,10 @@ const AttendeesPage = async ({
   const { eventBySlug } = await sdk().GetEventBySlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
+    first: Number(first) || initLimit,
+    offset: Number(offset),
+    filter: filter ? JSON.parse(filter) : null,
+    orderBy: orderBy,
   });
 
   const headerAttendees: IHeader[] = [
@@ -27,9 +31,11 @@ const AttendeesPage = async ({
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const flattenAttendees = eventBySlug?.registrations?.nodes?.map(({ attendees }) => attendees?.nodes).flat();
+  const flattenedArray = eventBySlug?.registrations?.nodes?.reduce((acc, { attendeesList }) => {
+    return acc.concat(attendeesList);
+  }, []);
 
-  const rawAttendees: IData[] = flattenAttendees?.map(({ id, lastname, firstname, email, status, panelNumber }) => ({
+  const rawAttendees: IData[] = flattenedArray?.map(({ id, lastname, firstname, email, status, panelNumber }) => ({
     Nom: lastname,
     Prenom: firstname,
     email: email,
@@ -45,7 +51,7 @@ const AttendeesPage = async ({
           Tous les participants
         </h2>
       </div>
-      {flattenAttendees.length > 0 ? (
+      {flattenedArray.length > 0 ? (
         <Collection
           totalCount={eventBySlug?.registrations?.totalCount}
           pageInfo={eventBySlug?.registrations?.pageInfo}
