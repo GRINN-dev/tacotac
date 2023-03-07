@@ -8,6 +8,7 @@ import {
   GetEventByIdQuery,
   RegisterAttendeesInput,
 } from "@/../../@tacotacIO/codegen/dist";
+import { CheckCircle2Icon, DownloadIcon } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -511,7 +512,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
       </div>
       {showConfirmation === true ? (
         <div className="flex flex-col items-center justify-center mt-4 text-xl">
-          <img src="/check_ring_round.svg" alt="success" className="w-20 h-20" />
+          <CheckCircle2Icon className="w-16 h-16 mb-8" />
           <h2>Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
             Un email de confirmation pour votre inscription XXXXXXXX a été envoyé à {email} . Vérifiez vos courriers
@@ -519,7 +520,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
           </p>
           <div className="flex items-center justify-between">
             <button className={buttonVariants({ size: "lg", className: "mt-12" })}>
-              <img src="/archive_load_light.svg" alt="download-icon" className="mr-2" />
+              <DownloadIcon className="mr-2" />
               Télécharger vos billets
             </button>
           </div>
