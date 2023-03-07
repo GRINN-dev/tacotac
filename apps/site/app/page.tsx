@@ -1,11 +1,11 @@
+import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-
-
+import Script from "next/script";
 
 import { siteConfig } from "@/config/site";
 import { buttonVariants } from "@/components/ui/button";
-
+import { TestCaptcha } from "./test_captcha";
 
 export default function IndexPage() {
   return (
@@ -16,6 +16,8 @@ export default function IndexPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
+
       <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
         <div className="flex max-w-[980px] flex-col items-start gap-2">
           <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
@@ -40,6 +42,7 @@ export default function IndexPage() {
           >
             scanner
           </Link>
+          <TestCaptcha />
         </div>
       </section>
     </>

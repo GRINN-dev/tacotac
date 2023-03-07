@@ -2155,6 +2155,10 @@ export type Query = Node & {
   attendee?: Maybe<Attendee>;
   /** Reads a single `Attendee` using its globally unique `ID`. */
   attendeeByNodeId?: Maybe<Attendee>;
+  /** Reads and enables pagination through a set of `Attendee`. */
+  attendees?: Maybe<AttendeesConnection>;
+  /** Reads a set of `Attendee`. */
+  attendeesList?: Maybe<Array<Attendee>>;
   /** The currently logged in user (or null if not logged in). */
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID. */
@@ -2221,6 +2225,29 @@ export type QueryAttendeeArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryAttendeeByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAttendeesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AttendeeCondition>;
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAttendeesListArgs = {
+  condition?: InputMaybe<AttendeeCondition>;
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
 

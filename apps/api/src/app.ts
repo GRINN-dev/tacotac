@@ -4,6 +4,7 @@ import {
   installDatabasePools,
   installCors,
   installVoyager,
+  installCaptcha,
 } from "./middlewares";
 
 export const makeApp = () => {
@@ -13,5 +14,6 @@ export const makeApp = () => {
   installDatabasePools(app);
   installPostgraphile(app);
   installVoyager(app);
+  installCaptcha(app);
   return app;
 };
