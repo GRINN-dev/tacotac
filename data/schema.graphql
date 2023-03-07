@@ -17,6 +17,62 @@ type Query implements Node {
     nodeId: ID!
   ): Node
 
+  """Reads and enables pagination through a set of `Attendee`."""
+  attendees(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Attendee`."""
+    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttendeeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttendeeFilter
+  ): AttendeesConnection
+
+  """Reads a set of `Attendee`."""
+  attendeesList(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Attendee`."""
+    orderBy: [AttendeesOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttendeeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttendeeFilter
+  ): [Attendee!]
+
   """Reads and enables pagination through a set of `EventBranding`."""
   eventBrandings(
     """Only read the first `n` values of the set."""
@@ -328,43 +384,56 @@ interface Node {
   nodeId: ID!
 }
 
-"""A connection to a list of `EventBranding` values."""
-type EventBrandingsConnection {
-  """A list of `EventBranding` objects."""
-  nodes: [EventBranding!]!
+"""A connection to a list of `Attendee` values."""
+type AttendeesConnection {
+  """A list of `Attendee` objects."""
+  nodes: [Attendee!]!
 
   """
-  A list of edges which contains the `EventBranding` and cursor to aid in pagination.
+  A list of edges which contains the `Attendee` and cursor to aid in pagination.
   """
-  edges: [EventBrandingsEdge!]!
+  edges: [AttendeesEdge!]!
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  """The count of *all* `EventBranding` you could get from the connection."""
+  """The count of *all* `Attendee` you could get from the connection."""
   totalCount: Int!
 }
 
-type EventBranding implements Node {
+"""Event from organizations"""
+type Attendee implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   nodeId: ID!
   id: UUID!
-  eventId: UUID!
-  color1: String
-  color2: String
-  font: Fonts
-  logo: String
-  placeholder: JSON
-  richText: String
-  shortText: String
-  awardWinningAssoList: [String]
+  civility: CivilityStatus!
+  firstname: String!
+  lastname: String!
+  email: String
+  phoneNumber: String
+  registrationId: UUID
+  zipCode: String
+  hearAbout: String
+  isFundraisingGenerosityOk: Boolean
+  status: EventStatus!
+  notes: String
+  isInscriptor: Boolean
+  isVip: Boolean
+  isNewsEventEmail: Boolean
+  isNewsFondationEmail: Boolean
+  panelNumber: Int
+  ticketNumber: String
+  isEmailSent: Boolean
+  qrCodeUrl: String
+  pdfUrl: String
+  signCode: String
   createdAt: Datetime!
   updatedAt: Datetime!
 
-  """Reads a single `Event` that is related to this `EventBranding`."""
-  event: Event
+  """Reads a single `Registration` that is related to this `Attendee`."""
+  registration: Registration
 }
 
 """
@@ -372,27 +441,107 @@ A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/
 """
 scalar UUID
 
-enum Fonts {
-  """Roboto"""
-  ROBOTO
+enum CivilityStatus {
+  """Monsieur"""
+  MR
 
-  """Montserrat"""
-  MONTSERRAT
-
-  """Open Sans"""
-  OPENSANS
+  """Madame"""
+  MME
 }
 
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
+enum EventStatus {
+  """En attente"""
+  IDLE
+
+  """Inscription annulée"""
+  CANCELLED
+
+  """Présence confirmée à l'évenement"""
+  CONFIRMED
+
+  """Ticket scanné"""
+  TICKET_SCAN
+
+  """Panneau scanné"""
+  PANEL_SCAN
+}
 
 """
 A point in time as described by the [ISO
 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
 """
 scalar Datetime
+
+type Registration implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  eventId: UUID
+  hearAboutList: [String]
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Event` that is related to this `Registration`."""
+  event: Event
+
+  """Reads and enables pagination through a set of `Attendee`."""
+  attendees(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Attendee`."""
+    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttendeeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttendeeFilter
+  ): AttendeesConnection!
+
+  """Reads and enables pagination through a set of `Attendee`."""
+  attendeesList(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Attendee`."""
+    orderBy: [AttendeesOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttendeeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttendeeFilter
+  ): [Attendee!]!
+}
 
 type Event implements Node {
   """
@@ -1127,6 +1276,44 @@ input IntFilter {
   greaterThanOrEqualTo: Int
 }
 
+type EventBranding implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  eventId: UUID!
+  color1: String
+  color2: String
+  font: Fonts
+  logo: String
+  placeholder: JSON
+  richText: String
+  shortText: String
+  awardWinningAssoList: [String]
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Event` that is related to this `EventBranding`."""
+  event: Event
+}
+
+enum Fonts {
+  """Roboto"""
+  ROBOTO
+
+  """Montserrat"""
+  MONTSERRAT
+
+  """Open Sans"""
+  OPENSANS
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
 """A connection to a list of `Registration` values."""
 type RegistrationsConnection {
   """A list of `Registration` objects."""
@@ -1144,161 +1331,72 @@ type RegistrationsConnection {
   totalCount: Int!
 }
 
-type Registration implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: UUID!
-  eventId: UUID
-  hearAboutList: [String]
-  createdAt: Datetime!
-  updatedAt: Datetime!
-
-  """Reads a single `Event` that is related to this `Registration`."""
-  event: Event
-
-  """Reads and enables pagination through a set of `Attendee`."""
-  attendees(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttendeeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttendeeFilter
-  ): AttendeesConnection!
-
-  """Reads and enables pagination through a set of `Attendee`."""
-  attendeesList(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Skip the first `n` values."""
-    offset: Int
-
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AttendeeCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: AttendeeFilter
-  ): [Attendee!]!
-}
-
-"""A connection to a list of `Attendee` values."""
-type AttendeesConnection {
-  """A list of `Attendee` objects."""
-  nodes: [Attendee!]!
-
-  """
-  A list of edges which contains the `Attendee` and cursor to aid in pagination.
-  """
-  edges: [AttendeesEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Attendee` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""Event from organizations"""
-type Attendee implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: UUID!
-  civility: CivilityStatus!
-  firstname: String!
-  lastname: String!
-  email: String
-  phoneNumber: String
-  registrationId: UUID
-  zipCode: String!
-  hearAbout: String!
-  isFundraisingGenerosityOk: Boolean!
-  status: EventStatus!
-  notes: String
-  isInscriptor: Boolean
-  isVip: Boolean
-  isNewsEventEmail: Boolean
-  isNewsFondationEmail: Boolean
-  panelNumber: Int
-  ticketNumber: String
-  isEmailSent: Boolean
-  qrCodeUrl: String
-  pdfUrl: String
-  signCode: String
-  createdAt: Datetime!
-  updatedAt: Datetime!
-
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
-}
-
-enum CivilityStatus {
-  """Monsieur"""
-  MR
-
-  """Madame"""
-  MME
-}
-
-enum EventStatus {
-  """En attente"""
-  IDLE
-
-  """Inscription annulée"""
-  CANCELLED
-
-  """Présence confirmée à l'évenement"""
-  CONFIRMED
-
-  """Ticket scanné"""
-  TICKET_SCAN
-
-  """Panneau scanné"""
-  PANEL_SCAN
-}
-
-"""A `Attendee` edge in the connection."""
-type AttendeesEdge {
+"""A `Registration` edge in the connection."""
+type RegistrationsEdge {
   """A cursor for use in pagination."""
   cursor: Cursor
 
-  """The `Attendee` at the end of the edge."""
-  node: Attendee!
+  """The `Registration` at the end of the edge."""
+  node: Registration!
+}
+
+"""Methods to use when ordering `Registration`."""
+enum RegistrationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Registration` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input RegistrationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: UUID
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Registration` object types. All fields are combined with a logical ‘and.’
+"""
+input RegistrationFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: UUIDFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Checks for all expressions in this list."""
+  and: [RegistrationFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [RegistrationFilter!]
+
+  """Negates the expression."""
+  not: RegistrationFilter
 }
 
 """Methods to use when ordering `Attendee`."""
@@ -1484,72 +1582,30 @@ input EventStatusFilter {
   greaterThanOrEqualTo: EventStatus
 }
 
-"""A `Registration` edge in the connection."""
-type RegistrationsEdge {
+"""A `Attendee` edge in the connection."""
+type AttendeesEdge {
   """A cursor for use in pagination."""
   cursor: Cursor
 
-  """The `Registration` at the end of the edge."""
-  node: Registration!
+  """The `Attendee` at the end of the edge."""
+  node: Attendee!
 }
 
-"""Methods to use when ordering `Registration`."""
-enum RegistrationsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  EVENT_ID_ASC
-  EVENT_ID_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
+"""A connection to a list of `EventBranding` values."""
+type EventBrandingsConnection {
+  """A list of `EventBranding` objects."""
+  nodes: [EventBranding!]!
 
-"""
-A condition to be used against `Registration` object types. All fields are
-tested for equality and combined with a logical ‘and.’
-"""
-input RegistrationCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: UUID
+  """
+  A list of edges which contains the `EventBranding` and cursor to aid in pagination.
+  """
+  edges: [EventBrandingsEdge!]!
 
-  """Checks for equality with the object’s `eventId` field."""
-  eventId: UUID
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
 
-  """Checks for equality with the object’s `createdAt` field."""
-  createdAt: Datetime
-
-  """Checks for equality with the object’s `updatedAt` field."""
-  updatedAt: Datetime
-}
-
-"""
-A filter to be used against `Registration` object types. All fields are combined with a logical ‘and.’
-"""
-input RegistrationFilter {
-  """Filter by the object’s `id` field."""
-  id: UUIDFilter
-
-  """Filter by the object’s `eventId` field."""
-  eventId: UUIDFilter
-
-  """Filter by the object’s `createdAt` field."""
-  createdAt: DatetimeFilter
-
-  """Filter by the object’s `updatedAt` field."""
-  updatedAt: DatetimeFilter
-
-  """Checks for all expressions in this list."""
-  and: [RegistrationFilter!]
-
-  """Checks for any expressions in this list."""
-  or: [RegistrationFilter!]
-
-  """Negates the expression."""
-  not: RegistrationFilter
+  """The count of *all* `EventBranding` you could get from the connection."""
+  totalCount: Int!
 }
 
 """A `EventBranding` edge in the connection."""
@@ -2330,9 +2386,9 @@ input AttendeeInput {
   email: String
   phoneNumber: String
   registrationId: UUID
-  zipCode: String!
-  hearAbout: String!
-  isFundraisingGenerosityOk: Boolean!
+  zipCode: String
+  hearAbout: String
+  isFundraisingGenerosityOk: Boolean
   status: EventStatus!
   notes: String
   isInscriptor: Boolean

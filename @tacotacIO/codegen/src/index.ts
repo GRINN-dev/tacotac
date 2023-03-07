@@ -39,10 +39,10 @@ export type Attendee = Node & {
   createdAt: Scalars['Datetime'];
   email?: Maybe<Scalars['String']>;
   firstname: Scalars['String'];
-  hearAbout: Scalars['String'];
+  hearAbout?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   isEmailSent?: Maybe<Scalars['Boolean']>;
-  isFundraisingGenerosityOk: Scalars['Boolean'];
+  isFundraisingGenerosityOk?: Maybe<Scalars['Boolean']>;
   isInscriptor?: Maybe<Scalars['Boolean']>;
   isNewsEventEmail?: Maybe<Scalars['Boolean']>;
   isNewsFondationEmail?: Maybe<Scalars['Boolean']>;
@@ -62,7 +62,7 @@ export type Attendee = Node & {
   status: EventStatus;
   ticketNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
-  zipCode: Scalars['String'];
+  zipCode?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -124,10 +124,10 @@ export type AttendeeInput = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   email?: InputMaybe<Scalars['String']>;
   firstname: Scalars['String'];
-  hearAbout: Scalars['String'];
+  hearAbout?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   isEmailSent?: InputMaybe<Scalars['Boolean']>;
-  isFundraisingGenerosityOk: Scalars['Boolean'];
+  isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
   isInscriptor?: InputMaybe<Scalars['Boolean']>;
   isNewsEventEmail?: InputMaybe<Scalars['Boolean']>;
   isNewsFondationEmail?: InputMaybe<Scalars['Boolean']>;
@@ -143,7 +143,7 @@ export type AttendeeInput = {
   status: EventStatus;
   ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  zipCode: Scalars['String'];
+  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `Attendee`. Fields that are set will be updated. */
@@ -2155,6 +2155,10 @@ export type Query = Node & {
   attendee?: Maybe<Attendee>;
   /** Reads a single `Attendee` using its globally unique `ID`. */
   attendeeByNodeId?: Maybe<Attendee>;
+  /** Reads and enables pagination through a set of `Attendee`. */
+  attendees?: Maybe<AttendeesConnection>;
+  /** Reads a set of `Attendee`. */
+  attendeesList?: Maybe<Array<Attendee>>;
   /** The currently logged in user (or null if not logged in). */
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID. */
@@ -2221,6 +2225,29 @@ export type QueryAttendeeArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryAttendeeByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAttendeesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AttendeeCondition>;
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAttendeesListArgs = {
+  condition?: InputMaybe<AttendeeCondition>;
+  filter?: InputMaybe<AttendeeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
 
@@ -3270,6 +3297,13 @@ export type DeleteAttendeeMutationVariables = Exact<{
 
 export type DeleteAttendeeMutation = { __typename?: 'Mutation', deleteAttendee?: { __typename?: 'DeleteAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null } | null };
 
+export type RegisterAttendeesMutationVariables = Exact<{
+  input: RegisterAttendeesInput;
+}>;
+
+
+export type RegisterAttendeesMutation = { __typename?: 'Mutation', registerAttendees?: { __typename?: 'RegisterAttendeesPayload', registration?: { __typename?: 'Registration', id: any } | null } | null };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -3522,6 +3556,15 @@ export const DeleteAttendeeDocument = gql`
   }
 }
     ${MyAttendeeFragmentDoc}`;
+export const RegisterAttendeesDocument = gql`
+    mutation RegisterAttendees($input: RegisterAttendeesInput!) {
+  registerAttendees(input: $input) {
+    registration {
+      id
+    }
+  }
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(input: {email: $email, password: $password}) {
@@ -3800,6 +3843,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeleteAttendee(variables: DeleteAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteAttendeeMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteAttendeeMutation>(DeleteAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteAttendee', 'mutation');
+    },
+    RegisterAttendees(variables: RegisterAttendeesMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesMutation>(RegisterAttendeesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendees', 'mutation');
     },
     Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login', 'mutation');
