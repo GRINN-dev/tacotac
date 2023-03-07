@@ -3427,6 +3427,13 @@ export type GetEventBySlugQueryVariables = Exact<{
 
 export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }> }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
+export type GetEventByEventSlugQueryVariables = Exact<{
+  eventSlug: Scalars['String'];
+}>;
+
+
+export type GetEventByEventSlugQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', edges: Array<{ __typename?: 'EventsEdge', node: { __typename?: 'Event', id: any, capacity?: number | null, city?: string | null, description: string, placeName?: string | null, slug?: string | null, name: string, country?: string | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, zipCode?: string | null, startsAt?: any | null } }> } | null };
+
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
   first?: InputMaybe<Scalars['Int']>;
@@ -3755,6 +3762,28 @@ export const GetEventBySlugDocument = gql`
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
+export const GetEventByEventSlugDocument = gql`
+    query GetEventByEventSlug($eventSlug: String!) {
+  events(condition: {slug: $eventSlug}) {
+    edges {
+      node {
+        id
+        capacity
+        city
+        description
+        placeName
+        slug
+        name
+        country
+        bookingStartsAt
+        bookingEndsAt
+        zipCode
+        startsAt
+      }
+    }
+  }
+}
+    `;
 export const GetAllOrganizationDocument = gql`
     query GetAllOrganization($after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [OrganizationsOrderBy!] = CREATED_AT_ASC, $filter: OrganizationFilter, $offset: Int) {
   organizations(
@@ -3897,6 +3926,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetEventBySlug(variables: GetEventBySlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetEventBySlugQuery>(GetEventBySlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventBySlug', 'query');
+    },
+    GetEventByEventSlug(variables: GetEventByEventSlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventByEventSlugQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetEventByEventSlugQuery>(GetEventByEventSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventByEventSlug', 'query');
     },
     GetAllOrganization(variables?: GetAllOrganizationQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllOrganizationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllOrganizationQuery>(GetAllOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllOrganization', 'query');

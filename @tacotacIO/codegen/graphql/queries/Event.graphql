@@ -80,3 +80,26 @@ query GetEventBySlug(
     }
   }
 }
+
+query GetEventByEventSlug($eventSlug: String!) {
+  events(condition: { slug: $eventSlug }) {
+    edges {
+      node {
+        id
+
+        capacity
+        city
+        description
+
+        placeName
+        slug
+        name
+        country
+        bookingStartsAt
+        bookingEndsAt
+        zipCode
+        startsAt
+      }
+    }
+  }
+}
