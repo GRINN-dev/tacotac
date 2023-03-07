@@ -5,7 +5,7 @@
     "class": {
       "publ.organizations": {
         "description": "A company, organization, or institution.",
-        "tags": {"simpleCollections":"both"},
+        "tags": { "simpleCollections": "both" },
         "attribute": {
           "logo_url": {
             "description": "The URL of the organization's logo."
@@ -17,8 +17,7 @@
       },
       "publ.attendees": {
         "description": "Event from organizations",
-        "tags": {"simpleCollections":"both","omit":"all"}
-        
+        "tags": { "simpleCollections": "both" }
       }
     },
     "attribute": {},
