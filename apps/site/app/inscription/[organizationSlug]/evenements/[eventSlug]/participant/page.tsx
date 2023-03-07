@@ -11,12 +11,7 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
   });
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
-        <Link href={`/inscription/${organizationSlug}/evenements/${eventSlug}`}>
-          <ArrowBigLeft className="w-6 h-6" />
-        </Link>
-      </div>
-      <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
+      <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
         <CreateAttendeeForm {...eventBySlug} />
       </div>
     </section>
