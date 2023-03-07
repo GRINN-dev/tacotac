@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @font-face {
+            font-family: "ApfelGrotezk";
+            src: url("{{assetsUrl}}/static/ApfelGrotezk-Fett.woff2") format("woff2"),
+            url("{{assetsUrl}}/static/ApfelGrotezk-Fett.woff") format("woff");
+        }
+
+        body {
+            font-family: "ApfelGrotezk", sans-serif;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        ApfelGrotezk:
+                            ["ApfelGrotezk"]
+                    }, colors: {
+                        primary: {
+                            50: "#4d75ef", 100: "#436be5",
+                            200: "#3961db", 300: "#2f57d1", 400: "#254dc7", 500: "#1b43bd", 600:
+                                "#1139b3", 700: "#072fa9", 800: "#00259f", 900: "#001b95",
+                        }, secondary: {
+                            50: "#ffbaba", 100: "#ffb0b0", 200: "#ffa6a6", 300: "#f89c9c", 400:
+                                "#ee9292", 500: "#e48888", 600: "#da7e7e", 700: "#d07474", 800: "#c66a6a",
+                            900: "#bc6060",
+                        }, accent: {
+                            50: "#9dffff", 100: "#93ffff", 200:
+                                "#89fffa", 300: "#7ffff0", 400: "#75ffe6", 500: "#6bffdc", 600: "#61f5d2",
+                            700: "#57ebc8", 800: "#4de1be", 900: "#43d7b4",
+                        }, danger: "#de4343",
+                    },
+                },
+            },
+        };
+    </script>
+    <title>La nuit du bien commun</title>
+</head>
+
+<body class="relative w-screen h-screen font-ApfelGrotezk">
+    <div class="billet-kaypi-cat-privilege screen">
+        <div class="overlap-group5">
+            <div class="a4-1">
+                <div class="billet">
+                    <div class="overlap-group">
+                        <img class="qr_-code" src="qrcode.png" alt="QR_Code">
+                        <div class="prenom-nom valign-text-middle">PRENOM NOM</div>
+                    </div>
+                    <div class="cat-niveau valigne-text-middle">CAT</div>
+                </div>
+                <img class="vector-1" src="vector-1.png" alt="Vector 1" />
+                <img class="logo_-obole_0-1" alt="logo-obole" src="logo-obole.png" alt="" />
+                <div class="overlap-group1">
+                    <div class="bandeau-png-_-sponsors">BANDEAU SPONSOR</div>
+                </div>
+                <div class="logo_event"></div>
+                <div class="overlap-group2">
+                    <div class="heure_-debut valigne-text-middle">HEURE</div>
+                    <div class="jjmmaaaa">
+                        <div class="x00">28</div>
+                        <div class="mois-aaaa valign-text-middle lexend-bold-white-15px">Dec <br> 2023</div>
+                    </div>
+                    <div class="jour lexend-bold-white-15px">Jour</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

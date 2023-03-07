@@ -46,7 +46,14 @@ query GetEventById($eventId: UUID!) {
   }
 }
 
-query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
+query GetEventBySlug(
+  $eventSlug: String!
+  $organizationSlug: String!
+  $filter: AttendeeFilter
+  $first: Int
+  $offset: Int
+  $orderBy: [AttendeesOrderBy!]
+) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
     eventBranding {
@@ -54,10 +61,13 @@ query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
     }
     registrations {
       nodes {
-        attendees {
-          nodes {
-            ...MyAttendee
-          }
+        attendeesList(
+          orderBy: $orderBy
+          offset: $offset
+          first: $first
+          filter: $filter
+        ) {
+          ...MyAttendee
         }
       }
       pageInfo {

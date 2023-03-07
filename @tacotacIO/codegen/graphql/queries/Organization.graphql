@@ -68,6 +68,9 @@ query GetOrganizationBySlug(
     ) {
       nodes {
         ...MyEvent
+        registrations {
+          totalCount
+        }
       }
       pageInfo {
         hasNextPage
