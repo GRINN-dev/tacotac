@@ -23,7 +23,7 @@ import {
 
 interface iUpdateAttendee extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
 
-export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastname, email, status, eventId }) => {
+export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastname, email, status }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -126,13 +126,13 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastnam
         )}
       </div>
 
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
