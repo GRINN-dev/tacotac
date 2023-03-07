@@ -414,9 +414,9 @@ type Attendee implements Node {
   email: String
   phoneNumber: String
   registrationId: UUID
-  zipCode: String!
-  hearAbout: String!
-  isFundraisingGenerosityOk: Boolean!
+  zipCode: String
+  hearAbout: String
+  isFundraisingGenerosityOk: Boolean
   status: EventStatus!
   notes: String
   isInscriptor: Boolean
@@ -2386,9 +2386,9 @@ input AttendeeInput {
   email: String
   phoneNumber: String
   registrationId: UUID
-  zipCode: String!
-  hearAbout: String!
-  isFundraisingGenerosityOk: Boolean!
+  zipCode: String
+  hearAbout: String
+  isFundraisingGenerosityOk: Boolean
   status: EventStatus!
   notes: String
   isInscriptor: Boolean

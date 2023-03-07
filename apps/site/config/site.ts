@@ -1,6 +1,5 @@
 import { NavItem } from "@/types/nav";
 
-
 interface SiteConfig {
   name: string;
   description: string;
@@ -11,6 +10,7 @@ interface SiteConfig {
     docs: string;
     dashboard: string;
     scanner: string;
+    inscription: string;
   };
 }
 
@@ -26,12 +26,17 @@ export const siteConfig: SiteConfig = {
       title: "Organisations",
       href: "/dashboard/organisations",
     },
+    {
+      title: "Inscription",
+      href: "/inscription",
+    },
   ],
   links: {
     twitter: "https://twitter.com/shadcn",
     github: "https://github.com/shadcn/ui",
     docs: "https://ui.shadcn.com",
-    dashboard: "/organizations",
+    dashboard: "/dashboard/organisations",
     scanner: "/scanner",
+    inscription: "/inscription",
   },
 };
