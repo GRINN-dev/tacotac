@@ -50,7 +50,7 @@ create table publ.attendees (
      ticket_number text,
     is_email_sent boolean default false,
     qr_code_url text,
-    pdf_link text,
+    pdf_url text,
     sign_code text,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
