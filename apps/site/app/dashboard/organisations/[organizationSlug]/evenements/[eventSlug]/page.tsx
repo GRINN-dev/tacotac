@@ -51,7 +51,7 @@ const AttendeesPage = async ({
         </h2>
         <Link
           className={buttonVariants({ variant: "outline", size: "lg" })}
-          href={`/inscription/${organizationSlug}/evenements/${eventSlug}`}
+          href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant`}
         >
           iFrame inscription
         </Link>
