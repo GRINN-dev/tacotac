@@ -121,25 +121,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                         )}
                       />
                     </div>
-                    <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                      <Label htmlFor="firstname">
-                        Prénom <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        type="text"
-                        id="firstname"
-                        placeholder="Jeanne"
-                        {...register(`attendees.${i}.firstname`, {
-                          required: "Un prénom pour le participant est requis",
-                        })}
-                        className="col-span-2"
-                      />
-                      {formState.errors?.attendees?.[i]?.firstname && (
-                        <p className="text-sm text-right text-red-800 dark:text-red-300">
-                          {formState.errors?.attendees?.[i]?.firstname?.message}
-                        </p>
-                      )}
-                    </div>
 
                     <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
                       <Label htmlFor="lastname">
@@ -157,6 +138,25 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       {formState.errors?.attendees?.[i]?.lastname && (
                         <p className="text-sm text-right text-red-800 dark:text-red-300">
                           {formState.errors?.attendees?.[i]?.lastname?.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                      <Label htmlFor="firstname">
+                        Prénom <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="text"
+                        id="firstname"
+                        placeholder="Jeanne"
+                        {...register(`attendees.${i}.firstname`, {
+                          required: "Un prénom pour le participant est requis",
+                        })}
+                        className="col-span-2"
+                      />
+                      {formState.errors?.attendees?.[i]?.firstname && (
+                        <p className="text-sm text-right text-red-800 dark:text-red-300">
+                          {formState.errors?.attendees?.[i]?.firstname?.message}
                         </p>
                       )}
                     </div>
@@ -225,7 +225,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                             Comment avez-vous entendu parler de Lille pour le Bien Commun ?{" "}
                             <span className="text-red-500">*</span>
                           </Label>
-
                           <Controller
                             name={"attendee.hearAbout"}
                             control={control}
@@ -325,23 +324,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                       )}
                     />
                   </div>
-                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
-                    <Label htmlFor="firstname">Prénom</Label>
-                    <Input
-                      type="text"
-                      id="firstname"
-                      placeholder="Jeanne"
-                      {...register(`attendees.${i}.firstname`, {
-                        required: "Un prénom pour le participant est requis",
-                      })}
-                      className="col-span-2"
-                    />
-                    {formState.errors?.attendees?.[i]?.firstname && (
-                      <p className="text-sm text-red-800 dark:text-red-300">
-                        {formState.errors?.attendees?.[i]?.firstname?.message}
-                      </p>
-                    )}
-                  </div>
+
                   <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
                     <Label htmlFor="lastname">Nom</Label>
                     <Input
@@ -356,6 +339,23 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
                     {formState.errors?.attendees?.[i]?.lastname && (
                       <p className="text-sm text-red-800 dark:text-red-300">
                         {formState.errors?.attendees?.[i].lastname?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-4 grid grid-cols-3 w-full items-center gap-1.5">
+                    <Label htmlFor="firstname">Prénom</Label>
+                    <Input
+                      type="text"
+                      id="firstname"
+                      placeholder="Jeanne"
+                      {...register(`attendees.${i}.firstname`, {
+                        required: "Un prénom pour le participant est requis",
+                      })}
+                      className="col-span-2"
+                    />
+                    {formState.errors?.attendees?.[i]?.firstname && (
+                      <p className="text-sm text-red-800 dark:text-red-300">
+                        {formState.errors?.attendees?.[i]?.firstname?.message}
                       </p>
                     )}
                   </div>
@@ -517,6 +517,12 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
             Un email de confirmation pour votre inscription XXXXXXXX a été envoyé à {email} . Vérifiez vos courriers
             indésirables si vous ne le recevez pas.
           </p>
+          <div className="flex items-center justify-between">
+            <button className={buttonVariants({ size: "lg", className: "mt-12" })}>
+              <img src="/archive_load_light.svg" alt="download-icon" className="mr-2" />
+              Télécharger vos billets
+            </button>
+          </div>
         </div>
       ) : null}
     </div>
