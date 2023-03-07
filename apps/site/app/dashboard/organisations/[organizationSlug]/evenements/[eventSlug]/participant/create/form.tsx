@@ -6,12 +6,15 @@ import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput 
 import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 interface iCreateAttendeeForm extends ExtractType<GetEventByIdQuery, "event"> {}
 
@@ -24,7 +27,6 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
   const pathname = usePathname();
   const { register, handleSubmit, formState, control } = useForm<RegisterAttendeesInput>();
   const onSubmit = handleSubmit(async (data) => {
-    console.log("🚀 ~ file: form.tsx:36 ~ onSubmit ~ data:", data);
     setIsLoading(true);
     data.eventId = id;
 
