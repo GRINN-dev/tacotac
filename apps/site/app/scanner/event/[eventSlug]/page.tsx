@@ -1,9 +1,6 @@
 import { sdk } from "@/lib/sdk";
 
-const EventSlug = async ({
-  params: { organizationSlug, eventSlug },
-  searchParams: { offset, filter, first, orderBy },
-}) => {
+const EventSlug = async ({ params: { eventSlug } }) => {
   const { events } = await sdk().GetEventByEventSlug({
     eventSlug: eventSlug,
   });
