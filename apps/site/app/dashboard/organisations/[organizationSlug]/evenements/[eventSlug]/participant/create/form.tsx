@@ -28,9 +28,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   const { register, handleSubmit, formState, control } = useForm<CreateAttendeeInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    //data.attendee.eventId = id;
-    // const { createRegistration } = await sdk().CreateRegistration({ registration: { eventId: id } });
-    // data.attendee.registrationId = createRegistration?.registration?.id;
+
     await sdk()
       .CreateAttendee({
         input: data,
