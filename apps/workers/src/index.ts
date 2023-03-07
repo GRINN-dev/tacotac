@@ -7,7 +7,7 @@ const main = async () => {
     concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
-    taskList: { qrCodeGenPdf: qrCodeGenPdf, sendEmail: sendEmail },
+    taskList: { qrCodeGenPdf, sendEmail },
   });
   await runner.promise;
 };
