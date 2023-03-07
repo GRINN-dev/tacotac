@@ -2,13 +2,8 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  CivilityStatus,
-  CreateAttendeeInput,
-  EventStatus,
-  GetEventByIdQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
+import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -17,7 +12,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 
 interface iCreateAttendeeForm extends ExtractType<GetEventByIdQuery, "event"> {}
 
@@ -38,9 +32,16 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
       .RegisterAttendees({
         input: data,
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setError(error);
         setIsLoading(false);
+
+        toast({
+          title:
+            error.response.errors[0].errcode === "RGNST"
+              ? "Date d'inscription pas encore ouverte 😋"
+              : "Oups ! une erreur est survenue",
+        });
         throw error;
       });
 
