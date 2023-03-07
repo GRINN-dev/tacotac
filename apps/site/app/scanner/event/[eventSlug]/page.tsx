@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { sdk } from "@/lib/sdk";
 
 const EventSlug = async ({ params: { eventSlug } }) => {
@@ -15,6 +17,8 @@ const EventSlug = async ({ params: { eventSlug } }) => {
             <div> {e?.node?.description}</div>
             <div>à {e?.node?.city}</div>
             <div>Capacité : {e?.node?.capacity}</div>
+            <div>Lieu : {e?.node?.placeName} </div>
+            <Link href={``}>Liste des inscrits</Link>
           </div>
         );
       })}{" "}

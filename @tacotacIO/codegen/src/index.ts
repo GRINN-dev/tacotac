@@ -3389,6 +3389,13 @@ export type GetAttendeeByIdQueryVariables = Exact<{
 
 export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null };
 
+export type AttendeesBySlugEventQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type AttendeesBySlugEventQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }> } }> } }> } | null };
+
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3679,6 +3686,23 @@ export const GetAttendeeByIdDocument = gql`
   }
 }
     ${MyAttendeeFragmentDoc}`;
+export const AttendeesBySlugEventDocument = gql`
+    query AttendeesBySlugEvent($slug: String!) {
+  events(condition: {slug: $slug}) {
+    nodes {
+      registrations {
+        nodes {
+          attendees {
+            nodes {
+              ...MyAttendee
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    ${MyAttendeeFragmentDoc}`;
 export const GetAllEventsDocument = gql`
     query GetAllEvents {
   events(orderBy: [CREATED_AT_DESC]) {
@@ -3911,6 +3935,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetAttendeeById(variables: GetAttendeeByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByIdQuery>(GetAttendeeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeById', 'query');
+    },
+    AttendeesBySlugEvent(variables: AttendeesBySlugEventQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AttendeesBySlugEventQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AttendeesBySlugEventQuery>(AttendeesBySlugEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AttendeesBySlugEvent', 'query');
     },
     GetAllEvents(variables?: GetAllEventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllEventsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllEventsQuery>(GetAllEventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllEvents', 'query');
