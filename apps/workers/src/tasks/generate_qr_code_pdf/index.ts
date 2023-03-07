@@ -1,7 +1,7 @@
 import { Task } from "graphile-worker";
 
 import dayjs from "dayjs";
-import { generateDataForAttendees } from "./helpers";
+import { generateDocsForAttendees } from "./helpers";
 import { IPayloadQrCodeGen, IRowAttendee } from "./helpers/type";
 require("dayjs/locale/fr");
 dayjs.locale("fr");
@@ -23,12 +23,12 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
 
   const storePdfBufferForMergedOnInscriptor: Buffer[] = [];
 
-  //on check tous les particpants inscrits pour leur génerer les donées et send email
+  //on check tous les particpants inscrits pour leur génerer les docs et send email
   for (const row of attendees as IRowAttendee[]) {
     //obligé de faire un for of sinon par exemple un for each alors la promesse all storePdfBufferForMergedOnInscriptor qui vérifie que tous les buffers bdfs ont bien été mis dans un tableau est compléte
     if (!row.is_inscriptor) {
       const { sendEmailPayload: sendEmailPayloadNoInscriptor, bufferPdf } =
-        await generateDataForAttendees(registrationId, row, withPgClient, null);
+        await generateDocsForAttendees(registrationId, row, withPgClient, null);
       storePdfBufferForMergedOnInscriptor?.push(bufferPdf);
       if (row?.email) {
         addJob("sendEmail", {
@@ -40,21 +40,19 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
   }
   const results = await Promise.all(storePdfBufferForMergedOnInscriptor);
 
-  if (attendees?.at(0).is_inscriptor) {
-    //dans cette condition on vérifie  l'inscripeur et on lui envoie ses données perso plus pdf des pautres particpants si présent
-    const { sendEmailPayload: sendEmailPayloadInscriptor, bufferPdf } =
-      await generateDataForAttendees(
-        registrationId,
-        attendees?.at(0),
-        withPgClient,
-        results
-      );
+  //dans cette condition on gere uniquement le premier inscrit et on lui envoie ses docs plus docs des pautres particpants si présent
+  const { sendEmailPayload: sendEmailPayloadInscriptor, bufferPdf } =
+    await generateDocsForAttendees(
+      registrationId,
+      attendees?.at(0),
+      withPgClient,
+      results
+    );
 
-    addJob("sendEmail", {
-      attendeeId: attendees.at(0).id,
-      sendEmailPayload: sendEmailPayloadInscriptor,
-    });
-  }
+  addJob("sendEmail", {
+    attendeeId: attendees.at(0).id,
+    sendEmailPayload: sendEmailPayloadInscriptor,
+  });
 };
 
 // avec helpers
