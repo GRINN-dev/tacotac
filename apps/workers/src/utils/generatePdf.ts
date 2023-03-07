@@ -1,37 +1,5 @@
-import fs from "fs";
-import path from "path";
 import puppeteer from "puppeteer";
-import { PDFDocument, rgb } from "pdf-lib";
-import { createHtmlTemplate } from "./createHtmlTemplate";
-
-interface IGeneratePdfFilesPayload {
-  pdfData: {
-    template: any;
-    linked_ressource_id: string;
-    document_type: string;
-  };
-}
-
-interface CreateAttestationPayload {
-  temp: {
-    id?: string;
-    first_name?: string;
-    last_name?: string;
-  };
-}
-
-const generatePdfFilePayload: IGeneratePdfFilesPayload = {
-  pdfData: {
-    template: createHtmlTemplate<CreateAttestationPayload>(
-      {
-        temp: null,
-      },
-      "invitation"
-    ),
-    linked_ressource_id: null,
-    document_type: "ATTESTATION",
-  },
-};
+import { PDFDocument } from "pdf-lib";
 
 export const generatePdf = async (htmlContent: any): Promise<Buffer> => {
   try {
