@@ -2389,7 +2389,7 @@ input AttendeeInput {
   zipCode: String
   hearAbout: String
   isFundraisingGenerosityOk: Boolean
-  status: EventStatus!
+  status: EventStatus
   notes: String
   isInscriptor: Boolean
   isVip: Boolean

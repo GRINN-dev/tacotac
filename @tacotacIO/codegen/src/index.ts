@@ -140,7 +140,7 @@ export type AttendeeInput = {
   qrCodeUrl?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
   signCode?: InputMaybe<Scalars['String']>;
-  status: EventStatus;
+  status?: InputMaybe<EventStatus>;
   ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   zipCode?: InputMaybe<Scalars['String']>;
