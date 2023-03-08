@@ -15,6 +15,7 @@ interface State {
     | "displaying_error"
     | "displaying_result"
     | "synchronizing";
+  //ajouter un état quand tout est ok scanné ?
   ticket?: string;
   pannel?: string;
   error?: string;
@@ -33,6 +34,7 @@ interface Event {
     | "display_result"
     | "synchronize"
     | "cancel";
+
   payload?: Omit<State, "step">;
 }
 
@@ -69,12 +71,22 @@ export const Scanner: FC = () => {
           step: "manually_entering_ticket",
           ticket: event.payload?.ticket,
         };
+      // case "scan_pannel":
+      //   return {
+      //     step: "displaying_error",
+      //     ticket: state.ticket,
+      //     pannel: event.payload.pannel,
+      //   };
       case "scan_pannel":
-        return {
-          step: "displaying_error",
-          ticket: state.ticket,
-          pannel: event.payload.pannel,
-        };
+        return state.step === "scanning_pannel"
+          ? {
+              ...state,
+              pannel: event.payload.pannel,
+              step: state.ticket ? "displaying_result" : "scanning_ticket",
+            }
+          : {
+              step: "start",
+            };
       case "scan_pannel":
         return state.step === "scanning_pannel"
           ? {
