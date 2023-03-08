@@ -1458,6 +1458,7 @@ export type Mutation = {
   login?: Maybe<LoginPayload>;
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
+  registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
@@ -1698,6 +1699,12 @@ export type MutationRegisterArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterAttendeesArgs = {
   input: RegisterAttendeesInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRegisterAttendeesCsvArgs = {
+  input: RegisterAttendeesCsvInput;
 };
 
 
@@ -2473,6 +2480,40 @@ export type QueryUsersArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
+};
+
+/** All input for the `registerAttendeesCsv` mutation. */
+export type RegisterAttendeesCsvInput = {
+  attendeesCsv?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `registerAttendeesCsv` mutation. */
+export type RegisterAttendeesCsvPayload = {
+  __typename?: 'RegisterAttendeesCsvPayload';
+  attendee?: Maybe<Attendee>;
+  /** An edge for our `Attendee`. May be used by Relay 1. */
+  attendeeEdge?: Maybe<AttendeesEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Registration` that is related to this `Attendee`. */
+  registration?: Maybe<Registration>;
+};
+
+
+/** The output of our `registerAttendeesCsv` mutation. */
+export type RegisterAttendeesCsvPayloadAttendeeEdgeArgs = {
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
 /** All input for the `registerAttendees` mutation. */
@@ -3382,6 +3423,13 @@ export type CreateRegistrationMutationVariables = Exact<{
 
 export type CreateRegistrationMutation = { __typename?: 'Mutation', createRegistration?: { __typename?: 'CreateRegistrationPayload', clientMutationId?: string | null, registration?: { __typename?: 'Registration', id: any } | null } | null };
 
+export type RegisterAttendeesCsvMutationVariables = Exact<{
+  input: RegisterAttendeesCsvInput;
+}>;
+
+
+export type RegisterAttendeesCsvMutation = { __typename?: 'Mutation', registerAttendeesCsv?: { __typename?: 'RegisterAttendeesCsvPayload', clientMutationId?: string | null } | null };
+
 export type GetAttendeeByIdQueryVariables = Exact<{
   attendeeId: Scalars['UUID'];
 }>;
@@ -3665,6 +3713,13 @@ export const CreateRegistrationDocument = gql`
   }
 }
     `;
+export const RegisterAttendeesCsvDocument = gql`
+    mutation RegisterAttendeesCsv($input: RegisterAttendeesCsvInput!) {
+  registerAttendeesCsv(input: $input) {
+    clientMutationId
+  }
+}
+    `;
 export const GetAttendeeByIdDocument = gql`
     query GetAttendeeById($attendeeId: UUID!) {
   attendee(id: $attendeeId) {
@@ -3879,6 +3934,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     CreateRegistration(variables: CreateRegistrationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateRegistrationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateRegistrationMutation>(CreateRegistrationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateRegistration', 'mutation');
+    },
+    RegisterAttendeesCsv(variables: RegisterAttendeesCsvMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesCsvMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesCsvMutation>(RegisterAttendeesCsvDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendeesCsv', 'mutation');
     },
     GetAttendeeById(variables: GetAttendeeByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByIdQuery>(GetAttendeeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeById', 'query');

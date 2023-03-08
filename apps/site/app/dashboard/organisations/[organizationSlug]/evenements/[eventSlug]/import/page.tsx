@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ArrowBigLeft } from "lucide-react";
 
+
+
 import { sdk } from "@/lib/sdk";
-import { ImportAttendeesForm } from "./ImportAttendeesForm";
+import { ImportAttendeesForm } from "./form";
+
 
 const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) => {
   const { eventBySlug } = await sdk().GetEventBySlug({ eventSlug: eventSlug, organizationSlug: organizationSlug });

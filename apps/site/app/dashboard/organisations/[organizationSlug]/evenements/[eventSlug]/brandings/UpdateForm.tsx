@@ -141,6 +141,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <FileDragNDrop
             id={"fileDnD" + id}
             title={"Logo"}
+            placeholder="Glissez vos images ici"
             acceptFormat="image/*"
             onFileUpload={(file) => {
               setFiles(file);

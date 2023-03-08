@@ -8,12 +8,13 @@ export interface FileDragNDropProps {
   title: string | null | undefined;
   id: string;
   acceptFormat: string;
+  placeholder:string
   onFileUpload: (files: File[]) => void;
 }
 
 //random int between 1 and 1000000
 
-export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id, acceptFormat }) => {
+export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id, acceptFormat, placeholder }) => {
   const [loading, setLoading] = useState(false);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
@@ -58,18 +59,18 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id,
   };
 
   return (
-    <div className="relative group">
+    <div className="group relative">
       <div
         className={
           "flex justify-center px-3 py-3 text-sm  border border-dashed rounded-xl text-primary-500 border-gray-300 " +
           (isDraggedOver ? "border-primary-500 bg-gradient-to-tr from-accent-50 to-accent-900" : "")
         }
       >
-        <div onDragEnter={dragEnter} onDragLeave={dragLeave} className="flex flex-col items-center p-4 m-2">
-          <span className="text-base text-center py-1 px-1.5">Glissez vos documents ici</span>
+        <div onDragEnter={dragEnter} onDragLeave={dragLeave} className="m-2 flex flex-col items-center p-4">
+          <span className="py-1 px-1.5 text-center text-base">{placeholder}</span>
           <span>ou</span>
           <label htmlFor={id} className="">
-            <span className="text-base underline text-center cursor-pointer group-hover:shadow-xl group-hover:text-primary-500 py-1 px-1.5 rounded group-hover:bg-accent-500">
+            <span className="group-hover:text-primary-500 group-hover:bg-accent-500 cursor-pointer rounded py-1 px-1.5 text-center text-base underline group-hover:shadow-xl">
               Cliquez pour choisir
             </span>
             <input
@@ -97,5 +98,3 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id,
     </div>
   );
 };
-
-//export const FileDragNDrop = React.memo(FileDragNDropUnMemo);
