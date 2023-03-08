@@ -8,12 +8,12 @@ import { buttonVariants } from "@/components/ui/button";
 interface State {
   step:
     | "start"
-    | "scan_ticket"
-    | "scan_pannel"
-    | "manually_enter_ticket"
-    | "manually_enter_pannel"
-    | "display_error"
-    | "display_result";
+    | "scanning_ticket"
+    | "scanning_pannel"
+    | "manually_entering_ticket"
+    | "manually_entering_pannel"
+    | "displaying_error"
+    | "displaying_result";
   ticket?: string;
   pannel?: string;
   error?: string;
@@ -24,6 +24,7 @@ interface Event {
   type:
     | "start_scanner"
     | "scan_ticket"
+    | "scan_ticket_error"
     | "scan_pannel"
     | "manually_enter_ticket"
     | "manually_enter_pannel"
@@ -34,39 +35,47 @@ interface Event {
 }
 
 export const Scanner: FC = () => {
-  const [state, dispatch] = useReducer(
-    (state: State, event: Event) => {
-      switch (event.type) {
-        case "start_scanner":
-          return state.step === "start"
-            ? {
-                step: "scan_ticket",
-              }
-            : { step: "start" };
+  const reducer: (state: State, event: Event) => State = (state, event) => {
+    switch (event.type) {
+      case "start_scanner":
+        return state.step === "start"
+          ? {
+              step: "scanning_ticket",
+            }
+          : { step: "start" };
 
-        case "scan_ticket":
-          return state.step === "scan_ticket"
-            ? {
-                step: "scan_pannel",
-                ticket: event.payload.ticket,
-              }
-            : {
-                step: "start",
-              };
-        case "scan_pannel":
-          return {
-            step: "display_result",
-            ticket: state.ticket,
-            pannel: event.payload.pannel,
-          };
-        default:
-          return state;
-      }
-    },
-    {
-      step: "start",
+      case "scan_ticket":
+        return state.step === "scanning_ticket"
+          ? {
+              step: "scanning_ticket",
+              ticket: event.payload.ticket,
+            }
+          : {
+              step: "start",
+            };
+      case "scan_ticket_error":
+        return state.step === "scanning_ticket"
+          ? {
+              step: "manually_entering_pannel",
+              error: event.payload.error,
+            }
+          : {
+              step: "start",
+            };
+      case "scan_pannel":
+        return {
+          step: "displaying_error",
+          ticket: state.ticket,
+          pannel: event.payload.pannel,
+        };
+      default:
+        return state;
     }
-  );
+  };
+
+  const [state, dispatch] = useReducer(reducer, {
+    step: "start",
+  });
 
   return (
     <div>
@@ -81,21 +90,38 @@ export const Scanner: FC = () => {
         >
           <Camera className="mr-2" /> Commencer à scanner
         </button>
-      ) : state.step === "scan_ticket" ? (
-        <button
-          className={buttonVariants({ size: "sm" })}
-          onClick={() => {
-            dispatch({
-              type: "scan_ticket",
-              payload: {
-                ticket: "123456789",
-              },
-            });
-          }}
-        >
-          Assign tiket number
-        </button>
-      ) : state.step === "scan_pannel" ? (
+      ) : state.step === "scanning_ticket" ? (
+        <>
+          {" "}
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "scan_ticket",
+                payload: {
+                  ticket: "123456789",
+                },
+              });
+            }}
+          >
+            Assign tiket number
+          </button>
+          {/* si ca marche pas */}
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "scan_ticket_error",
+                payload: {
+                  error: "le ticket n;est pas detecte",
+                },
+              });
+            }}
+          >
+            trigger error
+          </button>
+        </>
+      ) : state.step === "scanning_pannel" ? (
         <button
           className={buttonVariants({ size: "sm" })}
           onClick={() => {
@@ -109,7 +135,7 @@ export const Scanner: FC = () => {
         >
           Assign pannel number
         </button>
-      ) : state.step === "display_result" ? (
+      ) : state.step === "displaying_result" ? (
         <button
           className={buttonVariants({ size: "sm" })}
           onClick={() => {
