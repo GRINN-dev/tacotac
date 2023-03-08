@@ -4,17 +4,15 @@ import { FC, Key, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { GetEventByIdQuery, RegisterAttendeesCsvInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
+import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
-
 
 interface iImportAttendeesProps extends ExtractType<GetEventByIdQuery, "event"> {}
 
@@ -110,7 +108,21 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       <div className="mt-4 grid w-full items-center gap-1.5">
-        <div className="mx-6 my-4 rounded-lg border p-4 italic text-red-200">{`Attention l'import enregistrera directement les participants présents dans le csv et donc recevront leur billet par mail`}</div>
+        <div className="my-4 rounded-lg border p-4">
+          <div className="flex">
+            <div className="shrink-0">
+              <AlertTriangle className="h-5 w-5 text-red-200" aria-hidden="true" />
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-200">Attention </h3>
+              <div className="mt-2 text-sm ">
+                <p>
+                  {`L'import enregistrera directement les participants présents dans le csv et recevront, donc, automatiquement leur billet par mail.`}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <FileDragNDrop
           id={"csvDnD" + id}
           title={"CSV"}
