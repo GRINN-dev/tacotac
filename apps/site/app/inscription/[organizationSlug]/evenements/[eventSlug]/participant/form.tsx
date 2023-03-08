@@ -3,19 +3,14 @@
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Script from "next/script";
-import {
-  CivilityStatus,
-  EventStatus,
-  GetEventByIdQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
+import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 
 
 import { sdk } from "@/lib/sdk";
-import { cn } from "@/lib/utils";
+import { cn, validCaptcha } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,33 +57,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
     const formHasError = await trigger();
     if (!formHasError) return;
     append({ status: EventStatus.Idle });
-  };
-
-  const validCaptcha = (): Promise<{ isValidCaptcha: boolean }> => {
-    return new Promise(async (resolve, reject) => {
-      window.grecaptcha.ready(async () => {
-        try {
-          const token = await window.grecaptcha.execute(process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE, { action: "submit" });
-
-          const body = {
-            gRecaptchaToken: token,
-          };
-
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/verify_captcha`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          });
-
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          resolve({ isValidCaptcha: !!response.ok });
-        } catch (error) {
-          reject(error);
-        }
-      });
-    });
   };
 
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
