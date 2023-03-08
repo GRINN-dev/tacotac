@@ -13,7 +13,8 @@ interface State {
     | "manually_entering_ticket"
     | "manually_entering_pannel"
     | "displaying_error"
-    | "displaying_result";
+    | "displaying_result"
+    | "synchronizing";
   ticket?: string;
   pannel?: string;
   error?: string;
@@ -26,6 +27,7 @@ interface Event {
     | "scan_ticket"
     | "scan_ticket_error"
     | "scan_pannel"
+    | "scan_pannel_error"
     | "manually_enter_ticket"
     | "manually_enter_pannel"
     | "display_result"
@@ -47,7 +49,7 @@ export const Scanner: FC = () => {
       case "scan_ticket":
         return state.step === "scanning_ticket"
           ? {
-              step: "scanning_ticket",
+              step: "scanning_pannel",
               ticket: event.payload.ticket,
             }
           : {
@@ -56,17 +58,65 @@ export const Scanner: FC = () => {
       case "scan_ticket_error":
         return state.step === "scanning_ticket"
           ? {
+              step: "manually_entering_ticket",
+              error: event.payload.error,
+            }
+          : {
+              step: "start",
+            };
+      case "manually_enter_ticket":
+        return {
+          step: "manually_entering_ticket",
+          ticket: event.payload?.ticket,
+        };
+      case "scan_pannel":
+        return {
+          step: "displaying_error",
+          ticket: state.ticket,
+          pannel: event.payload.pannel,
+        };
+      case "scan_pannel":
+        return state.step === "scanning_pannel"
+          ? {
+              step: "scanning_pannel",
+              ticket: state.ticket,
+              pannel: event.payload.pannel,
+            }
+          : {
+              step: "start",
+            };
+      case "scan_pannel_error":
+        return state.step === "scanning_pannel"
+          ? {
               step: "manually_entering_pannel",
               error: event.payload.error,
             }
           : {
               step: "start",
             };
-      case "scan_pannel":
+      case "manually_enter_pannel":
         return {
-          step: "displaying_error",
+          step: "manually_entering_pannel",
           ticket: state.ticket,
-          pannel: event.payload.pannel,
+          pannel: event.payload?.pannel,
+        };
+      case "display_result":
+        return {
+          step: "displaying_result",
+          ticket: state.ticket,
+          pannel: state.pannel,
+          email: event.payload?.email,
+        };
+      case "synchronize":
+        return {
+          step: "synchronizing",
+          ticket: state.ticket,
+          pannel: state.pannel,
+          email: event.payload?.email,
+        };
+      case "cancel":
+        return {
+          step: "start",
         };
       default:
         return state;
@@ -104,16 +154,16 @@ export const Scanner: FC = () => {
               });
             }}
           >
-            Assign tiket number
+            Assign ticket number
           </button>
-          {/* si ca marche pas */}
+          {/* si ticket marche pas */}
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
               dispatch({
                 type: "scan_ticket_error",
                 payload: {
-                  error: "le ticket n;est pas detecte",
+                  error: "le ticket n'est pas détecté",
                 },
               });
             }}
@@ -150,6 +200,16 @@ export const Scanner: FC = () => {
           Display result
         </button>
       ) : null}
+      <button
+        className={buttonVariants({ size: "sm", className: "bg-red-600 text-white" })}
+        onClick={() => {
+          dispatch({
+            type: "cancel",
+          });
+        }}
+      >
+        Cancel
+      </button>
 
       <pre>{JSON.stringify(state, null, 2)}</pre>
     </div>
