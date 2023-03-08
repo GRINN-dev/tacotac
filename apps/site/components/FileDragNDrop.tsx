@@ -1,14 +1,19 @@
 import { ChangeEvent, DragEvent, FC, useState } from "react";
 
+
+
+
+
 export interface FileDragNDropProps {
   title: string | null | undefined;
   id: string;
+  acceptFormat: string;
   onFileUpload: (files: File[]) => void;
 }
 
 //random int between 1 and 1000000
 
-export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id }) => {
+export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id, acceptFormat }) => {
   const [loading, setLoading] = useState(false);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
@@ -69,7 +74,7 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id 
             </span>
             <input
               id={id}
-              accept="image/*,application/pdf"
+              accept={acceptFormat}
               name={id}
               type="file"
               className="sr-only file:m-4 file:px-8 file:py-1 file:text-sm "

@@ -15,7 +15,7 @@ const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) 
             <ArrowBigLeft className="h-6 w-6" />
           </Link>
           <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-            Importer une liste de participants (CSV)
+            Importer une liste de participants 
           </h1>
         </div>
         <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
