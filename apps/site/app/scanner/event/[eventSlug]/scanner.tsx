@@ -1,7 +1,8 @@
 "use client";
 
-import { FC, useReducer } from "react";
+import { FC, useReducer, useState } from "react";
 import { Camera } from "lucide-react";
+import { QrReader } from "react-qr-reader";
 
 import { buttonVariants } from "@/components/ui/button";
 
@@ -39,6 +40,11 @@ interface Event {
 }
 
 export const Scanner: FC = () => {
+  const [scanResult, setScanResult] = useState("");
+  const [scanning, setScanning] = useState(false);
+
+  const [data, setData] = useState("");
+
   const reducer: (state: State, event: Event) => State = (state, event) => {
     switch (event.type) {
       case "start_scanner":
@@ -155,7 +161,7 @@ export const Scanner: FC = () => {
       ) : state.step === "scanning_ticket" ? (
         <>
           {" "}
-          <button
+          {/* <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
               dispatch({
@@ -167,7 +173,27 @@ export const Scanner: FC = () => {
             }}
           >
             Assign ticket number
-          </button>
+          </button> */}
+          <div>
+            <QrReader
+              onResult={(result, error) => {
+                if (!!result) {
+                  dispatch({
+                    type: "scan_ticket",
+                    payload: {
+                      ticket: state.ticket,
+                    },
+                  });
+                }
+
+                if (!!error) {
+                  console.info(error);
+                }
+              }}
+              className="w-full"
+              constraints={undefined}
+            />
+          </div>
           {/* si ticket marche pas */}
           <button
             className={buttonVariants({ size: "sm" })}
