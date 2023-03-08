@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ArrowBigLeft } from "lucide-react";
+import { ArrowBigLeft, Camera, CameraIcon, PlusCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
+import { buttonVariants } from "@/components/ui/button";
 
 const EventSlug = async ({ params: { eventSlug } }) => {
   const { events } = await sdk().GetEventByEventSlug({
@@ -19,10 +20,21 @@ const EventSlug = async ({ params: { eventSlug } }) => {
             <div>à {e?.node?.city}</div>
             <div>Capacité : {e?.node?.capacity}</div>
             <div>Lieu : {e?.node?.placeName} </div>
-            <Link href={``}>Liste des inscrits</Link>
+            <div className="flex flex-col items-center justify-end gap-2 mt-40">
+              <Link className={buttonVariants({ size: "sm" })} href={``}>
+                <Camera className="mr-2" /> Commencer à scanner
+              </Link>
+              <Link className={buttonVariants({ size: "sm" })} href={``}>
+                Liste des inscrits
+              </Link>
+              <Link className={buttonVariants({ size: "sm" })} href={``}>
+                <PlusCircle className="mr-2" /> Ajouter un participant
+              </Link>
+            </div>
+
             <div className="absolute bottom-2">
               <Link href={"/scanner"} className="flex items-center">
-                <ArrowBigLeft className="w-12 h-12" /> Retour événements
+                <ArrowBigLeft className="w-10 h-10" /> Retour événements
               </Link>
             </div>
           </div>
