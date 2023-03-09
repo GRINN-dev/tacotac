@@ -51,6 +51,8 @@ const AttendeesPage = async ({
         </h2>
         <Link
           className={buttonVariants({ variant: "outline", size: "lg" })}
+          target="_blank"
+
           href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant`}
         >
           iFrame inscription
@@ -71,7 +73,6 @@ const AttendeesPage = async ({
           </p>
           <Link
             href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/create`}
-            target="_blank"
             className={buttonVariants({ size: "lg", variant: "outline" })}
           >
             <PlusSquare className="w-4 h-4 mr-2" /> Ajouter un participant
