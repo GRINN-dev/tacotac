@@ -5,6 +5,7 @@ import { Camera } from "lucide-react";
 import { QrReader } from "react-qr-reader";
 
 import { buttonVariants } from "@/components/ui/button";
+import ModalCode from "../../modalQRCode";
 
 interface State {
   step:
@@ -40,11 +41,6 @@ interface Event {
 }
 
 export const Scanner: FC = () => {
-  const [scanResult, setScanResult] = useState("");
-  const [scanning, setScanning] = useState(false);
-
-  const [data, setData] = useState("");
-
   const reducer: (state: State, event: Event) => State = (state, event) => {
     switch (event.type) {
       case "start_scanner":
@@ -73,10 +69,18 @@ export const Scanner: FC = () => {
               step: "start",
             };
       case "manually_enter_ticket":
-        return {
-          step: "manually_entering_ticket",
-          ticket: event.payload?.ticket,
-        };
+        return state.step === "manually_entering_ticket"
+          ? {
+              step: "scanning_pannel",
+              ticket: event.payload.ticket,
+            }
+          : {
+              step: "start",
+            };
+      // return {
+      //   step: "manually_entering_ticket",
+      //   ticket: event.payload?.ticket,
+      // };
       // case "scan_pannel":
       //   return {
       //     step: "displaying_error",
@@ -118,6 +122,7 @@ export const Scanner: FC = () => {
           ticket: state.ticket,
           pannel: event.payload?.pannel,
         };
+
       case "display_result":
         return {
           step: "displaying_result",
@@ -161,7 +166,7 @@ export const Scanner: FC = () => {
       ) : state.step === "scanning_ticket" ? (
         <>
           {" "}
-          {/* <button
+          <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
               dispatch({
@@ -173,7 +178,7 @@ export const Scanner: FC = () => {
             }}
           >
             Assign ticket number
-          </button> */}
+          </button>
           <div>
             <QrReader
               onResult={(result, error) => {
@@ -181,13 +186,13 @@ export const Scanner: FC = () => {
                   dispatch({
                     type: "scan_ticket",
                     payload: {
-                      ticket: state.ticket,
+                      ticket: Math.floor(Math.random() * 1000000000).toString(),
                     },
                   });
                 }
 
                 if (!!error) {
-                  console.info(error);
+                  console.log(error);
                 }
               }}
               className="w-full"
@@ -206,12 +211,55 @@ export const Scanner: FC = () => {
               });
             }}
           >
-            trigger error
+            trigger error ticket
           </button>
         </>
       ) : state.step === "scanning_pannel" ? (
-        <button
-          className={buttonVariants({ size: "sm" })}
+        <>
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "scan_pannel",
+                payload: {
+                  pannel: "123456789",
+                },
+              });
+            }}
+          >
+            Assign pannel number
+          </button>
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "scan_pannel_error",
+                payload: {
+                  error: "le panneau n'est pas détecté",
+                },
+              });
+            }}
+          >
+            trigger error pannel
+          </button>
+        </>
+      ) : state.step === "manually_entering_ticket" ? (
+        <ModalCode
+          titleTrigger={"Entrez le code manuellement"}
+          titleButton={"Valider"}
+          onClick={() => {
+            dispatch({
+              type: "scan_ticket",
+              payload: {
+                ticket: "123456789",
+              },
+            });
+          }}
+        />
+      ) : state.step === "manually_entering_pannel" ? (
+        <ModalCode
+          titleTrigger={"Entrez le panneau manuellement"}
+          titleButton={"Valider"}
           onClick={() => {
             dispatch({
               type: "scan_pannel",
@@ -220,9 +268,7 @@ export const Scanner: FC = () => {
               },
             });
           }}
-        >
-          Assign pannel number
-        </button>
+        />
       ) : state.step === "displaying_result" ? (
         <button
           className={buttonVariants({ size: "sm" })}
@@ -235,7 +281,8 @@ export const Scanner: FC = () => {
             });
           }}
         >
-          Display result
+          Synchroniser
+          {/* mutation ici */}
         </button>
       ) : null}
       <button
@@ -246,7 +293,7 @@ export const Scanner: FC = () => {
           });
         }}
       >
-        Cancel
+        Annuler
       </button>
 
       <pre>{JSON.stringify(state, null, 2)}</pre>
