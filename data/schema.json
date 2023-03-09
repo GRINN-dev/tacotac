@@ -10655,13 +10655,8 @@
               "deprecationReason": null
             },
             {
-<<<<<<< HEAD
-              "name": "dataScanRealTime",
-              "description": "Ensure that we can vizualize all the data from scanning",
-=======
               "name": "confirmedScanAttendees",
               "description": null,
->>>>>>> main
               "args": [
                 {
                   "name": "input",
@@ -10671,11 +10666,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-<<<<<<< HEAD
-                      "name": "DataScanRealTimeInput",
-=======
                       "name": "ConfirmedScanAttendeesInput",
->>>>>>> main
                       "ofType": null
                     }
                   },
@@ -10684,11 +10675,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-<<<<<<< HEAD
-                "name": "DataScanRealTimePayload",
-=======
                 "name": "ConfirmedScanAttendeesPayload",
->>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
@@ -17436,13 +17423,8 @@
         },
         {
           "kind": "OBJECT",
-<<<<<<< HEAD
-          "name": "DataScanRealTimePayload",
-          "description": "The output of our `dataScanRealTime` mutation.",
-=======
           "name": "ConfirmedScanAttendeesPayload",
           "description": "The output of our `confirmedScanAttendees` mutation.",
->>>>>>> main
           "fields": [
             {
               "name": "clientMutationId",
@@ -17457,20 +17439,12 @@
               "deprecationReason": null
             },
             {
-<<<<<<< HEAD
-              "name": "log",
-=======
               "name": "attendee",
->>>>>>> main
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-<<<<<<< HEAD
-                "name": "Log",
-=======
                 "name": "Attendee",
->>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
@@ -17489,42 +17463,24 @@
               "deprecationReason": null
             },
             {
-<<<<<<< HEAD
-              "name": "event",
-              "description": "Reads a single `Event` that is related to this `Log`.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "Event",
-=======
               "name": "registration",
               "description": "Reads a single `Registration` that is related to this `Attendee`.",
               "args": [],
               "type": {
                 "kind": "OBJECT",
                 "name": "Registration",
->>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-<<<<<<< HEAD
-              "name": "logEdge",
-              "description": "An edge for our `Log`. May be used by Relay 1.",
-              "args": [
-                {
-                  "name": "orderBy",
-                  "description": "The method to use when ordering `Log`.",
-=======
               "name": "attendeeEdge",
               "description": "An edge for our `Attendee`. May be used by Relay 1.",
               "args": [
                 {
                   "name": "orderBy",
                   "description": "The method to use when ordering `Attendee`.",
->>>>>>> main
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -17533,11 +17489,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "ENUM",
-<<<<<<< HEAD
-                        "name": "LogsOrderBy",
-=======
                         "name": "AttendeesOrderBy",
->>>>>>> main
                         "ofType": null
                       }
                     }
@@ -17547,11 +17499,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-<<<<<<< HEAD
-                "name": "LogsEdge",
-=======
                 "name": "AttendeesEdge",
->>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
@@ -17565,13 +17513,8 @@
         },
         {
           "kind": "INPUT_OBJECT",
-<<<<<<< HEAD
-          "name": "DataScanRealTimeInput",
-          "description": "All input for the `dataScanRealTime` mutation.",
-=======
           "name": "ConfirmedScanAttendeesInput",
           "description": "All input for the `confirmedScanAttendees` mutation.",
->>>>>>> main
           "fields": null,
           "inputFields": [
             {
@@ -17585,14 +17528,6 @@
               "defaultValue": null
             },
             {
-<<<<<<< HEAD
-              "name": "eventId",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-=======
               "name": "attendees",
               "description": null,
               "type": {
@@ -17603,7 +17538,6 @@
                   "name": "AttendeePatch",
                   "ofType": null
                 }
->>>>>>> main
               },
               "defaultValue": null
             }

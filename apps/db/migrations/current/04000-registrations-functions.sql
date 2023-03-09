@@ -66,7 +66,7 @@ DECLARE
 begin
       
     for v_iter in 1..array_length(attendees_csv, 1) loop
-      if not exists (select email from publ.attendees where email = attendees_csv[v_iter].email) then
+      --if not exists (select email from publ.attendees where email = attendees_csv[v_iter].email) then
 
         insert into publ.registrations (event_id ) values (event_id) returning * into v_registration;
 
@@ -93,14 +93,14 @@ begin
         true,
         attendees_csv[v_iter].is_vip,
         'TICKET_' || md5(random()::text || clock_timestamp()::text),
-        substring(uuid_generate_v4()::text, 1, 6)  
-        returning * into v_attendees;
+        substring(uuid_generate_v4()::text, 1, 6)  where v_registration.event_id=event_id
+        returning * into v_attendees ;
 
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
 
-      else 
-      raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
-      end if;
+      --else 
+      --raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
+      --end if;
 
     end loop;
     --perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));

@@ -591,39 +591,6 @@ export type CreateUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-/** All input for the `dataScanRealTime` mutation. */
-export type DataScanRealTimeInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
-};
-
-/** The output of our `dataScanRealTime` mutation. */
-export type DataScanRealTimePayload = {
-  __typename?: 'DataScanRealTimePayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Reads a single `Event` that is related to this `Log`. */
-  event?: Maybe<Event>;
-  log?: Maybe<Log>;
-  /** An edge for our `Log`. May be used by Relay 1. */
-  logEdge?: Maybe<LogsEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our `dataScanRealTime` mutation. */
-export type DataScanRealTimePayloadLogEdgeArgs = {
-  orderBy?: InputMaybe<Array<LogsOrderBy>>;
-};
-
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -1719,8 +1686,6 @@ export type Mutation = {
   createRegistration?: Maybe<CreateRegistrationPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
-  /** Ensure that we can vizualize all the data from scanning */
-  dataScanRealTime?: Maybe<DataScanRealTimePayload>;
   /** Deletes a single `Attendee` using a unique key. */
   deleteAttendee?: Maybe<DeleteAttendeePayload>;
   /** Deletes a single `Attendee` using its globally unique id. */
@@ -1873,12 +1838,6 @@ export type MutationCreateRegistrationArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDataScanRealTimeArgs = {
-  input: DataScanRealTimeInput;
 };
 
 
