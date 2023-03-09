@@ -288,6 +288,7 @@ export type ConfirmedScanAttendeesInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** The output of our `confirmedScanAttendees` mutation. */
@@ -1498,6 +1499,32 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
+/** A filter to be used against JSON fields. All fields are combined with a logical ‘and.’ */
+export type JsonFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['JSON']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['JSON']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['JSON']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['JSON']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['JSON']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['JSON']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['JSON']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['JSON']>>;
+};
+
 export type Log = Node & {
   __typename?: 'Log';
   createdAt: Scalars['Datetime'];
@@ -1520,6 +1547,8 @@ export type LogCondition = {
   eventId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `payload` field. */
+  payload?: InputMaybe<Scalars['JSON']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<LogsStatus>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -1540,6 +1569,8 @@ export type LogFilter = {
   not?: InputMaybe<LogFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<LogFilter>>;
+  /** Filter by the object’s `payload` field. */
+  payload?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<LogsStatusFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -1621,6 +1652,8 @@ export enum LogsOrderBy {
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
+  PayloadAsc = 'PAYLOAD_ASC',
+  PayloadDesc = 'PAYLOAD_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   StatusAsc = 'STATUS_ASC',

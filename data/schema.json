@@ -6906,6 +6906,18 @@
               "deprecationReason": null
             },
             {
+              "name": "PAYLOAD_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PAYLOAD_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -6981,6 +6993,16 @@
               "defaultValue": null
             },
             {
+              "name": "payload",
+              "description": "Checks for equality with the object’s `payload` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": "Checks for equality with the object’s `createdAt` field.",
               "type": {
@@ -7037,6 +7059,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "LogsStatusFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "payload",
+              "description": "Filter by the object’s `payload` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "JSONFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -7240,6 +7272,143 @@
               "type": {
                 "kind": "ENUM",
                 "name": "LogsStatus",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "JSONFilter",
+          "description": "A filter to be used against JSON fields. All fields are combined with a logical ‘and.’",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "isNull",
+              "description": "Is null (if `true` is specified) or is not null (if `false` is specified).",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "equalTo",
+              "description": "Equal to the specified value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "notEqualTo",
+              "description": "Not equal to the specified value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "distinctFrom",
+              "description": "Not equal to the specified value, treating null like an ordinary value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "notDistinctFrom",
+              "description": "Equal to the specified value, treating null like an ordinary value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": "Included in the specified list.",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "JSON",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "notIn",
+              "description": "Not included in the specified list.",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "JSON",
+                    "ofType": null
+                  }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lessThan",
+              "description": "Less than the specified value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lessThanOrEqualTo",
+              "description": "Less than or equal to the specified value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "greaterThan",
+              "description": "Greater than the specified value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "greaterThanOrEqualTo",
+              "description": "Greater than or equal to the specified value.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "JSON",
                 "ofType": null
               },
               "defaultValue": null
@@ -17523,6 +17692,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "eventId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
                 "ofType": null
               },
               "defaultValue": null

@@ -23,7 +23,7 @@ begin
 
   -- creation de la registration et stockage du resultat dans la variable
     insert into publ.registrations (event_id ) values (event_id) returning * into v_registration;
-
+    insert into publ.logs (event_id,status) values (event_id,'OK') on conflict do nothing;
 
   -- creation des attendees avec une boucle for, le premier attendee créé (le premier du tableau) est l'inscripteur
   --En ce qui concerne "array_length", il s'agit d'une fonction intégrée en PL/SQL qui renvoie la longueur d'un tableau multi-dimensionnel.
@@ -50,6 +50,8 @@ begin
     end loop;
   
     perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
+    perform graphile_worker.add_job('genLogs',json_build_object('eventId',v_registration.event_id));
+
 
   return v_registration;
 end;
@@ -64,6 +66,7 @@ DECLARE
   v_attendees publ.attendees;
   v_iter int;
 begin
+        insert into publ.logs (event_id,status) values (event_id,'OK') on conflict do nothing;
       
     for v_iter in 1..array_length(attendees_csv, 1) loop
       --if not exists (select email from publ.attendees where email = attendees_csv[v_iter].email) then
@@ -96,14 +99,13 @@ begin
         substring(uuid_generate_v4()::text, 1, 6)  where v_registration.event_id=event_id
         returning * into v_attendees ;
 
-        perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
-
+        --perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
+        perform graphile_worker.add_job('genLogs',json_build_object('eventId',v_registration.event_id));
       --else 
       --raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
       --end if;
 
     end loop;
-    --perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
 
   return v_attendees;
 end;
@@ -120,7 +122,7 @@ grant execute on function publ.register_attendees_csv(uuid, publ.attendees[]) to
   DESCRIPTION: Confirmed attendees at event, add panel number and email if missing
 */
 
-create or replace function publ.confirmed_scan_attendees( attendees publ.attendees[]) returns publ.attendees as $$
+create or replace function publ.confirmed_scan_attendees(event_id uuid, attendees publ.attendees[]) returns publ.attendees as $$
 DECLARE 
   v_attendee publ.attendees;
   v_iter int;
@@ -129,16 +131,21 @@ begin
 
   -- update des attendees avec une boucle for
     for v_iter in 1..array_length(attendees, 1) loop
-      update publ.attendees as atts set status = attendees[v_iter].status, email = attendees[v_iter].email, panel_number = attendees[v_iter].panel_number 
+      update publ.attendees as atts set 
+      status = attendees[v_iter].status, 
+      email = attendees[v_iter].email, 
+      panel_number = attendees[v_iter].panel_number 
       where atts.id=attendees[v_iter].id returning * into v_attendee;
+      perform graphile_worker.add_job('genLogs',json_build_object('eventId',event_id,'isScanning',true));
+
     end loop;
 
   return v_attendee;
   
 end;
 $$ language plpgsql VOLATILE SECURITY DEFINER;
-comment on function confirmed_scan_attendees( attendees publ.attendees[]) is E'@arg0variant patch';
-grant execute on function publ.confirmed_scan_attendees( publ.attendees[]) to :DATABASE_VISITOR;
+comment on function confirmed_scan_attendees(event_id uuid, attendees publ.attendees[]) is E'@arg1variant patch';
+grant execute on function publ.confirmed_scan_attendees(event_id uuid, publ.attendees[]) to :DATABASE_VISITOR;
 
 /*
   END FUNCTION: confirmed_attendees
