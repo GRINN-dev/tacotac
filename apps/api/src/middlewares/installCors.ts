@@ -14,9 +14,9 @@ export const installCors = (app: Express) => {
         "http://localhost:7802",
         "http://localhost:7803",
         "http://localhost:7804",
-        /\.tacotac\.com$/,
+        /\.kaypi\.com$/,
         // regexp for ticket + anything + 'vercel.app'
-        /https:\/\/tacotac.*\.vercel\.app$/,
+        /https:\/\/kaypi.*\.vercel\.app$/,
       ],
       credentials: true,
     })

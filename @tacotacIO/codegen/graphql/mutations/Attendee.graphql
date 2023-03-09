@@ -23,3 +23,11 @@ mutation DeleteAttendee($input: DeleteAttendeeInput!) {
     }
   }
 }
+
+mutation RegisterAttendees($input: RegisterAttendeesInput!) {
+  registerAttendees(input: $input) {
+    registration {
+      id
+    }
+  }
+}

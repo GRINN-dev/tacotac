@@ -2,13 +2,10 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../components/table/Collection";
-
 
 const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({

@@ -2,10 +2,14 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CivilityStatus, CreateAttendeeInput, EventStatus, GetEventByIdQuery } from "@/../../@tacotacIO/codegen/dist";
+import {
+  CivilityStatus,
+  EventStatus,
+  GetEventByIdQuery,
+  RegisterAttendeesInput,
+} from "@/../../@tacotacIO/codegen/dist";
+import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -13,29 +17,35 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 
+interface iCreateAttendeeForm extends ExtractType<GetEventByIdQuery, "event"> {}
 
-interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
-
-export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
+export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const { register, handleSubmit, formState, control } = useForm<CreateAttendeeInput>();
+  const { register, handleSubmit, formState, control } = useForm<RegisterAttendeesInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
+    data.eventId = id;
 
     await sdk()
-      .CreateAttendee({
+      .RegisterAttendees({
         input: data,
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setError(error);
         setIsLoading(false);
+
+        toast({
+          title:
+            error.response.errors[0].errcode === "RGNST"
+              ? "Date d'inscription pas encore ouverte 😋"
+              : "Oups ! une erreur est survenue",
+        });
         throw error;
       });
 
@@ -48,7 +58,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Controller
-          name={"attendee.status"}
+          name={"attendees.0.status"}
           control={control}
           render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
             <>
@@ -73,7 +83,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Controller
-          name={"attendee.civility"}
+          name={"attendees.0.civility"}
           control={control}
           render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
             <>
@@ -99,12 +109,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
           type="text"
           id="firstname"
           placeholder="Obole"
-          {...register("attendee.firstname", {
+          {...register("attendees.0.firstname", {
             required: "Un prénom pour le participant est requis",
           })}
         />
-        {formState.errors?.attendee?.firstname && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.firstname?.message}</p>
+        {formState.errors?.attendees?.at(0)?.firstname && (
+          <p className="text-sm text-red-800 dark:text-red-300">
+            {formState.errors?.attendees?.at(0)?.firstname?.message}
+          </p>
         )}
       </div>
 
@@ -114,12 +126,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
           type="text"
           id="lastname"
           placeholder="Obole"
-          {...register("attendee.lastname", {
+          {...register("attendees.0.lastname", {
             required: "Un nom pour le participant est requis",
           })}
         />
-        {formState.errors?.attendee?.lastname && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.lastname?.message}</p>
+        {formState.errors?.attendees?.at(0)?.lastname && (
+          <p className="text-sm text-red-800 dark:text-red-300">
+            {formState.errors?.attendees?.at(0)?.lastname?.message}
+          </p>
         )}
       </div>
 
@@ -129,12 +143,12 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
           type="text"
           id="email"
           placeholder="Obole"
-          {...register("attendee.email", {
+          {...register("attendees.0.email", {
             required: "Un email pour le participant est requis",
           })}
         />
-        {formState.errors?.attendee?.email && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.email?.message}</p>
+        {formState.errors?.attendees?.at(0)?.email && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.at(0)?.email?.message}</p>
         )}
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
@@ -143,12 +157,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
           type="number"
           id="phoneNumber"
           placeholder="Obole"
-          {...register("attendee.phoneNumber", {
+          {...register("attendees.0.phoneNumber", {
             required: "Un téléphone pour le participant est requis",
           })}
         />
-        {formState.errors?.attendee?.phoneNumber && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.phoneNumber?.message}</p>
+        {formState.errors?.attendees?.at(0)?.phoneNumber && (
+          <p className="text-sm text-red-800 dark:text-red-300">
+            {formState.errors?.attendees?.at(0)?.phoneNumber?.message}
+          </p>
         )}
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
@@ -157,17 +173,19 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
           type="number"
           id="zipCode"
           placeholder="Obole"
-          {...register("attendee.zipCode", {
+          {...register("attendees.0.zipCode", {
             required: "Un code postal pour le participant est requis",
           })}
         />
-        {formState.errors?.attendee?.zipCode && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.zipCode?.message}</p>
+        {formState.errors?.attendees?.at(0)?.zipCode && (
+          <p className="text-sm text-red-800 dark:text-red-300">
+            {formState.errors?.attendees?.at(0)?.zipCode?.message}
+          </p>
         )}
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Controller
-          name={"attendee.hearAbout"}
+          name={"attendees.0.hearAbout"}
           control={control}
           render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
             <>
@@ -197,32 +215,26 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
           type="checkbox"
           id="isFundraisingGenerosityOk"
           className="h-4 w-4 "
-          {...register("attendee.isFundraisingGenerosityOk", {
+          {...register("attendees.0.isFundraisingGenerosityOk", {
             required: "Cette info pour le participant est requise",
           })}
         />
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="isInscriptor">{"Inscripteur"}</Label>
-        <Input type="checkbox" id="isInscriptor" className="h-4 w-4 " {...register("attendee.isInscriptor", {})} />
-        {formState.errors?.attendee?.isInscriptor && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.isInscriptor?.message}</p>
-        )}
-      </div>
+
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="isVip">{"Vip"}</Label>
-        <Input type="checkbox" id="isVip" className="h-4 w-4 " {...register("attendee.isVip", {})} />
-        {formState.errors?.attendee?.isVip && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendee?.isVip?.message}</p>
+        <Input type="checkbox" id="isVip" className="h-4 w-4 " {...register("attendees.0.isVip", {})} />
+        {formState.errors?.attendees?.at(0)?.isVip && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.at(0)?.isVip?.message}</p>
         )}
       </div>
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Créer
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
