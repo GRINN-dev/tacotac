@@ -2,17 +2,15 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  CivilityStatus,
-  EventStatus,
-  GetEventByIdQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
+import Script from "next/script";
+import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
-import { cn } from "@/lib/utils";
+import { cn, validCaptcha } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,7 +61,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
 
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
     const isValid = await trigger();
-    if (isValid) {
+    const { isValidCaptcha } = await validCaptcha();
+    if (isValid && isValidCaptcha) {
       setIsLoading(true);
       setEmail(data?.attendees?.[0].email);
       await sdk()
@@ -85,6 +84,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
   });
   return (
     <div className="flex w-full flex-col">
+      <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
+
       <div className={showConfirmation === true ? "hidden" : "flex w-full flex-col"}>
         <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
           {fields?.length > 1 ? (

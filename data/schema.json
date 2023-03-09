@@ -10655,8 +10655,13 @@
               "deprecationReason": null
             },
             {
+<<<<<<< HEAD
               "name": "dataScanRealTime",
               "description": "Ensure that we can vizualize all the data from scanning",
+=======
+              "name": "confirmedScanAttendees",
+              "description": null,
+>>>>>>> main
               "args": [
                 {
                   "name": "input",
@@ -10666,7 +10671,11 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
+<<<<<<< HEAD
                       "name": "DataScanRealTimeInput",
+=======
+                      "name": "ConfirmedScanAttendeesInput",
+>>>>>>> main
                       "ofType": null
                     }
                   },
@@ -10675,7 +10684,11 @@
               ],
               "type": {
                 "kind": "OBJECT",
+<<<<<<< HEAD
                 "name": "DataScanRealTimePayload",
+=======
+                "name": "ConfirmedScanAttendeesPayload",
+>>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10757,6 +10770,33 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "RegisterAttendeesPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "registerAttendeesCsv",
+              "description": null,
+              "args": [
+                {
+                  "name": "input",
+                  "description": "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "RegisterAttendeesCsvInput",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "RegisterAttendeesCsvPayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -11069,13 +11109,9 @@
               "name": "status",
               "description": null,
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "ENUM",
-                  "name": "EventStatus",
-                  "ofType": null
-                }
+                "kind": "ENUM",
+                "name": "EventStatus",
+                "ofType": null
               },
               "defaultValue": null
             },
@@ -17400,8 +17436,13 @@
         },
         {
           "kind": "OBJECT",
+<<<<<<< HEAD
           "name": "DataScanRealTimePayload",
           "description": "The output of our `dataScanRealTime` mutation.",
+=======
+          "name": "ConfirmedScanAttendeesPayload",
+          "description": "The output of our `confirmedScanAttendees` mutation.",
+>>>>>>> main
           "fields": [
             {
               "name": "clientMutationId",
@@ -17416,12 +17457,20 @@
               "deprecationReason": null
             },
             {
+<<<<<<< HEAD
               "name": "log",
+=======
+              "name": "attendee",
+>>>>>>> main
               "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
+<<<<<<< HEAD
                 "name": "Log",
+=======
+                "name": "Attendee",
+>>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
@@ -17440,24 +17489,42 @@
               "deprecationReason": null
             },
             {
+<<<<<<< HEAD
               "name": "event",
               "description": "Reads a single `Event` that is related to this `Log`.",
               "args": [],
               "type": {
                 "kind": "OBJECT",
                 "name": "Event",
+=======
+              "name": "registration",
+              "description": "Reads a single `Registration` that is related to this `Attendee`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Registration",
+>>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
+<<<<<<< HEAD
               "name": "logEdge",
               "description": "An edge for our `Log`. May be used by Relay 1.",
               "args": [
                 {
                   "name": "orderBy",
                   "description": "The method to use when ordering `Log`.",
+=======
+              "name": "attendeeEdge",
+              "description": "An edge for our `Attendee`. May be used by Relay 1.",
+              "args": [
+                {
+                  "name": "orderBy",
+                  "description": "The method to use when ordering `Attendee`.",
+>>>>>>> main
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -17466,7 +17533,11 @@
                       "name": null,
                       "ofType": {
                         "kind": "ENUM",
+<<<<<<< HEAD
                         "name": "LogsOrderBy",
+=======
+                        "name": "AttendeesOrderBy",
+>>>>>>> main
                         "ofType": null
                       }
                     }
@@ -17476,7 +17547,11 @@
               ],
               "type": {
                 "kind": "OBJECT",
+<<<<<<< HEAD
                 "name": "LogsEdge",
+=======
+                "name": "AttendeesEdge",
+>>>>>>> main
                 "ofType": null
               },
               "isDeprecated": false,
@@ -17490,8 +17565,13 @@
         },
         {
           "kind": "INPUT_OBJECT",
+<<<<<<< HEAD
           "name": "DataScanRealTimeInput",
           "description": "All input for the `dataScanRealTime` mutation.",
+=======
+          "name": "ConfirmedScanAttendeesInput",
+          "description": "All input for the `confirmedScanAttendees` mutation.",
+>>>>>>> main
           "fields": null,
           "inputFields": [
             {
@@ -17505,12 +17585,25 @@
               "defaultValue": null
             },
             {
+<<<<<<< HEAD
               "name": "eventId",
               "description": null,
               "type": {
                 "kind": "SCALAR",
                 "name": "UUID",
                 "ofType": null
+=======
+              "name": "attendees",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "AttendeePatch",
+                  "ofType": null
+                }
+>>>>>>> main
               },
               "defaultValue": null
             }
@@ -17853,6 +17946,141 @@
             },
             {
               "name": "attendees",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "AttendeePatch",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "RegisterAttendeesCsvPayload",
+          "description": "The output of our `registerAttendeesCsv` mutation.",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "The exact same `clientMutationId` that was provided in the mutation input,\nunchanged and unused. May be used by a client to track mutations.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "attendee",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Attendee",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "query",
+              "description": "Our root query field type. Allows us to run any query from our mutation payload.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Query",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "registration",
+              "description": "Reads a single `Registration` that is related to this `Attendee`.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Registration",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "attendeeEdge",
+              "description": "An edge for our `Attendee`. May be used by Relay 1.",
+              "args": [
+                {
+                  "name": "orderBy",
+                  "description": "The method to use when ordering `Attendee`.",
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "ENUM",
+                        "name": "AttendeesOrderBy",
+                        "ofType": null
+                      }
+                    }
+                  },
+                  "defaultValue": "[PRIMARY_KEY_ASC]"
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "AttendeesEdge",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "RegisterAttendeesCsvInput",
+          "description": "All input for the `registerAttendeesCsv` mutation.",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "clientMutationId",
+              "description": "An arbitrary string value with no semantic meaning. Will be included in the\npayload verbatim. May be used to track mutations by the client.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "eventId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "attendeesCsv",
               "description": null,
               "type": {
                 "kind": "LIST",

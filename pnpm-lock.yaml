@@ -42,6 +42,7 @@ importers:
       '@types/express': ^4.17.15
       '@types/node': ^18.11.18
       '@types/pg': ^8.6.6
+      axios: ^1.3.4
       cors: ^2.8.5
       express: ^4.18.2
       graphile-build: ^4.13.0
@@ -55,6 +56,7 @@ importers:
       '@aws-sdk/client-s3': 3.279.0
       '@aws-sdk/s3-presigned-post': 3.279.0
       '@graphile-contrib/pg-simplify-inflector': 6.1.0
+      axios: 1.3.4
       cors: 2.8.5
       express: 4.18.2
       graphile-build: 4.13.0
@@ -111,6 +113,7 @@ importers:
       '@tacotacIO/codegen': workspace:*
       '@tailwindcss/line-clamp': ^0.4.2
       '@types/node': ^17.0.12
+      '@types/papaparse': ^5.3.7
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
       autoprefixer: ^10.4.13
@@ -127,6 +130,7 @@ importers:
       lucide-react: 0.105.0-alpha.4
       next: ^13.2.3
       next-themes: npm:@wits/next-themes@^0.2.16
+      papaparse: ^5.4.0
       postcss: ^8.4.14
       prettier: ^2.7.1
       react: ^18.2.0
@@ -166,6 +170,7 @@ importers:
       '@radix-ui/react-toggle-group': 1.0.2_biqbaboplfbrettd7655fr4n2y
       '@radix-ui/react-tooltip': 1.0.3_5ndqzdd6t4rivxsukjv3i3ak2q
       '@tacotacIO/codegen': link:../../@tacotacIO/codegen
+      '@types/papaparse': 5.3.7
       class-variance-authority: 0.4.0_typescript@4.9.4
       clsx: 1.2.1
       dayjs: 1.11.7
@@ -174,6 +179,7 @@ importers:
       lucide-react: 0.105.0-alpha.4_react@18.2.0
       next: 13.2.3_biqbaboplfbrettd7655fr4n2y
       next-themes: /@wits/next-themes/0.2.16_nvzgbose6yf6w7ijjprgspqefi
+      papaparse: 5.4.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.42.1_react@18.2.0
@@ -3890,6 +3896,12 @@ packages:
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
 
+  /@types/papaparse/5.3.7:
+    resolution: {integrity: sha512-f2HKmlnPdCvS0WI33WtCs5GD7X1cxzzS/aduaxSu3I7TbhWlENjSPs6z5TaB9K0J+BH1jbmqTaM+ja5puis4wg==}
+    dependencies:
+      '@types/node': 18.11.18
+    dev: false
+
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
 
@@ -4300,6 +4312,16 @@ packages:
     resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
     dependencies:
       follow-redirects: 1.15.2
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /axios/1.3.4:
+    resolution: {integrity: sha512-toYm+Bsyl6VC5wSkfkbbNB6ROv7KY93PEBBL6xyDczaIHasAiv4wPqQ/c4RjoQzipxRD2W5g21cOqQulZ7rHwQ==}
+    dependencies:
+      follow-redirects: 1.15.2
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6058,6 +6080,15 @@ packages:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
+  /form-data/4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+    dev: false
+
   /formdata-node/4.4.1:
     resolution: {integrity: sha512-0iirZp3uVDjVGt9p49aTaqjk84TrglENEDuqfdlZQ1roC9CWlPk6Avf8EEnZNcAqPonwkG35x4n3ww/1THYAeQ==}
     engines: {node: '>= 12.20'}
@@ -7740,6 +7771,10 @@ packages:
 
   /pako/1.0.11:
     resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
+    dev: false
+
+  /papaparse/5.4.0:
+    resolution: {integrity: sha512-ZBQABWG09p+u8rFoJVl/GhgxZ5zy9Zh1Lu/LVc7VX5T4nljjC14/YTcpebYwqP218B9X307eBOP7Tuhoqv7v7w==}
     dev: false
 
   /param-case/3.0.4:
