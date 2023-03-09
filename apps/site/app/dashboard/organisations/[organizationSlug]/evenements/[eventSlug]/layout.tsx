@@ -1,11 +1,15 @@
 import Link from "next/link";
-import { ChevronRight, Clipboard, Cog, Home, PlusSquare } from "lucide-react";
-
-
+import { ChevronRight, Clipboard, Cog, FileDown, Home, PlusSquare } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function AttendeesLayout({
   children,
@@ -23,7 +27,7 @@ export default function AttendeesLayout({
         <ol role="list" className="flex space-x-4 rounded-md  shadow">
           <li className="flex">
             <div className="flex items-center">
-              <ChevronRight className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+              <ChevronRight className="h-3 w-3 shrink-0" aria-hidden="true" />
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   {" "}
@@ -33,7 +37,7 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}`}
                     className={cn(
-                      "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                     )}
                   >
                     <DropdownMenuItem className="self-center">Mes participants</DropdownMenuItem>
@@ -42,7 +46,7 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/infos`}
                     className={cn(
-                      "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                     )}
                   >
                     <DropdownMenuItem className="self-center">
@@ -53,11 +57,11 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/create`}
                     className={cn(
-                      "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                     )}
                   >
                     <DropdownMenuItem className="self-center">
-                      <PlusSquare className="w-4 h-4 mr-4" />
+                      <PlusSquare className="mr-4 h-4 w-4" />
                       Ajouter un participant
                     </DropdownMenuItem>
                   </Link>
@@ -65,12 +69,23 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/brandings`}
                     className={cn(
-                      "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                     )}
                   >
                     <DropdownMenuItem className="self-center">
-                      <Clipboard aria-hidden className="w-4 h-4 mr-4" />
+                      <Clipboard aria-hidden className="mr-4 h-4 w-4" />
                       Charte graphique formulaire
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link
+                    href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/import`}
+                    className={cn(
+                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                    )}
+                  >
+                    <DropdownMenuItem className="self-center">
+                      <FileDown aria-hidden className="mr-4 h-4 w-4" />
+                      Importer un CSV de participants
                     </DropdownMenuItem>
                   </Link>
                 </DropdownMenuContent>
