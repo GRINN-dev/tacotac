@@ -1,9 +1,10 @@
 "use client";
 
-import { FC, useReducer, useState } from "react";
+import { FC, useEffect, useReducer, useState } from "react";
 import { Camera } from "lucide-react";
 import { QrReader } from "react-qr-reader";
 
+import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import ModalCode from "../../modalQRCode";
 
@@ -40,7 +41,9 @@ interface Event {
   payload?: Omit<State, "step">;
 }
 
-export const Scanner: FC = () => {
+export const Scanner = async () => {
+  const { attendees } = await sdk().GetAllAttendeesTickets();
+  console.log("attendeesTickets", attendees);
   const reducer: (state: State, event: Event) => State = (state, event) => {
     switch (event.type) {
       case "start_scanner":
@@ -77,26 +80,13 @@ export const Scanner: FC = () => {
           : {
               step: "start",
             };
-      // return {
-      //   step: "manually_entering_ticket",
-      //   ticket: event.payload?.ticket,
-      // };
       // case "scan_pannel":
       //   return {
       //     step: "displaying_error",
       //     ticket: state.ticket,
       //     pannel: event.payload.pannel,
       //   };
-      case "scan_pannel":
-        return state.step === "scanning_pannel"
-          ? {
-              ...state,
-              pannel: event.payload.pannel,
-              step: state.ticket ? "displaying_result" : "scanning_ticket",
-            }
-          : {
-              step: "start",
-            };
+
       case "scan_pannel":
         return state.step === "scanning_pannel"
           ? {
@@ -192,6 +182,12 @@ export const Scanner: FC = () => {
                 }
 
                 if (!!error) {
+                  dispatch({
+                    type: "scan_ticket_error",
+                    payload: {
+                      error: error.message,
+                    },
+                  });
                   console.log(error);
                 }
               }}

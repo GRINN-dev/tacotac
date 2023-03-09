@@ -3396,6 +3396,18 @@ export type AttendeesBySlugEventQueryVariables = Exact<{
 
 export type AttendeesBySlugEventQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }> } }> } }> } | null };
 
+export type GetAllAttendeesTicketsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllAttendeesTicketsQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, ticketNumber?: string | null }> } | null };
+
+export type GetAttendeeTicketByIdQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetAttendeeTicketByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', ticketNumber?: string | null, signCode?: string | null } | null };
+
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3703,6 +3715,24 @@ export const AttendeesBySlugEventDocument = gql`
   }
 }
     ${MyAttendeeFragmentDoc}`;
+export const GetAllAttendeesTicketsDocument = gql`
+    query GetAllAttendeesTickets {
+  attendees {
+    nodes {
+      id
+      ticketNumber
+    }
+  }
+}
+    `;
+export const GetAttendeeTicketByIdDocument = gql`
+    query GetAttendeeTicketById($id: UUID!) {
+  attendee(id: $id) {
+    ticketNumber
+    signCode
+  }
+}
+    `;
 export const GetAllEventsDocument = gql`
     query GetAllEvents {
   events(orderBy: [CREATED_AT_DESC]) {
@@ -3938,6 +3968,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     AttendeesBySlugEvent(variables: AttendeesBySlugEventQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AttendeesBySlugEventQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AttendeesBySlugEventQuery>(AttendeesBySlugEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AttendeesBySlugEvent', 'query');
+    },
+    GetAllAttendeesTickets(variables?: GetAllAttendeesTicketsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllAttendeesTicketsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllAttendeesTicketsQuery>(GetAllAttendeesTicketsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllAttendeesTickets', 'query');
+    },
+    GetAttendeeTicketById(variables: GetAttendeeTicketByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeTicketByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeTicketByIdQuery>(GetAttendeeTicketByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeTicketById', 'query');
     },
     GetAllEvents(variables?: GetAllEventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllEventsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllEventsQuery>(GetAllEventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllEvents', 'query');
