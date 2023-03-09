@@ -280,6 +280,39 @@ export type CivilityStatusFilter = {
   notIn?: InputMaybe<Array<CivilityStatus>>;
 };
 
+/** All input for the `confirmedScanAttendees` mutation. */
+export type ConfirmedScanAttendeesInput = {
+  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our `confirmedScanAttendees` mutation. */
+export type ConfirmedScanAttendeesPayload = {
+  __typename?: 'ConfirmedScanAttendeesPayload';
+  attendee?: Maybe<Attendee>;
+  /** An edge for our `Attendee`. May be used by Relay 1. */
+  attendeeEdge?: Maybe<AttendeesEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Registration` that is related to this `Attendee`. */
+  registration?: Maybe<Registration>;
+};
+
+
+/** The output of our `confirmedScanAttendees` mutation. */
+export type ConfirmedScanAttendeesPayloadAttendeeEdgeArgs = {
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
 /** All input for the create `Attendee` mutation. */
 export type CreateAttendeeInput = {
   /** The `Attendee` to be created by this mutation. */
@@ -1397,6 +1430,7 @@ export type LoginPayload = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  confirmedScanAttendees?: Maybe<ConfirmedScanAttendeesPayload>;
   /** Creates a single `Attendee`. */
   createAttendee?: Maybe<CreateAttendeePayload>;
   /** Creates a single `Event`. */
@@ -1500,6 +1534,12 @@ export type Mutation = {
   updateUserByEmail?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserByNodeId?: Maybe<UpdateUserPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationConfirmedScanAttendeesArgs = {
+  input: ConfirmedScanAttendeesInput;
 };
 
 

@@ -2,11 +2,14 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import {
+  CivilityStatus,
+  EventStatus,
+  GetEventByIdQuery,
+  RegisterAttendeesInput,
+} from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -14,7 +17,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
 
 interface iCreateAttendeeForm extends ExtractType<GetEventByIdQuery, "event"> {}
 
@@ -226,13 +228,13 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.at(0)?.isVip?.message}</p>
         )}
       </div>
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Créer
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
