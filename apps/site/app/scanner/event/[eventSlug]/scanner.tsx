@@ -229,7 +229,7 @@ export const Scanner = () => {
         <>
           <input
             className="border"
-            type="text"
+            type="number"
             value={state.ticket || ""}
             onChange={(e) => {
               dispatch({
