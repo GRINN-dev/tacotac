@@ -123,8 +123,8 @@ grant execute on function publ.register_attendees_csv(uuid, publ.attendees[]) to
 create or replace function publ.scan_attendee(ticket_payload json) returns publ.attendees as $$
 DECLARE 
   v_attendee publ.attendees;
-  v_event_id uuid :=  CAST(ticket_payload->>'eventId' as uuid);
-  v_panel_number int:=  CAST(ticket_payload->>'panelNumber' AS INTEGER);
+  v_event_id uuid := ticket_payload->>'eventId';
+  v_panel_number int:= ticket_payload->>'panelNumber';
   v_attendee_id uuid := ticket_payload->>'attendeeId';
 BEGIN
 
