@@ -1,6 +1,7 @@
 "use client";
 
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
+import { Attendee } from "@/../../@tacotacIO/codegen/dist";
 import { Camera } from "lucide-react";
 
 import { QrReader } from "@/components/qr-reader";
@@ -41,7 +42,10 @@ interface Event {
 }
 
 export const Scanner = () => {
-  //récup infos ticket et mutation qui renvoie vers le back
+  //récup infos ticket et mutation qui renverra vers le back
+
+  const [attendeeData, setAttendeeData] = useState({ ticket: "", pannel: "" });
+  console.log("DATA", attendeeData);
   const reducer: (state: State, event: Event) => State = (state, event) => {
     switch (event.type) {
       case "start_scanner":
@@ -88,7 +92,7 @@ export const Scanner = () => {
       case "scan_pannel":
         return state.step === "scanning_pannel"
           ? {
-              step: "scanning_pannel",
+              step: "displaying_result",
               ticket: state.ticket,
               pannel: event.payload.pannel,
             }
@@ -201,6 +205,16 @@ export const Scanner = () => {
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
               dispatch({
+                type: "scan_pannel",
+              });
+            }}
+          >
+            <Camera className="mr-2" /> Scanner le panneau
+          </button>
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
                 type: "scan_pannel_error",
                 payload: {
                   error: "le panneau n'est pas détecté",
@@ -212,25 +226,53 @@ export const Scanner = () => {
           </button>
         </>
       ) : state.step === "manually_entering_ticket" ? (
-        <ModalCode
-          titleTrigger={"Entrez le code manuellement"}
-          titleButton={"Valider"}
-          onClick={() => {
-            dispatch({
-              type: "scan_ticket",
-              payload: {
-                ticket: "123456789",
-              },
-            });
-          }}
-        />
-      ) : state.step === "manually_entering_pannel" ? (
+        <>
+          <input
+            className="border"
+            type="text"
+            value={state.ticket || ""}
+            onChange={(e) => {
+              dispatch({
+                type: "manually_enter_ticket",
+                payload: {
+                  ticket: e.target.value,
+                },
+              });
+            }}
+          />
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "scan_ticket",
+                payload: {
+                  ticket: state.ticket,
+                },
+              });
+            }}
+          >
+            Confirmer
+          </button>
+        </>
+      ) : // <ModalCode
+      //   titleTrigger={"Entrez le code manuellement"}
+      //   titleButton={"Valider"}
+      //   onClick={() => {
+      //     dispatch({
+      //       type: "scan_ticket",
+      //       payload: {
+      //         ticket: "123456789",
+      //       },
+      //     });
+      //   }}
+      // />
+      state.step === "manually_entering_pannel" ? (
         <ModalCode
           titleTrigger={"Entrez le panneau manuellement"}
           titleButton={"Valider"}
-          onClick={() => {
+          onClick={(e) => {
             dispatch({
-              type: "scan_pannel",
+              type: "manually_enter_pannel",
               payload: {
                 pannel: "123456789",
               },
@@ -247,14 +289,16 @@ export const Scanner = () => {
                 pannel: "123456789",
               },
             });
+            setAttendeeData({ ticket: state.ticket, pannel: state.pannel });
+            localStorage.setItem("attendeeData", JSON.stringify(attendeeData));
           }}
         >
           Synchroniser
-          {/* mutation ici */}
+          {/* mutation ici, pour le moment je remplis le state attendeeData*/}
         </button>
       ) : null}
       <button
-        className={buttonVariants({ size: "sm", className: "bg-red-600 text-white" })}
+        className={buttonVariants({ size: "sm", className: "bg-red-500 text-white" })}
         onClick={() => {
           dispatch({
             type: "cancel",
@@ -269,23 +313,28 @@ export const Scanner = () => {
             if (state.step === "scanning_ticket") {
               console.log(result);
               if (!!result) {
-                console.log("========1");
                 dispatch({
                   type: "scan_ticket",
                   payload: {
                     ticket: result.getText(),
                   },
                 });
+                // setAttendeeData({ ticket: result.getText(), pannel: "" });
               }
 
               if (!!error) {
-                console.log("=========2");
-                // dispatch({
-                //   type: "scan_ticket_error",
-                //   payload: {
-                //     error: error.message,
-                //   },
-                // });
+                console.log(error);
+              }
+            } else if (state.step === "scanning_pannel") {
+              if (!!result) {
+                dispatch({
+                  type: "scan_pannel",
+                  payload: {
+                    pannel: result.getText(),
+                  },
+                });
+              }
+              if (!!error) {
                 console.log(error);
               }
             }
