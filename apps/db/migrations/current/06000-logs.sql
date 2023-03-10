@@ -8,7 +8,9 @@ comment on table publ.logs_status is E'@enum';
 insert into publ.logs_status values
     ('OK', 'Tout se passe bien'),
     ('WARNING', 'Attention'),
-    ('ERROR', 'Une erreur au scanning s''est produite'),
+    ('WARNING_EMAIL','Pas d''email'),
+    ('WARNING_PANEL','Pas de panneau'),
+    ('ERROR', 'Une erreur s''est produite'),
     ('INVALID_TICKET', 'Ticket scanné non valide');
 
 /*

@@ -1514,7 +1514,13 @@ enum LogsStatus {
   """Attention"""
   WARNING
 
-  """Une erreur au scanning s'est produite"""
+  """Pas d'email"""
+  WARNING_EMAIL
+
+  """Pas de panneau"""
+  WARNING_PANEL
+
+  """Une erreur s'est produite"""
   ERROR
 
   """Ticket scanné non valide"""
@@ -2636,12 +2642,6 @@ type Mutation {
     """
     input: DeleteUserByEmailInput!
   ): DeleteUserPayload
-  confirmedScanAttendees(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: ConfirmedScanAttendeesInput!
-  ): ConfirmedScanAttendeesPayload
   login(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2666,6 +2666,14 @@ type Mutation {
     """
     input: RegisterAttendeesCsvInput!
   ): RegisterAttendeesCsvPayload
+
+  """scan du billet pour update la table attendees et logs"""
+  scanAttendee(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ScanAttendeeInput!
+  ): ScanAttendeePayload
   generatePresignedPost(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -4320,41 +4328,6 @@ input DeleteUserByEmailInput {
   email: String!
 }
 
-"""The output of our `confirmedScanAttendees` mutation."""
-type ConfirmedScanAttendeesPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  attendee: Attendee
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
-
-  """An edge for our `Attendee`. May be used by Relay 1."""
-  attendeeEdge(
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttendeesEdge
-}
-
-"""All input for the `confirmedScanAttendees` mutation."""
-input ConfirmedScanAttendeesInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  eventId: UUID
-  attendees: [AttendeePatch]
-}
-
 """The output of our `login` mutation."""
 type LoginPayload {
   """
@@ -4484,6 +4457,40 @@ input RegisterAttendeesCsvInput {
   clientMutationId: String
   eventId: UUID
   attendeesCsv: [AttendeePatch]
+}
+
+"""The output of our `scanAttendee` mutation."""
+type ScanAttendeePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  attendee: Attendee
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Registration` that is related to this `Attendee`."""
+  registration: Registration
+
+  """An edge for our `Attendee`. May be used by Relay 1."""
+  attendeeEdge(
+    """The method to use when ordering `Attendee`."""
+    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeesEdge
+}
+
+"""All input for the `scanAttendee` mutation."""
+input ScanAttendeeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  ticketPayload: JSON
 }
 
 type GeneratePresignedPostPayload {

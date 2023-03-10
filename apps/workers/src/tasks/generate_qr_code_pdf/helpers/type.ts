@@ -33,6 +33,7 @@ export interface IRowAttendee {
   sign_code: string;
   created_at: string;
   updated_at: string;
+  event_id: string;
   name: string;
   place_name: string;
   address_line_1: string;

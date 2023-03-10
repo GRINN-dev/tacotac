@@ -50,7 +50,6 @@ begin
     end loop;
   
     perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
-    perform graphile_worker.add_job('genLogs',json_build_object('eventId',v_registration.event_id));
 
 
   return v_registration;
@@ -99,8 +98,7 @@ begin
         substring(uuid_generate_v4()::text, 1, 6)  where v_registration.event_id=event_id
         returning * into v_attendees ;
 
-        --perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
-        perform graphile_worker.add_job('genLogs',json_build_object('eventId',v_registration.event_id));
+        perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
       --else 
       --raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
       --end if;
@@ -118,35 +116,51 @@ grant execute on function publ.register_attendees_csv(uuid, publ.attendees[]) to
 
 
 /*
-  FUNCTION: confirmed_attendees
+  FUNCTION: scan_attendees
   DESCRIPTION: Confirmed attendees at event, add panel number and email if missing
 */
 
-create or replace function publ.confirmed_scan_attendees(event_id uuid, attendees publ.attendees[]) returns publ.attendees as $$
+create or replace function publ.scan_attendee(ticket_payload json) returns publ.attendees as $$
 DECLARE 
   v_attendee publ.attendees;
-  v_iter int;
-  
-begin
+  v_event_id uuid :=  CAST(ticket_payload->>'eventId' as uuid);
+  v_panel_number int:=  CAST(ticket_payload->>'panelNumber' AS INTEGER);
+  v_attendee_id uuid := ticket_payload->>'attendeeId';
+BEGIN
 
-  -- update des attendees avec une boucle for
-    for v_iter in 1..array_length(attendees, 1) loop
+--select (ticket_payload->>'eventId')::uuid into v_event_id;
+      if  ticket_payload ->> 'email' is null then
+        insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_EMAIL',jsonb_build_object('ticket_payload',ticket_payload));
+      end if;
+
+      if  v_panel_number is null then
+          insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_PANEL',jsonb_build_object('ticket_payload',ticket_payload));
+      end if;
+      
       update publ.attendees as atts set 
-      status = attendees[v_iter].status, 
-      email = attendees[v_iter].email, 
-      panel_number = attendees[v_iter].panel_number 
-      where atts.id=attendees[v_iter].id returning * into v_attendee;
-      perform graphile_worker.add_job('genLogs',json_build_object('eventId',event_id,'isScanning',true));
+          status = CASE 
+                      when ticket_payload ->> 'ticketNumber' is not null and v_panel_number is null then 'TICKET_SCAN'
+                      when ticket_payload ->> 'ticketNumber' is not null and v_panel_number is not null then 'CONFIRMED'
+                      ELSE status
+                   END,
+          email = ticket_payload ->> 'email', 
+          panel_number = v_panel_number 
+      where atts.id=v_attendee_id and atts.ticket_number=ticket_payload ->> 'ticketNumber' returning * into v_attendee;
 
-    end loop;
+      if not found then
+          insert into publ.logs (event_id,status,payload) values (v_event_id,'ERROR',jsonb_build_object('ticket_payload',ticket_payload));
+      else
+          insert into publ.logs (event_id,status,payload) values (v_event_id,'OK',jsonb_build_object('ticket_payload',ticket_payload));
+      end if;
 
   return v_attendee;
   
 end;
 $$ language plpgsql VOLATILE SECURITY DEFINER;
-comment on function confirmed_scan_attendees(event_id uuid, attendees publ.attendees[]) is E'@arg1variant patch';
-grant execute on function publ.confirmed_scan_attendees(event_id uuid, publ.attendees[]) to :DATABASE_VISITOR;
+comment on function scan_attendee(ticket_payload json) is E'scan du billet pour update la table attendees et logs';
+grant execute on function publ.scan_attendee(ticket_payload json) to :DATABASE_VISITOR;
 
 /*
   END FUNCTION: confirmed_attendees
 */
+
