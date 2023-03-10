@@ -1,10 +1,9 @@
 "use client";
 
-import { FC, useEffect, useReducer, useState } from "react";
+import { useReducer } from "react";
 import { Camera } from "lucide-react";
 import { QrReader } from "react-qr-reader";
 
-import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import ModalCode from "../../modalQRCode";
 
@@ -41,9 +40,8 @@ interface Event {
   payload?: Omit<State, "step">;
 }
 
-export const Scanner = async () => {
-  const { attendees } = await sdk().GetAllAttendeesTickets();
-  console.log("attendeesTickets", attendees);
+export const Scanner = () => {
+  //finalement on récupèrera infos ticket et mutation qui renverra vers le back
   const reducer: (state: State, event: Event) => State = (state, event) => {
     switch (event.type) {
       case "start_scanner":
@@ -172,27 +170,30 @@ export const Scanner = async () => {
           <div>
             <QrReader
               onResult={(result, error) => {
+                console.log(result);
                 if (!!result) {
+                  console.log("========1");
                   dispatch({
                     type: "scan_ticket",
                     payload: {
-                      ticket: Math.floor(Math.random() * 1000000000).toString(),
+                      ticket: result.getText(),
                     },
                   });
                 }
 
                 if (!!error) {
-                  dispatch({
-                    type: "scan_ticket_error",
-                    payload: {
-                      error: error.message,
-                    },
-                  });
+                  console.log("=========2");
+                  // dispatch({
+                  //   type: "scan_ticket_error",
+                  //   payload: {
+                  //     error: error.message,
+                  //   },
+                  // });
                   console.log(error);
                 }
               }}
               className="w-full"
-              constraints={undefined}
+              constraints={{}}
             />
           </div>
           {/* si ticket marche pas */}
