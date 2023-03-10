@@ -113,6 +113,8 @@ importers:
       '@types/node': ^17.0.12
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
+      '@zxing/browser': ^0.1.1
+      '@zxing/library': ^0.19.2
       autoprefixer: ^10.4.13
       class-variance-authority: ^0.4.0
       clsx: ^1.2.1
@@ -167,6 +169,8 @@ importers:
       '@radix-ui/react-toggle-group': 1.0.2_biqbaboplfbrettd7655fr4n2y
       '@radix-ui/react-tooltip': 1.0.3_5ndqzdd6t4rivxsukjv3i3ak2q
       '@tacotacIO/codegen': link:../../@tacotacIO/codegen
+      '@zxing/browser': 0.1.1_@zxing+library@0.19.2
+      '@zxing/library': 0.19.2
       class-variance-authority: 0.4.0_typescript@4.9.4
       clsx: 1.2.1
       dayjs: 1.11.7
@@ -4062,8 +4066,27 @@ packages:
       '@zxing/text-encoding': 0.9.0
     dev: false
 
+  /@zxing/browser/0.1.1_@zxing+library@0.19.2:
+    resolution: {integrity: sha512-fdcHrvvno1NnoiY5++kn/h2b9QnBNyqtK1JqbfY3dfmTdwyXCJr/aT2ZGyRcfe0D3I/THu1I5VJAcpoU0svQMQ==}
+    peerDependencies:
+      '@zxing/library': ^0.19.1
+    dependencies:
+      '@zxing/library': 0.19.2
+    optionalDependencies:
+      '@zxing/text-encoding': 0.9.0
+    dev: false
+
   /@zxing/library/0.18.6:
     resolution: {integrity: sha512-bulZ9JHoLFd9W36pi+7e7DnEYNJhljYjZ1UTsKPOoLMU3qtC+REHITeCRNx40zTRJZx18W5TBRXt5pq2Uopjsw==}
+    engines: {node: '>= 10.4.0'}
+    dependencies:
+      ts-custom-error: 3.3.1
+    optionalDependencies:
+      '@zxing/text-encoding': 0.9.0
+    dev: false
+
+  /@zxing/library/0.19.2:
+    resolution: {integrity: sha512-0aCQIbGXsDHcBuRYuZRZfJeLRYiPfdLxIlh5bY7k+k2bkxFwzla+75VyFi1rnjU5hqaZogdSH+Dw013YDsQOjg==}
     engines: {node: '>= 10.4.0'}
     dependencies:
       ts-custom-error: 3.3.1
