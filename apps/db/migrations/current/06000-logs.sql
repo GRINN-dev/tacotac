@@ -22,7 +22,7 @@ create table publ.logs (
     id uuid not null default uuid_generate_v4() primary key unique,
     event_id uuid references publ.events(id) ,
     status text not null references publ.logs_status on delete cascade,
-    payload jsonb default '{"current_total_registrations":0, "current_confirmed_registrations":0}',
+    payload json,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );
@@ -32,7 +32,6 @@ create table publ.logs (
   create index on publ.logs(updated_at);
   create index on publ.logs(status);
   create index on publ.logs(event_id);
-  create index on publ.logs(payload);
 
 -- RBAC
   grant select on publ.logs to :DATABASE_VISITOR;

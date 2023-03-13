@@ -1052,6 +1052,8 @@ export type Event = Node & {
   lat?: Maybe<Scalars['Float']>;
   /** Reads and enables pagination through a set of `Log`. */
   logs: LogsConnection;
+  /** Reads and enables pagination through a set of `Log`. */
+  logsList: Array<Log>;
   lon?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -1076,6 +1078,15 @@ export type EventLogsArgs = {
   filter?: InputMaybe<LogFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
+};
+
+
+export type EventLogsListArgs = {
+  condition?: InputMaybe<LogCondition>;
+  filter?: InputMaybe<LogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
@@ -1465,32 +1476,7 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
-/** A filter to be used against JSON fields. All fields are combined with a logical ‘and.’ */
-export type JsonFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<Scalars['JSON']>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<Scalars['JSON']>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<Scalars['JSON']>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<Scalars['JSON']>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<Scalars['JSON']>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<Scalars['JSON']>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<Scalars['JSON']>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<Scalars['JSON']>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<Scalars['JSON']>>;
-};
-
+/** Logs from events */
 export type Log = Node & {
   __typename?: 'Log';
   createdAt: Scalars['Datetime'];
@@ -1513,8 +1499,6 @@ export type LogCondition = {
   eventId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `payload` field. */
-  payload?: InputMaybe<Scalars['JSON']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<LogsStatus>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -1535,8 +1519,6 @@ export type LogFilter = {
   not?: InputMaybe<LogFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<LogFilter>>;
-  /** Filter by the object’s `payload` field. */
-  payload?: InputMaybe<JsonFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<LogsStatusFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -1618,8 +1600,6 @@ export enum LogsOrderBy {
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
-  PayloadAsc = 'PAYLOAD_ASC',
-  PayloadDesc = 'PAYLOAD_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   StatusAsc = 'STATUS_ASC',
@@ -1742,6 +1722,8 @@ export type Mutation = {
   registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
   /** scan du billet pour update la table attendees et logs */
   scanAttendee?: Maybe<ScanAttendeePayload>;
+  /** scan de tous les tickets offline */
+  scanAttendeesOffline?: Maybe<ScanAttendeesOfflinePayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
@@ -2016,6 +1998,12 @@ export type MutationRegisterAttendeesCsvArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationScanAttendeeArgs = {
   input: ScanAttendeeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationScanAttendeesOfflineArgs = {
+  input: ScanAttendeesOfflineInput;
 };
 
 
@@ -2513,6 +2501,8 @@ export type Query = Node & {
   logByNodeId?: Maybe<Log>;
   /** Reads and enables pagination through a set of `Log`. */
   logs?: Maybe<LogsConnection>;
+  /** Reads a set of `Log`. */
+  logsList?: Maybe<Array<Log>>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
@@ -2690,6 +2680,16 @@ export type QueryLogsArgs = {
   filter?: InputMaybe<LogFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLogsListArgs = {
+  condition?: InputMaybe<LogCondition>;
+  filter?: InputMaybe<LogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
@@ -3087,6 +3087,29 @@ export type ScanAttendeePayload = {
 /** The output of our `scanAttendee` mutation. */
 export type ScanAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+/** All input for the `scanAttendeesOffline` mutation. */
+export type ScanAttendeesOfflineInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  ticketsPayload?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+};
+
+/** The output of our `scanAttendeesOffline` mutation. */
+export type ScanAttendeesOfflinePayload = {
+  __typename?: 'ScanAttendeesOfflinePayload';
+  attendees?: Maybe<Array<Maybe<Attendee>>>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -3893,10 +3916,14 @@ export type GetAllEventsByOrganizationSlugQuery = { __typename?: 'Query', events
 
 export type GetEventByIdQueryVariables = Exact<{
   eventId: Scalars['UUID'];
+  orderBy?: InputMaybe<Array<LogsOrderBy> | LogsOrderBy>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<LogFilter>;
 }>;
 
 
-export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
+export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -4204,11 +4231,17 @@ export const GetAllEventsByOrganizationSlugDocument = gql`
 }
     ${MyEventFragmentDoc}`;
 export const GetEventByIdDocument = gql`
-    query GetEventById($eventId: UUID!) {
+    query GetEventById($eventId: UUID!, $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC, $first: Int, $offset: Int, $filter: LogFilter) {
   event(id: $eventId) {
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
+    }
+    logsList(orderBy: $orderBy, filter: $filter, first: $first, offset: $offset) {
+      id
+      status
+      payload
+      updatedAt
     }
   }
 }

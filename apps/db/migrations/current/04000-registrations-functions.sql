@@ -65,7 +65,6 @@ DECLARE
   v_attendees publ.attendees;
   v_iter int;
 begin
-        insert into publ.logs (event_id,status) values (event_id,'OK') on conflict do nothing;
       
     for v_iter in 1..array_length(attendees_csv, 1) loop
       --if not exists (select email from publ.attendees where email = attendees_csv[v_iter].email) then
@@ -113,54 +112,3 @@ grant execute on function publ.register_attendees_csv(uuid, publ.attendees[]) to
 /*
   END FUNCTION: register_attendees
 */
-
-
-/*
-  FUNCTION: scan_attendees
-  DESCRIPTION: Confirmed attendees at event, add panel number and email if missing
-*/
-
-create or replace function publ.scan_attendee(ticket_payload json) returns publ.attendees as $$
-DECLARE 
-  v_attendee publ.attendees;
-  v_event_id uuid := ticket_payload->>'eventId';
-  v_panel_number int:= ticket_payload->>'panelNumber';
-  v_attendee_id uuid := ticket_payload->>'attendeeId';
-BEGIN
-
---select (ticket_payload->>'eventId')::uuid into v_event_id;
-      if  ticket_payload ->> 'email' is null then
-        insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_EMAIL',jsonb_build_object('ticket_payload',ticket_payload));
-      end if;
-
-      if  v_panel_number is null then
-          insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_PANEL',jsonb_build_object('ticket_payload',ticket_payload));
-      end if;
-      
-      update publ.attendees as atts set 
-          status = CASE 
-                      when ticket_payload ->> 'ticketNumber' is not null and v_panel_number is null then 'TICKET_SCAN'
-                      when ticket_payload ->> 'ticketNumber' is not null and v_panel_number is not null then 'CONFIRMED'
-                      ELSE status
-                   END,
-          email = ticket_payload ->> 'email', 
-          panel_number = v_panel_number 
-      where atts.id=v_attendee_id and atts.ticket_number=ticket_payload ->> 'ticketNumber' returning * into v_attendee;
-
-      if not found then
-          insert into publ.logs (event_id,status,payload) values (v_event_id,'ERROR',jsonb_build_object('ticket_payload',ticket_payload));
-      else
-          insert into publ.logs (event_id,status,payload) values (v_event_id,'OK',jsonb_build_object('ticket_payload',ticket_payload));
-      end if;
-
-  return v_attendee;
-  
-end;
-$$ language plpgsql VOLATILE SECURITY DEFINER;
-comment on function scan_attendee(ticket_payload json) is E'scan du billet pour update la table attendees et logs';
-grant execute on function publ.scan_attendee(ticket_payload json) to :DATABASE_VISITOR;
-
-/*
-  END FUNCTION: confirmed_attendees
-*/
-

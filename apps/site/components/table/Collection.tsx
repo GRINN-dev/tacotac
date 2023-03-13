@@ -24,6 +24,7 @@ interface iTableEvent {
   pageInfo: any;
   initLimit?: number;
   routerPath?: any;
+  isRedirectStop?: boolean;
 }
 //pour pr
 
@@ -40,7 +41,15 @@ const formatCollectionData = (headerFormat: IHeader[], rawData: IData[]) => {
   return { headerFormat, dataformat };
 };
 
-export const Collection = ({ pageInfo, totalCount, header, data, initLimit, routerPath }: iTableEvent) => {
+export const Collection = ({
+  pageInfo,
+  totalCount,
+  header,
+  data,
+  initLimit,
+  routerPath,
+  isRedirectStop,
+}: iTableEvent) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const pathname = usePathname();
@@ -302,7 +311,7 @@ export const Collection = ({ pageInfo, totalCount, header, data, initLimit, rout
                 <tr
                   className="flex items-start hover:cursor-pointer"
                   onClick={() => {
-                    router.push(`${pathname}/${row?.slug}`);
+                    !isRedirectStop && router.push(`${pathname}/${row?.slug}`);
                   }}
                   key={"row-" + index}
                 >

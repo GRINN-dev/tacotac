@@ -175,6 +175,28 @@ type Query implements Node {
     filter: LogFilter
   ): LogsConnection
 
+  """Reads a set of `Log`."""
+  logsList(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LogCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: LogFilter
+  ): [Log!]
+
   """
   Reads and enables pagination through a set of `OrganizationMembership`.
   """
@@ -685,6 +707,28 @@ type Event implements Node {
     """
     filter: LogFilter
   ): LogsConnection!
+
+  """Reads and enables pagination through a set of `Log`."""
+  logsList(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LogCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: LogFilter
+  ): [Log!]!
 }
 
 """A company, organization, or institution."""
@@ -1491,6 +1535,7 @@ type LogsConnection {
   totalCount: Int!
 }
 
+"""Logs from events"""
 type Log implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -1545,8 +1590,6 @@ enum LogsOrderBy {
   EVENT_ID_DESC
   STATUS_ASC
   STATUS_DESC
-  PAYLOAD_ASC
-  PAYLOAD_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -1568,9 +1611,6 @@ input LogCondition {
   """Checks for equality with the object’s `status` field."""
   status: LogsStatus
 
-  """Checks for equality with the object’s `payload` field."""
-  payload: JSON
-
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -1590,9 +1630,6 @@ input LogFilter {
 
   """Filter by the object’s `status` field."""
   status: LogsStatusFilter
-
-  """Filter by the object’s `payload` field."""
-  payload: JSONFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -1650,48 +1687,6 @@ input LogsStatusFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: LogsStatus
-}
-
-"""
-A filter to be used against JSON fields. All fields are combined with a logical ‘and.’
-"""
-input JSONFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: JSON
-
-  """Not equal to the specified value."""
-  notEqualTo: JSON
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: JSON
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: JSON
-
-  """Included in the specified list."""
-  in: [JSON!]
-
-  """Not included in the specified list."""
-  notIn: [JSON!]
-
-  """Less than the specified value."""
-  lessThan: JSON
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: JSON
-
-  """Greater than the specified value."""
-  greaterThan: JSON
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: JSON
 }
 
 """Methods to use when ordering `Attendee`."""
@@ -2674,6 +2669,14 @@ type Mutation {
     """
     input: ScanAttendeeInput!
   ): ScanAttendeePayload
+
+  """scan de tous les tickets offline"""
+  scanAttendeesOffline(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ScanAttendeesOfflineInput!
+  ): ScanAttendeesOfflinePayload
   generatePresignedPost(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -4491,6 +4494,31 @@ input ScanAttendeeInput {
   """
   clientMutationId: String
   ticketPayload: JSON
+}
+
+"""The output of our `scanAttendeesOffline` mutation."""
+type ScanAttendeesOfflinePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  attendees: [Attendee]
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `scanAttendeesOffline` mutation."""
+input ScanAttendeesOfflineInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  ticketsPayload: [JSON]
 }
 
 type GeneratePresignedPostPayload {
