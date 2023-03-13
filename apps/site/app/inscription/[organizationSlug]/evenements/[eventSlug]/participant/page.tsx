@@ -1,6 +1,3 @@
-import Link from "next/link";
-import { ArrowBigLeft } from "lucide-react";
-
 import { sdk } from "@/lib/sdk";
 import { CreateAttendeeForm } from "./form";
 

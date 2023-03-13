@@ -18,6 +18,10 @@
       "publ.attendees": {
         "description": "Event from organizations",
         "tags": { "simpleCollections": "both" }
+      },
+      "publ.logs": {
+        "description": "Logs from events",
+        "tags": { "simpleCollections": "both" }
       }
     },
     "attribute": {},

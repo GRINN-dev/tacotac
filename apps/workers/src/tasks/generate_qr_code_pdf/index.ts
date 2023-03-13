@@ -11,7 +11,7 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
 
   const { rows: attendees } = await withPgClient(pgClient =>
     pgClient.query(
-      ` SELECT atts.*, evts.name, evts.place_name, 
+      ` SELECT atts.*,evts.id as event_id, evts.name, evts.place_name, 
       evts.address_line_1, evts.starts_at, evts.ends_at
       FROM publ.attendees atts
       inner join publ.registrations regs on regs.id = atts.registration_id
@@ -19,6 +19,10 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
       WHERE atts.registration_id = $1;`,
       [registrationId]
     )
+  );
+  console.log(
+    "🚀 ~ file: index.ts:23 ~ constqrCodeGenPdf:Task= ~ attendees:",
+    attendees
   );
 
   const storePdfBufferForMergedOnInscriptor: Buffer[] = [];
