@@ -11,15 +11,10 @@ DECLARE
   v_attendee_id uuid := ticket_payload->>'attendeeId';--idem que précédent pour type uuid j'ai préféré tout caster afin d'éviter tout probleme futur
 BEGIN
 
---select (ticket_payload->>'eventId')::uuid into v_event_id;
       if  ticket_payload ->> 'email' is null then
         insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_EMAIL',jsonb_build_object('ticket_payload',ticket_payload));
       end if;
 
-      if  v_panel_number is null then
-          insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_PANEL',jsonb_build_object('ticket_payload',ticket_payload));
-      end if;
-      
       update publ.attendees as atts set 
           status = CASE 
                       when ticket_payload ->> 'ticketNumber' is not null and v_panel_number is null then 'TICKET_SCAN'
@@ -31,9 +26,18 @@ BEGIN
       where atts.id=v_attendee_id and atts.ticket_number=ticket_payload ->> 'ticketNumber' returning * into v_attendee;
 
       if not found then
-          insert into publ.logs (event_id,status,payload) values (v_event_id,'ERROR',jsonb_build_object('ticket_payload',ticket_payload));
+          insert into publ.logs (event_id,status,payload) values (
+            v_event_id,
+            'ERROR',
+            jsonb_build_object('ticket_payload',ticket_payload));
       else
-          insert into publ.logs (event_id,status,payload) values (v_event_id,'OK',jsonb_build_object('ticket_payload',ticket_payload));
+          insert into publ.logs (event_id,status,payload) values (
+            v_event_id,
+             CASE 
+               when tickets_payload[v_iter] ->> 'ticketNumber' is not null and v_panel_number is null then 'WARNING_PANEL'
+               when tickets_payload[v_iter] ->> 'ticketNumber' is not null and v_panel_number is not null then 'OK'
+             END,
+            jsonb_build_object('ticket_payload',ticket_payload));
       end if;
 
   return v_attendee;
@@ -55,7 +59,7 @@ grant execute on function publ.scan_attendee(ticket_payload json) to :DATABASE_V
 create or replace function publ.scan_attendees_offline(tickets_payload json[]) returns publ.attendees[] as $$
 DECLARE 
   v_attendee publ.attendees;
-  v_attendees publ.attendees[] := '{}';
+  v_attendees publ.attendees[];
   v_event_id uuid;
   v_panel_number int;
   v_attendee_id uuid;
@@ -71,10 +75,6 @@ BEGIN
             if  tickets_payload[v_iter] ->> 'email' is null then
                 insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_EMAIL',jsonb_build_object('ticket_payload',tickets_payload[v_iter],'is_coming_from_offline_mode',true));
             end if;
-
-            if  v_panel_number is null then
-                insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_PANEL',jsonb_build_object('ticket_payload',tickets_payload[v_iter],'is_coming_from_offline_mode',true));
-            end if;
             
             update publ.attendees as atts set 
                 status = CASE 
@@ -87,9 +87,19 @@ BEGIN
             where atts.id=v_attendee_id and atts.ticket_number=tickets_payload[v_iter] ->> 'ticketNumber' returning * into v_attendee;
 
             if not found then
-                insert into publ.logs (event_id,status,payload) values (v_event_id,'ERROR',jsonb_build_object('ticket_payload',tickets_payload[v_iter],'is_coming_from_offline_mode',true));
+                insert into publ.logs (event_id,status,payload) values (
+                  v_event_id,
+                  'ERROR',
+                  jsonb_build_object('ticket_payload',tickets_payload[v_iter],'is_coming_from_offline_mode',true));
             else
-                insert into publ.logs (event_id,status,payload) values (v_event_id,'OK',jsonb_build_object('ticket_payload',tickets_payload[v_iter],'is_coming_from_offline_mode',true));
+                insert into publ.logs (event_id,status,payload) values (
+                v_event_id,
+                CASE 
+                  when tickets_payload[v_iter] ->> 'ticketNumber' is not null and v_panel_number is null then 'WARNING_PANEL'
+                  when tickets_payload[v_iter] ->> 'ticketNumber' is not null and v_panel_number is not null then 'OK'
+                END,
+                jsonb_build_object('ticket_payload',tickets_payload[v_iter],'is_coming_from_offline_mode',true));
+
                 v_attendees := array_append(v_attendees, v_attendee);
             end if;
     end loop;
