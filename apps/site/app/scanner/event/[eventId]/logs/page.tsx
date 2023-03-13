@@ -1,14 +1,10 @@
-import { FC } from "react";
-import Link from "next/link";
 import { LogsStatus } from "@/../../@tacotacIO/codegen/dist";
 import dayjs from "dayjs";
-import { AlertTriangle, ArrowBigLeft, CheckCircle, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 
-import { IData, IHeader, Type } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
-import { Collection } from "@/components/table/Collection";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const LogsPage = async ({ params: { eventId } }) => {
   const { event } = await sdk().GetEventById({
