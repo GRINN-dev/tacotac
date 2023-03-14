@@ -99,9 +99,9 @@ begin
         returning * into v_attendees ;
 
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
-      --else 
-      --raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
-      --end if;
+      else 
+        raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
+      end if;
 
     end loop;
 
