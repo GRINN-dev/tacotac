@@ -65,6 +65,7 @@ create table publ.attendees (
   create index on publ.attendees(registration_id);
   create index on publ.attendees(phone_number);
   create index on publ.attendees(zip_code);
+  create index on publ.attendees(sign_code);
 
 
 -- RBAC
