@@ -141,6 +141,62 @@ type Query implements Node {
     filter: EventFilter
   ): EventsConnection
 
+  """Reads and enables pagination through a set of `Log`."""
+  logs(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LogCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: LogFilter
+  ): LogsConnection
+
+  """Reads a set of `Log`."""
+  logsList(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LogCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: LogFilter
+  ): [Log!]
+
   """
   Reads and enables pagination through a set of `OrganizationMembership`.
   """
@@ -306,6 +362,7 @@ type Query implements Node {
   event(id: UUID!): Event
   eventByOrganizationIdAndName(organizationId: UUID!, name: String!): Event
   eventByOrganizationIdAndSlug(organizationId: UUID!, slug: String!): Event
+  log(id: UUID!): Log
   organizationMembership(id: UUID!): OrganizationMembership
   organizationMembershipByOrganizationIdAndUserId(organizationId: UUID!, userId: UUID!): OrganizationMembership
   organization(id: UUID!): Organization
@@ -342,6 +399,12 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Event`."""
     nodeId: ID!
   ): Event
+
+  """Reads a single `Log` using its globally unique `ID`."""
+  logByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Log`."""
+    nodeId: ID!
+  ): Log
 
   """
   Reads a single `OrganizationMembership` using its globally unique `ID`.
@@ -610,6 +673,62 @@ type Event implements Node {
     """
     filter: RegistrationFilter
   ): RegistrationsConnection!
+
+  """Reads and enables pagination through a set of `Log`."""
+  logs(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LogCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: LogFilter
+  ): LogsConnection!
+
+  """Reads and enables pagination through a set of `Log`."""
+  logsList(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LogCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: LogFilter
+  ): [Log!]!
 }
 
 """A company, organization, or institution."""
@@ -1399,6 +1518,177 @@ input RegistrationFilter {
   not: RegistrationFilter
 }
 
+"""A connection to a list of `Log` values."""
+type LogsConnection {
+  """A list of `Log` objects."""
+  nodes: [Log!]!
+
+  """
+  A list of edges which contains the `Log` and cursor to aid in pagination.
+  """
+  edges: [LogsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Log` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""Logs from events"""
+type Log implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  eventId: UUID
+  status: LogsStatus!
+  payload: JSON
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  """Reads a single `Event` that is related to this `Log`."""
+  event: Event
+}
+
+enum LogsStatus {
+  """Tout se passe bien"""
+  OK
+
+  """Attention"""
+  WARNING
+
+  """Pas d'email"""
+  WARNING_EMAIL
+
+  """Pas de panneau"""
+  WARNING_PANEL
+
+  """Une erreur s'est produite"""
+  ERROR
+
+  """Ticket scanné non valide"""
+  INVALID_TICKET
+}
+
+"""A `Log` edge in the connection."""
+type LogsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Log` at the end of the edge."""
+  node: Log!
+}
+
+"""Methods to use when ordering `Log`."""
+enum LogsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  STATUS_ASC
+  STATUS_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Log` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input LogCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: UUID
+
+  """Checks for equality with the object’s `status` field."""
+  status: LogsStatus
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Log` object types. All fields are combined with a logical ‘and.’
+"""
+input LogFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: UUIDFilter
+
+  """Filter by the object’s `status` field."""
+  status: LogsStatusFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Checks for all expressions in this list."""
+  and: [LogFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [LogFilter!]
+
+  """Negates the expression."""
+  not: LogFilter
+}
+
+"""
+A filter to be used against LogsStatus fields. All fields are combined with a logical ‘and.’
+"""
+input LogsStatusFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: LogsStatus
+
+  """Not equal to the specified value."""
+  notEqualTo: LogsStatus
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: LogsStatus
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: LogsStatus
+
+  """Included in the specified list."""
+  in: [LogsStatus!]
+
+  """Not included in the specified list."""
+  notIn: [LogsStatus!]
+
+  """Less than the specified value."""
+  lessThan: LogsStatus
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: LogsStatus
+
+  """Greater than the specified value."""
+  greaterThan: LogsStatus
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: LogsStatus
+}
+
 """Methods to use when ordering `Attendee`."""
 enum AttendeesOrderBy {
   NATURAL
@@ -1416,6 +1706,8 @@ enum AttendeesOrderBy {
   ZIP_CODE_DESC
   STATUS_ASC
   STATUS_DESC
+  SIGN_CODE_ASC
+  SIGN_CODE_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -1450,6 +1742,9 @@ input AttendeeCondition {
   """Checks for equality with the object’s `status` field."""
   status: EventStatus
 
+  """Checks for equality with the object’s `signCode` field."""
+  signCode: String
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -1481,6 +1776,9 @@ input AttendeeFilter {
 
   """Filter by the object’s `status` field."""
   status: EventStatusFilter
+
+  """Filter by the object’s `signCode` field."""
+  signCode: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -1926,6 +2224,14 @@ type Mutation {
     input: CreateEventInput!
   ): CreateEventPayload
 
+  """Creates a single `Log`."""
+  createLog(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateLogInput!
+  ): CreateLogPayload
+
   """Creates a single `OrganizationMembership`."""
   createOrganizationMembership(
     """
@@ -2031,6 +2337,22 @@ type Mutation {
     """
     input: UpdateEventByOrganizationIdAndSlugInput!
   ): UpdateEventPayload
+
+  """Updates a single `Log` using its globally unique id and a patch."""
+  updateLogByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateLogByNodeIdInput!
+  ): UpdateLogPayload
+
+  """Updates a single `Log` using a unique key and a patch."""
+  updateLog(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateLogInput!
+  ): UpdateLogPayload
 
   """
   Updates a single `OrganizationMembership` using its globally unique id and a patch.
@@ -2210,6 +2532,22 @@ type Mutation {
     input: DeleteEventByOrganizationIdAndSlugInput!
   ): DeleteEventPayload
 
+  """Deletes a single `Log` using its globally unique id."""
+  deleteLogByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteLogByNodeIdInput!
+  ): DeleteLogPayload
+
+  """Deletes a single `Log` using a unique key."""
+  deleteLog(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteLogInput!
+  ): DeleteLogPayload
+
   """
   Deletes a single `OrganizationMembership` using its globally unique id.
   """
@@ -2307,12 +2645,6 @@ type Mutation {
     """
     input: DeleteUserByEmailInput!
   ): DeleteUserPayload
-  confirmedScanAttendees(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: ConfirmedScanAttendeesInput!
-  ): ConfirmedScanAttendeesPayload
   login(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2337,6 +2669,22 @@ type Mutation {
     """
     input: RegisterAttendeesCsvInput!
   ): RegisterAttendeesCsvPayload
+
+  """scan du billet pour update la table attendees et logs"""
+  scanAttendee(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ScanAttendeeInput!
+  ): ScanAttendeePayload
+
+  """scan de tous les tickets offline"""
+  scanAttendeesOffline(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ScanAttendeesOfflineInput!
+  ): ScanAttendeesOfflinePayload
   generatePresignedPost(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2531,6 +2879,54 @@ input EventInput {
   capacity: Int
   isVip: Boolean
   details: String
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""The output of our create `Log` mutation."""
+type CreateLogPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Log` that was created by this mutation."""
+  log: Log
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Event` that is related to this `Log`."""
+  event: Event
+
+  """An edge for our `Log`. May be used by Relay 1."""
+  logEdge(
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LogsEdge
+}
+
+"""All input for the create `Log` mutation."""
+input CreateLogInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Log` to be created by this mutation."""
+  log: LogInput!
+}
+
+"""An input for mutations affecting `Log`"""
+input LogInput {
+  id: UUID
+  eventId: UUID
+  status: LogsStatus!
+  payload: JSON
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -3033,6 +3429,76 @@ input UpdateEventByOrganizationIdAndSlugInput {
   patch: EventPatch!
   organizationId: UUID!
   slug: String!
+}
+
+"""The output of our update `Log` mutation."""
+type UpdateLogPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Log` that was updated by this mutation."""
+  log: Log
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Event` that is related to this `Log`."""
+  event: Event
+
+  """An edge for our `Log`. May be used by Relay 1."""
+  logEdge(
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LogsEdge
+}
+
+"""All input for the `updateLogByNodeId` mutation."""
+input UpdateLogByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Log` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Log` being updated.
+  """
+  patch: LogPatch!
+}
+
+"""Represents an update to a `Log`. Fields that are set will be updated."""
+input LogPatch {
+  id: UUID
+  eventId: UUID
+  status: LogsStatus
+  payload: JSON
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+"""All input for the `updateLog` mutation."""
+input UpdateLogInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Log` being updated.
+  """
+  patch: LogPatch!
+  id: UUID!
 }
 
 """The output of our update `OrganizationMembership` mutation."""
@@ -3574,6 +4040,57 @@ input DeleteEventByOrganizationIdAndSlugInput {
   slug: String!
 }
 
+"""The output of our delete `Log` mutation."""
+type DeleteLogPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Log` that was deleted by this mutation."""
+  log: Log
+  deletedLogNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Event` that is related to this `Log`."""
+  event: Event
+
+  """An edge for our `Log`. May be used by Relay 1."""
+  logEdge(
+    """The method to use when ordering `Log`."""
+    orderBy: [LogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LogsEdge
+}
+
+"""All input for the `deleteLogByNodeId` mutation."""
+input DeleteLogByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Log` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteLog` mutation."""
+input DeleteLogInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
 """The output of our delete `OrganizationMembership` mutation."""
 type DeleteOrganizationMembershipPayload {
   """
@@ -3822,40 +4339,6 @@ input DeleteUserByEmailInput {
   email: String!
 }
 
-"""The output of our `confirmedScanAttendees` mutation."""
-type ConfirmedScanAttendeesPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  attendee: Attendee
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
-
-  """An edge for our `Attendee`. May be used by Relay 1."""
-  attendeeEdge(
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttendeesEdge
-}
-
-"""All input for the `confirmedScanAttendees` mutation."""
-input ConfirmedScanAttendeesInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  attendees: [AttendeePatch]
-}
-
 """The output of our `login` mutation."""
 type LoginPayload {
   """
@@ -3985,6 +4468,75 @@ input RegisterAttendeesCsvInput {
   clientMutationId: String
   eventId: UUID
   attendeesCsv: [AttendeePatch]
+}
+
+"""The output of our `scanAttendee` mutation."""
+type ScanAttendeePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  attendee: Attendee
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Registration` that is related to this `Attendee`."""
+  registration: Registration
+
+  """An edge for our `Attendee`. May be used by Relay 1."""
+  attendeeEdge(
+    """The method to use when ordering `Attendee`."""
+    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeesEdge
+}
+
+"""All input for the `scanAttendee` mutation."""
+input ScanAttendeeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  ticketPayload: TicketPayloadInput
+}
+
+"""An input for mutations affecting `TicketPayload`"""
+input TicketPayloadInput {
+  eventId: UUID
+  attendeeId: UUID
+  ticketNumber: String
+  panelNumber: Int
+  email: String
+  payload: JSON
+}
+
+"""The output of our `scanAttendeesOffline` mutation."""
+type ScanAttendeesOfflinePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  attendees: [Attendee]
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `scanAttendeesOffline` mutation."""
+input ScanAttendeesOfflineInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  ticketPayloads: [TicketPayloadInput]
 }
 
 type GeneratePresignedPostPayload {
