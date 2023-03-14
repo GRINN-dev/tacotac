@@ -1706,6 +1706,8 @@ enum AttendeesOrderBy {
   ZIP_CODE_DESC
   STATUS_ASC
   STATUS_DESC
+  SIGN_CODE_ASC
+  SIGN_CODE_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -1740,6 +1742,9 @@ input AttendeeCondition {
   """Checks for equality with the object’s `status` field."""
   status: EventStatus
 
+  """Checks for equality with the object’s `signCode` field."""
+  signCode: String
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -1771,6 +1776,9 @@ input AttendeeFilter {
 
   """Filter by the object’s `status` field."""
   status: EventStatusFilter
+
+  """Filter by the object’s `signCode` field."""
+  signCode: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter

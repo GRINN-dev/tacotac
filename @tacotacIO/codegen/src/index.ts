@@ -82,6 +82,8 @@ export type AttendeeCondition = {
   phoneNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `registrationId` field. */
   registrationId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `signCode` field. */
+  signCode?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<EventStatus>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -110,6 +112,8 @@ export type AttendeeFilter = {
   phoneNumber?: InputMaybe<StringFilter>;
   /** Filter by the object’s `registrationId` field. */
   registrationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `signCode` field. */
+  signCode?: InputMaybe<StringFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<EventStatusFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -213,6 +217,8 @@ export enum AttendeesOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RegistrationIdAsc = 'REGISTRATION_ID_ASC',
   RegistrationIdDesc = 'REGISTRATION_ID_DESC',
+  SignCodeAsc = 'SIGN_CODE_ASC',
+  SignCodeDesc = 'SIGN_CODE_DESC',
   StatusAsc = 'STATUS_ASC',
   StatusDesc = 'STATUS_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',

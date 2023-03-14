@@ -7522,6 +7522,18 @@
               "deprecationReason": null
             },
             {
+              "name": "SIGN_CODE_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SIGN_CODE_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -7637,6 +7649,16 @@
               "defaultValue": null
             },
             {
+              "name": "signCode",
+              "description": "Checks for equality with the object’s `signCode` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": "Checks for equality with the object’s `createdAt` field.",
               "type": {
@@ -7733,6 +7755,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "EventStatusFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "signCode",
+              "description": "Filter by the object’s `signCode` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
