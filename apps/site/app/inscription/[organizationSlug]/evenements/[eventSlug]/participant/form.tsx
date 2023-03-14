@@ -372,6 +372,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                       placeholder="jeanned@mail.com"
                       {...register(`attendees.${i}.email`, {
                         required: "Un email pour le participant est requis",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                          message: "Merci d'entrer un email valide",
+                        }
                       })}
                     />
                     {formState.errors?.attendees?.[i].email && (

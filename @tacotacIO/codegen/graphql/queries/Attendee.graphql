@@ -3,3 +3,22 @@ query GetAttendeeById($attendeeId: UUID!) {
     ...MyAttendee
   }
 }
+
+query GetAttendeesWithoutMailByRegistrationId($registrationId: UUID!) {
+  attendees(
+    condition: {
+      registrationId: $registrationId
+      isInscriptor: false
+      email: null
+    }
+  ) {
+    nodes {
+      civility
+      email
+      firstname
+      id
+      lastname
+      isInscriptor
+    }
+  }
+}
