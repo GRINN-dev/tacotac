@@ -1,7 +1,6 @@
 "use client";
 
 import { useReducer, useState } from "react";
-import { Attendee } from "@/../../@tacotacIO/codegen/dist";
 import { Camera } from "lucide-react";
 
 import { QrReader } from "@/components/qr-reader";
