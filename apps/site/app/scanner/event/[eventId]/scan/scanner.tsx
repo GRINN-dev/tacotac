@@ -174,6 +174,9 @@ export const Scanner = () => {
   };
 
   console.log("state", state);
+  const scanAttendeesOffline = () => {
+    sdk().ScanAttendeesOffline({ input: {} });
+  };
   const scanAttendee = () =>
     sdk()
       .ScanAttendee({
@@ -191,7 +194,14 @@ export const Scanner = () => {
         console.log(result);
       })
       .catch((error) => {
-        // envoyer dans storage
+        dispatch({
+          type: "synchronize",
+          payload: {
+            error: "L'enregistrement n'a pas fonctionné, les informations vont être stockées localement",
+          },
+        });
+
+        // envoyer dans storage avec mutation scanAttendeesOffline
         console.error(error);
       });
   // plus tard juste passer state.ticket
