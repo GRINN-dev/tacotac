@@ -39,3 +39,12 @@ mutation ScanAttendee($input: ScanAttendeeInput!) {
     }
   }
 }
+
+mutation ScanAttendeesOffline($input: ScanAttendeesOfflineInput!) {
+  scanAttendeesOffline(input: $input) {
+    attendees {
+      id
+    }
+    clientMutationId
+  }
+}
