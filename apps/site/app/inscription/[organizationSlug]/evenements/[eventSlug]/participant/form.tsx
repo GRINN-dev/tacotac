@@ -25,9 +25,10 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 
 
 
-interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
+interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 
-export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
+
+export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [email, setEmail] = useState("");
@@ -73,6 +74,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = () => {
     if (isValid && isValidCaptcha) {
       setIsLoading(true);
       setEmail(data?.attendees?.[0].email);
+      data.eventId = id;
       await sdk()
         .RegisterAttendees({
           input: data,

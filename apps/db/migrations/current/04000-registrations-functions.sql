@@ -62,12 +62,15 @@ DECLARE
   v_registration publ.registrations;
   v_attendees publ.attendees;
   v_iter int;
+  v_event_id uuid;
 begin
-      
+      v_event_id:=event_id;
     for v_iter in 1..array_length(attendees_csv, 1) loop
-      --if not exists (select email from publ.attendees where email = attendees_csv[v_iter].email) then
 
-        insert into publ.registrations (event_id ) values (event_id) returning * into v_registration;
+      if not exists (select email from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where email = attendees_csv[v_iter].email and regs.event_id=v_event_id ) then
+
+
+        insert into publ.registrations (event_id ) values (v_event_id) returning * into v_registration;
 
         insert into publ.attendees (civility, 
         zip_code,
