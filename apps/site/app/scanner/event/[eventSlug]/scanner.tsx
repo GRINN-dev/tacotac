@@ -11,6 +11,7 @@ interface State {
   step:
     | "start"
     | "scanning_ticket"
+    | "scanning_ticket_success"
     | "scanning_pannel"
     | "manually_entering_ticket"
     | "manually_entering_pannel"
@@ -28,6 +29,7 @@ interface Event {
   type:
     | "start_scanner"
     | "scan_ticket"
+    | "start_scanner_pannel"
     | "scan_ticket_error"
     | "scan_pannel"
     | "scan_pannel_error"
@@ -57,12 +59,19 @@ export const Scanner = () => {
       case "scan_ticket":
         return state.step === "scanning_ticket"
           ? {
-              step: "scanning_pannel",
+              step: "scanning_ticket_success",
               ticket: event.payload.ticket,
             }
           : {
               step: "start",
             };
+      case "start_scanner_pannel":
+        return state.step === "scanning_ticket_success"
+          ? {
+              step: "scanning_pannel",
+              ticket: state.ticket,
+            }
+          : { step: "start" };
       case "scan_ticket_error":
         return state.step === "scanning_ticket"
           ? {
@@ -185,6 +194,16 @@ export const Scanner = () => {
             trigger error ticket
           </button>
         </>
+      ) : state.step === "scanning_ticket_success" ? (
+        <button
+          onClick={() => {
+            dispatch({
+              type: "start_scanner_pannel",
+            });
+          }}
+        >
+          Scanner le panneau
+        </button>
       ) : state.step === "scanning_pannel" ? (
         <>
           <button
