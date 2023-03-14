@@ -4501,7 +4501,17 @@ input ScanAttendeeInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  ticketPayload: JSON
+  ticketPayload: TicketPayloadInput
+}
+
+"""An input for mutations affecting `TicketPayload`"""
+input TicketPayloadInput {
+  eventId: UUID
+  attendeeId: UUID
+  ticketNumber: String
+  panelNumber: Int
+  email: String
+  payload: JSON
 }
 
 """The output of our `scanAttendeesOffline` mutation."""
@@ -4526,7 +4536,7 @@ input ScanAttendeesOfflineInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  ticketsPayload: [JSON]
+  ticketPayloads: [TicketPayloadInput]
 }
 
 type GeneratePresignedPostPayload {

@@ -3069,7 +3069,7 @@ export type ScanAttendeeInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  ticketPayload?: InputMaybe<Scalars['JSON']>;
+  ticketPayload?: InputMaybe<TicketPayloadInput>;
 };
 
 /** The output of our `scanAttendee` mutation. */
@@ -3102,7 +3102,7 @@ export type ScanAttendeesOfflineInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  ticketsPayload?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
+  ticketPayloads?: InputMaybe<Array<InputMaybe<TicketPayloadInput>>>;
 };
 
 /** The output of our `scanAttendeesOffline` mutation. */
@@ -3144,6 +3144,16 @@ export type StringFilter = {
   notEqualTo?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** An input for mutations affecting `TicketPayload` */
+export type TicketPayloadInput = {
+  attendeeId?: InputMaybe<Scalars['UUID']>;
+  email?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  panelNumber?: InputMaybe<Scalars['Int']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  ticketNumber?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */

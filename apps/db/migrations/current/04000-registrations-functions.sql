@@ -23,8 +23,6 @@ begin
 
   -- creation de la registration et stockage du resultat dans la variable
     insert into publ.registrations (event_id ) values (event_id) returning * into v_registration;
-    insert into publ.logs (event_id,status) values (event_id,'OK') on conflict do nothing;
-
   -- creation des attendees avec une boucle for, le premier attendee créé (le premier du tableau) est l'inscripteur
   --En ce qui concerne "array_length", il s'agit d'une fonction intégrée en PL/SQL qui renvoie la longueur d'un tableau multi-dimensionnel.
 

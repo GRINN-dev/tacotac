@@ -18250,6 +18250,77 @@
               "name": "ticketPayload",
               "description": null,
               "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "TicketPayloadInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "TicketPayloadInput",
+          "description": "An input for mutations affecting `TicketPayload`",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "eventId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "attendeeId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ticketNumber",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "panelNumber",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "email",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "payload",
+              "description": null,
+              "type": {
                 "kind": "SCALAR",
                 "name": "JSON",
                 "ofType": null
@@ -18329,14 +18400,14 @@
               "defaultValue": null
             },
             {
-              "name": "ticketsPayload",
+              "name": "ticketPayloads",
               "description": null,
               "type": {
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "SCALAR",
-                  "name": "JSON",
+                  "kind": "INPUT_OBJECT",
+                  "name": "TicketPayloadInput",
                   "ofType": null
                 }
               },
