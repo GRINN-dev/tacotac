@@ -63,14 +63,7 @@ const LogsPage = async ({ params: { eventId } }) => {
                     {payload?.ticket_payload?.email || "manquant"}
                   </dd>
                 </div>
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                  <dt className="text-sm font-medium ">Prénom</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.firstname}</dd>
-                </div>
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                  <dt className="text-sm font-medium ">Nom</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.lastname}</dd>
-                </div>
+                
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
                   <dt className="text-sm font-medium ">Numéro de panneau</dt>
                   <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">
@@ -91,10 +84,7 @@ const LogsPage = async ({ params: { eventId } }) => {
                   <dt className="text-sm font-medium ">{"Id de l'event"}</dt>
                   <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.eventId}</dd>
                 </div>
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
-                  <dt className="text-sm font-medium ">{"Id d'inscription"}</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.registrationId}</dd>
-                </div>
+               
               </dl>
             </div>
           </div>
