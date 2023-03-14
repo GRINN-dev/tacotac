@@ -182,7 +182,7 @@ export const Scanner = () => {
             attendeeId: state?.ticket?.attendeeId,
             email: state?.ticket?.email,
             ticketNumber: state?.ticket?.ticketNumber,
-            panelNumber: state.pannel,
+            panelNumber: state?.pannel,
             eventId: state?.ticket?.eventId,
           },
         },

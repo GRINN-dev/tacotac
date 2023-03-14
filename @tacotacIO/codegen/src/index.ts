@@ -3826,6 +3826,13 @@ export type ScanAttendeeMutationVariables = Exact<{
 
 export type ScanAttendeeMutation = { __typename?: 'Mutation', scanAttendee?: { __typename?: 'ScanAttendeePayload', clientMutationId?: string | null, attendee?: { __typename?: 'Attendee', id: any } | null } | null };
 
+export type ScanAttendeesOfflineMutationVariables = Exact<{
+  input: ScanAttendeesOfflineInput;
+}>;
+
+
+export type ScanAttendeesOfflineMutation = { __typename?: 'Mutation', scanAttendeesOffline?: { __typename?: 'ScanAttendeesOfflinePayload', clientMutationId?: string | null, attendees?: Array<{ __typename?: 'Attendee', id: any } | null> | null } | null };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -4131,6 +4138,16 @@ export const ScanAttendeeDocument = gql`
     attendee {
       id
     }
+  }
+}
+    `;
+export const ScanAttendeesOfflineDocument = gql`
+    mutation ScanAttendeesOffline($input: ScanAttendeesOfflineInput!) {
+  scanAttendeesOffline(input: $input) {
+    attendees {
+      id
+    }
+    clientMutationId
   }
 }
     `;
@@ -4488,6 +4505,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     ScanAttendee(variables: ScanAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeeMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<ScanAttendeeMutation>(ScanAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ScanAttendee', 'mutation');
+    },
+    ScanAttendeesOffline(variables: ScanAttendeesOfflineMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeesOfflineMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ScanAttendeesOfflineMutation>(ScanAttendeesOfflineDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ScanAttendeesOffline', 'mutation');
     },
     Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login', 'mutation');
