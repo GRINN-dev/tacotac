@@ -31,3 +31,11 @@ mutation RegisterAttendees($input: RegisterAttendeesInput!) {
     }
   }
 }
+mutation ScanAttendee($input: ScanAttendeeInput!) {
+  scanAttendee(input: $input) {
+    clientMutationId
+    attendee {
+      id
+    }
+  }
+}
