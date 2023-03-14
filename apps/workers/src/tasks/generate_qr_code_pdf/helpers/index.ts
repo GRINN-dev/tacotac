@@ -32,6 +32,7 @@ export const generateDocsForAttendees = async (
       email: rowData.email,
       attendeeId: rowData.id,
       registrationId: registrationId,
+      eventId: rowData.event_id,
     })
   );
 
