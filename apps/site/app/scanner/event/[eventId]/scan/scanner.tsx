@@ -1,9 +1,11 @@
 "use client";
 
 import { useReducer, useState } from "react";
+import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
 import { Camera } from "lucide-react";
 import ReactModal from "react-modal";
 
+import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
 import ModalCode from "../../../modalQRCode";
@@ -20,8 +22,8 @@ interface State {
     | "displaying_result"
     | "synchronizing";
   //ajouter un état quand tout est ok scanné ?
-  ticket?: string;
-  pannel?: string;
+  ticket?: TicketPayloadInput;
+  pannel?: number;
   error?: string;
   email?: string;
 }
@@ -54,6 +56,7 @@ export const Scanner = () => {
   function closeModal() {
     setIsOpen(false);
   }
+
   const reducer: (state: State, event: Event) => State = (state, event) => {
     switch (event.type) {
       case "start_scanner":
@@ -156,6 +159,7 @@ export const Scanner = () => {
   const [state, dispatch] = useReducer(reducer, {
     step: "start",
   });
+
   const [modalIsOpen, setIsOpen] = useState(true);
   const customStyles = {
     content: {
@@ -168,6 +172,29 @@ export const Scanner = () => {
       borderRadius: "16px",
     },
   };
+
+  console.log("state", state);
+  const scanAttendee = () =>
+    sdk()
+      .ScanAttendee({
+        input: {
+          ticketPayload: {
+            attendeeId: state?.ticket?.attendeeId,
+            email: state?.ticket?.email,
+            ticketNumber: state?.ticket?.ticketNumber,
+            panelNumber: state.pannel,
+            eventId: state?.ticket?.eventId,
+          },
+        },
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        // envoyer dans storage
+        console.error(error);
+      });
+  // plus tard juste passer state.ticket
   return (
     <div>
       {state.step === "start" ? (
@@ -184,7 +211,7 @@ export const Scanner = () => {
       ) : state.step === "scanning_ticket" ? (
         <>
           {" "}
-          <button
+          {/* <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
               dispatch({
@@ -196,7 +223,7 @@ export const Scanner = () => {
             }}
           >
             Assign ticket number
-          </button>
+          </button> */}
           {/* si ticket marche pas */}
           <button
             className={buttonVariants({ size: "sm" })}
@@ -230,7 +257,7 @@ export const Scanner = () => {
               dispatch({
                 type: "scan_pannel",
                 payload: {
-                  pannel: "123456789",
+                  pannel: 123456789,
                 },
               });
             }}
@@ -263,7 +290,7 @@ export const Scanner = () => {
         </>
       ) : state.step === "manually_entering_ticket" ? (
         <>
-          <input
+          {/* <input
             className="border"
             type="number"
             value={state.ticket || ""}
@@ -275,7 +302,7 @@ export const Scanner = () => {
                 },
               });
             }}
-          />
+          /> */}
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
@@ -310,7 +337,7 @@ export const Scanner = () => {
             dispatch({
               type: "manually_enter_pannel",
               payload: {
-                pannel: "123456789",
+                pannel: 123456789,
               },
             });
           }}
@@ -336,8 +363,18 @@ export const Scanner = () => {
           {/* </button> */}
           <ReactModal isOpen={modalIsOpen} style={customStyles} onRequestClose={closeModal}>
             <div className="flex flex-col">
-              <span> Ticket: {state.ticket}</span>
-              <span>Panneau : {state.pannel}</span>
+              <h1 className="my-4 font-semibold text-center">Récap du scanning</h1>
+              <span> Ticket: {state.ticket.ticketNumber} </span>
+              <span>Panneau : {state?.pannel} </span>
+              <button
+                type="button"
+                className={buttonVariants({ size: "sm", className: "my-4 bg-green-700" })}
+                onClick={() => {
+                  scanAttendee();
+                }}
+              >
+                Valider
+              </button>
             </div>
           </ReactModal>
         </>
@@ -361,9 +398,10 @@ export const Scanner = () => {
                 dispatch({
                   type: "scan_ticket",
                   payload: {
-                    ticket: result.getText(),
+                    ticket: JSON.parse(result.getText()),
                   },
                 });
+                console.log(state.ticket);
                 // setAttendeeData({ ticket: result.getText(), pannel: "" });
               }
 
@@ -375,7 +413,7 @@ export const Scanner = () => {
                 dispatch({
                   type: "scan_pannel",
                   payload: {
-                    pannel: result.getText(),
+                    pannel: parseInt(result.getText()),
                   },
                 });
               }
