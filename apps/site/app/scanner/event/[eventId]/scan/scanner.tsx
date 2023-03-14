@@ -2,8 +2,8 @@
 
 import { useReducer, useState } from "react";
 import { Camera } from "lucide-react";
+import ReactModal from "react-modal";
 
-import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
 import ModalCode from "../../../modalQRCode";
@@ -48,6 +48,12 @@ export const Scanner = () => {
 
   const [attendeeData, setAttendeeData] = useState({ ticket: "", pannel: "" });
   console.log("DATA", attendeeData);
+  function openModal() {
+    setIsOpen(true);
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
   const reducer: (state: State, event: Event) => State = (state, event) => {
     switch (event.type) {
       case "start_scanner":
@@ -150,7 +156,18 @@ export const Scanner = () => {
   const [state, dispatch] = useReducer(reducer, {
     step: "start",
   });
-
+  const [modalIsOpen, setIsOpen] = useState(true);
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-40%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "16px",
+    },
+  };
   return (
     <div>
       {state.step === "start" ? (
@@ -299,22 +316,31 @@ export const Scanner = () => {
           }}
         />
       ) : state.step === "displaying_result" ? (
-        <button
-          className={buttonVariants({ size: "sm" })}
-          onClick={() => {
-            dispatch({
-              type: "display_result",
-              payload: {
-                pannel: "123456789",
-              },
-            });
-            setAttendeeData({ ticket: state.ticket, pannel: state.pannel });
-            localStorage.setItem("attendeeData", JSON.stringify(attendeeData));
-          }}
-        >
-          Synchroniser
-          {/* mutation ici, pour le moment je remplis le state attendeeData*/}
-        </button>
+        <>
+          {/* <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "display_result",
+                payload: {
+                  pannel: "123456789",
+                },
+              });
+             
+              setAttendeeData({ ticket: state.ticket, pannel: state.pannel });
+              localStorage.setItem("attendeeData", JSON.stringify(attendeeData));
+            }}
+          >
+            Synchroniser
+            {/* mutation ici, pour le moment je remplis le state attendeeData*/}
+          {/* </button> */}
+          <ReactModal isOpen={modalIsOpen} style={customStyles} onRequestClose={closeModal}>
+            <div className="flex flex-col">
+              <span> Ticket: {state.ticket}</span>
+              <span>Panneau : {state.pannel}</span>
+            </div>
+          </ReactModal>
+        </>
       ) : null}
       <button
         className={buttonVariants({ size: "sm", className: "bg-red-500 text-white" })}
