@@ -27,12 +27,12 @@ const RootLayout = ({ children }) => {
           <link rel="icon" href="/favicon.ico" />
           {/* title and description */}
           <meta name="description" content="La billeterie de vos évènements de collecte" />
-          <meta name="og:title" content="tacotac.io" />
+          <meta name="og:title" content="kaypi" />
           <meta name="og:description" content="La billeterie de vos évènements de collecte" />
           <meta name="og:image" content="/og-image.png" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
-          <meta property="og:url" content="https://tacotac.io" />
+          <meta property="og:url" content="https://kaypi.fr" />
           <meta property="og:type" content="website" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="Napol.io" />

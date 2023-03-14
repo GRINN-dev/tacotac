@@ -6,3 +6,8 @@ mutation CreateRegistration($registration: RegistrationInput!) {
     }
   }
 }
+mutation RegisterAttendeesCsv($input: RegisterAttendeesCsvInput!) {
+  registerAttendeesCsv(input: $input) {
+    clientMutationId
+  }
+}

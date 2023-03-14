@@ -7,15 +7,16 @@ import { useToast } from "@/hooks/use-toast";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
-import { cn } from "@/lib/utils";
+import { cn, uploadToS3 } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
 
 
 interface IUpdateBrandingEvent extends ExtractType<ExtractType<GetEventByIdQuery, "event">, "eventBranding"> {}
@@ -44,25 +45,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
 
-  const uploadToS3 = async (file: File): Promise<string> => {
-    // générer l'url présignée
-    const { generatePresignedPost } = await sdk().GeneratePresignedPost({
-      key: "Logo_event_" + file.name,
-    });
-    // poster dans s3 l'url présignée générée
 
-    const formData = new FormData();
-    formData.append("Content-type", file.type);
-    Object.entries(generatePresignedPost.fields).forEach(([k, value]: any) => {
-      formData.append(k, value);
-    });
-    formData.append("file", file);
-    await fetch(generatePresignedPost.url, {
-      method: "POST",
-      body: formData,
-    });
-    return generatePresignedPost.url + "/" + generatePresignedPost.fields.key;
-  };
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     const url = await uploadToS3(files.at(0));
@@ -158,6 +141,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <FileDragNDrop
             id={"fileDnD" + id}
             title={"Logo"}
+            placeholder="Glissez vos images ici"
+            acceptFormat="image/*"
             onFileUpload={(file) => {
               setFiles(file);
             }}

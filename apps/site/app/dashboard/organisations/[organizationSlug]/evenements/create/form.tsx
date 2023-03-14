@@ -39,7 +39,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   });
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 border-b-slate-200 first:mt-0 dark:border-b-slate-700">
+      <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
         Informations générales
       </h2>
       <div className="mt-4 grid w-full items-center gap-1.5">
@@ -75,9 +75,10 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         <Input
           type="number"
           id="capacity"
-          placeholder="Ville"
+          placeholder="2300"
           {...register("event.capacity", {
             required: "Une capacité est requise",
+            valueAsNumber: true,
           })}
         />
         {formState.errors?.event?.capacity && (
@@ -86,7 +87,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
       </div>
       <Separator className="my-8" />
 
-      <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 border-b-slate-200 first:mt-0 dark:border-b-slate-700">
+      <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
         Date et ouverture de la billeterie
       </h2>
 
@@ -117,9 +118,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           })}
         />
         {formState.errors?.event?.endsAt && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.event?.endsAt?.message as string}
-          </p>
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.endsAt?.message as string}</p>
         )}
       </div>
 
@@ -158,7 +157,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
       </div>
       <Separator className="my-8" />
 
-      <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 border-b-slate-200 first:mt-0 dark:border-b-slate-700">
+      <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
         Lieu
       </h2>
 
@@ -245,13 +244,13 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         )}
       </div>
 
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Créer
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
