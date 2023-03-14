@@ -8,10 +8,12 @@ interface EventCardProps {
   eventLocation: string;
   eventPicture?: string;
   eventSlug: string;
+  eventId: string;
 }
 
-const EventCard: FC<EventCardProps> = ({ eventDate, eventSlug, eventLocation, eventName, eventPicture }) => {
+const EventCard: FC<EventCardProps> = ({ eventDate, eventSlug, eventLocation, eventName, eventPicture, eventId }) => {
   const date = new Date(eventDate);
+
   const formattedDate = date?.toLocaleDateString("fr-FR");
   return (
     <div className="">

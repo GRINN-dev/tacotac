@@ -3,9 +3,10 @@
 import { useReducer, useState } from "react";
 import { Camera } from "lucide-react";
 
+import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
-import ModalCode from "../../modalQRCode";
+import ModalCode from "../../../modalQRCode";
 
 interface State {
   step:

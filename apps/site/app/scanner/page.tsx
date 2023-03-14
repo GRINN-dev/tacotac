@@ -15,11 +15,12 @@ const ScanPage = async () => {
       <div>
         {events.nodes?.map((e, i) => {
           return (
-            <Link href={`scanner/event/${e.slug}`}>
+            <Link href={`scanner/event/${e.id}/scan`} key={i}>
               <EventCard
                 eventName={e?.name}
                 eventDate={e?.startsAt}
                 eventLocation={e?.city}
+                eventId={e?.id}
                 eventSlug={e?.slug}
                 eventPicture={""}
               />
