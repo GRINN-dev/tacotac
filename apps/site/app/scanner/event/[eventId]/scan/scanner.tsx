@@ -8,153 +8,18 @@ import ReactModal from "react-modal";
 import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
+import { reducer } from "../../../../../lib/utils_reducer";
 import ModalCode from "../../../modalQRCode";
-
-interface State {
-  step:
-    | "start"
-    | "scanning_ticket"
-    | "scanning_ticket_success"
-    | "scanning_pannel"
-    | "manually_entering_ticket"
-    | "manually_entering_pannel"
-    | "displaying_error"
-    | "displaying_result"
-    | "synchronizing";
-  //ajouter un état quand tout est ok scanné ?
-  ticket?: TicketPayloadInput;
-  pannel?: number;
-  error?: string;
-  email?: string;
-}
-
-interface Event {
-  type:
-    | "start_scanner"
-    | "scan_ticket"
-    | "start_scanner_pannel"
-    | "scan_ticket_error"
-    | "scan_pannel"
-    | "scan_pannel_error"
-    | "manually_enter_ticket"
-    | "manually_enter_pannel"
-    | "display_result"
-    | "synchronize"
-    | "cancel";
-
-  payload?: Omit<State, "step">;
-}
 
 export const Scanner = () => {
   //récup infos ticket et mutation qui renverra vers le back
 
   const [attendeeData, setAttendeeData] = useState({ ticket: "", pannel: "" });
   console.log("DATA", attendeeData);
-  function openModal() {
-    setIsOpen(true);
-  }
+
   function closeModal() {
     setIsOpen(false);
   }
-
-  const reducer: (state: State, event: Event) => State = (state, event) => {
-    switch (event.type) {
-      case "start_scanner":
-        return state.step === "start"
-          ? {
-              step: "scanning_ticket",
-            }
-          : { step: "start" };
-
-      case "scan_ticket":
-        return state.step === "scanning_ticket"
-          ? {
-              step: "scanning_ticket_success",
-              ticket: event.payload.ticket,
-            }
-          : {
-              step: "start",
-            };
-      case "start_scanner_pannel":
-        return state.step === "scanning_ticket_success"
-          ? {
-              step: "scanning_pannel",
-              ticket: state.ticket,
-            }
-          : { step: "start" };
-      case "scan_ticket_error":
-        return state.step === "scanning_ticket"
-          ? {
-              step: "manually_entering_ticket",
-              error: event.payload.error,
-            }
-          : {
-              step: "start",
-            };
-      case "manually_enter_ticket":
-        return state.step === "manually_entering_ticket"
-          ? {
-              step: "scanning_pannel",
-              ticket: event.payload.ticket,
-            }
-          : {
-              step: "start",
-            };
-      // case "scan_pannel":
-      //   return {
-      //     step: "displaying_error",
-      //     ticket: state.ticket,
-      //     pannel: event.payload.pannel,
-      //   };
-
-      case "scan_pannel":
-        return state.step === "scanning_pannel"
-          ? {
-              step: "displaying_result",
-              ticket: state.ticket,
-              pannel: event.payload.pannel,
-            }
-          : {
-              step: "start",
-            };
-      case "scan_pannel_error":
-        return state.step === "scanning_pannel"
-          ? {
-              step: "manually_entering_pannel",
-              error: event.payload.error,
-            }
-          : {
-              step: "start",
-            };
-      case "manually_enter_pannel":
-        return {
-          step: "manually_entering_pannel",
-          ticket: state.ticket,
-          pannel: event.payload?.pannel,
-        };
-
-      case "display_result":
-        return {
-          step: "displaying_result",
-          ticket: state.ticket,
-          pannel: state.pannel,
-          email: event.payload?.email,
-        };
-      case "synchronize":
-        return {
-          step: "synchronizing",
-          ticket: state.ticket,
-          pannel: state.pannel,
-          email: event.payload?.email,
-        };
-      case "cancel":
-        return {
-          step: "start",
-        };
-      default:
-        return state;
-    }
-  };
 
   const [state, dispatch] = useReducer(reducer, {
     step: "start",
@@ -175,7 +40,11 @@ export const Scanner = () => {
 
   console.log("state", state);
   const scanAttendeesOffline = () => {
-    sdk().ScanAttendeesOffline({ input: {} });
+    sdk().ScanAttendeesOffline({
+      input: {
+        // ticketPayloads:
+      },
+    });
   };
   const scanAttendee = () =>
     sdk()
@@ -187,6 +56,7 @@ export const Scanner = () => {
             ticketNumber: state?.ticket?.ticketNumber,
             panelNumber: state?.pannel,
             eventId: state?.ticket?.eventId,
+            payload: null,
           },
         },
       })
