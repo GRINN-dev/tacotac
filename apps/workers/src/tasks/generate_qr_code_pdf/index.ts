@@ -41,11 +41,12 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
           sendEmailPayload: sendEmailPayloadNoInscriptor,
         });
       } else {
+        //essayer de voir pour faire partir ce mail après le mail du ticket
         addJob("sendEmail", {
           attendeeId: row.id,
           sendEmailPayload: {
             mailData: {
-              to: row.email,
+              to: attendees.at(0).email,
               from: { name: "L'équipe", email: "contact@obole.eu" },
               templateId: EMAIL_MISSING,
               dynamicTemplateData: {
