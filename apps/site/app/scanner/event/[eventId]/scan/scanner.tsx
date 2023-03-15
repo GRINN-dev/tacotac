@@ -48,35 +48,19 @@ export const Scanner = () => {
     });
   };
   const scanAttendee = () =>
-    sdk()
-      .ScanAttendee({
-        input: {
-          ticketPayload: {
-            attendeeId: state?.ticket?.attendeeId,
-            email: state?.ticket?.email,
-            ticketNumber: state?.ticket?.ticketNumber,
-            panelNumber: state?.pannel,
-            eventId: state?.ticket?.eventId,
-            payload: null,
-          },
+    sdk().ScanAttendee({
+      input: {
+        ticketPayload: {
+          attendeeId: state?.ticket?.attendeeId,
+          email: state?.ticket?.email,
+          ticketNumber: state?.ticket?.ticketNumber,
+          panelNumber: state?.pannel,
+          eventId: state?.ticket?.eventId,
+          payload: null,
         },
-      })
-      .then((result) => {
-        console.log("result", result);
-      })
-      .catch((error) => {
-        console.log("error", error);
-        dispatch({
-          type: "synchronize",
-          payload: {
-            error: "L'enregistrement n'a pas fonctionné, les informations vont être stockées localement",
-          },
-        });
-        //set local storage
-        //btn synchro pour récup localstorage et passer le tableau dans la mutation
-        // envoyer dans storage avec mutation scanAttendeesOffline
-        console.error(error);
-      });
+      },
+    });
+
   // plus tard juste passer state.ticket
   return (
     <div>
@@ -242,12 +226,33 @@ export const Scanner = () => {
                   onClick={() => {
                     scanAttendee()
                       .then(() => closeModal())
-                      .then(() =>
+                      .then((result) => {
+                        console.log("result", result);
                         toast({
                           title: "✅ Scan ok",
                           description: "Participation scannée avec succès",
-                        })
-                      )
+                        });
+                      })
+
+                      .catch((error) => {
+                        console.log("error", error);
+                        toast({
+                          title: "⛔️ L'enregistrement a échoué",
+                          description: "Vous pourrez synchroniser plus tard",
+                        });
+                        dispatch({
+                          type: "synchronize",
+                          payload: {
+                            error:
+                              "L'enregistrement n'a pas fonctionné, les informations vont être stockées localement",
+                          },
+                        });
+                        //set local storage
+                        //btn synchro pour récup localstorage et passer le tableau dans la mutation
+                        // envoyer dans storage avec mutation scanAttendeesOffline
+                        console.error(error);
+                      })
+                      .then(() => localStorage.setItem("offlineData", JSON.stringify(state.ticket)))
                       .then(() =>
                         dispatch({
                           type: "start_scanner",
@@ -261,6 +266,8 @@ export const Scanner = () => {
             </div>
           </ReactModal>
         </>
+      ) : state.step === "synchronizing" ? (
+        <button type="button">Synchroniser</button>
       ) : null}
       <button
         className={buttonVariants({ size: "sm", className: "bg-red-500 text-white" })}
