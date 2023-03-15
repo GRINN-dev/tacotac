@@ -1,5 +1,9 @@
 import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
 
+export interface Ticket extends TicketPayloadInput {
+  lastname: string;
+  firstname: string;
+}
 export interface State {
   step:
     | "start"
@@ -12,7 +16,7 @@ export interface State {
     | "displaying_result"
     | "synchronizing";
   //ajouter un état quand tout est ok scanné ?
-  ticket?: TicketPayloadInput;
+  ticket?: Ticket;
   pannel?: number;
   error?: string;
   email?: string;

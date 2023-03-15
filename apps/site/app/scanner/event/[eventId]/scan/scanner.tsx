@@ -230,24 +230,34 @@ export const Scanner = () => {
           <ReactModal isOpen={modalIsOpen} style={customStyles} onRequestClose={closeModal}>
             <div className="flex flex-col">
               <h1 className="my-4 font-semibold text-center">Récap du scanning</h1>
-              <span> Ticket: {state.ticket.ticketNumber} </span>
+              <span className="font-medium">
+                {state.ticket?.firstname} {state?.ticket?.lastname}
+              </span>
+              <span>Email : {state?.ticket?.email}</span>
               <span>Panneau : {state?.pannel} </span>
-              <button
-                type="button"
-                className={buttonVariants({ size: "sm", className: "my-4 bg-green-700" })}
-                onClick={() => {
-                  scanAttendee()
-                    .then(() => closeModal())
-                    .then(() =>
-                      toast({
-                        title: "✅ Scan ok",
-                        description: "Participation scannée avec succès",
-                      })
-                    );
-                }}
-              >
-                Valider
-              </button>
+              <div className="flex flex-col items-center">
+                <button
+                  type="button"
+                  className={buttonVariants({ size: "sm", className: "my-4 bg-green-700 w-6/12 " })}
+                  onClick={() => {
+                    scanAttendee()
+                      .then(() => closeModal())
+                      .then(() =>
+                        toast({
+                          title: "✅ Scan ok",
+                          description: "Participation scannée avec succès",
+                        })
+                      )
+                      .then(() =>
+                        dispatch({
+                          type: "start_scanner",
+                        })
+                      );
+                  }}
+                >
+                  Valider
+                </button>
+              </div>
             </div>
           </ReactModal>
         </>
