@@ -1617,8 +1617,6 @@ export enum LogsOrderBy {
 export enum LogsStatus {
   /** Une erreur s'est produite */
   Error = 'ERROR',
-  /** Ticket scanné non valide */
-  InvalidTicket = 'INVALID_TICKET',
   /** Tout se passe bien */
   Ok = 'OK',
   /** Attention */
@@ -1626,7 +1624,9 @@ export enum LogsStatus {
   /** Pas d'email */
   WarningEmail = 'WARNING_EMAIL',
   /** Pas de panneau */
-  WarningPanel = 'WARNING_PANEL'
+  WarningPanel = 'WARNING_PANEL',
+  /** Probleme de QR Code */
+  WarningSignCode = 'WARNING_SIGN_CODE'
 }
 
 /** A filter to be used against LogsStatus fields. All fields are combined with a logical ‘and.’ */
@@ -1728,8 +1728,6 @@ export type Mutation = {
   registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
   /** scan du billet pour update la table attendees et logs */
   scanAttendee?: Maybe<ScanAttendeePayload>;
-  /** scan de tous les tickets offline */
-  scanAttendeeBySignCode?: Maybe<ScanAttendeeBySignCodePayload>;
   /** scan de tous les tickets offline */
   scanAttendeesOffline?: Maybe<ScanAttendeesOfflinePayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
@@ -2006,12 +2004,6 @@ export type MutationRegisterAttendeesCsvArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationScanAttendeeArgs = {
   input: ScanAttendeeInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationScanAttendeeBySignCodeArgs = {
-  input: ScanAttendeeBySignCodeInput;
 };
 
 
@@ -3070,41 +3062,6 @@ export enum RegistrationsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
-/** All input for the `scanAttendeeBySignCode` mutation. */
-export type ScanAttendeeBySignCodeInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  scanEmail?: InputMaybe<Scalars['String']>;
-  scanPanelNumber?: InputMaybe<Scalars['Int']>;
-  scanSignCode?: InputMaybe<Scalars['String']>;
-};
-
-/** The output of our `scanAttendeeBySignCode` mutation. */
-export type ScanAttendeeBySignCodePayload = {
-  __typename?: 'ScanAttendeeBySignCodePayload';
-  attendee?: Maybe<Attendee>;
-  /** An edge for our `Attendee`. May be used by Relay 1. */
-  attendeeEdge?: Maybe<AttendeesEdge>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Registration` that is related to this `Attendee`. */
-  registration?: Maybe<Registration>;
-};
-
-
-/** The output of our `scanAttendeeBySignCode` mutation. */
-export type ScanAttendeeBySignCodePayloadAttendeeEdgeArgs = {
-  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
-};
-
 /** All input for the `scanAttendee` mutation. */
 export type ScanAttendeeInput = {
   /**
@@ -3196,6 +3153,7 @@ export type TicketPayloadInput = {
   eventId?: InputMaybe<Scalars['UUID']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
   payload?: InputMaybe<Scalars['JSON']>;
+  signCode?: InputMaybe<Scalars['String']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
 };
 

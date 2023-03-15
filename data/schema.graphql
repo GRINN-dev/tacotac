@@ -1568,8 +1568,8 @@ enum LogsStatus {
   """Une erreur s'est produite"""
   ERROR
 
-  """Ticket scanné non valide"""
-  INVALID_TICKET
+  """Probleme de QR Code"""
+  WARNING_SIGN_CODE
 }
 
 """A `Log` edge in the connection."""
@@ -2677,14 +2677,6 @@ type Mutation {
     """
     input: ScanAttendeeInput!
   ): ScanAttendeePayload
-
-  """scan de tous les tickets offline"""
-  scanAttendeeBySignCode(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: ScanAttendeeBySignCodeInput!
-  ): ScanAttendeeBySignCodePayload
 
   """scan de tous les tickets offline"""
   scanAttendeesOffline(
@@ -4520,42 +4512,7 @@ input TicketPayloadInput {
   panelNumber: Int
   email: String
   payload: JSON
-}
-
-"""The output of our `scanAttendeeBySignCode` mutation."""
-type ScanAttendeeBySignCodePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  attendee: Attendee
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
-
-  """An edge for our `Attendee`. May be used by Relay 1."""
-  attendeeEdge(
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttendeesEdge
-}
-
-"""All input for the `scanAttendeeBySignCode` mutation."""
-input ScanAttendeeBySignCodeInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  scanSignCode: String
-  scanEmail: String
-  scanPanelNumber: Int
+  signCode: String
 }
 
 """The output of our `scanAttendeesOffline` mutation."""

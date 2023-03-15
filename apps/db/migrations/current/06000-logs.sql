@@ -11,7 +11,7 @@ insert into publ.logs_status values
     ('WARNING_EMAIL','Pas d''email'),
     ('WARNING_PANEL','Pas de panneau'),
     ('ERROR', 'Une erreur s''est produite'),
-    ('INVALID_TICKET', 'Ticket scanné non valide');
+    ('WARNING_SIGN_CODE', 'Probleme de QR Code');
 
 /*
   TABLE: publ.logs
