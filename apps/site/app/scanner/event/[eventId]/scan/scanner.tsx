@@ -2,6 +2,7 @@
 
 import { useReducer, useState } from "react";
 import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
+import { useToast } from "@/hooks/use-toast";
 import { Camera } from "lucide-react";
 import ReactModal from "react-modal";
 
@@ -24,6 +25,7 @@ export const Scanner = () => {
   const [state, dispatch] = useReducer(reducer, {
     step: "start",
   });
+  const { toast } = useToast();
 
   const [modalIsOpen, setIsOpen] = useState(true);
   const customStyles = {
@@ -61,7 +63,8 @@ export const Scanner = () => {
         },
       })
       .then((result) => {
-        console.log(result);
+        console.log("result", result);
+        //showNotif Mantine ?
       })
       .catch((error) => {
         dispatch({
@@ -224,23 +227,6 @@ export const Scanner = () => {
         />
       ) : state.step === "displaying_result" ? (
         <>
-          {/* <button
-            className={buttonVariants({ size: "sm" })}
-            onClick={() => {
-              dispatch({
-                type: "display_result",
-                payload: {
-                  pannel: "123456789",
-                },
-              });
-             
-              setAttendeeData({ ticket: state.ticket, pannel: state.pannel });
-              localStorage.setItem("attendeeData", JSON.stringify(attendeeData));
-            }}
-          >
-            Synchroniser
-            {/* mutation ici, pour le moment je remplis le state attendeeData*/}
-          {/* </button> */}
           <ReactModal isOpen={modalIsOpen} style={customStyles} onRequestClose={closeModal}>
             <div className="flex flex-col">
               <h1 className="my-4 font-semibold text-center">Récap du scanning</h1>
@@ -250,7 +236,14 @@ export const Scanner = () => {
                 type="button"
                 className={buttonVariants({ size: "sm", className: "my-4 bg-green-700" })}
                 onClick={() => {
-                  scanAttendee();
+                  scanAttendee()
+                    .then(() => closeModal())
+                    .then(() =>
+                      toast({
+                        title: "✅ Scan ok",
+                        description: "Participation scannée avec succès",
+                      })
+                    );
                 }}
               >
                 Valider
