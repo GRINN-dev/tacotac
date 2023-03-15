@@ -122,3 +122,57 @@ grant execute on function publ.scan_attendees_offline(ticket_payloads publ.ticke
 /*
   END FUNCTION: scan_attendees_offline
 */
+
+/*
+  FUNCTION: scan_attendee_by_sign_code
+  DESCRIPTION: Scan attendee by sign code and add panel number
+*/
+
+create or replace function publ.scan_attendee_by_sign_code(scan_sign_code text,scan_email text, scan_panel_number int) returns publ.attendees as $$
+DECLARE 
+  v_attendee publ.attendees;
+  v_ticket_payload publ.ticket_payload;
+BEGIN
+
+      select regs.event_id ,atts.id, atts.ticket_number, atts.panel_number, atts.email into v_ticket_payload from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where atts.sign_code=sign_code;
+
+      if  scan_email is null then
+        insert into publ.logs (event_id,status,payload) values (v_ticket_payload.event_id,'WARNING_EMAIL',jsonb_build_object('ticket_payload',v_ticket_payload));
+      end if;
+      update publ.attendees as atts set 
+          status = CASE 
+                      when scan_panel_number is null then 'TICKET_SCAN'
+                      when scan_panel_number is not null then 'CONFIRMED'
+                      ELSE status
+                   END,
+          email = scan_email, 
+          panel_number = scan_panel_number 
+      where atts.sign_code=scan_sign_code returning * into v_attendee;
+
+      if not found then
+          insert into publ.logs (event_id,status,payload) values (
+            v_ticket_payload.event_id,
+            'ERROR',
+            jsonb_build_object('ticket_payload',v_ticket_payload));
+      else
+      v_ticket_payload.panel_number=scan_email;
+      v_ticket_payload.panel_number=scan_panel_number;
+          insert into publ.logs (event_id,status,payload) values (
+            v_ticket_payload.event_id,
+             CASE 
+               when scan_panel_number is null then 'WARNING_PANEL'
+               when scan_panel_number is not null then 'OK'
+             END,
+            jsonb_build_object('ticket_payload',v_ticket_payload));
+      end if;
+
+  return v_attendee;
+  
+end;
+$$ language plpgsql VOLATILE SECURITY DEFINER;
+comment on function scan_attendee_by_sign_code(scan_sign_code text,scan_email text, scan_panel_number int) is E'scan de tous les tickets offline';
+grant execute on function publ.scan_attendee_by_sign_code(scan_sign_code text,scan_email text, scan_panel_number int) to :DATABASE_VISITOR;
+
+/*
+  END FUNCTION: scan_attendee_by_sign_code
+*/
