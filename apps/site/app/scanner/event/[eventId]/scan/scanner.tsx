@@ -1,23 +1,26 @@
 "use client";
 
 import { useReducer, useState } from "react";
-import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, SaveIcon } from "lucide-react";
+import { Camera, Plus, PlusCircle, SaveIcon } from "lucide-react";
 import ReactModal from "react-modal";
 
 import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
 import { reducer } from "../../../../../lib/utils_reducer";
-import ModalCode from "../../../modalQRCode";
+import { Ticket } from "./types";
 
 export const Scanner = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
   const closePannelModal = () => {
-    setPannelModal(false);
+    setIsPannelModalOpen(false);
+  };
+
+  const closeTicketModal = () => {
+    setIsTicketModalOpen(false);
   };
 
   const [state, dispatch] = useReducer(reducer, {
@@ -26,8 +29,11 @@ export const Scanner = () => {
   const { toast } = useToast();
 
   const [resultModalIsOpen, setIsOpen] = useState(true);
-  const [pannelModal, setPannelModal] = useState(false);
+  const [isPannelModalOpen, setIsPannelModalOpen] = useState(false);
+  const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
   const [manualPannel, setManualPannel] = useState<number>();
+  const [manualTicket, setManualTicket] = useState<string>();
+  const [manualEmail, setManualEmail] = useState<string>();
   const customStyles = {
     content: {
       top: "50%",
@@ -48,7 +54,7 @@ export const Scanner = () => {
           ticketPayloads: [
             {
               attendeeId: state?.ticket?.attendeeId,
-              email: state?.ticket?.email,
+              email: !state?.ticket?.email ? manualEmail : state?.ticket?.email,
               ticketNumber: state?.ticket?.ticketNumber,
               panelNumber: state?.pannel,
               eventId: state?.ticket?.eventId,
@@ -112,21 +118,6 @@ export const Scanner = () => {
         </div>
       ) : state.step === "scanning_ticket" ? (
         <>
-          {" "}
-          {/* <button
-            className={buttonVariants({ size: "sm" })}
-            onClick={() => {
-              dispatch({
-                type: "scan_ticket",
-                payload: {
-                  ticket: "123456789",
-                },
-              });
-            }}
-          >
-            Assign ticket number
-          </button> */}
-          {/* si ticket marche pas */}
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
@@ -196,51 +187,46 @@ export const Scanner = () => {
         </>
       ) : state.step === "manually_entering_ticket" ? (
         <>
-          {/* <input
-            className="border"
-            type="number"
-            value={""}
-            onChange={(e) => {
-              dispatch({
-                type: "manually_enter_ticket",
-                payload: {
-                  ticket: e.target.value,
-                },
-              });
-            }}
-          /> */}
-          <button
-            className={buttonVariants({ size: "sm" })}
-            onClick={() => {
-              dispatch({
-                type: "scan_ticket",
-                payload: {
-                  ticket: state.ticket,
-                },
-              });
-            }}
-          >
-            Confirmer
-          </button>
-        </>
-      ) : // <ModalCode
-      //   titleTrigger={"Entrez le code manuellement"}
-      //   titleButton={"Valider"}
-      //   onClick={() => {
-      //     dispatch({
-      //       type: "scan_ticket",
-      //       payload: {
-      //         ticket: "123456789",
-      //       },
-      //     });
-      //   }}
-      // />
-      state.step === "manually_entering_pannel" ? (
-        <>
-          <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => setPannelModal(true)}>
+          <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => setIsTicketModalOpen(true)}>
             Entrée manuelle
           </button>
-          <ReactModal style={customStyles} isOpen={pannelModal}>
+          <ReactModal style={customStyles} isOpen={isTicketModalOpen}>
+            <div className="flex flex-col gap-1">
+              {" "}
+              Entrez un numéro de ticket :
+              <input
+                className="border rounded-md"
+                type="number"
+                value={manualTicket}
+                onChange={(e) => {
+                  setManualTicket(e.target.value);
+                }}
+              />
+              <button
+                className={buttonVariants({ size: "sm", className: "mx-6" })}
+                onClick={() => {
+                  dispatch({
+                    type: "manually_enter_ticket",
+                    payload: {
+                      // ticket:
+                      // manualTicket as Ticket
+                      // ,
+                    },
+                  });
+                  closeTicketModal();
+                }}
+              >
+                Valider
+              </button>
+            </div>
+          </ReactModal>
+        </>
+      ) : state.step === "manually_entering_pannel" ? (
+        <>
+          <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => setIsPannelModalOpen(true)}>
+            Entrée manuelle
+          </button>
+          <ReactModal style={customStyles} isOpen={isPannelModalOpen}>
             <div className="flex flex-col gap-1">
               {" "}
               Entrez un numéro de panneau :
@@ -273,10 +259,42 @@ export const Scanner = () => {
         <>
           <ReactModal isOpen={resultModalIsOpen} style={customStyles} onRequestClose={closeModal}>
             <div className="flex flex-col p-2">
-              <h1 className="my-4 font-semibold text-center">Récapitulatif du scanning</h1>
+              <h1 className="font-semibold text-center">Récapitulatif du scanning</h1>
+              {!state?.ticket?.email ? (
+                <p className="mb-4 text-xs text-red-600">Aucun email renseigné, souhaitez-vous en ajouter un ?</p>
+              ) : (
+                ""
+              )}
               <span>Nom : {state?.ticket?.lastname}</span>
               <span>Prénom : {state.ticket?.firstname}</span>
-              <span>Email : {state?.ticket?.email}</span>
+              <span className="flex items-center">
+                Email :{" "}
+                {!state?.ticket?.email ? (
+                  <div className="flex items-center">
+                    <input
+                      className="ml-2 border rounded-md"
+                      value={manualEmail}
+                      onChange={(e) => setManualEmail(e.target.value)}
+                    />{" "}
+                    <button
+                      type="submit"
+                      onClick={() => {
+                        sdk()
+                          .UpdateAttendee({
+                            input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
+                          })
+                          .then(() => toast({ title: "✅ Email ajouté" }))
+                          .catch((error) => console.log(error));
+                      }}
+                    >
+                      <PlusCircle className="ml-2" />
+                    </button>
+                  </div>
+                ) : (
+                  state?.ticket?.email
+                )}
+                {/* update attendee ici du coup ? */}
+              </span>
               <span>Panneau : {state?.pannel} </span>
               <div className="flex flex-col items-center">
                 <button
@@ -365,7 +383,6 @@ export const Scanner = () => {
                     pannel: parseInt(result.getText()),
                   },
                 });
-                toast({ title: "📷 QR code scanné" });
               }
               if (!!error) {
                 console.log(error);
