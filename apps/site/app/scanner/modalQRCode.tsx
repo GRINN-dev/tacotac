@@ -1,7 +1,5 @@
 import { FC } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Close } from "@radix-ui/react-toast";
-import { CrossIcon } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 
@@ -42,7 +40,7 @@ const ModalCode: FC<ModalCodeProps> = ({ titleTrigger, titleButton, onClick, isO
                 className="text-black hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                 aria-label="Close"
               >
-                <CrossIcon />
+                X
               </button>
             </Dialog.Close>
           </Dialog.Content>
