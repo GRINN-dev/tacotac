@@ -352,7 +352,6 @@ export const Scanner = () => {
                   },
                 });
                 console.log(state.ticket);
-                // setAttendeeData({ ticket: result.getText(), pannel: "" });
               }
 
               if (!!error) {

@@ -18,8 +18,8 @@ const EventSlug = async ({ params: { eventId } }) => {
           {event.name}
         </h1>
         <div> {event.description}</div>
-        <div>à {event.city}</div>
-        <div>Lieu : {event.placeName} </div>
+
+        <div>Lieu : {event.city} </div>
         <div className="flex flex-col items-center justify-end gap-2 mt-40">
           <Scanner />
           <Link className={buttonVariants({ size: "sm" })} href={``}>
