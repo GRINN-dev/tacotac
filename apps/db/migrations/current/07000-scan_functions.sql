@@ -43,8 +43,8 @@ BEGIN
           insert into publ.logs (event_id,status,payload) values (
             v_event_id,
              CASE 
-               when ticket_payload[v_iter].ticket_number is not null and v_panel_number is null then 'WARNING_PANEL'
-               when ticket_payload[v_iter].ticket_number is not null and v_panel_number is not null then 'OK'
+               when ticket_payload.ticket_number is not null and v_panel_number is null then 'WARNING_PANEL'
+               when ticket_payload.ticket_number is not null and v_panel_number is not null then 'OK'
              END,
             jsonb_build_object('ticket_payload',ticket_payload));
       end if;
@@ -105,7 +105,7 @@ BEGIN
                 v_event_id,
                 CASE 
                   when ticket_payloads[v_iter].ticket_number is not null and v_panel_number is null then 'WARNING_PANEL'
-                  when ticket_payloads[v_iter] ->> 'ticketNumber' is not null and v_panel_number is not null then 'OK'
+                  when ticket_payloads[v_iter].ticket_number is not null and v_panel_number is not null then 'OK'
                 END,
                 jsonb_build_object('ticket_payload',ticket_payloads[v_iter],'is_coming_from_offline_mode',true));
 

@@ -18,7 +18,7 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
   await sgMail
     .send({
       ...sendEmailPayload.mailData,
-      mailSettings: { sandboxMode: { enable: true } },
+      mailSettings: { sandboxMode: { enable: false } },
     })
     .then(async (response: any) => {
       console.log(response[0].statusCode);

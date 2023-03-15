@@ -3,6 +3,7 @@ import { Task } from "graphile-worker";
 import dayjs from "dayjs";
 import { generateDocsForAttendees } from "./helpers";
 import { IPayloadQrCodeGen, IRowAttendee } from "./helpers/type";
+import { EMAIL_MISSING } from "../../utils/emailTemplates";
 require("dayjs/locale/fr");
 dayjs.locale("fr");
 
@@ -38,6 +39,22 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
         addJob("sendEmail", {
           attendeeId: row.id,
           sendEmailPayload: sendEmailPayloadNoInscriptor,
+        });
+      } else {
+        addJob("sendEmail", {
+          attendeeId: row.id,
+          sendEmailPayload: {
+            mailData: {
+              to: row.email,
+              from: { name: "L'équipe", email: "contact@obole.eu" },
+              templateId: EMAIL_MISSING,
+              dynamicTemplateData: {
+                First_Name: row.firstname,
+                Link_email: `${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/rappel/mail/${row.registration_id}`,
+                Current_Year: dayjs(row.starts_at).format("YYYY"),
+              },
+            },
+          },
         });
       }
     }
