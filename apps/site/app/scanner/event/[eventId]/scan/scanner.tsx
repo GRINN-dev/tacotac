@@ -13,18 +13,21 @@ import { reducer } from "../../../../../lib/utils_reducer";
 import ModalCode from "../../../modalQRCode";
 
 export const Scanner = () => {
-  // const [attendeeData, setAttendeeData] = useState({ ticket: "", pannel: "" });
-
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false);
-  }
+  };
+  const closePannelModal = () => {
+    setPannelModal(false);
+  };
 
   const [state, dispatch] = useReducer(reducer, {
     step: "start",
   });
   const { toast } = useToast();
 
-  const [modalIsOpen, setIsOpen] = useState(true);
+  const [resultModalIsOpen, setIsOpen] = useState(true);
+  const [pannelModal, setPannelModal] = useState(false);
+  const [manualPannel, setManualPannel] = useState<number>();
   const customStyles = {
     content: {
       top: "50%",
@@ -39,11 +42,22 @@ export const Scanner = () => {
 
   console.log("state", state);
   const scanAttendeesOffline = () => {
-    sdk().ScanAttendeesOffline({
-      input: {
-        ticketPayloads: [{ ...state, panelNumber: state.pannel }],
-      },
-    });
+    sdk()
+      .ScanAttendeesOffline({
+        input: {
+          ticketPayloads: [
+            {
+              attendeeId: state?.ticket?.attendeeId,
+              email: state?.ticket?.email,
+              ticketNumber: state?.ticket?.ticketNumber,
+              panelNumber: state?.pannel,
+              eventId: state?.ticket?.eventId,
+              payload: null,
+            },
+          ],
+        },
+      })
+      .then((result) => console.log(result));
   };
   const scanAttendee = () =>
     sdk().ScanAttendee({
@@ -59,33 +73,43 @@ export const Scanner = () => {
       },
     });
 
-  const updateLocalStorageData = (data) => {
-    const existingData = JSON.parse(localStorage.getItem("offlineData")) || [];
-    existingData.push(data);
-    localStorage.setItem("offlineData", JSON.stringify(existingData));
-  };
-  const offlineData = JSON.parse(localStorage.getItem("offlineData"));
+  // const updateLocalStorageData = (data) => {
+  //   localStorage.setItem(
+  //     "offlineData",
+  //     JSON.stringify([...JSON.parse(localStorage.getItem("offlineData") || "[]"), data])
+  //   );
+  // };
+  // const offlineData = JSON.parse(localStorage.getItem("offlineData"));
 
   return (
     <div className="container">
-      <div className="relative w-full">
-        {offlineData && offlineData.length > 0 ? (
-          <button type="button" className="" onClick={() => scanAttendeesOffline()}>
-            <SaveIcon /> Synchroniser
-          </button>
-        ) : null}
-      </div>
-      {state.step === "start" ? (
+      <div className="flex items-end w-6/12 ">
+        {/* {offlineData && offlineData.length > 0 ? ( */}
         <button
+          type="button"
           className={buttonVariants({ size: "sm" })}
           onClick={() => {
-            dispatch({
-              type: "start_scanner",
-            });
+            dispatch({ type: "synchronize" });
+            scanAttendeesOffline();
           }}
         >
-          <Camera className="mr-2" /> Commencer à scanner
+          <SaveIcon /> Synchroniser
         </button>
+        {/* ) : null} */}
+      </div>
+      {state.step === "start" ? (
+        <div className="flex flex-col items-center justify-center">
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "start_scanner",
+              });
+            }}
+          >
+            <Camera className="mr-2" /> Commencer à scanner
+          </button>
+        </div>
       ) : state.step === "scanning_ticket" ? (
         <>
           {" "}
@@ -118,15 +142,18 @@ export const Scanner = () => {
           </button>
         </>
       ) : state.step === "scanning_ticket_success" ? (
-        <button
-          onClick={() => {
-            dispatch({
-              type: "start_scanner_pannel",
-            });
-          }}
-        >
-          Scanner le panneau
-        </button>
+        <div className="flex flex-col items-center justify-center mx-auto">
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "start_scanner_pannel",
+              });
+            }}
+          >
+            Scanner le panneau
+          </button>
+        </div>
       ) : state.step === "scanning_pannel" ? (
         <>
           <button
@@ -142,7 +169,7 @@ export const Scanner = () => {
           >
             Assign pannel number
           </button>
-          <button
+          {/* <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
               dispatch({
@@ -151,7 +178,7 @@ export const Scanner = () => {
             }}
           >
             <Camera className="mr-2" /> Scanner le panneau
-          </button>
+          </button> */}
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
@@ -159,6 +186,7 @@ export const Scanner = () => {
                 type: "scan_pannel_error",
                 payload: {
                   error: "le panneau n'est pas détecté",
+                  ticket: state.ticket,
                 },
               });
             }}
@@ -171,7 +199,7 @@ export const Scanner = () => {
           {/* <input
             className="border"
             type="number"
-            value={state.ticket || ""}
+            value={""}
             onChange={(e) => {
               dispatch({
                 type: "manually_enter_ticket",
@@ -208,32 +236,52 @@ export const Scanner = () => {
       //   }}
       // />
       state.step === "manually_entering_pannel" ? (
-        <ModalCode
-          titleTrigger={"Entrez le panneau manuellement"}
-          titleButton={"Valider"}
-          onClick={(e) => {
-            dispatch({
-              type: "manually_enter_pannel",
-              payload: {
-                pannel: 123456789,
-              },
-            });
-          }}
-        />
+        <>
+          <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => setPannelModal(true)}>
+            Entrée manuelle
+          </button>
+          <ReactModal style={customStyles} isOpen={pannelModal}>
+            <div className="flex flex-col gap-1">
+              {" "}
+              Entrez un numéro de panneau :
+              <input
+                className="border rounded-md"
+                type="number"
+                value={manualPannel}
+                onChange={(e) => {
+                  setManualPannel(parseInt(e.target.value));
+                }}
+              />
+              <button
+                className={buttonVariants({ size: "sm", className: "mx-6" })}
+                onClick={() => {
+                  dispatch({
+                    type: "manually_enter_pannel",
+                    payload: {
+                      pannel: manualPannel,
+                    },
+                  });
+                  closePannelModal();
+                }}
+              >
+                Valider
+              </button>
+            </div>
+          </ReactModal>
+        </>
       ) : state.step === "displaying_result" ? (
         <>
-          <ReactModal isOpen={modalIsOpen} style={customStyles} onRequestClose={closeModal}>
-            <div className="flex flex-col">
-              <h1 className="my-4 font-semibold text-center">Récap du scanning</h1>
-              <span className="font-medium">
-                {state.ticket?.firstname} {state?.ticket?.lastname}
-              </span>
+          <ReactModal isOpen={resultModalIsOpen} style={customStyles} onRequestClose={closeModal}>
+            <div className="flex flex-col p-2">
+              <h1 className="my-4 font-semibold text-center">Récapitulatif du scanning</h1>
+              <span>Nom : {state?.ticket?.lastname}</span>
+              <span>Prénom : {state.ticket?.firstname}</span>
               <span>Email : {state?.ticket?.email}</span>
               <span>Panneau : {state?.pannel} </span>
               <div className="flex flex-col items-center">
                 <button
                   type="button"
-                  className={buttonVariants({ size: "sm", className: "my-4 bg-green-700 w-6/12 " })}
+                  className={buttonVariants({ size: "sm", className: "mt-12 bg-green-700 w-6/12 " })}
                   onClick={() => {
                     scanAttendee()
                       .then(() => closeModal())
@@ -258,13 +306,10 @@ export const Scanner = () => {
                               "L'enregistrement n'a pas fonctionné, les informations vont être stockées localement",
                           },
                         });
-                        //set local storage
-                        //btn synchro pour récup localstorage et passer le tableau dans la mutation
-                        // envoyer dans storage avec mutation scanAttendeesOffline
                         console.error(error);
                       })
                       .then(() => localStorage.setItem("offlineData", JSON.stringify(state.ticket)))
-                      .then(() => updateLocalStorageData(state.ticket))
+                      // .then(() => updateLocalStorageData(state.ticket))
                       .then(() =>
                         dispatch({
                           type: "start_scanner",
@@ -281,16 +326,19 @@ export const Scanner = () => {
       ) : state.step === "synchronizing" ? (
         <button type="button">Synchroniser</button>
       ) : null}
-      <button
-        className={buttonVariants({ size: "sm", className: "bg-red-500 text-white" })}
-        onClick={() => {
-          dispatch({
-            type: "cancel",
-          });
-        }}
-      >
-        Annuler
-      </button>
+      <div className="flex flex-col items-center justify-center">
+        <button
+          className="p-2 m-2 text-sm text-white bg-red-700 border-none rounded-md"
+          onClick={() => {
+            dispatch({
+              type: "cancel",
+            });
+          }}
+        >
+          Annuler
+        </button>
+      </div>
+
       <div>
         <QrReader
           onResult={(result, error) => {
@@ -318,13 +366,14 @@ export const Scanner = () => {
                     pannel: parseInt(result.getText()),
                   },
                 });
+                toast({ title: "📷 QR code scanné" });
               }
               if (!!error) {
                 console.log(error);
               }
             }
           }}
-          className="w-full"
+          className="flex flex-col w-6/12 mx-auto"
           constraints={{}}
         />
       </div>

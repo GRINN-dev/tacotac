@@ -65,16 +65,19 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "manually_entering_pannel",
             error: event.payload.error,
+            ticket: state.ticket,
           }
         : {
             step: "start",
           };
     case "manually_enter_pannel":
-      return {
-        step: "manually_entering_pannel",
-        ticket: state.ticket,
-        pannel: event.payload?.pannel,
-      };
+      return state.step === "manually_entering_pannel"
+        ? {
+            step: "displaying_result",
+            ticket: state?.ticket,
+            pannel: event.payload?.pannel,
+          }
+        : null;
 
     case "display_result":
       return {
