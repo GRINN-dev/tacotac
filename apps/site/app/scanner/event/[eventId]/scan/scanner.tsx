@@ -15,8 +15,7 @@ import ModalCode from "../../../modalQRCode";
 export const Scanner = () => {
   //récup infos ticket et mutation qui renverra vers le back
 
-  const [attendeeData, setAttendeeData] = useState({ ticket: "", pannel: "" });
-  console.log("DATA", attendeeData);
+  // const [attendeeData, setAttendeeData] = useState({ ticket: "", pannel: "" });
 
   function closeModal() {
     setIsOpen(false);
@@ -44,7 +43,7 @@ export const Scanner = () => {
   const scanAttendeesOffline = () => {
     sdk().ScanAttendeesOffline({
       input: {
-        // ticketPayloads:
+        ticketPayloads: [{ ...state, panelNumber: state.pannel }],
       },
     });
   };
@@ -64,16 +63,17 @@ export const Scanner = () => {
       })
       .then((result) => {
         console.log("result", result);
-        //showNotif Mantine ?
       })
       .catch((error) => {
+        console.log("error", error);
         dispatch({
           type: "synchronize",
           payload: {
             error: "L'enregistrement n'a pas fonctionné, les informations vont être stockées localement",
           },
         });
-
+        //set local storage
+        //btn synchro pour récup localstorage et passer le tableau dans la mutation
         // envoyer dans storage avec mutation scanAttendeesOffline
         console.error(error);
       });
