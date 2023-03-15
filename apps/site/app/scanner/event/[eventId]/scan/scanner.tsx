@@ -279,6 +279,7 @@ export const Scanner = () => {
                     <button
                       type="submit"
                       onClick={() => {
+                        console.log("+++++");
                         sdk()
                           .UpdateAttendee({
                             input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
