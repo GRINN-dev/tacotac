@@ -3,7 +3,7 @@
 import { useReducer, useState } from "react";
 import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
 import { useToast } from "@/hooks/use-toast";
-import { Camera } from "lucide-react";
+import { Camera, SaveIcon } from "lucide-react";
 import ReactModal from "react-modal";
 
 import { sdk } from "@/lib/sdk";
@@ -13,8 +13,6 @@ import { reducer } from "../../../../../lib/utils_reducer";
 import ModalCode from "../../../modalQRCode";
 
 export const Scanner = () => {
-  //récup infos ticket et mutation qui renverra vers le back
-
   // const [attendeeData, setAttendeeData] = useState({ ticket: "", pannel: "" });
 
   function closeModal() {
@@ -61,9 +59,22 @@ export const Scanner = () => {
       },
     });
 
-  // plus tard juste passer state.ticket
+  const updateLocalStorageData = (data) => {
+    const existingData = JSON.parse(localStorage.getItem("offlineData")) || [];
+    existingData.push(data);
+    localStorage.setItem("offlineData", JSON.stringify(existingData));
+  };
+  const offlineData = JSON.parse(localStorage.getItem("offlineData"));
+
   return (
-    <div>
+    <div className="container">
+      <div className="relative w-full">
+        {offlineData && offlineData.length > 0 ? (
+          <button type="button" className="" onClick={() => scanAttendeesOffline()}>
+            <SaveIcon /> Synchroniser
+          </button>
+        ) : null}
+      </div>
       {state.step === "start" ? (
         <button
           className={buttonVariants({ size: "sm" })}
@@ -253,6 +264,7 @@ export const Scanner = () => {
                         console.error(error);
                       })
                       .then(() => localStorage.setItem("offlineData", JSON.stringify(state.ticket)))
+                      .then(() => updateLocalStorageData(state.ticket))
                       .then(() =>
                         dispatch({
                           type: "start_scanner",
@@ -316,6 +328,7 @@ export const Scanner = () => {
           constraints={{}}
         />
       </div>
+
       <pre>{JSON.stringify(state, null, 2)}</pre>
     </div>
   );
