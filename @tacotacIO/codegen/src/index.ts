@@ -3151,8 +3151,11 @@ export type TicketPayloadInput = {
   attendeeId?: InputMaybe<Scalars['UUID']>;
   email?: InputMaybe<Scalars['String']>;
   eventId?: InputMaybe<Scalars['UUID']>;
+  firstname?: InputMaybe<Scalars['String']>;
+  lastname?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
   payload?: InputMaybe<Scalars['JSON']>;
+  registrationId?: InputMaybe<Scalars['UUID']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
 };
 
