@@ -3,6 +3,7 @@
 import { useReducer, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Camera, PlusCircle, SaveIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
 
 import { sdk } from "@/lib/sdk";
@@ -46,6 +47,19 @@ export const Scanner = () => {
   };
 
   console.log("state", state);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = () =>
+    dispatch({
+      type: "display_result",
+      payload: {
+        email: manualEmail,
+      },
+    });
+
   const scanAttendeesOffline = () => {
     sdk()
       .ScanAttendeesOffline({
@@ -74,6 +88,7 @@ export const Scanner = () => {
         },
       },
     });
+  const emailPattern = new RegExp(`^[A-Z0-9._%+-]+@${manualEmail}$`, "i");
 
   // const updateLocalStorageData = (data) => {
   //   localStorage.setItem(
@@ -265,28 +280,45 @@ export const Scanner = () => {
                 Email :{" "}
                 {!state?.ticket?.email ? (
                   <div className="flex items-center">
-                    <input
-                      className="ml-2 border rounded-md"
-                      value={manualEmail}
-                      onChange={(e) => setManualEmail(e.target.value)}
-                    />{" "}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        console.log("+++++", state?.ticket?.attendeeId);
+                    <form
+                      onSubmit={() =>
                         dispatch({
                           type: "display_result",
                           payload: {
                             email: manualEmail,
                           },
-                        });
-                        // sdk()
-                        //   .UpdateAttendee({
-                        //     input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
-                        //   })
-                        // .then(() => toast({ title: "✅ Email ajouté" }))
-                        // .catch((error) => console.log(error));
-                      }}
+                        })
+                      }
+                    >
+                      {" "}
+                      <input
+                        type="email"
+                        {...register("email", { required: true, pattern: emailPattern })}
+                        className="p-1 ml-2 border rounded-md"
+                        value={manualEmail}
+                        onChange={(e) => setManualEmail(e.target.value)}
+                      />{" "}
+                      {errors.email && errors.email.type === "required" && <span>Ce champ est obligatoire</span>}
+                      {errors.email && errors.email.type === "pattern" && <span>adresse email invalide</span>}
+                    </form>
+
+                    <button
+                      type="submit"
+                      // onClick={() => {
+                      //   console.log("+++++", state?.ticket?.attendeeId);
+                      //   dispatch({
+                      //     type: "display_result",
+                      //     payload: {
+                      //       email: manualEmail,
+                      //     },
+                      //   });
+                      //   // sdk()
+                      //   //   .UpdateAttendee({
+                      //   //     input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
+                      //   //   })
+                      //   // .then(() => toast({ title: "✅ Email ajouté" }))
+                      //   // .catch((error) => console.log(error));
+                      // }}
                     >
                       <PlusCircle className="ml-2" />
                     </button>
