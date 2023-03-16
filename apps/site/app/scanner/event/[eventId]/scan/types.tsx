@@ -3,6 +3,7 @@ import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
 export interface Ticket extends TicketPayloadInput {
   lastname: string;
   firstname: string;
+  signCode: string;
 }
 export interface State {
   step:
@@ -16,7 +17,7 @@ export interface State {
     | "displaying_result"
     | "synchronizing";
   //ajouter un état quand tout est ok scanné ?
-  ticket?: Ticket;
+  ticket?: Partial<Ticket>;
   pannel?: number;
   error?: string;
   email?: string;

@@ -196,7 +196,7 @@ export const Scanner = () => {
               Entrez un numéro de ticket :
               <input
                 className="border rounded-md"
-                type="number"
+                type="text"
                 value={manualTicket}
                 onChange={(e) => {
                   setManualTicket(e.target.value);
@@ -208,9 +208,7 @@ export const Scanner = () => {
                   dispatch({
                     type: "manually_enter_ticket",
                     payload: {
-                      // ticket:
-                      // manualTicket as Ticket
-                      // ,
+                      ticket: { signCode: manualTicket },
                     },
                   });
                   closeTicketModal();
@@ -277,9 +275,9 @@ export const Scanner = () => {
                       onChange={(e) => setManualEmail(e.target.value)}
                     />{" "}
                     <button
-                      type="submit"
+                      type="button"
                       onClick={() => {
-                        console.log("+++++");
+                        console.log("+++++", state?.ticket?.attendeeId);
                         sdk()
                           .UpdateAttendee({
                             input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
