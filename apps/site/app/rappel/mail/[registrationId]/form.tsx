@@ -33,7 +33,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
     control,
     name: "nodes",
   });
-  const shouldLog = useRef(true); //solution pour éviter le render two times avec react18 même avec useEffect
+  const shouldLog = useRef(true); //solution pour éviter le render two times avec react18 et  useEffect
   useEffect(() => {
     if (shouldLog.current) {
       shouldLog.current = false;
@@ -90,7 +90,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
               />
             </div>
             <div className="mt-4 grid w-full items-center gap-1.5">
-              <Label htmlFor="firstname">Nom</Label>
+              <Label htmlFor="lastname">Nom</Label>
               <Input
                 type="text"
                 id="lastname"
@@ -102,7 +102,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
               />
             </div>
             <div className="mt-4 grid w-full items-center gap-1.5">
-              <Label htmlFor="firstname">Email</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 type="email"
                 id="email"

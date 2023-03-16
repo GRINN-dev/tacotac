@@ -1740,6 +1740,7 @@ export type Mutation = {
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
   updateAttendeeByNodeId?: Maybe<UpdateAttendeePayload>;
+  updateAttendeeEmailAndSendEmail?: Maybe<UpdateAttendeeEmailAndSendEmailPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
   updateEvent?: Maybe<UpdateEventPayload>;
   /** Updates a single `EventBranding` using a unique key and a patch. */
@@ -2028,6 +2029,12 @@ export type MutationUpdateAttendeeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAttendeeByNodeIdArgs = {
   input: UpdateAttendeeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateAttendeeEmailAndSendEmailArgs = {
+  input: UpdateAttendeeEmailAndSendEmailInput;
 };
 
 
@@ -3199,6 +3206,29 @@ export type UpdateAttendeeByNodeIdInput = {
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Attendee` being updated. */
   patch: AttendeePatch;
+};
+
+/** All input for the `updateAttendeeEmailAndSendEmail` mutation. */
+export type UpdateAttendeeEmailAndSendEmailInput = {
+  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our `updateAttendeeEmailAndSendEmail` mutation. */
+export type UpdateAttendeeEmailAndSendEmailPayload = {
+  __typename?: 'UpdateAttendeeEmailAndSendEmailPayload';
+  attendees?: Maybe<Array<Maybe<Attendee>>>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** All input for the `updateAttendee` mutation. */
