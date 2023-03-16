@@ -34,6 +34,7 @@ export const Scanner = () => {
   const [manualPannel, setManualPannel] = useState<number>();
   const [manualTicket, setManualTicket] = useState<string>();
   const [manualEmail, setManualEmail] = useState<string>();
+  const [errorEmail, setErrorEmail] = useState(false);
   const customStyles = {
     content: {
       top: "50%",
@@ -52,13 +53,6 @@ export const Scanner = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = () =>
-    dispatch({
-      type: "display_result",
-      payload: {
-        email: manualEmail,
-      },
-    });
 
   const scanAttendeesOffline = () => {
     sdk()
@@ -88,7 +82,7 @@ export const Scanner = () => {
         },
       },
     });
-  const emailPattern = new RegExp(`^[A-Z0-9._%+-]+@${manualEmail}$`, "i");
+  const emailPattern = /^\S+@\S+$/i;
 
   // const updateLocalStorageData = (data) => {
   //   localStorage.setItem(
@@ -293,32 +287,27 @@ export const Scanner = () => {
                       {" "}
                       <input
                         type="email"
-                        {...register("email", { required: true, pattern: emailPattern })}
+                        {...register("email")}
                         className="p-1 ml-2 border rounded-md"
                         value={manualEmail}
                         onChange={(e) => setManualEmail(e.target.value)}
                       />{" "}
-                      {errors.email && errors.email.type === "required" && <span>Ce champ est obligatoire</span>}
-                      {errors.email && errors.email.type === "pattern" && <span>adresse email invalide</span>}
+                      {errorEmail === true ? <p className="text-red-600">Mail invalide</p> : ""}
                     </form>
 
                     <button
                       type="submit"
-                      // onClick={() => {
-                      //   console.log("+++++", state?.ticket?.attendeeId);
-                      //   dispatch({
-                      //     type: "display_result",
-                      //     payload: {
-                      //       email: manualEmail,
-                      //     },
-                      //   });
-                      //   // sdk()
-                      //   //   .UpdateAttendee({
-                      //   //     input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
-                      //   //   })
-                      //   // .then(() => toast({ title: "✅ Email ajouté" }))
-                      //   // .catch((error) => console.log(error));
-                      // }}
+                      onClick={() => {
+                        console.log("+++++", state?.ticket?.attendeeId);
+                        manualEmail.match(emailPattern)
+                          ? dispatch({
+                              type: "display_result",
+                              payload: {
+                                email: manualEmail,
+                              },
+                            })
+                          : setErrorEmail(true);
+                      }}
                     >
                       <PlusCircle className="ml-2" />
                     </button>
@@ -326,7 +315,6 @@ export const Scanner = () => {
                 ) : (
                   state?.ticket?.email
                 )}
-                {/* update attendee ici du coup ? */}
               </span>
               <span>Panneau : {state?.pannel} </span>
               <div className="flex flex-col items-center">
