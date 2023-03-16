@@ -2,14 +2,13 @@
 
 import { useReducer, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, Plus, PlusCircle, SaveIcon } from "lucide-react";
+import { Camera, PlusCircle, SaveIcon } from "lucide-react";
 import ReactModal from "react-modal";
 
 import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
 import { reducer } from "../../../../../lib/utils_reducer";
-import { Ticket } from "./types";
 
 export const Scanner = () => {
   const closeModal = () => {
@@ -69,12 +68,9 @@ export const Scanner = () => {
     sdk().ScanAttendee({
       input: {
         ticketPayload: {
-          attendeeId: state?.ticket?.attendeeId,
-          email: state?.ticket?.email,
-          ticketNumber: state?.ticket?.ticketNumber,
-          panelNumber: state?.pannel,
-          eventId: state?.ticket?.eventId,
-          payload: null,
+          ...state.ticket,
+          panelNumber: state.pannel,
+          email: state.email,
         },
       },
     });
@@ -278,12 +274,18 @@ export const Scanner = () => {
                       type="button"
                       onClick={() => {
                         console.log("+++++", state?.ticket?.attendeeId);
-                        sdk()
-                          .UpdateAttendee({
-                            input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
-                          })
-                          .then(() => toast({ title: "✅ Email ajouté" }))
-                          .catch((error) => console.log(error));
+                        dispatch({
+                          type: "display_result",
+                          payload: {
+                            email: manualEmail,
+                          },
+                        });
+                        // sdk()
+                        //   .UpdateAttendee({
+                        //     input: { patch: { email: manualEmail }, id: state?.ticket?.attendeeId },
+                        //   })
+                        // .then(() => toast({ title: "✅ Email ajouté" }))
+                        // .catch((error) => console.log(error));
                       }}
                     >
                       <PlusCircle className="ml-2" />
