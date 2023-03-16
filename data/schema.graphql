@@ -4508,6 +4508,9 @@ input ScanAttendeeInput {
 input TicketPayloadInput {
   eventId: UUID
   attendeeId: UUID
+  registrationId: UUID
+  firstname: String
+  lastname: String
   ticketNumber: String
   panelNumber: Int
   email: String
