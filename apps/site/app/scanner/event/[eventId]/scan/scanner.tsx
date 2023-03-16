@@ -28,9 +28,9 @@ export const Scanner = () => {
   });
   const { toast } = useToast();
 
-  const [resultModalIsOpen, setIsOpen] = useState(true);
-  const [isPannelModalOpen, setIsPannelModalOpen] = useState(false);
-  const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
+  const [resultModalIsOpen, setIsOpen] = useState<boolean>(true);
+  const [isPannelModalOpen, setIsPannelModalOpen] = useState<boolean>(false);
+  const [isTicketModalOpen, setIsTicketModalOpen] = useState<boolean>(false);
   const [manualPannel, setManualPannel] = useState<number>();
   const [manualTicket, setManualTicket] = useState<string>();
   const [manualEmail, setManualEmail] = useState<string>();
@@ -48,13 +48,8 @@ export const Scanner = () => {
   };
 
   console.log("state", state);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
-  const scanAttendeesOffline = () => {
+  const scanAttendeesOffline = () =>
     sdk()
       .ScanAttendeesOffline({
         input: {
@@ -71,7 +66,6 @@ export const Scanner = () => {
         },
       })
       .then((result) => console.log(result));
-  };
   const scanAttendee = () =>
     sdk().ScanAttendee({
       input: {
@@ -92,21 +86,45 @@ export const Scanner = () => {
   // };
   // const offlineData = JSON.parse(localStorage.getItem("offlineData"));
 
+  let offlineData = [];
+
+  if (typeof localStorage !== "undefined") {
+    offlineData = JSON.parse(localStorage.getItem("offlineData")) || [];
+  }
+
+  const updateLocalStorageData = (data) => {
+    const updatedData = [...offlineData, data];
+    localStorage.setItem("offlineData", JSON.stringify(updatedData));
+  };
+
   return (
     <div className="container">
       <div className="flex items-end w-6/12 ">
-        {/* {offlineData && offlineData.length > 0 ? ( */}
-        <button
-          type="button"
-          className={buttonVariants({ size: "sm" })}
-          onClick={() => {
-            dispatch({ type: "synchronize" });
-            scanAttendeesOffline();
-          }}
-        >
-          <SaveIcon /> Synchroniser
-        </button>
-        {/* ) : null} */}
+        {offlineData && offlineData.length > 0 ? (
+          <button
+            type="submit"
+            className="absolute top-4 right-4"
+            onClick={() => {
+              console.log("synchronise");
+              scanAttendeesOffline()
+                .then((result) => {
+                  console.log("result", result);
+                  toast({
+                    title: "✅ Synchronisation ok",
+                  });
+                })
+                .then(() => localStorage.removeItem("offlineData"))
+                .catch((error) => {
+                  console.log("error", error);
+                  toast({
+                    title: "⛔️ Echec synchronisation",
+                  });
+                });
+            }}
+          >
+            <SaveIcon /> Synchroniser
+          </button>
+        ) : null}
       </div>
       {state.step === "start" ? (
         <div className="flex flex-col items-center justify-center">
@@ -165,16 +183,6 @@ export const Scanner = () => {
           >
             Assign pannel number
           </button>
-          {/* <button
-            className={buttonVariants({ size: "sm" })}
-            onClick={() => {
-              dispatch({
-                type: "scan_pannel",
-              });
-            }}
-          >
-            <Camera className="mr-2" /> Scanner le panneau
-          </button> */}
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
@@ -287,7 +295,6 @@ export const Scanner = () => {
                       {" "}
                       <input
                         type="email"
-                        {...register("email")}
                         className="p-1 ml-2 border rounded-md"
                         value={manualEmail}
                         onChange={(e) => setManualEmail(e.target.value)}
@@ -348,7 +355,7 @@ export const Scanner = () => {
                         console.error(error);
                       })
                       .then(() => localStorage.setItem("offlineData", JSON.stringify(state.ticket)))
-                      // .then(() => updateLocalStorageData(state.ticket))
+                      .then(() => updateLocalStorageData(state.ticket))
                       .then(() =>
                         dispatch({
                           type: "start_scanner",
