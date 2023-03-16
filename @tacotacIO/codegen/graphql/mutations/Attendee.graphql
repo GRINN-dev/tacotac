@@ -31,3 +31,12 @@ mutation RegisterAttendees($input: RegisterAttendeesInput!) {
     }
   }
 }
+
+mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]) {
+  updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
+    attendees {
+      email
+      
+    }
+  }
+}

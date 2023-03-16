@@ -3855,6 +3855,13 @@ export type RegisterAttendeesMutationVariables = Exact<{
 
 export type RegisterAttendeesMutation = { __typename?: 'Mutation', registerAttendees?: { __typename?: 'RegisterAttendeesPayload', registration?: { __typename?: 'Registration', id: any } | null } | null };
 
+export type UpdateAttendeeEmailAndSendEmailMutationVariables = Exact<{
+  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>> | InputMaybe<AttendeePatch>>;
+}>;
+
+
+export type UpdateAttendeeEmailAndSendEmailMutation = { __typename?: 'Mutation', updateAttendeeEmailAndSendEmail?: { __typename?: 'UpdateAttendeeEmailAndSendEmailPayload', attendees?: Array<{ __typename?: 'Attendee', email?: string | null } | null> | null } | null };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -4130,6 +4137,15 @@ export const RegisterAttendeesDocument = gql`
   registerAttendees(input: $input) {
     registration {
       id
+    }
+  }
+}
+    `;
+export const UpdateAttendeeEmailAndSendEmailDocument = gql`
+    mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]) {
+  updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
+    attendees {
+      email
     }
   }
 }
@@ -4444,6 +4460,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     RegisterAttendees(variables: RegisterAttendeesMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesMutation>(RegisterAttendeesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendees', 'mutation');
+    },
+    UpdateAttendeeEmailAndSendEmail(variables?: UpdateAttendeeEmailAndSendEmailMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateAttendeeEmailAndSendEmailMutation>(UpdateAttendeeEmailAndSendEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateAttendeeEmailAndSendEmail', 'mutation');
     },
     Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login', 'mutation');
