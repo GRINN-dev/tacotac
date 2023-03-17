@@ -85,15 +85,15 @@ export const Scanner = () => {
     return sdk()
       .ScanAttendeesOffline({
         input: {
-          ticketPayloads: { ...offlineData },
-          // ticketPayloads: offlineData.map((ticket) => ({
-          //   attendeeId: ticket?.attendeeId,
-          //   email: ticket?.email,
-          //   ticketNumber: ticket?.ticketNumber,
-          //   panelNumber: ticket?.pannel,
-          //   eventId: ticket?.eventId,
-          //   payload: null,
-          // })),
+          // ticketPayloads: { ...offlineData },
+          ticketPayloads: offlineData.map((ticket) => ({
+            attendeeId: ticket?.attendeeId,
+            email: ticket?.email,
+            ticketNumber: ticket?.ticketNumber,
+            panelNumber: ticket?.pannel,
+            eventId: ticket?.eventId,
+            payload: null,
+          })),
         },
       })
       .finally(() => {
