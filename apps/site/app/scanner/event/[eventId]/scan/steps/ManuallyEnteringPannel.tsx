@@ -1,3 +1,5 @@
+"use client";
+
 import { Dispatch, FC, useState } from "react";
 import ReactModal from "react-modal";
 

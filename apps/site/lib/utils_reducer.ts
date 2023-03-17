@@ -32,6 +32,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "manually_entering_ticket",
             error: event.payload.error,
+            ticket_code: event.payload.ticket_code,
           }
         : {
             step: "start",
@@ -88,6 +89,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             step: "manually_entering_pannel",
             error: event.payload.error,
             ticket: state.ticket,
+            ticket_code: state.ticket_code,
             pannel_code: event.payload.pannel_code,
             pannel: state.pannel,
           }
@@ -100,6 +102,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             step: "displaying_result",
             ticket: state?.ticket,
             pannel: event.payload?.pannel,
+            ticket_code: state.ticket_code,
             pannel_code: event.payload.pannel_code,
           }
         : null;
