@@ -18,6 +18,7 @@ export interface State {
     | "synchronizing";
   ticket?: Partial<Ticket>;
   ticket_code?: string;
+  pannel_code?: string;
   pannel?: number;
   error?: string;
   email?: string;
@@ -32,6 +33,7 @@ export interface Event {
     | "scan_pannel"
     | "scan_pannel_error"
     | "type_ticket_number"
+    | "type_pannel_number"
     | "manually_enter_ticket"
     | "manually_enter_pannel"
     | "display_result"

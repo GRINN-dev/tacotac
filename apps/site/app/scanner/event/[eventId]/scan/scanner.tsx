@@ -9,14 +9,12 @@ import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
 import { reducer } from "../../../../../lib/utils_reducer";
+import { ManuallyEnteringPannel } from "./steps/ManuallyEnteringPannel";
 import { ManuallyEnteringTicket } from "./steps/ManuallyEnteringTicket";
 
 export const Scanner = () => {
   const closeModal = () => {
     setIsOpen(false);
-  };
-  const closePannelModal = () => {
-    setIsPannelModalOpen(false);
   };
 
   const [state, dispatch] = useReducer(reducer, {
@@ -25,8 +23,7 @@ export const Scanner = () => {
   const { toast } = useToast();
 
   const [resultModalIsOpen, setIsOpen] = useState<boolean>(true);
-  const [isPannelModalOpen, setIsPannelModalOpen] = useState<boolean>(false);
-  const [manualPannel, setManualPannel] = useState<number>();
+
   const [manualEmail, setManualEmail] = useState<string>();
   const [errorEmail, setErrorEmail] = useState(false);
   const customStyles = {
@@ -187,39 +184,7 @@ export const Scanner = () => {
       ) : state.step === "manually_entering_ticket" ? (
         <ManuallyEnteringTicket state={state} dispatch={dispatch} />
       ) : state.step === "manually_entering_pannel" ? (
-        <>
-          <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => setIsPannelModalOpen(true)}>
-            Entrée manuelle
-          </button>
-          <ReactModal style={customStyles} isOpen={isPannelModalOpen}>
-            <div className="flex flex-col gap-1">
-              {" "}
-              Entrez un numéro de panneau :
-              <input
-                className="border rounded-md"
-                type="number"
-                value={manualPannel}
-                onChange={(e) => {
-                  setManualPannel(parseInt(e.target.value));
-                }}
-              />
-              <button
-                className={buttonVariants({ size: "sm", className: "mx-6" })}
-                onClick={() => {
-                  dispatch({
-                    type: "manually_enter_pannel",
-                    payload: {
-                      pannel: manualPannel,
-                    },
-                  });
-                  closePannelModal();
-                }}
-              >
-                Valider
-              </button>
-            </div>
-          </ReactModal>
-        </>
+        <ManuallyEnteringPannel state={state} dispatch={dispatch} />
       ) : state.step === "displaying_result" ? (
         <>
           <ReactModal isOpen={resultModalIsOpen} style={customStyles} onRequestClose={closeModal}>

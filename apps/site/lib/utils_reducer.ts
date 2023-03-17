@@ -23,6 +23,8 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "scanning_pannel",
             ticket: state.ticket,
+            pannel_code: state.pannel_code,
+            pannel: state.pannel,
           }
         : { step: "start" };
     case "scan_ticket_error":
@@ -39,6 +41,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "scanning_pannel",
             ticket: event.payload.ticket,
+            ticket_code: event.payload.ticket_code,
           }
         : {
             step: "start",
@@ -58,13 +61,23 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
     //     ticket: state.ticket,
     //     pannel: event.payload.pannel,
     //   };
-
     case "scan_pannel":
       return state.step === "scanning_pannel"
         ? {
             step: "displaying_result",
             ticket: state.ticket,
             pannel: event.payload.pannel,
+            pannel_code: event.payload.pannel_code,
+          }
+        : {
+            step: "start",
+          };
+    case "type_pannel_number":
+      return state.step === "manually_entering_pannel"
+        ? {
+            step: "manually_entering_pannel",
+            ticket: state.ticket,
+            pannel_code: event.payload.pannel_code,
           }
         : {
             step: "start",
@@ -75,6 +88,8 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             step: "manually_entering_pannel",
             error: event.payload.error,
             ticket: state.ticket,
+            pannel_code: event.payload.pannel_code,
+            pannel: state.pannel,
           }
         : {
             step: "start",
@@ -85,6 +100,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             step: "displaying_result",
             ticket: state?.ticket,
             pannel: event.payload?.pannel,
+            pannel_code: event.payload.pannel_code,
           }
         : null;
 
@@ -94,12 +110,16 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ticket: state.ticket,
         pannel: state.pannel,
         email: event.payload?.email,
+        ticket_code: state.ticket_code,
+        pannel_code: state.pannel_code,
       };
     case "synchronize":
       return {
         step: "synchronizing",
         ticket: state.ticket,
         pannel: state.pannel,
+        pannel_code: state.pannel_code,
+        ticket_code: state.ticket_code,
         email: event.payload?.email,
       };
     case "cancel":
