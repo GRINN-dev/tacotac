@@ -10,6 +10,7 @@ import { sdk } from "@/lib/sdk";
 import { QrReader } from "@/components/qr-reader";
 import { buttonVariants } from "@/components/ui/button";
 import { reducer } from "../../../../../lib/utils_reducer";
+import { ManuallyEnteringTicket } from "./steps/ManuallyEnteringTicket";
 
 export const Scanner = () => {
   const closeModal = () => {
@@ -19,10 +20,6 @@ export const Scanner = () => {
     setIsPannelModalOpen(false);
   };
 
-  const closeTicketModal = () => {
-    setIsTicketModalOpen(false);
-  };
-
   const [state, dispatch] = useReducer(reducer, {
     step: "start",
   });
@@ -30,9 +27,7 @@ export const Scanner = () => {
 
   const [resultModalIsOpen, setIsOpen] = useState<boolean>(true);
   const [isPannelModalOpen, setIsPannelModalOpen] = useState<boolean>(false);
-  const [isTicketModalOpen, setIsTicketModalOpen] = useState<boolean>(false);
   const [manualPannel, setManualPannel] = useState<number>();
-  const [manualTicket, setManualTicket] = useState<string>();
   const [manualEmail, setManualEmail] = useState<string>();
   const [errorEmail, setErrorEmail] = useState(false);
   const customStyles = {
@@ -90,7 +85,7 @@ export const Scanner = () => {
     return sdk()
       .ScanAttendeesOffline({
         input: {
-          ticketPayloads: { ...offlineData[0] },
+          ticketPayloads: { ...offlineData },
           // ticketPayloads: offlineData.map((ticket) => ({
           //   attendeeId: ticket?.attendeeId,
           //   email: ticket?.email,
@@ -209,39 +204,7 @@ export const Scanner = () => {
           </button>
         </>
       ) : state.step === "manually_entering_ticket" ? (
-        <>
-          <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => setIsTicketModalOpen(true)}>
-            Entrée manuelle
-          </button>
-          <ReactModal style={customStyles} isOpen={isTicketModalOpen}>
-            <div className="flex flex-col gap-1">
-              {" "}
-              Entrez un numéro de ticket :
-              <input
-                className="border rounded-md"
-                type="text"
-                value={manualTicket}
-                onChange={(e) => {
-                  setManualTicket(e.target.value);
-                }}
-              />
-              <button
-                className={buttonVariants({ size: "sm", className: "mx-6" })}
-                onClick={() => {
-                  dispatch({
-                    type: "manually_enter_ticket",
-                    payload: {
-                      ticket: { signCode: manualTicket },
-                    },
-                  });
-                  closeTicketModal();
-                }}
-              >
-                Valider
-              </button>
-            </div>
-          </ReactModal>
-        </>
+        <ManuallyEnteringTicket state={state} dispatch={dispatch} />
       ) : state.step === "manually_entering_pannel" ? (
         <>
           <button type="button" className={buttonVariants({ size: "sm" })} onClick={() => setIsPannelModalOpen(true)}>

@@ -43,6 +43,15 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         : {
             step: "start",
           };
+    case "type_ticket_number":
+      return state.step === "manually_entering_ticket"
+        ? {
+            step: "manually_entering_ticket",
+            ticket_code: event.payload.ticket_code,
+          }
+        : {
+            step: "start",
+          };
     // case "scan_pannel":
     //   return {
     //     step: "displaying_error",
