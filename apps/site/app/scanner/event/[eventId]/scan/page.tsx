@@ -27,12 +27,13 @@ const EventSlug = async ({ params: { eventId } }) => {
           </Link>
           <Link className={buttonVariants({ size: "sm" })} href={``}>
             <PlusCircle className="mr-2" /> Ajouter un participant
+            {/* TODO lien iFrame ? */}
           </Link>
         </div>
 
         <div className="absolute bottom-2">
           <Link href={"/scanner"} className="flex items-center">
-            <ArrowBigLeft className="w-10 h-10" /> Retour événements
+            <ArrowBigLeft className="w-10 h-10" /> Evénements
           </Link>
         </div>
       </div>

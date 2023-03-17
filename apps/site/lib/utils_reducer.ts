@@ -79,6 +79,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             step: "manually_entering_pannel",
             ticket: state.ticket,
             pannel_code: event.payload.pannel_code,
+            pannel: state.pannel,
           }
         : {
             step: "start",

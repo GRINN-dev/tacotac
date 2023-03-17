@@ -140,7 +140,7 @@ export const Scanner = () => {
       <div>
         <ScanReader state={state} dispatch={dispatch} />
       </div>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </div>
   );
 };
