@@ -49,23 +49,23 @@ export const Scanner = () => {
 
   console.log("state", state);
 
-  const scanAttendeesOffline = () =>
-    sdk()
-      .ScanAttendeesOffline({
-        input: {
-          ticketPayloads: [
-            {
-              attendeeId: state?.ticket?.attendeeId,
-              email: !state?.ticket?.email ? manualEmail : state?.ticket?.email,
-              ticketNumber: state?.ticket?.ticketNumber,
-              panelNumber: state?.pannel,
-              eventId: state?.ticket?.eventId,
-              payload: null,
-            },
-          ],
-        },
-      })
-      .then((result) => console.log(result));
+  // const scanAttendeesOffline = () =>
+  //   sdk()
+  //     .ScanAttendeesOffline({
+  //       input: {
+  //         ticketPayloads: [
+  //           {
+  //             attendeeId: state?.ticket?.attendeeId,
+  //             email: !state?.ticket?.email ? manualEmail : state?.ticket?.email,
+  //             ticketNumber: state?.ticket?.ticketNumber,
+  //             panelNumber: state?.pannel,
+  //             eventId: state?.ticket?.eventId,
+  //             payload: null,
+  //           },
+  //         ],
+  //       },
+  //     })
+  //     .then((result) => console.log(result));
   const scanAttendee = () =>
     sdk().ScanAttendee({
       input: {
@@ -78,23 +78,33 @@ export const Scanner = () => {
     });
   const emailPattern = /^\S+@\S+$/i;
 
-  // const updateLocalStorageData = (data) => {
-  //   localStorage.setItem(
-  //     "offlineData",
-  //     JSON.stringify([...JSON.parse(localStorage.getItem("offlineData") || "[]"), data])
-  //   );
-  // };
-  // const offlineData = JSON.parse(localStorage.getItem("offlineData"));
-
   let offlineData = [];
 
   if (typeof localStorage !== "undefined") {
     offlineData = JSON.parse(localStorage.getItem("offlineData")) || [];
   }
 
-  const updateLocalStorageData = (data) => {
-    const updatedData = [...offlineData, data];
-    localStorage.setItem("offlineData", JSON.stringify(updatedData));
+  const scanAttendeesOffline = async () => {
+    const offlineData = JSON.parse(localStorage.getItem("offlineData") || "[]");
+    console.log("offline", offlineData);
+    return sdk()
+      .ScanAttendeesOffline({
+        input: {
+          ticketPayloads: { ...offlineData[0] },
+          // ticketPayloads: offlineData.map((ticket) => ({
+          //   attendeeId: ticket?.attendeeId,
+          //   email: ticket?.email,
+          //   ticketNumber: ticket?.ticketNumber,
+          //   panelNumber: ticket?.pannel,
+          //   eventId: ticket?.eventId,
+          //   payload: null,
+          // })),
+        },
+      })
+      .finally(() => {
+        localStorage.removeItem("offlineData");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -113,7 +123,7 @@ export const Scanner = () => {
                     title: "✅ Synchronisation ok",
                   });
                 })
-                .then(() => localStorage.removeItem("offlineData"))
+
                 .catch((error) => {
                   console.log("error", error);
                   toast({
@@ -354,8 +364,13 @@ export const Scanner = () => {
                         });
                         console.error(error);
                       })
-                      .then(() => localStorage.setItem("offlineData", JSON.stringify(state.ticket)))
-                      .then(() => updateLocalStorageData(state.ticket))
+                      .then(() => {
+                        localStorage.setItem(
+                          "offlineData",
+                          JSON.stringify([...JSON.parse(localStorage.getItem("offlineData") || "[]"), state.ticket])
+                        ),
+                          console.log("synched in storage");
+                      })
                       .then(() =>
                         dispatch({
                           type: "start_scanner",
