@@ -3,7 +3,6 @@
 import { useReducer, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Camera, PlusCircle, SaveIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
 
 import { sdk } from "@/lib/sdk";
@@ -44,23 +43,6 @@ export const Scanner = () => {
 
   console.log("state", state);
 
-  // const scanAttendeesOffline = () =>
-  //   sdk()
-  //     .ScanAttendeesOffline({
-  //       input: {
-  //         ticketPayloads: [
-  //           {
-  //             attendeeId: state?.ticket?.attendeeId,
-  //             email: !state?.ticket?.email ? manualEmail : state?.ticket?.email,
-  //             ticketNumber: state?.ticket?.ticketNumber,
-  //             panelNumber: state?.pannel,
-  //             eventId: state?.ticket?.eventId,
-  //             payload: null,
-  //           },
-  //         ],
-  //       },
-  //     })
-  //     .then((result) => console.log(result));
   const scanAttendee = () =>
     sdk().ScanAttendee({
       input: {
@@ -85,7 +67,6 @@ export const Scanner = () => {
     return sdk()
       .ScanAttendeesOffline({
         input: {
-          // ticketPayloads: { ...offlineData },
           ticketPayloads: offlineData.map((ticket) => ({
             attendeeId: ticket?.attendeeId,
             email: ticket?.email,
