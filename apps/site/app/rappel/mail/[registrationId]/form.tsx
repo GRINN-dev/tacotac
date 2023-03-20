@@ -1,20 +1,16 @@
 "use client";
 
 import { FC, useEffect, useRef, useState, useTransition } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import Script from "next/script";
 import { GetAttendeesWithoutMailByRegistrationIdQuery } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { useFieldArray, useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 
 interface iUpdateAttendeeMail extends ExtractType<GetAttendeesWithoutMailByRegistrationIdQuery, "attendees"> {}
 
@@ -50,18 +46,8 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
     if (isValid && isValidCaptcha) {
       setIsLoading(true);
       //remplacer  ici par UpdateAttendeeEmailAndSendEmail
-      data.nodes.map(async (attendee) => {
-        await sdk()
-          .UpdateAttendee({
-            input: { patch: { email: attendee.email }, id: attendee.id },
-          })
-          .catch((error) => {
-            toast({
-              title: "Oups, une erreur est survenue",
-            });
-            setIsLoading(false);
-            throw error;
-          });
+      await sdk().UpdateAttendeeEmailAndSendEmail({
+        attendees: data.nodes,
       });
 
       setIsLoading(false);
