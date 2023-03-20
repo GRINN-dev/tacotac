@@ -74,7 +74,7 @@ export const Scanner = () => {
                 });
             }}
           >
-            <SaveIcon /> Synchroniser
+            Synchroniser
           </button>
         ) : null}
       </div>
