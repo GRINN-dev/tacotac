@@ -2,7 +2,7 @@
 
 import { useReducer } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, SaveIcon } from "lucide-react";
+import { Camera } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -38,7 +38,7 @@ export const Scanner = () => {
             attendeeId: ticket?.attendeeId,
             email: ticket?.email,
             ticketNumber: ticket?.ticketNumber,
-            panelNumber: ticket?.pannel,
+            panelNumber: state?.pannel_code,
             eventId: ticket?.eventId,
             payload: null,
           })),
@@ -56,7 +56,7 @@ export const Scanner = () => {
         {offlineData && offlineData.length > 0 ? (
           <button
             type="submit"
-            className="absolute text-white bg-red-600 top-4 right-4"
+            className="absolute p-2 text-white bg-red-600 rounded-md top-4 right-4"
             onClick={() => {
               console.log("synchronise");
               scanAttendeesOffline()
@@ -125,7 +125,7 @@ export const Scanner = () => {
       <div>
         <ScanReader state={state} dispatch={dispatch} />
       </div>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </div>
   );
 };
