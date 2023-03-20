@@ -14,7 +14,7 @@ export const ScanningTicket: FC<{ state: State; dispatch: Dispatch<Event> }> = (
           dispatch({
             type: "scan_ticket_error",
             payload: {
-              error: "le ticket n'est pas détecté",
+              error: "Le ticket n'est pas détecté",
             },
           });
         }}
