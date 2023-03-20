@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 import Link from "next/link";
-import { ArrowBigLeft, Camera, CameraIcon, PlusCircle } from "lucide-react";
+import { ArrowBigLeft, Camera, CameraIcon, List, PlusCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -20,12 +20,16 @@ const EventSlug = async ({ params: { eventId } }) => {
         <div> {event.description}</div>
 
         <div>Lieu : {event.city} </div>
-        <div className="flex flex-col items-center justify-end gap-2 mt-40">
+        <div>Capacité :</div>
+        <div>Déjà présents: </div>
+        <div className="flex flex-col items-center justify-end gap-2 mt-20">
           <Scanner />
-          <Link className={buttonVariants({ size: "sm" })} href={``}>
-            Liste des inscrits
+        </div>
+        <div className="flex flex-col items-center">
+          <Link className={buttonVariants({ size: "sm", className: "absolute bottom-10" })} href={``}>
+            <List className="mr-2" /> Liste des inscrits
           </Link>
-          <Link className={buttonVariants({ size: "sm" })} href={``}>
+          <Link className={buttonVariants({ size: "sm", className: "absolute bottom-24" })} href={``}>
             <PlusCircle className="mr-2" /> Ajouter un participant
             {/* TODO lien iFrame ? */}
           </Link>
