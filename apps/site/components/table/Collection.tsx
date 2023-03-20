@@ -161,7 +161,7 @@ export const Collection = ({
       {/* //motion.div => pour animation peut-etre supprimé si import */}
       <motion.div initial={{ opacity: 0, x: -100 }} animate={controls}>
         {/* begin filter parts */}
-        <div id="Filter" className="w-full  mx-auto mt-4 flex space-x-4">
+        <div id="Filter" className="mx-auto  mt-4 flex w-full space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Button variant="outline" className="w-10 rounded-full p-0">
@@ -170,7 +170,7 @@ export const Collection = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <div className="flex flex-col space-y-4 m-2">
+              <div className="m-2 flex flex-col space-y-4">
                 <div className="">
                   <Select onValueChange={(value) => setTypeFilter(value)}>
                     <SelectTrigger>
@@ -222,17 +222,17 @@ export const Collection = ({
                         onChange={(e) => setDateFilter(e.target?.value)}
                         type={"datetime-local"}
                         id="date"
-                        className="h-8 col-span-2"
+                        className="col-span-2 h-8"
                       />
                     ) : (
-                      <Input onChange={(e) => setValueFilter(e.target.value)} id="value" className="h-8 col-span-2" />
+                      <Input onChange={(e) => setValueFilter(e.target.value)} id="value" className="col-span-2 h-8" />
                     )}
                   </div>
                 )}
 
                 <DropdownMenuItem className="self-center" onClick={onChange}>
                   <Button className="flex space-x-4 ">
-                    <PlusCircle className="w-4 h-4" />
+                    <PlusCircle className="h-4 w-4" />
                     <span>Filtrer</span>
                   </Button>
                 </DropdownMenuItem>
@@ -252,10 +252,10 @@ export const Collection = ({
                   <p className="text-sm font-medium">{currentFilter}</p>
                 </div>
                 <div className="ml-auto pl-3">
-                  <div className="-mx-1.5 -my-1.5">
+                  <div className="-m-1.5">
                     <button
                       type="button"
-                      className="inline-flex rounded-md p-1.5 p-1.5 text-white focus:outline-none focus:none"
+                      className="focus:none inline-flex rounded-md p-1.5 text-white focus:outline-none"
                     >
                       <span className="sr-only">Dismiss</span>
                       <XCircle className="h-5 w-5" aria-hidden="true" />
@@ -269,15 +269,15 @@ export const Collection = ({
         {/* end filter parts */}
 
         {/* begin table parts */}
-        <div id="organizations" className="w-full mx-auto mt-4">
-          <table className="flex flex-col px-6 py-3 border-t border-b rounded-t-lg rounded-b-lg border-x border-slate-300">
+        <div id="organizations" className="mx-auto mt-4 w-full">
+          <table className="flex flex-col rounded-lg border border-slate-300 px-6 py-3">
             <thead>
               <tr className="flex items-center">
                 {headerFormat?.map(
                   (item, index) =>
                     item?.isVisible && (
                       <th className="w-full p-1" key={"head " + item?.title + index}>
-                        <div className="flex justify-center items-center">
+                        <div className="flex items-center justify-center">
                           {item?.title}
 
                           {item?.isSortable && (
@@ -309,7 +309,7 @@ export const Collection = ({
             <tbody className="flex flex-col">
               {dataformat.map((row, index) => (
                 <tr
-                  className="flex items-start hover:cursor-pointer"
+                  className={`flex items-start ${!isRedirectStop?'hover:cursor-pointer':''}`}
                   onClick={() => {
                     !isRedirectStop && router.push(`${pathname}/${row?.slug}`);
                   }}
@@ -322,7 +322,7 @@ export const Collection = ({
                           className={` border-t ${
                             !isPending
                               ? "w-full p-2 text-center "
-                              : "w-full  h-[2.05rem] m-1  bg-gray-200 rounded-lg opacity-20 animate-pulse"
+                              : "m-1  h-[2.05rem] w-full  animate-pulse rounded-lg bg-gray-200 opacity-20"
                           }`}
                           key={"data-" + item?.title + index}
                         >
@@ -337,7 +337,7 @@ export const Collection = ({
           {/* End table parts */}
           {/* Begin pagination parts */}
           <div id="Pagination" className="flex flex-row justify-between">
-            <nav className="flex items-center justify-evenly  px-4 py-3 sm:px-6 w-full" aria-label="Pagination">
+            <nav className="flex w-full items-center  justify-evenly px-4 py-3 sm:px-6" aria-label="Pagination">
               <div className="hidden sm:block">
                 <p className="text-sm ">
                   Affichage{" "}
@@ -365,7 +365,7 @@ export const Collection = ({
                     setCurrentPage(currentPage - 1);
                   }}
                 >
-                  <ChevronLeft className="w-5 h-5" />
+                  <ChevronLeft className="h-5 w-5" />
                 </Button>
 
                 <Button
@@ -383,7 +383,7 @@ export const Collection = ({
                     setCurrentPage(currentPage + 1);
                   }}
                 >
-                  <ChevronRight className="w-5 h-5" />
+                  <ChevronRight className="h-5 w-5" />
                 </Button>
               </div>
               <Select

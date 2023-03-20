@@ -3830,7 +3830,7 @@ export enum UsersOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
-export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null };
+export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null };
 
 export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any };
 
@@ -3845,21 +3845,21 @@ export type CreateAttendeeMutationVariables = Exact<{
 }>;
 
 
-export type CreateAttendeeMutation = { __typename?: 'Mutation', createAttendee?: { __typename?: 'CreateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null } | null };
+export type CreateAttendeeMutation = { __typename?: 'Mutation', createAttendee?: { __typename?: 'CreateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null } | null } | null };
 
 export type UpdateAttendeeMutationVariables = Exact<{
   input: UpdateAttendeeInput;
 }>;
 
 
-export type UpdateAttendeeMutation = { __typename?: 'Mutation', updateAttendee?: { __typename?: 'UpdateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null } | null };
+export type UpdateAttendeeMutation = { __typename?: 'Mutation', updateAttendee?: { __typename?: 'UpdateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null } | null } | null };
 
 export type DeleteAttendeeMutationVariables = Exact<{
   input: DeleteAttendeeInput;
 }>;
 
 
-export type DeleteAttendeeMutation = { __typename?: 'Mutation', deleteAttendee?: { __typename?: 'DeleteAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null } | null };
+export type DeleteAttendeeMutation = { __typename?: 'Mutation', deleteAttendee?: { __typename?: 'DeleteAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null } | null } | null };
 
 export type RegisterAttendeesMutationVariables = Exact<{
   input: RegisterAttendeesInput;
@@ -3958,7 +3958,7 @@ export type GetAttendeeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null };
+export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null } | null };
 
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4000,7 +4000,7 @@ export type GetEventBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }> }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null }> }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
@@ -4047,6 +4047,8 @@ export const MyAttendeeFragmentDoc = gql`
   status
   panelNumber
   registrationId
+  qrCodeUrl
+  pdfUrl
 }
     `;
 export const EventBrandingFragmentFragmentDoc = gql`

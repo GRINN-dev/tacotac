@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -25,7 +27,9 @@ const AttendeesPage = async ({
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
     { title: "status", value: "status", type: Type?.string, isSortable: false, isVisible: true },
     { title: "N° Panneau", value: "panelNumber", type: Type.number, isSortable: false, isVisible: true },
-    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
+    { title: "QrCode", value: "qrCode", type: Type.string, isSortable: false, isVisible: true },
+    { title: "Billet", value: "ticket", type: Type.string, isSortable: false, isVisible: true },
+    { title: "Details", value: "details", type: Type?.string, isSortable: false, isVisible: true },
   ];
 
   const flattenedAttendeesFromRegistrations = eventBySlug?.registrations?.nodes?.reduce((acc, { attendeesList }) => {
@@ -33,26 +37,44 @@ const AttendeesPage = async ({
   }, []);
 
   const rawAttendees: IData[] = flattenedAttendeesFromRegistrations?.map(
-    ({ id, lastname, firstname, email, status, panelNumber }) => ({
+    ({ id, lastname, firstname, email, status, panelNumber, qrCodeUrl, pdfUrl }) => ({
       Nom: lastname,
       Prenom: firstname,
       email: email,
       status: status,
       "N° Panneau": panelNumber,
-      slug: "/participant/" + id,
+      QrCode: (
+        <a className="underline" href={qrCodeUrl} target="_blank" rel="noreferrer">
+          {" "}
+          Qr Code (pdf)
+        </a>
+      ),
+      Billet: (
+        <a className="underline" href={pdfUrl} target="_blank" rel="noreferrer">
+          {" "}
+          Billet (pdf)
+        </a>
+      ),
+      Details: (
+        <Link
+          className={buttonVariants({ variant: "outline", size: "sm" })}
+          href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/${id}`}
+        >
+         <PlusSquare className=" h-4 w-4" />
+        </Link>
+      ),
     })
   );
   //pour pr
   return (
-    <section className="container grid items-center w-full gap-6 pt-6 pb-8 md:py-10">
-      <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
-        <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors scroll-m-20 first:mt-0 ">
+    <section className="container grid w-full items-center gap-6 pt-6 pb-8 md:py-10">
+      <div className="mx-auto flex w-full max-w-3xl items-baseline justify-between gap-2">
+        <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
           Tous les participants
         </h2>
         <Link
           className={buttonVariants({ variant: "outline", size: "lg" })}
           target="_blank"
-
           href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant`}
         >
           iFrame inscription
@@ -65,6 +87,7 @@ const AttendeesPage = async ({
           header={headerAttendees}
           data={rawAttendees}
           initLimit={initLimit}
+          isRedirectStop
         />
       ) : (
         <div className="flex flex-col items-start gap-4">
@@ -75,7 +98,7 @@ const AttendeesPage = async ({
             href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/create`}
             className={buttonVariants({ size: "lg", variant: "outline" })}
           >
-            <PlusSquare className="w-4 h-4 mr-2" /> Ajouter un participant
+            <PlusSquare className="mr-2 h-4 w-4" /> Ajouter un participant
           </Link>
         </div>
       )}
