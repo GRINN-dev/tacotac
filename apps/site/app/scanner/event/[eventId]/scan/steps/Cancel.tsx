@@ -2,19 +2,23 @@
 
 import { Dispatch, FC } from "react";
 
-import { Event } from "../types";
+import { Event, State } from "../types";
 
-export const Cancel: FC<{ dispatch: Dispatch<Event> }> = ({ dispatch }) => {
+export const Cancel: FC<{ dispatch: Dispatch<Event>; state: State }> = ({ dispatch, state }) => {
   return (
-    <button
-      className="p-2 m-2 text-sm text-white bg-red-700 border-none rounded-md"
-      onClick={() => {
-        dispatch({
-          type: "cancel",
-        });
-      }}
-    >
-      Annuler
-    </button>
+    <div>
+      {state.step !== "start" ? (
+        <button
+          className="p-2 m-2 text-sm text-white bg-red-700 border-none rounded-md"
+          onClick={() => {
+            dispatch({
+              type: "cancel",
+            });
+          }}
+        >
+          Annuler
+        </button>
+      ) : null}
+    </div>
   );
 };
