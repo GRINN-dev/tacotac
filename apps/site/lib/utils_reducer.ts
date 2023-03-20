@@ -103,6 +103,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             step: "displaying_result",
             ticket: state?.ticket,
             pannel: state.pannel,
+            email: state.ticket?.email ? state.ticket?.email : state?.email,
             ticket_code: state.ticket_code,
             pannel_code: state.pannel_code,
           }
