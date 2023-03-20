@@ -1,61 +1,67 @@
 "use client";
 
 import { Dispatch, FC, useState } from "react";
-import ReactModal from "react-modal";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+} from "@radix-ui/react-dialog";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Event, State } from "../types";
 
 export const ManuallyEnteringPannel: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ state, dispatch }) => {
-  const [isPannelModalOpen, setIsPannelModalOpen] = useState<boolean>(false);
   const [manualPannel, setManualPannel] = useState<string>();
-  const closePannelModal = () => {
-    setIsPannelModalOpen(false);
-  };
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-40%",
-      transform: "translate(-50%, -50%)",
-      borderRadius: "16px",
-    },
-  };
+
   return (
     <>
-      <ReactModal style={customStyles} isOpen={state.step === "manually_entering_pannel"}>
-        <div className="flex flex-col gap-1">
-          {" "}
-          Entrez un numéro de panneau :
-          <input
-            className="border rounded-md"
-            type="text"
-            value={state.pannel_code}
-            onChange={(e) => {
-              dispatch({
-                type: "type_pannel_number",
-                payload: { pannel_code: e.target.value },
-              });
-            }}
-          />
-          <button
-            className={buttonVariants({ size: "sm", className: "mx-6" })}
-            onClick={() => {
-              dispatch({
-                type: "manually_enter_pannel",
-                payload: {
-                  pannel_code: manualPannel,
-                },
-              });
-              closePannelModal();
-            }}
-          >
-            Valider
-          </button>
-        </div>
-      </ReactModal>
+      {state.step === "manually_entering_pannel" ? (
+        <Dialog defaultOpen>
+          <DialogPortal>
+            <DialogOverlay />
+            <DialogContent className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+              <DialogTitle className="text-red-600 m-0 text-[17px] font-semibold mb-2">
+                Le panneau n&apos;a pas été détecté
+              </DialogTitle>
+              <DialogDescription className="mb-2">Veuillez saisir le numéro associé au QR code :</DialogDescription>
+              <fieldset className="mb-[15px] flex items-center ">
+                <input
+                  className="border rounded-md"
+                  type="text"
+                  value={state.pannel_code}
+                  onChange={(e) => {
+                    dispatch({
+                      type: "type_pannel_number",
+                      payload: { pannel_code: e.target.value },
+                    });
+                  }}
+                />
+              </fieldset>
+              <div className="mt-[25px] flex justify-end">
+                <DialogClose asChild>
+                  <button
+                    className={buttonVariants({ size: "sm", className: "mx-6" })}
+                    onClick={() => {
+                      dispatch({
+                        type: "manually_enter_pannel",
+                        payload: {
+                          pannel_code: manualPannel,
+                        },
+                      });
+                    }}
+                  >
+                    Valider
+                  </button>
+                </DialogClose>
+              </div>
+            </DialogContent>
+          </DialogPortal>
+        </Dialog>
+      ) : null}
     </>
   );
 };
