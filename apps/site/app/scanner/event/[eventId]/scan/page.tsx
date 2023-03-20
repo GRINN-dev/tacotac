@@ -1,6 +1,5 @@
-import { useReducer } from "react";
 import Link from "next/link";
-import { ArrowBigLeft, Camera, CameraIcon, List, PlusCircle } from "lucide-react";
+import { ArrowBigLeft, List, PlusCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
