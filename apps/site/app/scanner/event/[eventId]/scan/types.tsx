@@ -18,7 +18,7 @@ export interface State {
     | "synchronizing";
   ticket?: Partial<Ticket>;
   ticket_code?: string;
-  pannel_code?: string;
+  pannel_code?: number;
   pannel?: number;
   error?: string;
   email?: string;

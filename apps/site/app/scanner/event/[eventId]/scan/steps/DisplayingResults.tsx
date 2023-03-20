@@ -23,7 +23,7 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
       scanAttendeeInput: {
         ticketPayload: {
           ...state.ticket,
-          panelNumber: state.pannel,
+          panelNumber: state.pannel !== null ? state.pannel : state.pannel_code,
           email: state.email,
         },
       },

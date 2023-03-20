@@ -21,6 +21,7 @@ const EventSlug = async ({ params: { eventId } }) => {
 
         <div>Lieu : {event.city} </div>
         <div>Capacité :</div>
+        <div>Inscriptions : {event?.registrations?.totalCount} </div>
         <div>Déjà présents: </div>
         <div className="flex flex-col items-center justify-end gap-2 mt-20">
           <Scanner />

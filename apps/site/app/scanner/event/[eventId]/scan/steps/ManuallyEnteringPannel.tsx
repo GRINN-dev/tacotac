@@ -36,7 +36,7 @@ export const ManuallyEnteringPannel: FC<{ state: State; dispatch: Dispatch<Event
                   onChange={(e) => {
                     dispatch({
                       type: "type_pannel_number",
-                      payload: { pannel_code: e.target.value },
+                      payload: { pannel_code: parseInt(e.target.value) },
                     });
                   }}
                 />
@@ -49,7 +49,7 @@ export const ManuallyEnteringPannel: FC<{ state: State; dispatch: Dispatch<Event
                       dispatch({
                         type: "manually_enter_pannel",
                         payload: {
-                          pannel_code: manualPannel,
+                          pannel_code: parseInt(manualPannel),
                         },
                       });
                     }}
