@@ -6,11 +6,14 @@ import { GetAttendeesWithoutMailByRegistrationIdQuery } from "@/../../@tacotacIO
 import { toast } from "@/hooks/use-toast";
 import { useFieldArray, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 
 interface iUpdateAttendeeMail extends ExtractType<GetAttendeesWithoutMailByRegistrationIdQuery, "attendees"> {}
 
@@ -45,7 +48,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
     const { isValidCaptcha } = await validCaptcha();
     if (isValid && isValidCaptcha) {
       setIsLoading(true);
-      //remplacer  ici par UpdateAttendeeEmailAndSendEmail
+      
       await sdk().UpdateAttendeeEmailAndSendEmail({
         attendees: data.nodes,
       });
