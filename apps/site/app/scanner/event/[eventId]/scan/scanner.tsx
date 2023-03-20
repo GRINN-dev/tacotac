@@ -56,7 +56,7 @@ export const Scanner = () => {
         {offlineData && offlineData.length > 0 ? (
           <button
             type="submit"
-            className="absolute top-4 right-4"
+            className="absolute text-white bg-red-600 top-4 right-4"
             onClick={() => {
               console.log("synchronise");
               scanAttendeesOffline()
@@ -120,12 +120,12 @@ export const Scanner = () => {
         <DisplayingResults state={state} dispatch={dispatch} />
       ) : null}
       <div className="flex flex-col items-center justify-center">
-        <Cancel dispatch={dispatch} />
+        <Cancel dispatch={dispatch} state={state} />
       </div>
       <div>
         <ScanReader state={state} dispatch={dispatch} />
       </div>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </div>
   );
 };
