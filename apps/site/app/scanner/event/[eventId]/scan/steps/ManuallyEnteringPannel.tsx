@@ -8,7 +8,7 @@ import { Event, State } from "../types";
 
 export const ManuallyEnteringPannel: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ state, dispatch }) => {
   const [isPannelModalOpen, setIsPannelModalOpen] = useState<boolean>(false);
-  const [manualPannel, setManualPannel] = useState<number>();
+  const [manualPannel, setManualPannel] = useState<string>();
   const closePannelModal = () => {
     setIsPannelModalOpen(false);
   };
@@ -31,7 +31,7 @@ export const ManuallyEnteringPannel: FC<{ state: State; dispatch: Dispatch<Event
           Entrez un numéro de panneau :
           <input
             className="border rounded-md"
-            type="number"
+            type="text"
             value={state.pannel_code}
             onChange={(e) => {
               dispatch({
@@ -46,7 +46,7 @@ export const ManuallyEnteringPannel: FC<{ state: State; dispatch: Dispatch<Event
               dispatch({
                 type: "manually_enter_pannel",
                 payload: {
-                  pannel: manualPannel,
+                  pannel_code: manualPannel,
                 },
               });
               closePannelModal();

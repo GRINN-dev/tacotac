@@ -91,7 +91,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             error: event.payload.error,
             ticket: state.ticket,
             ticket_code: state.ticket_code,
-            pannel_code: event.payload.pannel_code,
+            pannel_code: state.pannel_code,
             pannel: state.pannel,
           }
         : {
@@ -102,9 +102,9 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "displaying_result",
             ticket: state?.ticket,
-            pannel: event.payload?.pannel,
+            pannel: state.pannel,
             ticket_code: state.ticket_code,
-            pannel_code: event.payload.pannel_code,
+            pannel_code: state.pannel_code,
           }
         : null;
 

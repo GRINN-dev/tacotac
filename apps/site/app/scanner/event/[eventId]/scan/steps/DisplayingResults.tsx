@@ -95,7 +95,7 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
               state?.ticket?.email
             )}
           </span>
-          <span>Panneau : {state?.pannel} </span>
+          <span>Panneau : {state?.pannel_code} </span>
           <div className="flex flex-col items-center">
             <button
               type="button"
