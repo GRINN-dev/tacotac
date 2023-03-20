@@ -111,6 +111,19 @@ export const Scanner = () => {
           >
             trigger error pannel
           </button>
+          <button
+            className={buttonVariants({ size: "sm" })}
+            onClick={() => {
+              dispatch({
+                type: "scan_pannel",
+                payload: {
+                  pannel_code: 123456789,
+                },
+              });
+            }}
+          >
+            Assigner num de panneau
+          </button>
         </>
       ) : state.step === "manually_entering_ticket" ? (
         <ManuallyEnteringTicket state={state} dispatch={dispatch} />

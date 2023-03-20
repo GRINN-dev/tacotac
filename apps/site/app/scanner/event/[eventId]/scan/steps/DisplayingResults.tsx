@@ -118,7 +118,8 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                             "offlineData",
                             JSON.stringify([
                               ...JSON.parse(localStorage.getItem("offlineData") || "[]"),
-                              { ...state.ticket },
+                              state.ticket,
+                              state?.pannel_code,
                             ])
                           ),
                             console.log("synched in storage");
