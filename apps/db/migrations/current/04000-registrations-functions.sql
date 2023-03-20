@@ -56,6 +56,10 @@ $$ language plpgsql VOLATILE SECURITY DEFINER;
 comment on function register_attendees(event_id uuid, attendees publ.attendees[]) is E'@arg1variant patch';
 grant execute on function publ.register_attendees(uuid, publ.attendees[]) to :DATABASE_VISITOR;
 
+/*
+  FUNCTION: register_attendees_csv
+  DESCRIPTION: Register attendees from a csv import
+*/
 
 create or replace function publ.register_attendees_csv(event_id uuid, attendees_csv publ.attendees[]) returns publ.attendees as $$
 DECLARE 
@@ -68,7 +72,6 @@ begin
     for v_iter in 1..array_length(attendees_csv, 1) loop
 
       if not exists (select email from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where email = attendees_csv[v_iter].email and regs.event_id=v_event_id ) then
-
 
         insert into publ.registrations (event_id ) values (v_event_id) returning * into v_registration;
 
@@ -111,5 +114,5 @@ $$ language plpgsql VOLATILE SECURITY DEFINER;
 comment on function register_attendees_csv(event_id uuid, attendees_csv publ.attendees[]) is E'@arg1variant patch';
 grant execute on function publ.register_attendees_csv(uuid, publ.attendees[]) to :DATABASE_VISITOR;
 /*
-  END FUNCTION: register_attendees
+  END FUNCTION: register_attendees_csv
 */
