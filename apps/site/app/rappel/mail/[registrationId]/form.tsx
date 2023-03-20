@@ -39,7 +39,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
   useEffect(() => {
     if (shouldLog.current) {
       shouldLog.current = false;
-      append(nodes);
+      append(nodes); //ici on appends auto les data dans le formulaire afin de les préafficher dans la page
     }
   }, []);
 
