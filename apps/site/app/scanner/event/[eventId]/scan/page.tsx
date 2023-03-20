@@ -9,6 +9,7 @@ const EventSlug = async ({ params: { eventId } }) => {
   const { event } = await sdk().GetEventById({
     eventId: eventId,
   });
+  const organisation = await sdk().GetOrganizationById({ id: event?.organizationId });
 
   return (
     <div className="">
@@ -28,9 +29,11 @@ const EventSlug = async ({ params: { eventId } }) => {
           <Link className={buttonVariants({ size: "sm", className: "absolute bottom-10" })} href={``}>
             <List className="mr-2" /> Liste des inscrits
           </Link>
-          <Link className={buttonVariants({ size: "sm", className: "absolute bottom-24" })} href={``}>
+          <Link
+            className={buttonVariants({ size: "sm", className: "absolute bottom-24" })}
+            href={`/inscription/${organisation?.organization?.slug}/evenements/${event?.slug}/participant`}
+          >
             <PlusCircle className="mr-2" /> Ajouter un participant
-            {/* TODO lien iFrame ? */}
           </Link>
         </div>
 
