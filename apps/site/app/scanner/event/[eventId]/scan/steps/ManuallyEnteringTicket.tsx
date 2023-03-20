@@ -38,7 +38,6 @@ export const ManuallyEnteringTicket: FC<{ state: State; dispatch: Dispatch<Event
                   }}
                 />
               </fieldset>
-
               <div className="mt-[25px] flex justify-end">
                 <DialogClose asChild>
                   <button
