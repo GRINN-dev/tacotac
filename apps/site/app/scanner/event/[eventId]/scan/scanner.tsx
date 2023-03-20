@@ -2,7 +2,7 @@
 
 import { useReducer } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { SaveIcon } from "lucide-react";
+import { Camera, SaveIcon } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -92,24 +92,11 @@ export const Scanner = () => {
               });
             }}
           >
-            Scanner le panneau
+            <Camera className="mr-2" /> Scanner le panneau
           </button>
         </div>
       ) : state.step === "scanning_pannel" ? (
         <>
-          <button
-            className={buttonVariants({ size: "sm" })}
-            onClick={() => {
-              dispatch({
-                type: "scan_pannel",
-                payload: {
-                  pannel: 123456789,
-                },
-              });
-            }}
-          >
-            Assign pannel number
-          </button>
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
@@ -131,8 +118,6 @@ export const Scanner = () => {
         <ManuallyEnteringPannel state={state} dispatch={dispatch} />
       ) : state.step === "displaying_result" ? (
         <DisplayingResults state={state} dispatch={dispatch} />
-      ) : state.step === "synchronizing" ? (
-        <button type="button">Synchroniser</button>
       ) : null}
       <div className="flex flex-col items-center justify-center">
         <Cancel dispatch={dispatch} />

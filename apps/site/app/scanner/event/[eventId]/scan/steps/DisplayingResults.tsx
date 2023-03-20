@@ -82,7 +82,6 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                         />{" "}
                         {errorEmail === true ? <p className="text-red-600">Mail invalide</p> : ""}
                       </form>
-
                       <button
                         type="submit"
                         onClick={() => {
