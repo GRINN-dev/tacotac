@@ -3823,7 +3823,7 @@ export type RegisterAttendeesMutationVariables = Exact<{
 export type RegisterAttendeesMutation = { __typename?: 'Mutation', registerAttendees?: { __typename?: 'RegisterAttendeesPayload', registration?: { __typename?: 'Registration', id: any } | null } | null };
 
 export type ScanAttendeeMutationVariables = Exact<{
-  input: ScanAttendeeInput;
+  scanAttendeeInput: ScanAttendeeInput;
 }>;
 
 
@@ -4135,8 +4135,8 @@ export const RegisterAttendeesDocument = gql`
 }
     `;
 export const ScanAttendeeDocument = gql`
-    mutation ScanAttendee($input: ScanAttendeeInput!) {
-  scanAttendee(input: $input) {
+    mutation ScanAttendee($scanAttendeeInput: ScanAttendeeInput!) {
+  scanAttendee(input: $scanAttendeeInput) {
     clientMutationId
     attendee {
       id

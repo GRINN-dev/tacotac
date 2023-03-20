@@ -31,8 +31,8 @@ mutation RegisterAttendees($input: RegisterAttendeesInput!) {
     }
   }
 }
-mutation ScanAttendee($input: ScanAttendeeInput!) {
-  scanAttendee(input: $input) {
+mutation ScanAttendee($scanAttendeeInput: ScanAttendeeInput!) {
+  scanAttendee(input: $scanAttendeeInput) {
     clientMutationId
     attendee {
       id
