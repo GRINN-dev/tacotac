@@ -23,8 +23,8 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
       scanAttendeeInput: {
         ticketPayload: {
           ...state.ticket,
-          panelNumber: state.pannel !== null ? state.pannel : state.pannel_code,
-          email: state.email,
+          panelNumber: state.pannel_code,
+          email: state.ticket?.email ? state?.ticket?.email : state.email,
         },
       },
     });
@@ -116,7 +116,10 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                         .then(() => {
                           localStorage.setItem(
                             "offlineData",
-                            JSON.stringify([...JSON.parse(localStorage.getItem("offlineData") || "[]"), state.ticket])
+                            JSON.stringify([
+                              ...JSON.parse(localStorage.getItem("offlineData") || "[]"),
+                              { ...state.ticket },
+                            ])
                           ),
                             console.log("synched in storage");
                         })
