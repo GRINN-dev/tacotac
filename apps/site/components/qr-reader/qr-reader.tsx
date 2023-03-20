@@ -23,7 +23,7 @@ export const QrReader: React.FC<QrReaderProps> = ({
   });
 
   return (
-    <section className={className} style={containerStyle}>
+    <section className={className} style={{ ...styles.containerStyle }}>
       <div
         style={{
           ...styles.container,
@@ -32,6 +32,7 @@ export const QrReader: React.FC<QrReaderProps> = ({
       >
         {!!ViewFinder && <ViewFinder />}
         <video
+          className="border-8 border-gray-600 rounded-md shadow-inner border-spacing-16"
           muted
           id={videoId}
           style={{
