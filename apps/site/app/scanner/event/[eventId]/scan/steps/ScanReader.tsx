@@ -39,7 +39,7 @@ export const ScanReader: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ st
             }
           }
         }}
-        className="flex flex-col w-6/12 mx-auto"
+        className="flex flex-col mx-auto"
         constraints={{}}
       />
     </div>
