@@ -49,6 +49,7 @@ query GetEventById(
     eventBranding {
       ...EventBrandingFragment
     }
+    capacity
     logsList(
       orderBy: $orderBy
       filter: $filter
