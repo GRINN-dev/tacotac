@@ -20,7 +20,7 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
 
   const scanAttendee = () =>
     sdk().ScanAttendee({
-      input: {
+      scanAttendeeInput: {
         ticketPayload: {
           ...state.ticket,
           panelNumber: state.pannel,
