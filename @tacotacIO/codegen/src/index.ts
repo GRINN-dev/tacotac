@@ -1623,8 +1623,6 @@ export enum LogsOrderBy {
 export enum LogsStatus {
   /** Une erreur s'est produite */
   Error = 'ERROR',
-  /** Ticket scanné non valide */
-  InvalidTicket = 'INVALID_TICKET',
   /** Tout se passe bien */
   Ok = 'OK',
   /** Attention */
@@ -1632,7 +1630,9 @@ export enum LogsStatus {
   /** Pas d'email */
   WarningEmail = 'WARNING_EMAIL',
   /** Pas de panneau */
-  WarningPanel = 'WARNING_PANEL'
+  WarningPanel = 'WARNING_PANEL',
+  /** Probleme de QR Code */
+  WarningSignCode = 'WARNING_SIGN_CODE'
 }
 
 /** A filter to be used against LogsStatus fields. All fields are combined with a logical ‘and.’ */
@@ -3161,6 +3161,7 @@ export type TicketPayloadInput = {
   lastname?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
   payload?: InputMaybe<Scalars['JSON']>;
+  signCode?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
 };

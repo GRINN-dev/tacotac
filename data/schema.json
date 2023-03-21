@@ -7026,8 +7026,8 @@
               "deprecationReason": null
             },
             {
-              "name": "INVALID_TICKET",
-              "description": "Ticket scanné non valide",
+              "name": "WARNING_SIGN_CODE",
+              "description": "Probleme de QR Code",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -18397,6 +18397,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "signCode",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
