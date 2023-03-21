@@ -1,12 +1,10 @@
 "use client";
 
 import { FC, useState, useTransition } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import Script from "next/script";
 import {
   CivilityStatus,
   EventStatus,
-  GetEventByIdQuery,
   GetEventBySlugQuery,
   RegisterAttendeesInput,
 } from "@/../../@tacotacIO/codegen/dist";
@@ -23,15 +21,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
-export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
+export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [email, setEmail] = useState("");
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
 
   const { register, handleSubmit, formState, control, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
@@ -52,7 +48,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
       ],
     },
   });
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const { fields, append } = useFieldArray({
     control,
     name: "attendees",
   });
