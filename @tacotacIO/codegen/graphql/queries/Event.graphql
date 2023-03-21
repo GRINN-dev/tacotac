@@ -37,11 +37,28 @@ query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
   }
 }
 
-query GetEventById($eventId: UUID!) {
+query GetEventById(
+  $eventId: UUID!
+  $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC
+  $first: Int
+  $offset: Int
+  $filter: LogFilter
+) {
   event(id: $eventId) {
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
+    }
+    logsList(
+      orderBy: $orderBy
+      filter: $filter
+      first: $first
+      offset: $offset
+    ) {
+      id
+      status
+      payload
+      updatedAt
     }
   }
 }

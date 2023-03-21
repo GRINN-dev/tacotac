@@ -82,6 +82,8 @@ export type AttendeeCondition = {
   phoneNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `registrationId` field. */
   registrationId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `signCode` field. */
+  signCode?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<EventStatus>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -110,6 +112,8 @@ export type AttendeeFilter = {
   phoneNumber?: InputMaybe<StringFilter>;
   /** Filter by the object’s `registrationId` field. */
   registrationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `signCode` field. */
+  signCode?: InputMaybe<StringFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<EventStatusFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -213,6 +217,8 @@ export enum AttendeesOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RegistrationIdAsc = 'REGISTRATION_ID_ASC',
   RegistrationIdDesc = 'REGISTRATION_ID_DESC',
+  SignCodeAsc = 'SIGN_CODE_ASC',
+  SignCodeDesc = 'SIGN_CODE_DESC',
   StatusAsc = 'STATUS_ASC',
   StatusDesc = 'STATUS_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
@@ -278,39 +284,6 @@ export type CivilityStatusFilter = {
   notEqualTo?: InputMaybe<CivilityStatus>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<CivilityStatus>>;
-};
-
-/** All input for the `confirmedScanAttendees` mutation. */
-export type ConfirmedScanAttendeesInput = {
-  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-};
-
-/** The output of our `confirmedScanAttendees` mutation. */
-export type ConfirmedScanAttendeesPayload = {
-  __typename?: 'ConfirmedScanAttendeesPayload';
-  attendee?: Maybe<Attendee>;
-  /** An edge for our `Attendee`. May be used by Relay 1. */
-  attendeeEdge?: Maybe<AttendeesEdge>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `Registration` that is related to this `Attendee`. */
-  registration?: Maybe<Registration>;
-};
-
-
-/** The output of our `confirmedScanAttendees` mutation. */
-export type ConfirmedScanAttendeesPayloadAttendeeEdgeArgs = {
-  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
 /** All input for the create `Attendee` mutation. */
@@ -416,6 +389,41 @@ export type CreateEventPayload = {
 /** The output of our create `Event` mutation. */
 export type CreateEventPayloadEventEdgeArgs = {
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
+};
+
+/** All input for the create `Log` mutation. */
+export type CreateLogInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `Log` to be created by this mutation. */
+  log: LogInput;
+};
+
+/** The output of our create `Log` mutation. */
+export type CreateLogPayload = {
+  __typename?: 'CreateLogPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `Log`. */
+  event?: Maybe<Event>;
+  /** The `Log` that was created by this mutation. */
+  log?: Maybe<Log>;
+  /** An edge for our `Log`. May be used by Relay 1. */
+  logEdge?: Maybe<LogsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `Log` mutation. */
+export type CreateLogPayloadLogEdgeArgs = {
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
 
 /** All input for the create `Organization` mutation. */
@@ -761,6 +769,52 @@ export type DeleteFilePayload = {
   success?: Maybe<Scalars['Boolean']>;
 };
 
+/** All input for the `deleteLogByNodeId` mutation. */
+export type DeleteLogByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Log` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteLog` mutation. */
+export type DeleteLogInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `Log` mutation. */
+export type DeleteLogPayload = {
+  __typename?: 'DeleteLogPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedLogNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `Event` that is related to this `Log`. */
+  event?: Maybe<Event>;
+  /** The `Log` that was deleted by this mutation. */
+  log?: Maybe<Log>;
+  /** An edge for our `Log`. May be used by Relay 1. */
+  logEdge?: Maybe<LogsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `Log` mutation. */
+export type DeleteLogPayloadLogEdgeArgs = {
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
+};
+
 /** All input for the `deleteOrganizationByName` mutation. */
 export type DeleteOrganizationByNameInput = {
   /**
@@ -1002,6 +1056,10 @@ export type Event = Node & {
   id: Scalars['UUID'];
   isVip?: Maybe<Scalars['Boolean']>;
   lat?: Maybe<Scalars['Float']>;
+  /** Reads and enables pagination through a set of `Log`. */
+  logs: LogsConnection;
+  /** Reads and enables pagination through a set of `Log`. */
+  logsList: Array<Log>;
   lon?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -1018,6 +1076,27 @@ export type Event = Node & {
   totalRegistrations?: Maybe<Scalars['Int']>;
   updatedAt: Scalars['Datetime'];
   zipCode?: Maybe<Scalars['String']>;
+};
+
+
+export type EventLogsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LogCondition>;
+  filter?: InputMaybe<LogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
+};
+
+
+export type EventLogsListArgs = {
+  condition?: InputMaybe<LogCondition>;
+  filter?: InputMaybe<LogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
 
 
@@ -1409,6 +1488,75 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
+/** Logs from events */
+export type Log = Node & {
+  __typename?: 'Log';
+  createdAt: Scalars['Datetime'];
+  /** Reads a single `Event` that is related to this `Log`. */
+  event?: Maybe<Event>;
+  eventId?: Maybe<Scalars['UUID']>;
+  id: Scalars['UUID'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  payload?: Maybe<Scalars['JSON']>;
+  status: LogsStatus;
+  updatedAt: Scalars['Datetime'];
+};
+
+/** A condition to be used against `Log` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type LogCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `eventId` field. */
+  eventId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<LogsStatus>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `Log` object types. All fields are combined with a logical ‘and.’ */
+export type LogFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<LogFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `eventId` field. */
+  eventId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<LogFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<LogFilter>>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<LogsStatusFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `Log` */
+export type LogInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  status: LogsStatus;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `Log`. Fields that are set will be updated. */
+export type LogPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  status?: InputMaybe<LogsStatus>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
 /** All input for the `login` mutation. */
 export type LoginInput = {
   /**
@@ -1433,16 +1581,97 @@ export type LoginPayload = {
   query?: Maybe<Query>;
 };
 
+/** A connection to a list of `Log` values. */
+export type LogsConnection = {
+  __typename?: 'LogsConnection';
+  /** A list of edges which contains the `Log` and cursor to aid in pagination. */
+  edges: Array<LogsEdge>;
+  /** A list of `Log` objects. */
+  nodes: Array<Log>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Log` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Log` edge in the connection. */
+export type LogsEdge = {
+  __typename?: 'LogsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Log` at the end of the edge. */
+  node: Log;
+};
+
+/** Methods to use when ordering `Log`. */
+export enum LogsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EventIdAsc = 'EVENT_ID_ASC',
+  EventIdDesc = 'EVENT_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+export enum LogsStatus {
+  /** Une erreur s'est produite */
+  Error = 'ERROR',
+  /** Ticket scanné non valide */
+  InvalidTicket = 'INVALID_TICKET',
+  /** Tout se passe bien */
+  Ok = 'OK',
+  /** Attention */
+  Warning = 'WARNING',
+  /** Pas d'email */
+  WarningEmail = 'WARNING_EMAIL',
+  /** Pas de panneau */
+  WarningPanel = 'WARNING_PANEL'
+}
+
+/** A filter to be used against LogsStatus fields. All fields are combined with a logical ‘and.’ */
+export type LogsStatusFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<LogsStatus>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<LogsStatus>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<LogsStatus>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<LogsStatus>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<LogsStatus>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<LogsStatus>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<LogsStatus>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<LogsStatus>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<LogsStatus>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<LogsStatus>>;
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
-  confirmedScanAttendees?: Maybe<ConfirmedScanAttendeesPayload>;
   /** Creates a single `Attendee`. */
   createAttendee?: Maybe<CreateAttendeePayload>;
   /** Creates a single `Event`. */
   createEvent?: Maybe<CreateEventPayload>;
   /** Creates a single `EventBranding`. */
   createEventBranding?: Maybe<CreateEventBrandingPayload>;
+  /** Creates a single `Log`. */
+  createLog?: Maybe<CreateLogPayload>;
   /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
   /** Creates a single `OrganizationMembership`. */
@@ -1470,6 +1699,10 @@ export type Mutation = {
   /** Deletes a single `Event` using a unique key. */
   deleteEventByOrganizationIdAndSlug?: Maybe<DeleteEventPayload>;
   deleteFile?: Maybe<DeleteFilePayload>;
+  /** Deletes a single `Log` using a unique key. */
+  deleteLog?: Maybe<DeleteLogPayload>;
+  /** Deletes a single `Log` using its globally unique id. */
+  deleteLogByNodeId?: Maybe<DeleteLogPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
   /** Deletes a single `Organization` using a unique key. */
@@ -1499,6 +1732,10 @@ export type Mutation = {
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
   registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
+  /** scan du billet pour update la table attendees et logs */
+  scanAttendee?: Maybe<ScanAttendeePayload>;
+  /** scan de tous les tickets offline */
+  scanAttendeesOffline?: Maybe<ScanAttendeesOfflinePayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
@@ -1517,6 +1754,10 @@ export type Mutation = {
   updateEventByOrganizationIdAndName?: Maybe<UpdateEventPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
   updateEventByOrganizationIdAndSlug?: Maybe<UpdateEventPayload>;
+  /** Updates a single `Log` using a unique key and a patch. */
+  updateLog?: Maybe<UpdateLogPayload>;
+  /** Updates a single `Log` using its globally unique id and a patch. */
+  updateLogByNodeId?: Maybe<UpdateLogPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
@@ -1545,12 +1786,6 @@ export type Mutation = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationConfirmedScanAttendeesArgs = {
-  input: ConfirmedScanAttendeesInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateAttendeeArgs = {
   input: CreateAttendeeInput;
 };
@@ -1565,6 +1800,12 @@ export type MutationCreateEventArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateEventBrandingArgs = {
   input: CreateEventBrandingInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateLogArgs = {
+  input: CreateLogInput;
 };
 
 
@@ -1649,6 +1890,18 @@ export type MutationDeleteEventByOrganizationIdAndSlugArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteFileArgs = {
   input: DeleteFileInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteLogArgs = {
+  input: DeleteLogInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteLogByNodeIdArgs = {
+  input: DeleteLogByNodeIdInput;
 };
 
 
@@ -1755,6 +2008,18 @@ export type MutationRegisterAttendeesCsvArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationScanAttendeeArgs = {
+  input: ScanAttendeeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationScanAttendeesOfflineArgs = {
+  input: ScanAttendeesOfflineInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAttendeeArgs = {
   input: UpdateAttendeeInput;
 };
@@ -1805,6 +2070,18 @@ export type MutationUpdateEventByOrganizationIdAndNameArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateEventByOrganizationIdAndSlugArgs = {
   input: UpdateEventByOrganizationIdAndSlugInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateLogArgs = {
+  input: UpdateLogInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateLogByNodeIdArgs = {
+  input: UpdateLogByNodeIdInput;
 };
 
 
@@ -2231,6 +2508,13 @@ export type Query = Node & {
   eventBySlug?: Maybe<Event>;
   /** Reads and enables pagination through a set of `Event`. */
   events?: Maybe<EventsConnection>;
+  log?: Maybe<Log>;
+  /** Reads a single `Log` using its globally unique `ID`. */
+  logByNodeId?: Maybe<Log>;
+  /** Reads and enables pagination through a set of `Log`. */
+  logs?: Maybe<LogsConnection>;
+  /** Reads a set of `Log`. */
+  logsList?: Maybe<Array<Log>>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
@@ -2385,6 +2669,41 @@ export type QueryEventsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLogArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLogByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLogsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LogCondition>;
+  filter?: InputMaybe<LogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLogsListArgs = {
+  condition?: InputMaybe<LogCondition>;
+  filter?: InputMaybe<LogFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
 
 
@@ -2749,6 +3068,62 @@ export enum RegistrationsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
+/** All input for the `scanAttendee` mutation. */
+export type ScanAttendeeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  ticketPayload?: InputMaybe<TicketPayloadInput>;
+};
+
+/** The output of our `scanAttendee` mutation. */
+export type ScanAttendeePayload = {
+  __typename?: 'ScanAttendeePayload';
+  attendee?: Maybe<Attendee>;
+  /** An edge for our `Attendee`. May be used by Relay 1. */
+  attendeeEdge?: Maybe<AttendeesEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Registration` that is related to this `Attendee`. */
+  registration?: Maybe<Registration>;
+};
+
+
+/** The output of our `scanAttendee` mutation. */
+export type ScanAttendeePayloadAttendeeEdgeArgs = {
+  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+/** All input for the `scanAttendeesOffline` mutation. */
+export type ScanAttendeesOfflineInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  ticketPayloads?: InputMaybe<Array<InputMaybe<TicketPayloadInput>>>;
+};
+
+/** The output of our `scanAttendeesOffline` mutation. */
+export type ScanAttendeesOfflinePayload = {
+  __typename?: 'ScanAttendeesOfflinePayload';
+  attendees?: Maybe<Array<Maybe<Attendee>>>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -2775,6 +3150,16 @@ export type StringFilter = {
   notEqualTo?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** An input for mutations affecting `TicketPayload` */
+export type TicketPayloadInput = {
+  attendeeId?: InputMaybe<Scalars['UUID']>;
+  email?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  panelNumber?: InputMaybe<Scalars['Int']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  ticketNumber?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
@@ -2986,6 +3371,55 @@ export type UpdateEventPayload = {
 /** The output of our update `Event` mutation. */
 export type UpdateEventPayloadEventEdgeArgs = {
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
+};
+
+/** All input for the `updateLogByNodeId` mutation. */
+export type UpdateLogByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `Log` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `Log` being updated. */
+  patch: LogPatch;
+};
+
+/** All input for the `updateLog` mutation. */
+export type UpdateLogInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `Log` being updated. */
+  patch: LogPatch;
+};
+
+/** The output of our update `Log` mutation. */
+export type UpdateLogPayload = {
+  __typename?: 'UpdateLogPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `Log`. */
+  event?: Maybe<Event>;
+  /** The `Log` that was updated by this mutation. */
+  log?: Maybe<Log>;
+  /** An edge for our `Log`. May be used by Relay 1. */
+  logEdge?: Maybe<LogsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `Log` mutation. */
+export type UpdateLogPayloadLogEdgeArgs = {
+  orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
 
 /** All input for the `updateOrganizationByName` mutation. */
@@ -3504,10 +3938,14 @@ export type GetAllEventsByOrganizationSlugQuery = { __typename?: 'Query', events
 
 export type GetEventByIdQueryVariables = Exact<{
   eventId: Scalars['UUID'];
+  orderBy?: InputMaybe<Array<LogsOrderBy> | LogsOrderBy>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<LogFilter>;
 }>;
 
 
-export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null } | null };
+export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -3815,11 +4253,17 @@ export const GetAllEventsByOrganizationSlugDocument = gql`
 }
     ${MyEventFragmentDoc}`;
 export const GetEventByIdDocument = gql`
-    query GetEventById($eventId: UUID!) {
+    query GetEventById($eventId: UUID!, $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC, $first: Int, $offset: Int, $filter: LogFilter) {
   event(id: $eventId) {
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
+    }
+    logsList(orderBy: $orderBy, filter: $filter, first: $first, offset: $offset) {
+      id
+      status
+      payload
+      updatedAt
     }
   }
 }
