@@ -25,11 +25,11 @@ export const ManuallyEnteringTicket: FC<{ state: State; dispatch: Dispatch<Event
                 <input
                   className="border rounded-md "
                   type="text"
-                  value={state.ticket_code}
+                  value={state.sign_code}
                   onChange={(e) => {
                     dispatch({
                       type: "type_ticket_number",
-                      payload: { ticket_code: e.target.value },
+                      payload: { sign_code: e.target.value },
                     });
                   }}
                 />
@@ -42,7 +42,7 @@ export const ManuallyEnteringTicket: FC<{ state: State; dispatch: Dispatch<Event
                       dispatch({
                         type: "manually_enter_ticket",
                         payload: {
-                          ticket: { signCode: manualTicket },
+                          sign_code: manualTicket,
                         },
                       });
                       setIsTicketModalOpen(false);

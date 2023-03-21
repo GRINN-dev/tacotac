@@ -32,7 +32,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "manually_entering_ticket",
             error: event.payload.error,
-            ticket_code: event.payload.ticket_code,
+            sign_code: event.payload.sign_code,
           }
         : {
             step: "start",
@@ -42,7 +42,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "scanning_pannel",
             ticket: event.payload.ticket,
-            ticket_code: event.payload.ticket_code,
+            sign_code: event.payload.sign_code,
           }
         : {
             step: "start",
@@ -51,7 +51,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
       return state.step === "manually_entering_ticket"
         ? {
             step: "manually_entering_ticket",
-            ticket_code: event.payload.ticket_code,
+            sign_code: event.payload.sign_code,
             //TODO renommer signCode
           }
         : {
@@ -91,7 +91,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             step: "manually_entering_pannel",
             error: event.payload.error,
             ticket: state.ticket,
-            ticket_code: state.ticket_code,
+            sign_code: state.sign_code,
             pannel_code: state.pannel_code,
             pannel: state.pannel,
           }
@@ -105,7 +105,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             ticket: state?.ticket,
             pannel: state.pannel,
             email: state.ticket?.email ? state.ticket?.email : state?.email,
-            ticket_code: state.ticket_code,
+            sign_code: state.sign_code,
             pannel_code: state.pannel_code,
           }
         : null;
@@ -116,7 +116,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ticket: state.ticket,
         pannel: state.pannel,
         email: event.payload?.email,
-        ticket_code: state.ticket_code,
+        sign_code: state.sign_code,
         pannel_code: state.pannel_code,
       };
     case "synchronize":
@@ -125,7 +125,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ticket: state.ticket,
         pannel: state.pannel,
         pannel_code: state.pannel_code,
-        ticket_code: state.ticket_code,
+        sign_code: state.sign_code,
         email: event.payload?.email,
       };
     case "cancel":

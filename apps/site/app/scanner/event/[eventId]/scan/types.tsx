@@ -3,7 +3,6 @@ import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
 export interface Ticket extends TicketPayloadInput {
   lastname?: string;
   firstname?: string;
-  signCode?: string;
 }
 export interface State {
   step:
@@ -17,7 +16,7 @@ export interface State {
     | "displaying_result"
     | "synchronizing";
   ticket?: Partial<Ticket>;
-  ticket_code?: string;
+  sign_code?: string;
   pannel_code?: number;
   pannel?: number;
   error?: string;
