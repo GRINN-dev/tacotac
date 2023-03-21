@@ -18,7 +18,7 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
     sdk().ScanAttendee({
       scanAttendeeInput: {
         ticketPayload: {
-          ...(state.ticket ? { ...state.ticket } : { ticketNumber: state.sign_code }),
+          ...(state.ticket ? { ...state.ticket } : { signCode: state.sign_code }),
           panelNumber: state.pannel ? state.pannel : state.pannel_code,
           email: state.ticket?.email ? state?.ticket?.email : state.email,
         },

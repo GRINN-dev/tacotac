@@ -42,7 +42,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "scanning_pannel",
             ticket: event.payload.ticket,
-            sign_code: event.payload.sign_code,
+            sign_code: state.sign_code,
           }
         : {
             step: "start",
@@ -52,17 +52,10 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "manually_entering_ticket",
             sign_code: event.payload.sign_code,
-            //TODO renommer signCode
           }
         : {
             step: "start",
           };
-    // case "scan_pannel":
-    //   return {
-    //     step: "displaying_error",
-    //     ticket: state.ticket,
-    //     pannel: event.payload.pannel,
-    //   };
     case "scan_pannel":
       return state.step === "scanning_pannel"
         ? {
@@ -70,6 +63,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
             ticket: state.ticket,
             pannel: event.payload.pannel,
             pannel_code: event.payload.pannel_code,
+            sign_code: state.sign_code,
           }
         : {
             step: "start",
