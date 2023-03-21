@@ -11,10 +11,6 @@ export const ManuallyEnteringTicket: FC<{ state: State; dispatch: Dispatch<Event
   const [isTicketModalOpen, setIsTicketModalOpen] = useState<boolean>(false);
   const [manualTicket, setManualTicket] = useState<string>();
 
-  const closeTicketModal = () => {
-    setIsTicketModalOpen(false);
-  };
-
   return (
     <>
       {" "}
@@ -49,7 +45,7 @@ export const ManuallyEnteringTicket: FC<{ state: State; dispatch: Dispatch<Event
                           ticket: { signCode: manualTicket },
                         },
                       });
-                      closeTicketModal();
+                      setIsTicketModalOpen(false);
                     }}
                   >
                     Valider
