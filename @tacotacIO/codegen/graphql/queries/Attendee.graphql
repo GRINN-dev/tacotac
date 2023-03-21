@@ -19,17 +19,3 @@ query AttendeesBySlugEvent($slug: String!) {
     }
   }
 }
-query GetAllAttendeesTickets {
-  attendees {
-    nodes {
-      id
-      ticketNumber
-    }
-  }
-}
-query GetAttendeeTicketById($id: UUID!) {
-  attendee(id: $id) {
-    ticketNumber
-    signCode
-  }
-}
