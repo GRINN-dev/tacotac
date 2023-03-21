@@ -52,6 +52,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
         ? {
             step: "manually_entering_ticket",
             ticket_code: event.payload.ticket_code,
+            //TODO renommer signCode
           }
         : {
             step: "start",
@@ -131,6 +132,7 @@ export const reducer: (state: State, event: Event) => State = (state, event) => 
       return {
         step: "start",
       };
+
     default:
       return state;
   }
