@@ -3161,8 +3161,8 @@ export type TicketPayloadInput = {
   lastname?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
   payload?: InputMaybe<Scalars['JSON']>;
-  signCode?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
+  signCode?: InputMaybe<Scalars['String']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
 };
 
