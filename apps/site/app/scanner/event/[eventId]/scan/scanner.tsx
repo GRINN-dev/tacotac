@@ -2,7 +2,7 @@
 
 import { useReducer } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Camera } from "lucide-react";
+import { Camera, CheckIcon } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -84,6 +84,9 @@ export const Scanner = () => {
         <ScanningTicket state={state} dispatch={dispatch} />
       ) : state.step === "scanning_ticket_success" ? (
         <div className="flex flex-col items-center justify-center mx-auto">
+          <div className="flex items-center mb-8">
+            <p className="font-semibold text-green-700">Scanning 1/2</p> <CheckIcon className="ml-1" />{" "}
+          </div>
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
@@ -138,6 +141,7 @@ export const Scanner = () => {
       <div>
         <ScanReader state={state} dispatch={dispatch} />
       </div>
+
       {/* <pre>{JSON.stringify(state, null, 2)}</pre> */}
     </div>
   );
