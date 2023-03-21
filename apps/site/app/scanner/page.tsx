@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 
 import { sdk } from "@/lib/sdk";
 import EventCard from "./eventCard";
@@ -13,17 +12,10 @@ const ScanPage = async () => {
       </h1>
 
       <div>
-        {events.nodes?.map((e, i) => {
+        {events.nodes?.map((event, i) => {
           return (
-            <Link href={`scanner/event/${e.id}/scan`} key={i}>
-              <EventCard
-                eventName={e?.name}
-                eventDate={e?.startsAt}
-                eventLocation={e?.city}
-                eventId={e?.id}
-                eventSlug={e?.slug}
-                eventPicture={""}
-              />
+            <Link href={`scanner/event/${event.id}/scan`} key={i}>
+              <EventCard {...event} />
             </Link>
           );
         })}
