@@ -7,6 +7,9 @@ drop type if exists publ.ticket_payload;
 create type publ.ticket_payload as ( 
   event_id uuid, 
   attendee_id uuid, 
+  registration_id uuid,
+  firstname text,
+  lastname text,
   ticket_number text, 
   panel_number int, 
   email citext, 

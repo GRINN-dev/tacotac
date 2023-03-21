@@ -3,3 +3,19 @@ query GetAttendeeById($attendeeId: UUID!) {
     ...MyAttendee
   }
 }
+
+query AttendeesBySlugEvent($slug: String!) {
+  events(condition: { slug: $slug }) {
+    nodes {
+      registrations {
+        nodes {
+          attendees {
+            nodes {
+              ...MyAttendee
+            }
+          }
+        }
+      }
+    }
+  }
+}

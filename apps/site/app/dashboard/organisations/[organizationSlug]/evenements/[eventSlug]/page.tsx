@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
+
 
 const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
@@ -42,7 +45,7 @@ const AttendeesPage = async ({
       slug: "/participant/" + id,
     })
   );
-  //pour pr
+ 
   return (
     <section className="container grid items-center w-full gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
