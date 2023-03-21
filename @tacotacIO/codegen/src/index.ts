@@ -1072,6 +1072,8 @@ export type Event = Node & {
   registrations: RegistrationsConnection;
   slug?: Maybe<Scalars['String']>;
   startsAt?: Maybe<Scalars['Datetime']>;
+  totalConfirmedRegistrations?: Maybe<Scalars['Int']>;
+  totalRegistrations?: Maybe<Scalars['Int']>;
   updatedAt: Scalars['Datetime'];
   zipCode?: Maybe<Scalars['String']>;
 };
@@ -1289,6 +1291,10 @@ export type EventFilter = {
   slug?: InputMaybe<StringFilter>;
   /** Filter by the object’s `startsAt` field. */
   startsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `totalConfirmedRegistrations` field. */
+  totalConfirmedRegistrations?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `totalRegistrations` field. */
+  totalRegistrations?: InputMaybe<IntFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
 };
