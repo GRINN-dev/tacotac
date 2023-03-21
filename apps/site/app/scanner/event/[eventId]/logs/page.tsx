@@ -14,14 +14,14 @@ const LogsPage = async ({ params: { eventId } }) => {
   const IconStatus = ({ status }) => {
     switch (status) {
       case LogsStatus.Ok:
-        return <CheckCircle className="h-5 w-5 text-green-400" />;
+        return <CheckCircle className="w-5 h-5 text-green-400" />;
       case LogsStatus.Warning:
       case LogsStatus.WarningEmail:
       // De cette façon, si status correspond à l'un des trois cas de LogsStatus.Warning, le code exécutera la ligne de code suivante pour afficher l'icône AlertTriangle.
       case LogsStatus.WarningPanel:
-        return <AlertTriangle className="h-5 w-5 text-orange-400" />;
+        return <AlertTriangle className="w-5 h-5 text-orange-400" />;
       case LogsStatus.Error:
-        return <XCircle className="h-5 w-5 text-red-400" />;
+        return <XCircle className="w-5 h-5 text-red-400" />;
       default:
         break;
     }
@@ -55,36 +55,33 @@ const LogsPage = async ({ params: { eventId } }) => {
             <div className="px-4 py-5 sm:px-6">
               <h3 className="text-base font-semibold leading-6 ">Détail du payload</h3>
             </div>
-            <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+            <div className="px-4 py-5 border-t border-gray-200 sm:p-0">
               <dl className="sm:divide-y sm:divide-gray-200">
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
                   <dt className="text-sm font-medium ">Email</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">
-                    {payload?.ticket_payload?.email || "manquant"}
-                  </dd>
+                  <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.email || "manquant"}</dd>
                 </div>
-                
+
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
                   <dt className="text-sm font-medium ">Numéro de panneau</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
                     {payload?.ticket_payload?.panelNumber || "manquant"}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
                   <dt className="text-sm font-medium ">N° de ticket</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.ticketNumber}</dd>
+                  <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.ticketNumber}</dd>
                 </div>
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6 flex items-center">
+                <div className="flex items-center py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
                   <dt className="text-sm font-medium ">Problème de réseau sur cette inscription</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
                     {payload?.is_coming_from_offline_mode ? "oui" : "non"}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
                   <dt className="text-sm font-medium ">{"Id de l'event"}</dt>
-                  <dd className="mt-1 text-sm  sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.eventId}</dd>
+                  <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.eventId}</dd>
                 </div>
-               
               </dl>
             </div>
           </div>
@@ -99,7 +96,7 @@ const LogsPage = async ({ params: { eventId } }) => {
         Logs de {event.name}
       </h1>
 
-      <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
+      <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
         <div className="flow-root">
           <ul role="list" className="-mb-8">
             {event?.logsList?.map((log, logId) => (
@@ -120,7 +117,7 @@ const LogsPage = async ({ params: { eventId } }) => {
                         <p> - </p>
                         <p className="text-sm ">{valueStatus(log.status)} </p>
                       </div>
-                      <div className="whitespace-nowrap text-right text-sm ">
+                      <div className="text-sm text-right whitespace-nowrap ">
                         <time dateTime={log.updatedAt}>{dayjs(log.updatedAt).format("DD/MM/YYYY - HH:mm:ss")}</time>
                       </div>
                     </div>

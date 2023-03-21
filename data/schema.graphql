@@ -1576,8 +1576,8 @@ enum LogsStatus {
   """Une erreur s'est produite"""
   ERROR
 
-  """Ticket scanné non valide"""
-  INVALID_TICKET
+  """Probleme de QR Code"""
+  WARNING_SIGN_CODE
 }
 
 """A `Log` edge in the connection."""
@@ -4516,10 +4516,14 @@ input ScanAttendeeInput {
 input TicketPayloadInput {
   eventId: UUID
   attendeeId: UUID
+  registrationId: UUID
+  firstname: String
+  lastname: String
   ticketNumber: String
   panelNumber: Int
   email: String
   payload: JSON
+  signCode: String
 }
 
 """The output of our `scanAttendeesOffline` mutation."""
