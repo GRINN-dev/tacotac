@@ -34,14 +34,7 @@ export const Scanner = () => {
     return sdk()
       .ScanAttendeesOffline({
         input: {
-          ticketPayloads: offlineData.map((ticket) => ({
-            attendeeId: ticket?.attendeeId,
-            email: ticket?.email,
-            ticketNumber: ticket?.ticketNumber,
-            panelNumber: state?.pannel_code,
-            eventId: ticket?.eventId,
-            payload: null,
-          })),
+          ticketPayloads: { ...offlineData, panelNumber: state.pannel ? state.pannel : state.pannel_code },
         },
       })
       .finally(() => {
