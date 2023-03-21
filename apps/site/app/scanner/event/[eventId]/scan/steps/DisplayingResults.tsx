@@ -14,16 +14,12 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
   const [errorEmail, setErrorEmail] = useState(false);
   const emailPattern = /^\S+@\S+$/i;
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
   const scanAttendee = () =>
     sdk().ScanAttendee({
       scanAttendeeInput: {
         ticketPayload: {
           ...state.ticket,
-          panelNumber: state.pannel_code,
+          panelNumber: state.pannel ? state.pannel : state.pannel_code,
           email: state.ticket?.email ? state?.ticket?.email : state.email,
         },
       },
@@ -89,15 +85,13 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                     className="p-2 text-white bg-green-700 rounded-md"
                     onClick={() => {
                       scanAttendee()
-                        .then(() => closeModal())
-                        .then((result) => {
-                          console.log("result", result);
+                        .then(() => {
+                          setIsOpen(false);
                           toast({
                             title: "✅ Scan ok",
                             description: "Participation scannée avec succès",
                           });
                         })
-
                         .catch((error) => {
                           console.log("error", error);
                           toast({
@@ -111,18 +105,14 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                                 "L'enregistrement n'a pas fonctionné, les informations vont être stockées localement",
                             },
                           });
-                          console.error(error);
-                        })
-                        .then(() => {
                           localStorage.setItem(
                             "offlineData",
                             JSON.stringify([
                               ...JSON.parse(localStorage.getItem("offlineData") || "[]"),
-                              state.ticket,
-                              state?.pannel_code,
+                              { ...state.ticket, panelNumber: state.pannel ? state.pannel : state.pannel_code },
                             ])
                           ),
-                            console.log("synched in storage");
+                            console.error(error);
                         })
                         .then(() =>
                           dispatch({
