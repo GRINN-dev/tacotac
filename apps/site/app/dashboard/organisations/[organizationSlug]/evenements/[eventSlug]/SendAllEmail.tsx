@@ -3,15 +3,18 @@
 import { toast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
+
 
 export const SendAllEmail = ({ eventId }) => {
   const sendEmails = (eventId: string) => {
     sdk()
       .SendEmailAllAttendeeEvent({ eventId })
       .then((data) => {
-        return toast({
+        toast({
           title: "Tous les emails ont bien été envoyé",
         });
       })
