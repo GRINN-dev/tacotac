@@ -85,7 +85,7 @@ export const Scanner = () => {
       ) : state.step === "scanning_ticket_success" ? (
         <div className="flex flex-col items-center justify-center mx-auto">
           <div className="flex items-center mb-8">
-            <p className="font-semibold text-green-700">Scanning 1/2</p> <CheckIcon className="ml-1" />{" "}
+            <p className="font-semibold text-green-700">Scanning 1/2</p>{" "}
           </div>
           <button
             className={buttonVariants({ size: "sm" })}

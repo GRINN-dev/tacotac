@@ -29,7 +29,8 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
       {state.step === "displaying_result" ? (
         <>
           <div className="flex items-center justify-center mb-8">
-            <p className="font-semibold text-green-700">Scanning 2/2</p> <CheckIcon className="ml-1" />{" "}
+            <p className="font-semibold text-green-700">Scanning 2/2</p>{" "}
+            <CheckIcon className="ml-1 duration-800 animate-bounce" />{" "}
           </div>
           <Dialog defaultOpen>
             <DialogPortal>
@@ -83,7 +84,7 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                     )}
                   </span>
                   <span>Panneau : {state?.pannel_code} </span>
-                  <DialogClose>
+                  <DialogClose className="flex flex-col mx-auto mt-4">
                     <button
                       type="button"
                       className="p-2 text-white bg-green-700 rounded-md"
