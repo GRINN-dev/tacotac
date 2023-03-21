@@ -3991,6 +3991,13 @@ export type GetEventByEventSlugQueryVariables = Exact<{
 
 export type GetEventByEventSlugQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', edges: Array<{ __typename?: 'EventsEdge', node: { __typename?: 'Event', id: any, capacity?: number | null, city?: string | null, description: string, placeName?: string | null, slug?: string | null, name: string, country?: string | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, zipCode?: string | null, startsAt?: any | null } }> } | null };
 
+export type GetEventBrandingByIdQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetEventBrandingByIdQuery = { __typename?: 'Query', eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null };
+
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
   first?: InputMaybe<Scalars['Int']>;
@@ -4403,6 +4410,13 @@ export const GetEventByEventSlugDocument = gql`
   }
 }
     `;
+export const GetEventBrandingByIdDocument = gql`
+    query GetEventBrandingById($id: UUID!) {
+  eventBranding(id: $id) {
+    ...EventBrandingFragment
+  }
+}
+    ${EventBrandingFragmentFragmentDoc}`;
 export const GetAllOrganizationDocument = gql`
     query GetAllOrganization($after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [OrganizationsOrderBy!] = CREATED_AT_ASC, $filter: OrganizationFilter, $offset: Int) {
   organizations(
@@ -4560,6 +4574,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetEventByEventSlug(variables: GetEventByEventSlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventByEventSlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetEventByEventSlugQuery>(GetEventByEventSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventByEventSlug', 'query');
+    },
+    GetEventBrandingById(variables: GetEventBrandingByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventBrandingByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetEventBrandingByIdQuery>(GetEventBrandingByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventBrandingById', 'query');
     },
     GetAllOrganization(variables?: GetAllOrganizationQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllOrganizationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllOrganizationQuery>(GetAllOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllOrganization', 'query');
