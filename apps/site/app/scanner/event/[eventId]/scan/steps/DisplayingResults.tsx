@@ -3,12 +3,11 @@
 import { Dispatch, FC, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogTitle } from "@radix-ui/react-dialog";
-
-import { Check, PlusCircle } from "lucide-react";
-
+import { AlertCircleIcon, Check, PlusCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { Event, State } from "../types";
+
 
 export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ state, dispatch }) => {
   const [manualEmail, setManualEmail] = useState<string>();
