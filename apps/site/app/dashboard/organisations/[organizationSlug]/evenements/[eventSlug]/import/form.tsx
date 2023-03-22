@@ -2,7 +2,7 @@
 
 import { FC, Key, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, RegisterAttendeesCsvInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventBySlugQuery, RegisterAttendeesCsvInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
@@ -14,7 +14,7 @@ import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 
-interface iImportAttendeesProps extends ExtractType<GetEventByIdQuery, "event"> {}
+interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
 interface ICsv {
   civility: string;
