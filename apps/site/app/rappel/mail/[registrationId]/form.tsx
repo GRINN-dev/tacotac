@@ -3,7 +3,7 @@
 import { FC, useEffect, useRef, useState, useTransition } from "react";
 import Script from "next/script";
 import { toast } from "@/hooks/use-toast";
-import { GetAttendeesWithoutMailByRegistrationIdQuery } from "@tacotacIO/codegen/temp";
+import { GetAttendeesWithoutMailByRegistrationIdQuery } from "@tacotacIO/codegen/dist";
 import { useFieldArray, useForm } from "react-hook-form";
 
 

@@ -2,7 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CreateEventInput } from "@tacotacIO/codegen/temp";
+import { CreateEventInput } from "@tacotacIO/codegen/dist";
 import { useForm } from "react-hook-form";
 
 

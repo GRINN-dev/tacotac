@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { GetAllEventsQuery } from "@tacotacIO/codegen/temp";
+import { GetAllEventsQuery } from "@tacotacIO/codegen/dist";
 import dayjs from "dayjs";
 
 

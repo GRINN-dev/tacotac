@@ -3,7 +3,7 @@
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
-import { GetOrganizationBySlugQuery, UpdateOrganizationInput } from "@tacotacIO/codegen/temp";
+import { GetOrganizationBySlugQuery, UpdateOrganizationInput } from "@tacotacIO/codegen/dist";
 import { useForm } from "react-hook-form";
 
 

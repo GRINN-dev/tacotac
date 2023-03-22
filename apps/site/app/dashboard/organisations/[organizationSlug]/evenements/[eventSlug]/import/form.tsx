@@ -3,7 +3,7 @@
 import { FC, Key, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
-import { GetEventBySlugQuery, RegisterAttendeesCsvInput } from "@tacotacIO/codegen/temp";
+import { GetEventBySlugQuery, RegisterAttendeesCsvInput } from "@tacotacIO/codegen/dist";
 import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";

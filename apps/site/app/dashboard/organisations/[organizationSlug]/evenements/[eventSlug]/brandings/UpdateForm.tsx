@@ -3,7 +3,7 @@
 import { FC, useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@tacotacIO/codegen/temp";
+import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@tacotacIO/codegen/dist";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 

@@ -8,7 +8,7 @@ import {
   GetOrganizationBySlugQuery,
   UpdateEventInput,
   UpdateOrganizationInput,
-} from "@tacotacIO/codegen/temp";
+} from "@tacotacIO/codegen/dist";
 import { useForm } from "react-hook-form";
 
 

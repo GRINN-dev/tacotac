@@ -1,4 +1,4 @@
-import { getSdk } from "@tacotacIO/codegen/temp";
+import { getSdk } from "@tacotacIO/codegen/dist";
 import { GraphQLClient } from "graphql-request";
 
 const fetchWrapper = (args) => {

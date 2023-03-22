@@ -3,7 +3,7 @@
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
-import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/temp";
+import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/dist";
 import { Controller, useForm } from "react-hook-form";
 
 

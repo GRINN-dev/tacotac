@@ -9,7 +9,7 @@ import {
   GetEventByIdQuery,
   GetEventBySlugQuery,
   RegisterAttendeesInput,
-} from "@tacotacIO/codegen/temp";
+} from "@tacotacIO/codegen/dist";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
