@@ -62,8 +62,6 @@ BEGIN
              CASE 
                when v_panel_number is null then 'WARNING_PANEL'
                when v_panel_number is not null then 'OK'
-               when v_panel_number is null then 'WARNING_PANEL'
-               when v_panel_number is not null then 'OK'
              END,
             jsonb_build_object('ticket_payload',ticket_payload));
       end if;
