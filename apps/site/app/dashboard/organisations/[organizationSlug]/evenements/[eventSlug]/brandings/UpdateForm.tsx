@@ -40,9 +40,9 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
-  const [image, setImage] = useState({ local: null, dev: null });
+
   const [files, setFiles] = useState<File[]>([]);
-  const [awardWinningList, setAwardWinningList] = useState<string[]>([]);
+  const [awardWinningList, setAwardWinningList] = useState<string[]>(awardWinningAssoList || []);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
@@ -51,11 +51,18 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
+
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    const url = await uploadToS3(files.at(0));
+
+    if (files.length > 0) {
+      const url = await uploadToS3(files[0]);
+
+      data.patch.logo = url;
+    } else {
+      data.patch.logo = logo;
+    }
     data.id = id;
-    data.patch.logo = url;
     data.patch.awardWinningAssoList = awardWinningList;
     await sdk()
       .UpdateEventBranding({
@@ -230,9 +237,18 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
         <ul className="pl-4 list-disc">
-          {awardWinningAssoList?.map((awardWinning) => (
-            <li>{awardWinning}</li>
-          ))}
+          {awardWinningList.length > 0
+            ? awardWinningList?.map((awardWinning, index) => (
+                <li key={awardWinning + index}>
+                  <div
+                    className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+                    onClick={() => removeItemClick(index)}
+                  >
+                    {awardWinning} <MinusCircle className="ml-2" />
+                  </div>
+                </li>
+              ))
+            : "Aucun lauréat pour le moment"}
         </ul>
 
         <Label className="mt-2" htmlFor="awardWinningAssoList">
@@ -249,22 +265,15 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <div
             className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
             onClick={() => {
-              if (awardWinning) setAwardWinningList([...awardWinningList, awardWinning]);
-              setAwardWinning("");
+              if (awardWinning) {
+                setAwardWinningList([...awardWinningList, awardWinning]);
+                setAwardWinning("");
+              }
             }}
           >
             Ajouter <PlusCircle className="ml-2" />
           </div>
         </div>
-
-        {awardWinningList?.map((awardWinning, index) => (
-          <div
-            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
-            onClick={() => removeItemClick(index)}
-          >
-            {awardWinning} <MinusCircle className="ml-2" />
-          </div>
-        ))}
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
