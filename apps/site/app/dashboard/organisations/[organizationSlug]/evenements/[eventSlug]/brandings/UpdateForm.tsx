@@ -48,9 +48,10 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
+  const { register, handleSubmit, formState, control, watch, setValue } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("#ffffff");
 
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
@@ -93,6 +94,11 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const handleChangeComplete = (color) => {
     setBackground(color.hex);
   };
+  const [sketchPickerColor, setSketchPickerColor] = useState({
+    hex: "#fff",
+  });
+  const { hex } = sketchPickerColor;
+
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       {/* <div className="mt-4 grid w-full items-center gap-1.5">
@@ -110,29 +116,39 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color1?.message}</p>
         )}
       </div> */}
-      <div>
-        <div
-          onClick={() => setDisplayColorPicker(!displayColorPicker)}
-          className="w-6/12 p-2 text-sm border rounded-md border-slate-300"
-        >
-          Choisir couleur 1
-        </div>
-        {displayColorPicker ? (
-          <div className="absolute z-10">
-            <div className="fixed top-0 right-0" onClick={() => setDisplayColorPicker(false)} />
-            <ChromePicker
-              color={background}
-              onChangeComplete={handleChangeComplete}
-              {...register("patch.color1", {
-                required: "Une couleur est requise",
-              })}
-            />
-            {formState.errors?.patch?.color1 && (
-              <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color1?.message}</p>
-            )}
-          </div>
-        ) : null}
+      <div
+        onClick={() => setDisplayColorPicker(!displayColorPicker)}
+        className="w-6/12 p-2 text-sm border rounded-md border-slate-300"
+      >
+        Choisir couleur 1
       </div>
+      {displayColorPicker ? (
+        <div className="mt-4 grid w-full items-center gap-1.5">
+          <div className="">
+            <div
+              {...register("patch.color1", {
+                required: "Couleur requise",
+              })}
+              style={{
+                backgroundColor: hex,
+                width: 80,
+                height: 30,
+                border: "2px solid white",
+                borderRadius: "10%",
+              }}
+            ></div>
+            <SketchPicker
+              onChange={(color) => {
+                setSketchPickerColor(color);
+                console.log(color);
+              }}
+              color={sketchPickerColor}
+            />
+          </div>
+        </div>
+      ) : null}
+
+      {JSON.stringify(watch("patch.color1"))}
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="color2">Couleur 2</Label>
         <Input
@@ -216,7 +232,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.richText?.message}</p>
         )}
       </div>
-
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Label htmlFor="shortText">Court texte</Label>
