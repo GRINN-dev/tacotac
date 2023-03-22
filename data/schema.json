@@ -3466,6 +3466,30 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "totalConfirmedRegistrations",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "totalRegistrations",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -5782,6 +5806,26 @@
               "defaultValue": null
             },
             {
+              "name": "totalConfirmedRegistrations",
+              "description": "Filter by the object’s `totalConfirmedRegistrations` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "IntFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "totalRegistrations",
+              "description": "Filter by the object’s `totalRegistrations` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "IntFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "and",
               "description": "Checks for all expressions in this list.",
               "type": {
@@ -6982,8 +7026,8 @@
               "deprecationReason": null
             },
             {
-              "name": "INVALID_TICKET",
-              "description": "Ticket scanné non valide",
+              "name": "WARNING_SIGN_CODE",
+              "description": "Probleme de QR Code",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -18347,6 +18391,36 @@
               "defaultValue": null
             },
             {
+              "name": "registrationId",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "UUID",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "firstname",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lastname",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "ticketNumber",
               "description": null,
               "type": {
@@ -18382,6 +18456,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "JSON",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "signCode",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null

@@ -729,6 +729,8 @@ type Event implements Node {
     """
     filter: LogFilter
   ): [Log!]!
+  totalConfirmedRegistrations: Int
+  totalRegistrations: Int
 }
 
 """A company, organization, or institution."""
@@ -1298,6 +1300,12 @@ input EventFilter {
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
 
+  """Filter by the object’s `totalConfirmedRegistrations` field."""
+  totalConfirmedRegistrations: IntFilter
+
+  """Filter by the object’s `totalRegistrations` field."""
+  totalRegistrations: IntFilter
+
   """Checks for all expressions in this list."""
   and: [EventFilter!]
 
@@ -1568,8 +1576,8 @@ enum LogsStatus {
   """Une erreur s'est produite"""
   ERROR
 
-  """Ticket scanné non valide"""
-  INVALID_TICKET
+  """Probleme de QR Code"""
+  WARNING_SIGN_CODE
 }
 
 """A `Log` edge in the connection."""
@@ -4522,10 +4530,14 @@ input ScanAttendeeInput {
 input TicketPayloadInput {
   eventId: UUID
   attendeeId: UUID
+  registrationId: UUID
+  firstname: String
+  lastname: String
   ticketNumber: String
   panelNumber: Int
   email: String
   payload: JSON
+  signCode: String
 }
 
 """The output of our `scanAttendeesOffline` mutation."""
