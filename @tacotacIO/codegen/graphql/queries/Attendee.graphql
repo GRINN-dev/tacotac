@@ -4,18 +4,21 @@ query GetAttendeeById($attendeeId: UUID!) {
   }
 }
 
-query AttendeesBySlugEvent($slug: String!) {
-  events(condition: { slug: $slug }) {
+query GetAttendeesWithoutMailByRegistrationId($registrationId: UUID!) {
+  attendees(
+    condition: {
+      registrationId: $registrationId
+      isInscriptor: false
+      email: null
+    }
+  ) {
     nodes {
-      registrations {
-        nodes {
-          attendees {
-            nodes {
-              ...MyAttendee
-            }
-          }
-        }
-      }
+      civility
+      email
+      firstname
+      id
+      lastname
+      isInscriptor
     }
   }
 }
