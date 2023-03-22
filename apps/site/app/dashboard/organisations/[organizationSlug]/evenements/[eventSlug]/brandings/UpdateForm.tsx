@@ -65,6 +65,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     }
     data.id = id;
     data.patch.awardWinningAssoList = awardWinningList;
+    data.patch.color1 = sketchPickerColor.hex.substring(1);
     await sdk()
       .UpdateEventBranding({
         input: data,
@@ -118,29 +119,33 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       </div> */}
       <div
         onClick={() => setDisplayColorPicker(!displayColorPicker)}
-        className="w-6/12 p-2 text-sm border rounded-md border-slate-300"
+        className="flex items-center justify-around w-6/12 p-2 text-sm border rounded-md border-slate-300"
       >
         Choisir couleur 1
+        <div
+          style={{
+            backgroundColor: hex,
+            width: "30px",
+            height: "30px",
+            border: "2px solid white",
+            borderRadius: "30px",
+          }}
+        >
+          {" "}
+        </div>
       </div>
       {displayColorPicker ? (
-        <div className="mt-4 grid w-full items-center gap-1.5">
+        <div className="mt-2 grid w-full items-center gap-1.5">
           <div className="">
-            <div
+            <SketchPicker
               {...register("patch.color1", {
                 required: "Couleur requise",
               })}
-              style={{
-                backgroundColor: hex,
-                width: 80,
-                height: 30,
-                border: "2px solid white",
-                borderRadius: "10%",
-              }}
-            ></div>
-            <SketchPicker
+              defaultValue={color1}
               onChange={(color) => {
                 setSketchPickerColor(color);
-                console.log(color);
+                console.log("sketchcolor", sketchPickerColor);
+                console.log("watch", watch("patch.color1"));
               }}
               color={sketchPickerColor}
             />
@@ -148,7 +153,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         </div>
       ) : null}
 
-      {JSON.stringify(watch("patch.color1"))}
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="color2">Couleur 2</Label>
         <Input
