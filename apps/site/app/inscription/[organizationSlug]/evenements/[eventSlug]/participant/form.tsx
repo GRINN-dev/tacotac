@@ -28,10 +28,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-  const url = window.location.href;
-  const index = url.indexOf("evenements");
-  const slug = url.slice(index + 11).split("/")[0];
-  console.log(slug);
 
   const blue = "bg-blue-500";
   const red = "bg-red-500";
