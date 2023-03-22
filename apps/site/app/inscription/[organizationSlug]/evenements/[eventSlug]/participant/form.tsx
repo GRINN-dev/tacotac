@@ -478,7 +478,17 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
           )}
 
           <div className="flex items-center gap-2 mt-8">
-            <button type="submit" className={`${color} text-sm font-medium p-3 rounded-md text-white`}>
+            <button
+              style={{
+                backgroundColor: `#${eventBranding.color1}`,
+                borderRadius: "0.5rem",
+                fontSize: "0.875rem",
+                color: "#fff",
+                fontWeight: "500",
+                padding: "0.75rem 1.5rem",
+              }}
+              type="submit"
+            >
               Continuer
             </button>
 
@@ -500,24 +510,21 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
           )}
         </form>
         <div className="flex w-6/12 mt-16 md:mx-auto md:my-3 md:flex-col ">
-          <button className={buttonVariants({ size: "lg", className: "-mt-14" })} onClick={handleAddParticipant}>
+          <button
+            style={{
+              backgroundColor: `#${eventBranding.color1}`,
+              borderRadius: "0.5rem",
+              fontSize: "0.875rem",
+              color: "#fff",
+              fontWeight: "500",
+              padding: "0.75rem 1.5rem",
+              marginTop: "-3.5rem",
+            }}
+            onClick={handleAddParticipant}
+          >
             Ajouter un participant
           </button>
         </div>
-        {/* <div>
-          <div className="flex items-center justify-start">
-            <span className="w-4 h-4 mr-2 border rounded-full"></span>
-            <p>couleur #1</p>
-          </div>
-          <div className="flex items-center justify-start">
-            <span className="w-4 h-4 mr-2 border rounded-full"></span>
-            <p>couleur #2</p>
-          </div>
-          <div className="flex items-center justify-start">
-            <span className="w-4 h-4 mr-2 border rounded-full"></span>
-            <p>police #1</p>
-          </div>
-        </div> */}
       </div>
       {showConfirmation === true ? (
         <div className="flex flex-col items-center justify-center mt-4 text-xl">
@@ -528,9 +535,12 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
             si vous ne le recevez pas.
           </p>
           <div className="flex items-center justify-between">
-            <button className={buttonVariants({ size: "lg", className: "mt-12" })}>
+            <button
+              className={buttonVariants({ size: "lg", className: "mt-12" })}
+              style={{ backgroundColor: `#${eventBranding.color2}` }}
+            >
               <Download className="mr-2" />
-              Télécharger vos billets
+              <p>Télécharger vos billets</p>
             </button>
           </div>
         </div>
