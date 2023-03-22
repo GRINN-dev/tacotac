@@ -2,10 +2,12 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, GetOrganizationBySlugQuery, UpdateEventInput, UpdateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventByIdQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -14,8 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
-
-
 
 
 interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
@@ -119,7 +119,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
             ? webhookList?.map((webhook, index) => (
                 <li key={webhook + index}>
                   <div
-                    className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+                    className="inline-flex items-center rounded-full border border-transparent p-1  shadow-sm  focus:outline-none"
                     onClick={() => removeItemClick(index)}
                   >
                     {webhook} <MinusCircle className="ml-2" />

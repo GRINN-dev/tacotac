@@ -7,17 +7,14 @@ enum stateWebhook {
   ANNULATION = "ANNULATION",
 }
 
-export const sendWebHookZapierMake: Task = async (
-  payload,
-  { addJob, withPgClient }
-) => {
+export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
   const { attendeeId, state } = payload as {
     attendeeId: string;
     state: stateWebhook;
   };
   const { rows: attendeeAndEvent } = await withPgClient(pgClient =>
     pgClient.query(
-      `select atts.firstname, atts.lastname, atts.panel_number, evts.name, evts.webhooks 
+      `select atts.firstname, atts.lastname, atts.panel_number, atts.status, evts.name, evts.webhooks 
           from publ.attendees atts
           inner join publ.registrations regs on regs.id = atts.registration_id
           inner join publ.events evts on evts.id = regs.event_id
@@ -25,22 +22,15 @@ export const sendWebHookZapierMake: Task = async (
       [attendeeId]
     )
   );
-  console.log(
-    "🚀 ~ file: send_webhook_zapier_make.ts:28 ~ attendeeAndEvent:",
-    attendeeAndEvent
-  );
-  attendeeAndEvent[0].webhooks.map(async (webhook: string) => {
-    console.log(
-      "🚀 ~ file: send_webhook_zapier_make.ts:41 ~ attendeeAndEvent[0].webhooks.map ~ webhook:",
-      webhook
-    );
 
+  attendeeAndEvent[0].webhooks.map(async (webhook: string) => {
     await axios.post(webhook, {
       state: state,
       firstname: attendeeAndEvent[0].firstname,
       lastname: attendeeAndEvent[0].lastname,
       panel_number: attendeeAndEvent[0].panel_number,
       event_name: attendeeAndEvent[0].name,
+      status: attendeeAndEvent[0].status,
     });
   });
 };
