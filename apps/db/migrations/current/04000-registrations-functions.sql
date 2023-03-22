@@ -99,6 +99,8 @@ begin
         returning * into v_attendees ;
 
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
+        
+        perform graphile_worker.add_job('sendWebHookZapierMake', json_build_object('attendeeId', v_attendees.id, 'state','RESA_BILLET'));
       else 
         raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
       end if;
