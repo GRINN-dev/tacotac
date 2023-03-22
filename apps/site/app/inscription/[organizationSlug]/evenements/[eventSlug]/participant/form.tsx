@@ -28,7 +28,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
+  const url = window.location.href;
+  const index = url.indexOf("evenements");
+  const slug = url.slice(index + 11).split("/")[0];
+  console.log(slug);
 
+  const blue = "bg-blue-500";
+  const red = "bg-red-500";
+  const color = eventBranding?.color1 === "#023047" ? blue : red;
   const { register, handleSubmit, formState, control, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
       attendees: [
@@ -471,7 +478,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
           )}
 
           <div className="flex items-center gap-2 mt-8">
-            <button type="submit" className={buttonVariants({ size: "lg", className: "mr-3" })}>
+            <button type="submit" className={`${color} text-sm font-medium p-3 rounded-md text-white`}>
               Continuer
             </button>
 
@@ -517,8 +524,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
           <CheckCircle2 className="w-16 h-16 mb-8" />
           <h2>Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
-            Un email de confirmation pour votre inscription XXXXXXXX a été envoyé à {email} . Vérifiez vos courriers
-            indésirables si vous ne le recevez pas.
+            Un email de confirmation pour votre inscription a été envoyé à {email} . Vérifiez vos courriers indésirables
+            si vous ne le recevez pas.
           </p>
           <div className="flex items-center justify-between">
             <button className={buttonVariants({ size: "lg", className: "mt-12" })}>

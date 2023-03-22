@@ -6,7 +6,6 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
-  const { eventBranding } = await sdk().GetEventBrandingById({ id: eventBySlug?.eventBranding?.id });
 
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
