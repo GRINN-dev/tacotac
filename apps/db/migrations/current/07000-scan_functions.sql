@@ -60,8 +60,8 @@ BEGIN
           insert into publ.logs (event_id,status,payload) values (
             v_event_id,
              CASE 
-               when ticket_payload.ticket_number is not null and v_panel_number is null then 'WARNING_PANEL'
-               when ticket_payload.ticket_number is not null and v_panel_number is not null then 'OK'
+               when v_panel_number is null then 'WARNING_PANEL'
+               when v_panel_number is not null then 'OK'
                when v_panel_number is null then 'WARNING_PANEL'
                when v_panel_number is not null then 'OK'
              END,
