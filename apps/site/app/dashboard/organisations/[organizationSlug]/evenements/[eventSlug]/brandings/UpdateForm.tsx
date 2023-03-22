@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@/../../@tacotacIO/codegen/dist";
 import { useToast } from "@/hooks/use-toast";
 import { MinusCircle, PlusCircle } from "lucide-react";
+import { ChromePicker, SketchPicker } from "react-color";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -49,7 +50,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const pathname = usePathname();
   const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
-
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
     const url = await uploadToS3(files.at(0));
@@ -81,10 +82,13 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     newList.splice(index, 1);
     setAwardWinningList(newList);
   };
-
+  const [background, setBackground] = useState("#fff");
+  const handleChangeComplete = (color) => {
+    setBackground(color.hex);
+  };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      {/* <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="color1">Couleur 1</Label>
         <Input
           type="text"
@@ -98,8 +102,30 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         {formState.errors?.patch?.color1 && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color1?.message}</p>
         )}
+      </div> */}
+      <div>
+        <div
+          onClick={() => setDisplayColorPicker(!displayColorPicker)}
+          className="w-6/12 p-2 text-sm border rounded-md border-slate-300"
+        >
+          Choisir couleur 1
+        </div>
+        {displayColorPicker ? (
+          <div className="absolute z-10">
+            <div className="fixed top-0 right-0" onClick={() => setDisplayColorPicker(false)} />
+            <ChromePicker
+              color={background}
+              onChangeComplete={handleChangeComplete}
+              {...register("patch.color1", {
+                required: "Une couleur est requise",
+              })}
+            />
+            {formState.errors?.patch?.color1 && (
+              <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color1?.message}</p>
+            )}
+          </div>
+        ) : null}
       </div>
-
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="color2">Couleur 2</Label>
         <Input
