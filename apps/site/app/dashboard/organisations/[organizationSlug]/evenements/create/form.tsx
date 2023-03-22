@@ -2,8 +2,10 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CreateEventInput } from "@/../../@tacotacIO/codegen/dist";
+import { CreateEventInput } from "@tacotacIO/codegen/temp";
 import { useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -12,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+
 
 export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId }) => {
   const [isLoading, setIsLoading] = useState(false);

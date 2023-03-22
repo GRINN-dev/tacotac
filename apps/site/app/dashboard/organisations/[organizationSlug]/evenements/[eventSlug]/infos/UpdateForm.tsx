@@ -2,8 +2,13 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, GetOrganizationBySlugQuery, UpdateEventInput, UpdateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
+import {
+  GetEventByIdQuery,
+  GetOrganizationBySlugQuery,
+  UpdateEventInput,
+  UpdateOrganizationInput,
+} from "@tacotacIO/codegen/temp";
 import { useForm } from "react-hook-form";
 
 
@@ -15,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
+
 
 interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => {

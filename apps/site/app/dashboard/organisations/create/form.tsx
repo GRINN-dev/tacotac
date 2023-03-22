@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { CreateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
+import { CreateOrganizationInput } from "@tacotacIO/codegen/temp";
 import { useForm } from "react-hook-form";
 
 

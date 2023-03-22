@@ -3,7 +3,13 @@
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Script from "next/script";
-import { CivilityStatus, EventStatus, GetEventByIdQuery, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import {
+  CivilityStatus,
+  EventStatus,
+  GetEventByIdQuery,
+  GetEventBySlugQuery,
+  RegisterAttendeesInput,
+} from "@tacotacIO/codegen/temp";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 

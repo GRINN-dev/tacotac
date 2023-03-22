@@ -1,8 +1,12 @@
 "use client";
 
 import { FC } from "react";
-import { GetAllEventsQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllEventsQuery } from "@tacotacIO/codegen/temp";
 import dayjs from "dayjs";
+
+
+
+
 
 interface EventCardProps extends ExtractArrayType<ExtractType<GetAllEventsQuery, "events">, "nodes"> {}
 

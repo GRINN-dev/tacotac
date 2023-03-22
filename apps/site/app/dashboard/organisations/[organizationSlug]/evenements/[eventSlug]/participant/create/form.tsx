@@ -2,14 +2,11 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  CivilityStatus,
-  EventStatus,
-  GetEventByIdQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
+import { CivilityStatus, EventStatus, GetEventByIdQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/temp";
 import { Controller, useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -17,6 +14,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 interface iCreateAttendeeForm extends ExtractType<GetEventByIdQuery, "event"> {}
 

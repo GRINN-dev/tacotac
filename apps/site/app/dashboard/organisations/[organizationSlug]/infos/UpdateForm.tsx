@@ -2,9 +2,11 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetOrganizationBySlugQuery, UpdateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
+import { GetOrganizationBySlugQuery, UpdateOrganizationInput } from "@tacotacIO/codegen/temp";
 import { useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -12,6 +14,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+
 
 interface iUpdateOrganization extends ExtractType<GetOrganizationBySlugQuery, "organizationBySlug"> {}
 export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, description, logoUrl }) => {
