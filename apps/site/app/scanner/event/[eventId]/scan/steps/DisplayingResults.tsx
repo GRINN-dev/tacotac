@@ -3,13 +3,10 @@
 import { Dispatch, FC, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogTitle } from "@radix-ui/react-dialog";
-import { AlertCircleIcon, CheckIcon, PlusCircle } from "lucide-react";
-
-
+import { AlertCircle, Check, PlusCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { Event, State } from "../types";
-
 
 export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ state, dispatch }) => {
   const [manualEmail, setManualEmail] = useState<string>();
@@ -33,7 +30,7 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
         <>
           <div className="flex items-center justify-center mb-8">
             <p className="font-semibold text-green-700">Scanning 2/2</p>{" "}
-            <CheckIcon className="ml-1 duration-800 animate-bounce" />{" "}
+            <Check className="ml-1 duration-800 animate-bounce" />{" "}
           </div>
           <Dialog defaultOpen>
             <DialogPortal>
@@ -145,7 +142,7 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
               <DialogTitle className="mb-2 font-semibold">Récapitulatif du scan</DialogTitle>
               <fieldset className="mb-[15px] flex flex-col items-start justify-start ">
                 <div className="flex flex-col items-center justify-center mx-auto">
-                  <AlertCircleIcon className="mb-2 text-red-600" />
+                  <AlertCircle className="mb-2 text-red-600" />
                 </div>
                 L&apos;enregistrement du participant ayant été réalisé à l&apos;aide du code invitation, le détail de
                 ses informations n&apos;est pas disponible.
