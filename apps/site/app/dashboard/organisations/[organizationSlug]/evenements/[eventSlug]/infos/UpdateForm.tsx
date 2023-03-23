@@ -2,7 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, GetOrganizationBySlugQuery, UpdateEventInput, UpdateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 
@@ -16,7 +16,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 
-interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
+
+interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {};
+
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
