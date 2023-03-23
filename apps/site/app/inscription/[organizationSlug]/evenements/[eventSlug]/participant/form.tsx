@@ -10,7 +10,7 @@ import {
   GetEventBySlugQuery,
   RegisterAttendeesInput,
 } from "@/../../@tacotacIO/codegen/dist";
-import { Montserrat } from "@next/font/google";
+import { Montserrat, Roboto } from "@next/font/google";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -23,6 +23,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const roboto = Roboto({
   subsets: ["latin"],
   weight: "400",
 });
@@ -527,6 +532,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
         </form>
         <div className="flex w-6/12 mt-16 md:mx-auto md:my-3 md:flex-col ">
           <button
+            className={roboto.className}
             style={{
               backgroundColor: `#${eventBranding.color1}`,
               borderRadius: "0.5rem",
