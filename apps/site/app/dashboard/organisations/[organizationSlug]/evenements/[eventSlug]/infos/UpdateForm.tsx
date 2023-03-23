@@ -2,7 +2,9 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
+
+import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
+
 import { toast } from "@/hooks/use-toast";
 import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -16,7 +18,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
+
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webhooks }) => {
+
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -126,6 +130,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
             : "Aucun webhook pour l'instant"}
         </ul>
 
+
         <Label className="mt-2" htmlFor="webhookList">
           Ajouter un webhook (Zapier, Maker, etc.)
           <div className="my-4 rounded-lg border p-4">
@@ -164,12 +169,13 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
         </div>
       </div>
       <div className="flex gap-2 mt-8">
+
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {

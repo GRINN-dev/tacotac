@@ -19,7 +19,7 @@ const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) 
           </h1>
         </div>
         <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
-          <ImportAttendeesForm  {...eventBySlug} />
+          <ImportAttendeesForm {...eventBySlug} />
         </div>
       </section>
     </>

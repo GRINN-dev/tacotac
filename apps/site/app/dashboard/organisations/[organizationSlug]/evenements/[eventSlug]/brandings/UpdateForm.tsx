@@ -7,17 +7,22 @@ import { useToast } from "@/hooks/use-toast";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn, uploadToS3 } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
 
 interface IUpdateBrandingEvent extends ExtractType<ExtractType<GetEventByIdQuery, "event">, "eventBranding"> {}
 
@@ -204,6 +209,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
+
         <ul className="list-disc pl-4">
           {awardWinningList.length>0?awardWinningList?.map((awardWinning,index) => (
             <li key={awardWinning+index}> 
@@ -214,6 +220,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
               {awardWinning} <MinusCircle className="ml-2" />
             </div></li>
           )):"Aucun lauréat pour le moment"}
+
         </ul>
 
         <Label className="mt-2" htmlFor="awardWinningAssoList">
@@ -228,7 +235,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             onChange={(evt) => setAwardWinning(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
             onClick={() => {
             if (awardWinning) {
               setAwardWinningList([...awardWinningList, awardWinning]);
@@ -240,7 +247,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           </div>
         </div>
 
-       
+
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
