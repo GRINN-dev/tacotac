@@ -2,11 +2,9 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, GetOrganizationBySlugQuery, UpdateEventInput, UpdateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -16,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 
-interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
+interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
@@ -102,13 +100,13 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => 
         )}
       </div>
 
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
