@@ -3,24 +3,34 @@
 @tailwind utilities;
 
 .loading-total-count:after {
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: bottom;
-    -webkit-animation: ellipsis steps(4, end) 900ms infinite;
-    animation: ellipsis steps(4, end) 900ms infinite;
-    content: "\2026";
-    /* ascii code for the ellipsis character */
-    width: 0px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  content: "\2026";
+  /* ascii code for the ellipsis character */
+  width: 0px;
 }
-
+@layer base {
+  @font-face {
+    font-family: "Roboto Regular";
+    src: local("Roboto Regular"), url(/apps/site/public/fonts/Roboto-Regular.woff) format("woff"),
+      url(/apps/site/public/fonts/Roboto-Regular.woff2) format("woff2");
+  }
+  @font-face {
+    font-family: "Montserrat Regular";
+    src: local("Montserrat Regular"), url(/apps/site/public/fonts/Montserrat-Regular.woff) format("woff");
+  }
+}
 @keyframes ellipsis {
-    to {
-        width: 1.25em;
-    }
+  to {
+    width: 1.25em;
+  }
 }
 
 @-webkit-keyframes ellipsis {
-    to {
-        width: 1.25em;
-    }
+  to {
+    width: 1.25em;
+  }
 }

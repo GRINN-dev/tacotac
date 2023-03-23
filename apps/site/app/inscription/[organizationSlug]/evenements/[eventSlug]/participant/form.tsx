@@ -525,7 +525,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
       {showConfirmation === true ? (
         <div className="flex flex-col items-center justify-center mt-4 text-xl">
           <CheckCircle2 className="w-16 h-16 mb-8" />
-          <h2>Votre inscription est terminée !</h2>
+          <h2 className="font-RobotoRegular">Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
             Un email de confirmation pour votre inscription a été envoyé à {email} . Vérifiez vos courriers indésirables
             si vous ne le recevez pas.
