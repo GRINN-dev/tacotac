@@ -52,6 +52,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const { toast } = useToast();
   const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
   const [displayColorPicker2, setDisplayColorPicker2] = useState(false);
+
+  console.log("test");
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
 
@@ -261,18 +263,9 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
         <ul className="pl-4 list-disc">
-          {awardWinningList.length > 0
-            ? awardWinningList?.map((awardWinning, index) => (
-                <li key={awardWinning + index}>
-                  <div
-                    className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
-                    onClick={() => removeItemClick(index)}
-                  >
-                    {awardWinning} <MinusCircle className="ml-2" />
-                  </div>
-                </li>
-              ))
-            : "Aucun lauréat pour le moment"}
+          {awardWinningAssoList?.map((awardWinning) => (
+            <li>{awardWinning}</li>
+          ))}
         </ul>
 
         <Label className="mt-2" htmlFor="awardWinningAssoList">
@@ -298,6 +291,15 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             Ajouter <PlusCircle className="ml-2" />
           </div>
         </div>
+
+        {awardWinningList?.map((awardWinning, index) => (
+          <div
+            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+            onClick={() => removeItemClick(index)}
+          >
+            {awardWinning} <MinusCircle className="ml-2" />
+          </div>
+        ))}
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>

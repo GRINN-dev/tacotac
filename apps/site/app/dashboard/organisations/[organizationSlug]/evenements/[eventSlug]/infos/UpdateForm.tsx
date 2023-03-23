@@ -2,12 +2,10 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventByIdQuery, GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -16,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
-
 
 interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webhooks }) => {
@@ -114,12 +111,12 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label>Liste des webhooks</Label>
-        <ul className="list-disc pl-4">
+        <ul className="pl-4 list-disc">
           {webhookList?.length > 0
             ? webhookList?.map((webhook, index) => (
                 <li key={webhook + index}>
                   <div
-                    className="inline-flex items-center rounded-full border border-transparent p-1  shadow-sm  focus:outline-none"
+                    className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm focus:outline-none"
                     onClick={() => removeItemClick(index)}
                   >
                     {webhook} <MinusCircle className="ml-2" />
@@ -128,43 +125,6 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
               ))
             : "Aucun webhook pour l'instant"}
         </ul>
-
-        <Label className="mt-2" htmlFor="webhookList">
-          Ajouter un webhook (Zapier, Maker, etc.)
-          <div className="my-4 rounded-lg border p-4">
-            <div className="flex">
-              <div className="shrink-0">
-                <AlertTriangle className="h-5 w-5 text-red-200" aria-hidden="true" />
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-200">Attention </h3>
-                <div className="mt-2 text-sm ">
-                  <p>{`Le webhook doit recevoir les données qu'on lui envoi, et non un webhook de demande d'infos.`}</p>
-                  <p className="italic">{`L'url doit ressembler à ceci : https://hook.eu1.make.com/m71ivakh5nnwknu1zwmdefle1u2c1qjs`}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Label>
-        <div className="flex space-x-4">
-          <Input
-            type="text"
-            id="webhookList"
-            placeholder="Saissir un webhook"
-            onChange={(evt) => setWebhook(evt?.currentTarget?.value)}
-          />
-          <div
-            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
-            onClick={() => {
-              if (webhook) {
-                setWebhookList([...webhookList, webhook]);
-                setWebhook("");
-              }
-            }}
-          >
-            Ajouter <PlusCircle className="ml-2" />
-          </div>
-        </div>
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>

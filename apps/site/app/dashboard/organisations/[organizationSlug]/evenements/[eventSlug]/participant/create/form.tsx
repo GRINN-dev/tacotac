@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   CivilityStatus,
   EventStatus,
-  GetEventByIdQuery,
+  GetEventBySlugQuery,
   RegisterAttendeesInput,
 } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface iCreateAttendeeForm extends ExtractType<GetEventByIdQuery, "event"> {}
+interface iCreateAttendeeForm extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
 export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -145,6 +145,10 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           placeholder="Obole"
           {...register("attendees.0.email", {
             required: "Un email pour le participant est requis",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: "Merci d'entrer un email valide",
+            },
           })}
         />
         {formState.errors?.attendees?.at(0)?.email && (

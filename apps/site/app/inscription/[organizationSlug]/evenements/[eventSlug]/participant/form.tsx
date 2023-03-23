@@ -180,6 +180,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                             placeholder="jeanned@mail.com"
                             {...register(`attendees.${i}.email`, {
                               required: "Un email pour le participant est requis",
+                               pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                message: "Merci d'entrer un email valide",
+                              }
                             })}
                           />
                           {formState.errors?.attendees?.[i].email && (
@@ -290,7 +294,12 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                           id="email"
                           placeholder="jeanned@mail.com"
                           className="col-span-2"
-                          {...register(`attendees.${i}.email`)}
+                          {...register(`attendees.${i}.email`,{
+                            setValueAs: v => v?v:null,
+                             pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                            message: "Merci d'entrer un email valide",
+                          }})}
                         />
                         {formState.errors?.attendees?.[i]?.email && (
                           <p className="text-sm text-red-800 dark:text-red-300">
@@ -373,7 +382,11 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                       className="col-span-2"
                       placeholder="jeanned@mail.com"
                       {...register(`attendees.${i}.email`, {
-                        required: "Un email pour le participant est requis",
+                        setValueAs: v => v?v:null,
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                          message: "Merci d'entrer un email valide",
+                        }
                       })}
                     />
                     {formState.errors?.attendees?.[i].email && (

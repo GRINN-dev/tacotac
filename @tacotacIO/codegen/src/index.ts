@@ -78,6 +78,8 @@ export type AttendeeCondition = {
   email?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isInscriptor` field. */
+  isInscriptor?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `phoneNumber` field. */
   phoneNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `registrationId` field. */
@@ -104,6 +106,8 @@ export type AttendeeFilter = {
   email?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isInscriptor` field. */
+  isInscriptor?: InputMaybe<BooleanFilter>;
   /** Negates the expression. */
   not?: InputMaybe<AttendeeFilter>;
   /** Checks for any expressions in this list. */
@@ -210,6 +214,8 @@ export enum AttendeesOrderBy {
   EmailDesc = 'EMAIL_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  IsInscriptorAsc = 'IS_INSCRIPTOR_ASC',
+  IsInscriptorDesc = 'IS_INSCRIPTOR_DESC',
   Natural = 'NATURAL',
   PhoneNumberAsc = 'PHONE_NUMBER_ASC',
   PhoneNumberDesc = 'PHONE_NUMBER_DESC',
@@ -1743,6 +1749,7 @@ export type Mutation = {
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
   updateAttendeeByNodeId?: Maybe<UpdateAttendeePayload>;
+  updateAttendeeEmailAndSendEmail?: Maybe<UpdateAttendeeEmailAndSendEmailPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
   updateEvent?: Maybe<UpdateEventPayload>;
   /** Updates a single `EventBranding` using a unique key and a patch. */
@@ -2031,6 +2038,12 @@ export type MutationUpdateAttendeeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAttendeeByNodeIdArgs = {
   input: UpdateAttendeeByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateAttendeeEmailAndSendEmailArgs = {
+  input: UpdateAttendeeEmailAndSendEmailInput;
 };
 
 
@@ -3208,6 +3221,29 @@ export type UpdateAttendeeByNodeIdInput = {
   patch: AttendeePatch;
 };
 
+/** All input for the `updateAttendeeEmailAndSendEmail` mutation. */
+export type UpdateAttendeeEmailAndSendEmailInput = {
+  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our `updateAttendeeEmailAndSendEmail` mutation. */
+export type UpdateAttendeeEmailAndSendEmailPayload = {
+  __typename?: 'UpdateAttendeeEmailAndSendEmailPayload';
+  attendees?: Maybe<Array<Maybe<Attendee>>>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** All input for the `updateAttendee` mutation. */
 export type UpdateAttendeeInput = {
   /**
@@ -3832,6 +3868,13 @@ export type RegisterAttendeesMutationVariables = Exact<{
 
 export type RegisterAttendeesMutation = { __typename?: 'Mutation', registerAttendees?: { __typename?: 'RegisterAttendeesPayload', registration?: { __typename?: 'Registration', id: any } | null } | null };
 
+export type UpdateAttendeeEmailAndSendEmailMutationVariables = Exact<{
+  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>> | InputMaybe<AttendeePatch>>;
+}>;
+
+
+export type UpdateAttendeeEmailAndSendEmailMutation = { __typename?: 'Mutation', updateAttendeeEmailAndSendEmail?: { __typename?: 'UpdateAttendeeEmailAndSendEmailPayload', attendees?: Array<{ __typename?: 'Attendee', email?: string | null } | null> | null } | null };
+
 export type ScanAttendeeMutationVariables = Exact<{
   scanAttendeeInput: ScanAttendeeInput;
 }>;
@@ -3938,12 +3981,12 @@ export type GetAttendeeByIdQueryVariables = Exact<{
 
 export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null };
 
-export type AttendeesBySlugEventQueryVariables = Exact<{
-  slug: Scalars['String'];
+export type GetAttendeesWithoutMailByRegistrationIdQueryVariables = Exact<{
+  registrationId: Scalars['UUID'];
 }>;
 
 
-export type AttendeesBySlugEventQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendees: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }> } }> } }> } | null };
+export type GetAttendeesWithoutMailByRegistrationIdQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', civility: CivilityStatus, email?: string | null, firstname: string, id: any, lastname: string, isInscriptor?: boolean | null }> } | null };
 
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4151,6 +4194,15 @@ export const RegisterAttendeesDocument = gql`
   }
 }
     `;
+export const UpdateAttendeeEmailAndSendEmailDocument = gql`
+    mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]) {
+  updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
+    attendees {
+      email
+    }
+  }
+}
+    `;
 export const ScanAttendeeDocument = gql`
     mutation ScanAttendee($scanAttendeeInput: ScanAttendeeInput!) {
   scanAttendee(input: $scanAttendeeInput) {
@@ -4285,23 +4337,22 @@ export const GetAttendeeByIdDocument = gql`
   }
 }
     ${MyAttendeeFragmentDoc}`;
-export const AttendeesBySlugEventDocument = gql`
-    query AttendeesBySlugEvent($slug: String!) {
-  events(condition: {slug: $slug}) {
+export const GetAttendeesWithoutMailByRegistrationIdDocument = gql`
+    query GetAttendeesWithoutMailByRegistrationId($registrationId: UUID!) {
+  attendees(
+    condition: {registrationId: $registrationId, isInscriptor: false, email: null}
+  ) {
     nodes {
-      registrations {
-        nodes {
-          attendees {
-            nodes {
-              ...MyAttendee
-            }
-          }
-        }
-      }
+      civility
+      email
+      firstname
+      id
+      lastname
+      isInscriptor
     }
   }
 }
-    ${MyAttendeeFragmentDoc}`;
+    `;
 export const GetAllEventsDocument = gql`
     query GetAllEvents {
   events(orderBy: [CREATED_AT_DESC]) {
@@ -4513,6 +4564,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     RegisterAttendees(variables: RegisterAttendeesMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesMutation>(RegisterAttendeesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendees', 'mutation');
     },
+    UpdateAttendeeEmailAndSendEmail(variables?: UpdateAttendeeEmailAndSendEmailMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateAttendeeEmailAndSendEmailMutation>(UpdateAttendeeEmailAndSendEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateAttendeeEmailAndSendEmail', 'mutation');
+    },
     ScanAttendee(variables: ScanAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeeMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<ScanAttendeeMutation>(ScanAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ScanAttendee', 'mutation');
     },
@@ -4558,8 +4612,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     GetAttendeeById(variables: GetAttendeeByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByIdQuery>(GetAttendeeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeById', 'query');
     },
-    AttendeesBySlugEvent(variables: AttendeesBySlugEventQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AttendeesBySlugEventQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<AttendeesBySlugEventQuery>(AttendeesBySlugEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'AttendeesBySlugEvent', 'query');
+    GetAttendeesWithoutMailByRegistrationId(variables: GetAttendeesWithoutMailByRegistrationIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeesWithoutMailByRegistrationIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeesWithoutMailByRegistrationIdQuery>(GetAttendeesWithoutMailByRegistrationIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeesWithoutMailByRegistrationId', 'query');
     },
     GetAllEvents(variables?: GetAllEventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllEventsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllEventsQuery>(GetAllEventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllEvents', 'query');

@@ -2,7 +2,9 @@
 
 import { useReducer } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Camera, CheckIcon } from "lucide-react";
+import { Camera } from "lucide-react";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,6 +16,7 @@ import { ManuallyEnteringTicket } from "./steps/ManuallyEnteringTicket";
 import { ScanReader } from "./steps/ScanReader";
 import { ScanningTicket } from "./steps/ScanningTicket";
 import { Start } from "./steps/Start";
+
 
 export const Scanner = () => {
   const [state, dispatch] = useReducer(reducer, {
