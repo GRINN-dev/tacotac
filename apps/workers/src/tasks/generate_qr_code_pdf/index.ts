@@ -52,7 +52,7 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
               dynamicTemplateData: {
                 First_Name: row.firstname,
                 Link_email: `${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/rappel/mail/${row.registration_id}`,
-                Current_Year: dayjs(row.starts_at).format("YYYY"),
+                Current_Year: dayjs().format("YYYY"),
               },
             },
           },

@@ -1742,6 +1742,8 @@ export type Mutation = {
   scanAttendee?: Maybe<ScanAttendeePayload>;
   /** scan de tous les tickets offline */
   scanAttendeesOffline?: Maybe<ScanAttendeesOfflinePayload>;
+  /** Select event to retrieve all attendee and send email to all attendee and confirm donation */
+  sendEmailConfirmDonationByEventId?: Maybe<SendEmailConfirmDonationByEventIdPayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   /** Updates a single `Attendee` using its globally unique id and a patch. */
@@ -2023,6 +2025,12 @@ export type MutationScanAttendeeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationScanAttendeesOfflineArgs = {
   input: ScanAttendeesOfflineInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationSendEmailConfirmDonationByEventIdArgs = {
+  input: SendEmailConfirmDonationByEventIdInput;
 };
 
 
@@ -3081,6 +3089,17 @@ export enum RegistrationsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
+export type RowEventAttendeeConfirm = {
+  __typename?: 'RowEventAttendeeConfirm';
+  email?: Maybe<Scalars['String']>;
+  firstname?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  lastname?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  placeName?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
+};
+
 /** All input for the `scanAttendee` mutation. */
 export type ScanAttendeeInput = {
   /**
@@ -3135,6 +3154,29 @@ export type ScanAttendeesOfflinePayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+};
+
+/** All input for the `sendEmailConfirmDonationByEventId` mutation. */
+export type SendEmailConfirmDonationByEventIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** The output of our `sendEmailConfirmDonationByEventId` mutation. */
+export type SendEmailConfirmDonationByEventIdPayload = {
+  __typename?: 'SendEmailConfirmDonationByEventIdPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  rowEventAttendeeConfirms?: Maybe<Array<Maybe<RowEventAttendeeConfirm>>>;
 };
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
