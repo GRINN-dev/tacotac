@@ -50,9 +50,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const pathname = usePathname();
   const { register, handleSubmit, formState, control, watch, setValue } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
-  const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [selectedColor, setSelectedColor] = useState("#ffffff");
-
+  const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
+  const [displayColorPicker2, setDisplayColorPicker2] = useState(false);
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
 
@@ -65,7 +64,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     }
     data.id = id;
     data.patch.awardWinningAssoList = awardWinningList;
-    data.patch.color1 = sketchPickerColor.hex.substring(1);
+    data.patch.color1 = sketchPickerColor1.hex.substring(1);
+    data.patch.color2 = sketchPickerColor2.hex.substring(1);
     await sdk()
       .UpdateEventBranding({
         input: data,
@@ -91,50 +91,35 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     newList.splice(index, 1);
     setAwardWinningList(newList);
   };
-  const [background, setBackground] = useState("#fff");
-  const handleChangeComplete = (color) => {
-    setBackground(color.hex);
-  };
-  const [sketchPickerColor, setSketchPickerColor] = useState({
+
+  const [sketchPickerColor1, setSketchPickerColor1] = useState({
     hex: "#fff",
   });
-  const { hex } = sketchPickerColor;
+  const [sketchPickerColor2, setSketchPickerColor2] = useState({ hex: "#fff" });
+  const { hex: hex1 } = sketchPickerColor1;
+  const { hex: hex2 } = sketchPickerColor2;
 
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      {/* <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="color1">Couleur 1</Label>
-        <Input
-          type="text"
-          id="color1"
-          defaultValue={color1}
-          placeholder="color1"
-          {...register("patch.color1", {
-            required: "Un nom pour l'organisation est requis",
-          })}
-        />
-        {formState.errors?.patch?.color1 && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color1?.message}</p>
-        )}
-      </div> */}
       <div
-        onClick={() => setDisplayColorPicker(!displayColorPicker)}
-        className="flex items-center justify-around w-6/12 p-2 text-sm border rounded-md border-slate-300"
+        onClick={() => setDisplayColorPicker1(!displayColorPicker1)}
+        className="flex items-center justify-start p-2 text-sm border rounded-md cursor-pointer w-max border-slate-300"
       >
         Choisir couleur 1
         <div
           style={{
-            backgroundColor: hex,
+            backgroundColor: hex1,
             width: "30px",
             height: "30px",
             border: "2px solid white",
             borderRadius: "30px",
+            marginLeft: "10px",
           }}
         >
           {" "}
         </div>
       </div>
-      {displayColorPicker ? (
+      {displayColorPicker1 ? (
         <div className="mt-2 grid w-full items-center gap-1.5">
           <div className="">
             <SketchPicker
@@ -142,32 +127,52 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
                 required: "Couleur requise",
               })}
               defaultValue={color1}
-              onChange={(color) => {
-                setSketchPickerColor(color);
-                console.log("sketchcolor", sketchPickerColor);
+              onChange={(color1) => {
+                setSketchPickerColor1(color1);
+                console.log("sketchcolor", sketchPickerColor1);
                 console.log("watch", watch("patch.color1"));
               }}
-              color={sketchPickerColor}
+              color={sketchPickerColor1}
+            />
+          </div>
+        </div>
+      ) : null}
+      <div
+        onClick={() => setDisplayColorPicker2(!displayColorPicker2)}
+        className="flex items-center justify-start p-2 mt-4 text-sm border rounded-md cursor-pointer w-max border-slate-300"
+      >
+        Choisir couleur 2
+        <div
+          style={{
+            backgroundColor: hex2,
+            width: "30px",
+            height: "30px",
+            border: "2px solid white",
+            borderRadius: "30px",
+            marginLeft: "10px",
+          }}
+        >
+          {" "}
+        </div>
+      </div>
+      {displayColorPicker2 ? (
+        <div className="mt-4 grid w-full items-center gap-1.5">
+          <div className="">
+            <SketchPicker
+              {...register("patch.color2", {
+                required: "Couleur requise",
+              })}
+              defaultValue={color2}
+              onChange={(color2) => {
+                setSketchPickerColor2(color2);
+                console.log("sketchcolor", sketchPickerColor2);
+              }}
+              color={sketchPickerColor2}
             />
           </div>
         </div>
       ) : null}
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="color2">Couleur 2</Label>
-        <Input
-          type="text"
-          id="color2"
-          defaultValue={color2}
-          placeholder="color2"
-          {...register("patch.color2", {
-            required: "Un nom pour l'organisation est requis",
-          })}
-        />
-        {formState.errors?.patch?.color2 && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
-        )}
-      </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Controller
@@ -243,9 +248,9 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           type="text"
           id="shortText"
           defaultValue={shortText}
-          placeholder="type url here"
+          placeholder="Entrez un texte court ici"
           {...register("patch.shortText", {
-            required: "Un nom pour l'organisation est requis",
+            required: "Un texte est requis",
           })}
         />
         {formState.errors?.patch?.shortText && (
