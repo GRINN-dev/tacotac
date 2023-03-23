@@ -1715,8 +1715,6 @@ enum AttendeesOrderBy {
   ZIP_CODE_DESC
   STATUS_ASC
   STATUS_DESC
-  IS_INSCRIPTOR_ASC
-  IS_INSCRIPTOR_DESC
   SIGN_CODE_ASC
   SIGN_CODE_DESC
   CREATED_AT_ASC
@@ -1753,9 +1751,6 @@ input AttendeeCondition {
   """Checks for equality with the object’s `status` field."""
   status: EventStatus
 
-  """Checks for equality with the object’s `isInscriptor` field."""
-  isInscriptor: Boolean
-
   """Checks for equality with the object’s `signCode` field."""
   signCode: String
 
@@ -1790,9 +1785,6 @@ input AttendeeFilter {
 
   """Filter by the object’s `status` field."""
   status: EventStatusFilter
-
-  """Filter by the object’s `isInscriptor` field."""
-  isInscriptor: BooleanFilter
 
   """Filter by the object’s `signCode` field."""
   signCode: StringFilter
@@ -1895,48 +1887,6 @@ input EventStatusFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: EventStatus
-}
-
-"""
-A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
-"""
-input BooleanFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Boolean
-
-  """Not equal to the specified value."""
-  notEqualTo: Boolean
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Boolean
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Boolean
-
-  """Included in the specified list."""
-  in: [Boolean!]
-
-  """Not included in the specified list."""
-  notIn: [Boolean!]
-
-  """Less than the specified value."""
-  lessThan: Boolean
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Boolean
-
-  """Greater than the specified value."""
-  greaterThan: Boolean
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Boolean
 }
 
 """A `Attendee` edge in the connection."""
@@ -2211,6 +2161,48 @@ input UserFilter {
 
   """Negates the expression."""
   not: UserFilter
+}
+
+"""
+A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
+"""
+input BooleanFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Boolean
+
+  """Not equal to the specified value."""
+  notEqualTo: Boolean
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Boolean
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Boolean
+
+  """Included in the specified list."""
+  in: [Boolean!]
+
+  """Not included in the specified list."""
+  notIn: [Boolean!]
+
+  """Less than the specified value."""
+  lessThan: Boolean
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Boolean
+
+  """Greater than the specified value."""
+  greaterThan: Boolean
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Boolean
 }
 
 """
@@ -2702,12 +2694,6 @@ type Mutation {
     """
     input: ScanAttendeesOfflineInput!
   ): ScanAttendeesOfflinePayload
-  updateAttendeeEmailAndSendEmail(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateAttendeeEmailAndSendEmailInput!
-  ): UpdateAttendeeEmailAndSendEmailPayload
   generatePresignedPost(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -4566,31 +4552,6 @@ input ScanAttendeesOfflineInput {
   """
   clientMutationId: String
   ticketPayloads: [TicketPayloadInput]
-}
-
-"""The output of our `updateAttendeeEmailAndSendEmail` mutation."""
-type UpdateAttendeeEmailAndSendEmailPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  attendees: [Attendee]
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the `updateAttendeeEmailAndSendEmail` mutation."""
-input UpdateAttendeeEmailAndSendEmailInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  attendees: [AttendeePatch]
 }
 
 type GeneratePresignedPostPayload {

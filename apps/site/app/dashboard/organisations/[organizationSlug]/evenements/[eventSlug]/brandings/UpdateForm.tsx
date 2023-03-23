@@ -48,7 +48,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const { register, handleSubmit, formState, control, watch, setValue } = useForm<UpdateEventBrandingInput>();
+  const { register, handleSubmit, formState, control, watch } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
   const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
   const [displayColorPicker2, setDisplayColorPicker2] = useState(false);
@@ -131,8 +131,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
               defaultValue={color1}
               onChange={(color1) => {
                 setSketchPickerColor1(color1);
-                console.log("sketchcolor", sketchPickerColor1);
-                console.log("watch", watch("patch.color1"));
               }}
               color={sketchPickerColor1}
             />
@@ -167,7 +165,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
               defaultValue={color2}
               onChange={(color2) => {
                 setSketchPickerColor2(color2);
-                console.log("sketchcolor", sketchPickerColor2);
               }}
               color={sketchPickerColor2}
             />

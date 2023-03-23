@@ -12,6 +12,7 @@
   @font-face {
     font-family: "Montserrat Regular";
     src: local("Montserrat Regular"),
-      url(/apps/site/public/fonts/Montserrat-Regular.woff) format("woff");
+      url(/apps/site/public/fonts/Montserrat-Regular.woff) format("woff"),
+      url(/apps/site/public/fonts/Montserrat-Regular.woff2) format("woff2");
   }
 }

@@ -87,7 +87,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
     }
   });
   return (
-    <div className="flex flex-col w-full">
+    <div style={{ display: "flex", width: "100%", flexDirection: "column", fontFamily: `${eventBranding.font}` }}>
       <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
 
       <div className={showConfirmation === true ? "hidden" : "flex w-full flex-col"}>
@@ -180,10 +180,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                             placeholder="jeanned@mail.com"
                             {...register(`attendees.${i}.email`, {
                               required: "Un email pour le participant est requis",
-                               pattern: {
+                              pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                 message: "Merci d'entrer un email valide",
-                              }
+                              },
                             })}
                           />
                           {formState.errors?.attendees?.[i].email && (
@@ -294,12 +294,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                           id="email"
                           placeholder="jeanned@mail.com"
                           className="col-span-2"
-                          {...register(`attendees.${i}.email`,{
-                            setValueAs: v => v?v:null,
-                             pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: "Merci d'entrer un email valide",
-                          }})}
+                          {...register(`attendees.${i}.email`, {
+                            setValueAs: (v) => (v ? v : null),
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                              message: "Merci d'entrer un email valide",
+                            },
+                          })}
                         />
                         {formState.errors?.attendees?.[i]?.email && (
                           <p className="text-sm text-red-800 dark:text-red-300">
@@ -382,11 +383,11 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                       className="col-span-2"
                       placeholder="jeanned@mail.com"
                       {...register(`attendees.${i}.email`, {
-                        setValueAs: v => v?v:null,
+                        setValueAs: (v) => (v ? v : null),
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                           message: "Merci d'entrer un email valide",
-                        }
+                        },
                       })}
                     />
                     {formState.errors?.attendees?.[i].email && (
