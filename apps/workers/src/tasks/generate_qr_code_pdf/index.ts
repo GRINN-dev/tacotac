@@ -13,10 +13,11 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
   const { rows: attendees } = await withPgClient(pgClient =>
     pgClient.query(
       ` SELECT atts.*,evts.id as event_id, evts.name, evts.place_name, 
-      evts.address_line_1, evts.starts_at, evts.ends_at
+      evts.address_line_1, evts.starts_at, evts.ends_at, evtsb.header_mail_name, evtsb.header_mail_contact
       FROM publ.attendees atts
       inner join publ.registrations regs on regs.id = atts.registration_id
-      INNER JOIN publ.events evts ON evts.id = regs.event_id
+      inner join publ.events evts on evts.id = regs.event_id
+      inner join publ.event_brandings evtsb on evtsb.event_id = evts.id
       WHERE atts.registration_id = $1;`,
       [registrationId]
     )
@@ -47,7 +48,10 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
           sendEmailPayload: {
             mailData: {
               to: attendees.at(0).email,
-              from: { name: "L'équipe", email: "contact@obole.eu" },
+              from: {
+                name: row.header_mail_name,
+                email: row.header_mail_contact,
+              },
               templateId: EMAIL_MISSING,
               dynamicTemplateData: {
                 First_Name: row.firstname,

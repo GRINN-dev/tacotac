@@ -1418,6 +1418,8 @@ type EventBranding implements Node {
   richText: String
   shortText: String
   awardWinningAssoList: [String]
+  headerMailName: String
+  headerMailContact: String
   createdAt: Datetime!
   updatedAt: Datetime!
 
@@ -2837,6 +2839,8 @@ input EventBrandingInput {
   richText: String
   shortText: String
   awardWinningAssoList: [String]
+  headerMailName: String
+  headerMailContact: String
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -3299,6 +3303,8 @@ input EventBrandingPatch {
   richText: String
   shortText: String
   awardWinningAssoList: [String]
+  headerMailName: String
+  headerMailContact: String
   createdAt: Datetime
   updatedAt: Datetime
 }

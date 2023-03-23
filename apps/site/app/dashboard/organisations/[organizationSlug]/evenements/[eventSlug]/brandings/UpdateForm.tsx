@@ -7,22 +7,17 @@ import { useToast } from "@/hooks/use-toast";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn, uploadToS3 } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+
 
 interface IUpdateBrandingEvent extends ExtractType<ExtractType<GetEventByIdQuery, "event">, "eventBranding"> {}
 
@@ -36,6 +31,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   richText,
   shortText,
   awardWinningAssoList,
+  headerMailName,
+  headerMailContact,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
@@ -154,14 +151,14 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           />
           {files.length > 0 ? (
             <img
-              className="w-1/2 aspect-[3/2] rounded-2xl object-cover"
+              className="aspect-[3/2] w-1/2 rounded-2xl object-cover"
               src={URL.createObjectURL(files[0])}
               alt="preview logo"
             />
           ) : logo ? (
-            <img className="w-1/2 aspect-[3/2] rounded-2xl object-cover" src={logo} alt="logo" />
+            <img className="aspect-[3/2] w-1/2 rounded-2xl object-cover" src={logo} alt="logo" />
           ) : (
-            <div className="w-1/2 aspect-[3/2] rounded-2xl object-cover border border-dashed"></div>
+            <div className="aspect-[3/2] w-1/2 rounded-2xl border border-dashed object-cover"></div>
           )}
         </div>
 
@@ -204,7 +201,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
-        <ul className="pl-4 list-disc">
+        <ul className="list-disc pl-4">
           {awardWinningAssoList?.map((awardWinning) => (
             <li>{awardWinning}</li>
           ))}
@@ -222,7 +219,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             onChange={(evt) => setAwardWinning(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
             onClick={() => {
               if (awardWinning) setAwardWinningList([...awardWinningList, awardWinning]);
               setAwardWinning("");
@@ -234,20 +231,50 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
 
         {awardWinningList?.map((awardWinning, index) => (
           <div
-            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
             onClick={() => removeItemClick(index)}
           >
             {awardWinning} <MinusCircle className="ml-2" />
           </div>
         ))}
       </div>
-      <div className="flex gap-2 mt-8">
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="headerMailName">Header Mail - Intitulé</Label>
+        <Input
+          type="text"
+          id="headerMailName"
+          defaultValue={headerMailName}
+          placeholder="Saisir l'intitulé du header"
+          {...register("patch.headerMailName", {
+            required: "Un nom pour l'organisation est requis",
+          })}
+        />
+        {formState.errors?.patch?.headerMailName && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="headerMailContact">Header Mail - Contact</Label>
+        <Input
+          type="email"
+          id="headerMailContact"
+          defaultValue={headerMailContact}
+          placeholder="mon@email.com"
+          {...register("patch.headerMailContact", {
+            required: "Un email est requis",
+          })}
+        />
+        {formState.errors?.patch?.headerMailContact && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
+        )}
+      </div>
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
