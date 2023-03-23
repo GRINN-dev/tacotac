@@ -3914,6 +3914,13 @@ export type RegisterAttendeesMutationVariables = Exact<{
 
 export type RegisterAttendeesMutation = { __typename?: 'Mutation', registerAttendees?: { __typename?: 'RegisterAttendeesPayload', registration?: { __typename?: 'Registration', id: any } | null } | null };
 
+export type SendEmailAllAttendeeEventMutationVariables = Exact<{
+  eventId: Scalars['UUID'];
+}>;
+
+
+export type SendEmailAllAttendeeEventMutation = { __typename?: 'Mutation', sendEmailAllAttendeeEvent?: { __typename?: 'SendEmailAllAttendeeEventPayload', clientMutationId?: string | null, rowEventAttendees?: Array<{ __typename?: 'RowEventAttendee', id?: string | null, email?: string | null } | null> | null } | null };
+
 export type UpdateAttendeeEmailAndSendEmailMutationVariables = Exact<{
   attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>> | InputMaybe<AttendeePatch>>;
 }>;
@@ -3934,13 +3941,6 @@ export type ScanAttendeesOfflineMutationVariables = Exact<{
 
 
 export type ScanAttendeesOfflineMutation = { __typename?: 'Mutation', scanAttendeesOffline?: { __typename?: 'ScanAttendeesOfflinePayload', clientMutationId?: string | null, attendees?: Array<{ __typename?: 'Attendee', id: any } | null> | null } | null };
-
-export type SendEmailAllAttendeeEventMutationVariables = Exact<{
-  eventId: Scalars['UUID'];
-}>;
-
-
-export type SendEmailAllAttendeeEventMutation = { __typename?: 'Mutation', sendEmailAllAttendeeEvent?: { __typename?: 'SendEmailAllAttendeeEventPayload', clientMutationId?: string | null, rowEventAttendees?: Array<{ __typename?: 'RowEventAttendee', id?: string | null, email?: string | null } | null> | null } | null };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -4032,7 +4032,7 @@ export type GetAttendeeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null } | null };
+export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null } | null };
 
 export type GetAttendeesWithoutMailByRegistrationIdQueryVariables = Exact<{
   registrationId: Scalars['UUID'];
@@ -4081,7 +4081,7 @@ export type GetEventBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null }>, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, organizationId: any, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null }>, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetEventByEventSlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -4241,6 +4241,17 @@ export const RegisterAttendeesDocument = gql`
   }
 }
     `;
+export const SendEmailAllAttendeeEventDocument = gql`
+    mutation SendEmailAllAttendeeEvent($eventId: UUID!) {
+  sendEmailAllAttendeeEvent(input: {eventId: $eventId}) {
+    clientMutationId
+    rowEventAttendees {
+      id
+      email
+    }
+  }
+}
+    `;
 export const UpdateAttendeeEmailAndSendEmailDocument = gql`
     mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]) {
   updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
@@ -4267,17 +4278,6 @@ export const ScanAttendeesOfflineDocument = gql`
       id
     }
     clientMutationId
-  }
-}
-    `;
-export const SendEmailAllAttendeeEventDocument = gql`
-    mutation SendEmailAllAttendeeEvent($eventId: UUID!) {
-  sendEmailAllAttendeeEvent(input: {eventId: $eventId}) {
-    clientMutationId
-    rowEventAttendees {
-      id
-      email
-    }
   }
 }
     `;
@@ -4615,6 +4615,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     RegisterAttendees(variables: RegisterAttendeesMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesMutation>(RegisterAttendeesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendees', 'mutation');
     },
+    SendEmailAllAttendeeEvent(variables: SendEmailAllAttendeeEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SendEmailAllAttendeeEventMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SendEmailAllAttendeeEventMutation>(SendEmailAllAttendeeEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SendEmailAllAttendeeEvent', 'mutation');
+    },
     UpdateAttendeeEmailAndSendEmail(variables?: UpdateAttendeeEmailAndSendEmailMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateAttendeeEmailAndSendEmailMutation>(UpdateAttendeeEmailAndSendEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateAttendeeEmailAndSendEmail', 'mutation');
     },
@@ -4623,9 +4626,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     ScanAttendeesOffline(variables: ScanAttendeesOfflineMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeesOfflineMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<ScanAttendeesOfflineMutation>(ScanAttendeesOfflineDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ScanAttendeesOffline', 'mutation');
-    },
-    SendEmailAllAttendeeEvent(variables: SendEmailAllAttendeeEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SendEmailAllAttendeeEventMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<SendEmailAllAttendeeEventMutation>(SendEmailAllAttendeeEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SendEmailAllAttendeeEvent', 'mutation');
     },
     Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login', 'mutation');
