@@ -12,6 +12,9 @@
   /* ascii code for the ellipsis character */
   width: 0px;
 }
+.text {
+  font-family: "Montserrat Regular", sans-serif;
+}
 @layer base {
   @font-face {
     font-family: "Roboto Regular";

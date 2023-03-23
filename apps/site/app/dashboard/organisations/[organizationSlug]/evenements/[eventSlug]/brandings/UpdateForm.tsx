@@ -1,11 +1,12 @@
 "use client";
 
-import { FC, useEffect, useState, useTransition } from "react";
+import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@/../../@tacotacIO/codegen/dist";
 import { useToast } from "@/hooks/use-toast";
+import { Inter as FontSans } from "@next/font/google";
 import { MinusCircle, PlusCircle } from "lucide-react";
-import { ChromePicker, SketchPicker } from "react-color";
+import { SketchPicker } from "react-color";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";

@@ -2,12 +2,15 @@
 
 import { FC, useState, useTransition } from "react";
 import Script from "next/script";
+
+import "@/styles/globals.css";
 import {
   CivilityStatus,
   EventStatus,
   GetEventBySlugQuery,
   RegisterAttendeesInput,
 } from "@/../../@tacotacIO/codegen/dist";
+import { Montserrat } from "@next/font/google";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -19,6 +22,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: "400",
+});
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
 export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
@@ -29,9 +36,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
 
-  const blue = "bg-blue-500";
-  const red = "bg-red-500";
-  const color = eventBranding?.color1 === "#023047" ? blue : red;
   const { register, handleSubmit, formState, control, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
       attendees: [
@@ -87,7 +91,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
     }
   });
   return (
-    <div style={{ display: "flex", width: "100%", flexDirection: "column", fontFamily: `${eventBranding.font}` }}>
+    <div className="flex flex-col w-full">
+      {/* style={{ display: "flex", width: "100%", flexDirection: "column", fontFamily: `${eventBranding.font}` }} */}
       <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
 
       <div className={showConfirmation === true ? "hidden" : "flex w-full flex-col"}>
@@ -487,8 +492,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
             })
           )}
 
-          <div className="flex items-center gap-2 mt-8">
+          <div className="flex items-center gap-2 mt-8 styles.text">
             <button
+              className={montserrat.className}
               style={{
                 backgroundColor: `#${eventBranding.color1}`,
                 borderRadius: "0.5rem",
@@ -539,7 +545,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
       {showConfirmation === true ? (
         <div className="flex flex-col items-center justify-center mt-4 text-xl">
           <CheckCircle2 className="w-16 h-16 mb-8" />
-          <h2 className="font-RobotoRegular">Votre inscription est terminée !</h2>
+          <h2 className="">Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
             Un email de confirmation pour votre inscription a été envoyé à {email} . Vérifiez vos courriers indésirables
             si vous ne le recevez pas.
