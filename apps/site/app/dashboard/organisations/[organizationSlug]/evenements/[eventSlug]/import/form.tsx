@@ -60,8 +60,6 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         }
         setCsvUploadRender(results.data);
 
-        console.log("🚀 ~ file: form.tsx:76 ~ handleCsvUpload ~ results.data:", results.data);
-
         const resultsRewrite = results.data.map((result: ICsv) => {
           return {
             ...result,
