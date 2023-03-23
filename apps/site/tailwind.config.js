@@ -15,8 +15,6 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-        RobotoRegular: ["Roboto Regular", "sans-serif"],
-        MontserratRegular: ["var(--font-montserrat)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
