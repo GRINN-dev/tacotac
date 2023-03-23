@@ -41,3 +41,29 @@ mutation SendEmailAllAttendeeEvent($eventId: UUID!) {
     }
   }
 }
+
+mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]) {
+  updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
+    attendees {
+      email
+      
+    }
+  }
+}
+mutation ScanAttendee($scanAttendeeInput: ScanAttendeeInput!) {
+  scanAttendee(input: $scanAttendeeInput) {
+    clientMutationId
+    attendee {
+      id
+    }
+  }
+}
+
+mutation ScanAttendeesOffline($input: ScanAttendeesOfflineInput!) {
+  scanAttendeesOffline(input: $input) {
+    attendees {
+      id
+    }
+    clientMutationId
+  }
+}

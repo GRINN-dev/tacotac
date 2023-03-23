@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { PlusSquare, Send } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
 import { SendAllEmail } from "./SendAllEmail";
+
 
 const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
@@ -64,7 +67,7 @@ const AttendeesPage = async ({
       ),
     })
   );
-  //pour pr
+ 
   return (
     <section className="container grid w-full items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="mx-auto flex flex-row w-full max-w-3xl items-center justify-between gap-2">
