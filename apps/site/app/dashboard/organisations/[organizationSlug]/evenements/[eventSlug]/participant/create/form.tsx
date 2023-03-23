@@ -2,14 +2,11 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  CivilityStatus,
-  EventStatus,
-  GetEventByIdQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
+import { CivilityStatus, EventStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -18,7 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface iCreateAttendeeForm extends ExtractType<GetEventByIdQuery, "event"> {}
+
+interface iCreateAttendeeForm extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
 export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -148,7 +146,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
               message: "Merci d'entrer un email valide",
-            }
+            },
           })}
         />
         {formState.errors?.attendees?.at(0)?.email && (

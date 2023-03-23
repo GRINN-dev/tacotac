@@ -19,7 +19,7 @@ const InfosEventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
           </h1>
         </div>
         <div className="flex items-baseline w-full max-w-3xl gap-2 mx-auto">
-          <UpdateEventForm logsList={[]} {...eventBySlug} />
+          <UpdateEventForm {...eventBySlug} />
         </div>
       </section>
     </>
