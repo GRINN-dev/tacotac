@@ -36,11 +36,10 @@ interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {
 export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [email, setEmail] = useState("");
+  const [attendeeEmail, setAttendeeEmail] = useState("");
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-
   const { register, handleSubmit, formState, control, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
       attendees: [
@@ -76,7 +75,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
     const { isValidCaptcha } = await validCaptcha();
     if (isValid && isValidCaptcha) {
       setIsLoading(true);
-      setEmail(data?.attendees?.[0].email);
+      setAttendeeEmail(data?.attendees?.[0].email);
       data.eventId = id;
       await sdk()
         .RegisterAttendees({
@@ -95,9 +94,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
       console.log("invalide");
     }
   });
+  const { nom, prenom, email, telephone, zipcode } = eventBranding?.placeholder || {};
+
   return (
     <div className="flex flex-col w-full">
-      {/* style={{ display: "flex", width: "100%", flexDirection: "column", fontFamily: `${eventBranding.font}` }} */}
       <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
 
       <div className={showConfirmation === true ? "hidden" : "flex w-full flex-col"}>
@@ -187,7 +187,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                             type="text"
                             id="email"
                             className="col-span-2"
-                            placeholder={eventBranding?.placeholder}
+                            placeholder={eventBranding?.placeholder?.email}
                             {...register(`attendees.${i}.email`, {
                               required: "Un email pour le participant est requis",
                               pattern: {
@@ -210,7 +210,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                             type="number"
                             id="phoneNumber"
                             className="col-span-2"
-                            placeholder="Entrez un numéro de téléphone"
+                            placeholder={eventBranding?.placeholder?.telephone}
                             {...register(`attendees.${i}.phoneNumber`, {
                               required: "Un téléphone pour le participant est requis",
                             })}
@@ -356,7 +356,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                     <Input
                       type="text"
                       id="lastname"
-                      placeholder="Dupond"
+                      placeholder={nom}
                       {...register(`attendees.${i}.lastname`, {
                         required: "Un nom pour le participant est requis",
                       })}
@@ -373,7 +373,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                     <Input
                       type="text"
                       id="firstname"
-                      placeholder="Jeanne"
+                      placeholder={prenom}
                       {...register(`attendees.${i}.firstname`, {
                         required: "Un prénom pour le participant est requis",
                       })}
@@ -391,7 +391,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                       type="text"
                       id="email"
                       className="col-span-2"
-                      placeholder={eventBranding.placeholder}
+                      placeholder={email}
                       {...register(`attendees.${i}.email`, {
                         setValueAs: (v) => (v ? v : null),
                         pattern: {
@@ -412,7 +412,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                       type="number"
                       id="phoneNumber"
                       className="col-span-2"
-                      placeholder="Entrez un numéro de téléphone"
+                      placeholder={telephone}
                       {...register(`attendees.${i}.phoneNumber`, {
                         required: "Un téléphone pour le participant est requis",
                       })}
@@ -428,7 +428,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                     <Input
                       type="number"
                       id="zipCode"
-                      placeholder="44000"
+                      placeholder={zipcode}
                       className="col-span-2"
                       {...register(`attendees.${i}.zipCode`, {
                         required: "Un code postal pour le participant est requis",
@@ -554,8 +554,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
           <CheckCircle2 className="w-16 h-16 mb-8" />
           <h2 className="">Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
-            Un email de confirmation pour votre inscription a été envoyé à {email} . Vérifiez vos courriers indésirables
-            si vous ne le recevez pas.
+            Un email de confirmation pour votre inscription a été envoyé à {attendeeEmail} . Vérifiez vos courriers
+            indésirables si vous ne le recevez pas.
           </p>
           <div className="flex items-center justify-between">
             <button

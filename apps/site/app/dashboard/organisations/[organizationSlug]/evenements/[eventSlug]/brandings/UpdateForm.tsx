@@ -69,7 +69,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     data.patch.awardWinningAssoList = awardWinningList;
     data.patch.color1 = sketchPickerColor1.hex.substring(1);
     data.patch.color2 = sketchPickerColor2.hex.substring(1);
-    data.patch.placeholder = placeholderEmail;
+    data.patch.placeholder = jsonData;
     await sdk()
       .UpdateEventBranding({
         input: data,
@@ -95,16 +95,26 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     newList.splice(index, 1);
     setAwardWinningList(newList);
   };
-
+  const [jsonData, setJsonData] = useState({
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+    zipcode: "",
+  });
   const [sketchPickerColor1, setSketchPickerColor1] = useState({
     hex: color2,
   });
   const [sketchPickerColor2, setSketchPickerColor2] = useState({ hex: color1 });
   const { hex: hex1 } = sketchPickerColor1;
   const { hex: hex2 } = sketchPickerColor2;
-  const handleSetPlaceholder = (e) => {
-    const emailValue = e.currentTarget.value;
-    setPlaceholderEmail(emailValue);
+
+  const handleJsonChange = (e) => {
+    const { name, value } = e.target;
+    setJsonData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
@@ -303,16 +313,69 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           </div>
         ))}
       </div>
+      <div className="my-4">
+        <Label htmlFor="placeholders">Placeholders</Label>
+      </div>
+
+      <div>
+        <Label htmlFor="placeholder-name">Placeholder nom</Label>
+      </div>
+      <div>
+        <Input
+          className="mb-4"
+          type="text"
+          id="nom"
+          name="nom"
+          placeholder={jsonData.nom}
+          onChange={handleJsonChange}
+        />
+      </div>
+      <div>
+        <Label htmlFor="placeholder-prenom">Placeholder prénom</Label>
+      </div>
+      <div>
+        <Input
+          className="mb-4"
+          type="text"
+          id="prenom"
+          name="prenom"
+          placeholder={jsonData.prenom}
+          onChange={handleJsonChange}
+        />
+      </div>
+      <div>
+        <Label htmlFor="placeholder-phone">Placeholder téléphone</Label>
+      </div>
+      <Input
+        className="mb-4"
+        type="tel"
+        id="telephone"
+        name="telephone"
+        placeholder={jsonData.telephone}
+        onChange={handleJsonChange}
+      />
+      <div>
+        <Label htmlFor="placeholder-zip">Placeholder code postal</Label>
+      </div>
+      <Input
+        className="mb-4"
+        type="text"
+        id="zipcode"
+        name="zipcode"
+        placeholder={jsonData.zipcode}
+        onChange={handleJsonChange}
+      />
       <div>
         <Label htmlFor="placeholder-email">Placeholder email</Label>
       </div>
       <div>
         <Input
-          type="text"
-          id="placeholderEmail"
-          value={placeholderEmail}
-          placeholder="Saisir un placeholder pour l'email"
-          onChange={handleSetPlaceholder}
+          className="mb-4"
+          type="email"
+          id="email"
+          name="email"
+          placeholder={jsonData.email}
+          onChange={handleJsonChange}
         />
       </div>
       <div className="flex gap-2 mt-8">
