@@ -4,7 +4,6 @@ import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@/../../@tacotacIO/codegen/dist";
 import { useToast } from "@/hooks/use-toast";
-import { Inter as FontSans } from "@next/font/google";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { SketchPicker } from "react-color";
 import { Controller, useForm } from "react-hook-form";
@@ -15,15 +14,7 @@ import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 interface IUpdateBrandingEvent extends ExtractType<ExtractType<GetEventByIdQuery, "event">, "eventBranding"> {}
@@ -43,7 +34,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
-  const [placeholderEmail, setPlaceholderEmail] = useState(placeholder);
   const [files, setFiles] = useState<File[]>([]);
   const [awardWinningList, setAwardWinningList] = useState<string[]>(awardWinningAssoList || []);
   const [isTransitionning, startTransition] = useTransition();
@@ -51,7 +41,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const { register, handleSubmit, formState, control, watch } = useForm<UpdateEventBrandingInput>();
+  const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
   const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
   const [displayColorPicker2, setDisplayColorPicker2] = useState(false);

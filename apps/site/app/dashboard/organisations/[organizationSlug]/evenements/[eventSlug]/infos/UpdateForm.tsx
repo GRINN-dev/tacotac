@@ -2,7 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventByIdQuery, GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";

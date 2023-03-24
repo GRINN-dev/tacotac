@@ -117,7 +117,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                       <Controller
                         name={`attendees.${i}.civility`}
                         control={control}
-                        render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+                        render={({ field: { onChange }, fieldState: { error } }) => (
                           <>
                             <Select onValueChange={onChange}>
                               <SelectTrigger className="w-[180px]">
@@ -249,7 +249,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                             name={"attendee.hearAbout"}
                             control={control}
                             {...register(`attendees.${i}.hearAbout`)}
-                            render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange }, fieldState: { error } }) => (
                               <>
                                 <Select onValueChange={onChange}>
                                   <SelectTrigger className="my-4">
@@ -501,7 +501,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
             <button
               className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
               style={{
-                // `${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`
                 backgroundColor: `#${eventBranding.color1}`,
                 borderRadius: "0.5rem",
                 fontSize: "0.875rem",
