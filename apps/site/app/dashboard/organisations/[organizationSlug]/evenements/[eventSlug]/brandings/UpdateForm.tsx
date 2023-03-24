@@ -38,6 +38,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   richText,
   shortText,
   awardWinningAssoList,
+  headerMailName,
+  headerMailContact,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
@@ -54,7 +56,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
   const [displayColorPicker2, setDisplayColorPicker2] = useState(false);
 
-  console.log("test");
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
 
@@ -227,14 +228,14 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           />
           {files.length > 0 ? (
             <img
-              className="w-1/2 aspect-[3/2] rounded-2xl object-cover"
+              className="aspect-[3/2] w-1/2 rounded-2xl object-cover"
               src={URL.createObjectURL(files[0])}
               alt="preview logo"
             />
           ) : logo ? (
-            <img className="w-1/2 aspect-[3/2] rounded-2xl object-cover" src={logo} alt="logo" />
+            <img className="aspect-[3/2] w-1/2 rounded-2xl object-cover" src={logo} alt="logo" />
           ) : (
-            <div className="w-1/2 aspect-[3/2] rounded-2xl object-cover border border-dashed"></div>
+            <div className="aspect-[3/2] w-1/2 rounded-2xl border border-dashed object-cover"></div>
           )}
         </div>
 
@@ -276,10 +277,20 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
+
         <ul className="pl-4 list-disc">
-          {awardWinningAssoList?.map((awardWinning) => (
-            <li>{awardWinning}</li>
-          ))}
+          {awardWinningList.length > 0
+            ? awardWinningList?.map((awardWinning, index) => (
+                <li key={awardWinning + index}>
+                  <div
+                    className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+                    onClick={() => removeItemClick(index)}
+                  >
+                    {awardWinning} <MinusCircle className="ml-2" />
+                  </div>
+                </li>
+              ))
+            : "Aucun lauréat pour le moment"}
         </ul>
 
         <Label className="mt-2" htmlFor="awardWinningAssoList">
@@ -305,15 +316,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             Ajouter <PlusCircle className="ml-2" />
           </div>
         </div>
-
-        {awardWinningList?.map((awardWinning, index) => (
-          <div
-            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
-            onClick={() => removeItemClick(index)}
-          >
-            {awardWinning} <MinusCircle className="ml-2" />
-          </div>
-        ))}
       </div>
       <div className="my-4">
         <Label htmlFor="placeholders" className="font-semibold">
@@ -386,6 +388,37 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           placeholder={jsonData.email}
           onChange={handleJsonChange}
         />
+      </div>
+
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="headerMailName">Header Mail - Intitulé</Label>
+        <Input
+          type="text"
+          id="headerMailName"
+          defaultValue={headerMailName}
+          placeholder="Saisir l'intitulé du header"
+          {...register("patch.headerMailName", {
+            required: "Un nom pour l'organisation est requis",
+          })}
+        />
+        {formState.errors?.patch?.headerMailName && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="headerMailContact">Header Mail - Contact</Label>
+        <Input
+          type="email"
+          id="headerMailContact"
+          defaultValue={headerMailContact}
+          placeholder="mon@email.com"
+          {...register("patch.headerMailContact", {
+            required: "Un email est requis",
+          })}
+        />
+        {formState.errors?.patch?.headerMailContact && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
+        )}
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>

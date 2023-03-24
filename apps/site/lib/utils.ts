@@ -42,7 +42,7 @@ export const uploadToS3 = async (file: File): Promise<string> => {
   // poster dans s3 l'url présignée générée
 
   const formData = new FormData();
-  formData?.append("Content-type", file.type);
+  formData.append("Content-type", file?.type);
   Object.entries(generatePresignedPost.fields).forEach(([k, value]: any) => {
     formData.append(k, value);
   });

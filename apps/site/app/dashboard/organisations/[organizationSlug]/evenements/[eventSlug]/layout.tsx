@@ -26,7 +26,7 @@ export default function AttendeesLayout({
   return (
     <>
       <nav className="flex" aria-label="Breadcrumb">
-        <ol role="list" className="flex space-x-4 rounded-md  shadow">
+        <ol role="list" className="flex space-x-4 rounded-md px-6  shadow">
           <li className="flex">
             <div className="flex items-center">
               <ChevronRight className="h-3 w-3 shrink-0" aria-hidden="true" />

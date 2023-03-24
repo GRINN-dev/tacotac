@@ -15,7 +15,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 
-interface iUpdateEvent extends ExtractType<GetEventByIdQuery, "event"> {}
+interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
+
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webhooks }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
@@ -125,6 +126,43 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
               ))
             : "Aucun webhook pour l'instant"}
         </ul>
+
+        <Label className="mt-2" htmlFor="webhookList">
+          Ajouter un webhook (Zapier, Maker, etc.)
+          <div className="p-4 my-4 border rounded-lg">
+            <div className="flex">
+              <div className="shrink-0">
+                <AlertTriangle className="w-5 h-5 text-red-200" aria-hidden="true" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-200">Attention </h3>
+                <div className="mt-2 text-sm ">
+                  <p>{`Le webhook doit recevoir les données qu'on lui envoi, et non un webhook de demande d'infos.`}</p>
+                  <p className="italic">{`L'url doit ressembler à ceci : https://hook.eu1.make.com/m71ivakh5nnwknu1zwmdefle1u2c1qjs`}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Label>
+        <div className="flex space-x-4">
+          <Input
+            type="text"
+            id="webhookList"
+            placeholder="Saissir un webhook"
+            onChange={(evt) => setWebhook(evt?.currentTarget?.value)}
+          />
+          <div
+            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+            onClick={() => {
+              if (webhook) {
+                setWebhookList([...webhookList, webhook]);
+                setWebhook("");
+              }
+            }}
+          >
+            Ajouter <PlusCircle className="ml-2" />
+          </div>
+        </div>
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
