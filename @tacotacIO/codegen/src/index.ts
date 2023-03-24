@@ -4022,6 +4022,13 @@ export type DeleteEventMutationVariables = Exact<{
 
 export type DeleteEventMutation = { __typename?: 'Mutation', deleteEvent?: { __typename?: 'DeleteEventPayload', event?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any }> } }> } } | null } | null };
 
+export type SendEmailConfirmDonationByEventIdMutationVariables = Exact<{
+  eventId: Scalars['UUID'];
+}>;
+
+
+export type SendEmailConfirmDonationByEventIdMutation = { __typename?: 'Mutation', sendEmailConfirmDonationByEventId?: { __typename?: 'SendEmailConfirmDonationByEventIdPayload', clientMutationId?: string | null, rowEventAttendeeConfirms?: Array<{ __typename?: 'RowEventAttendeeConfirm', email?: string | null } | null> | null } | null };
+
 export type CreateEventBrandingMutationVariables = Exact<{
   input: CreateEventBrandingInput;
 }>;
@@ -4369,6 +4376,16 @@ export const DeleteEventDocument = gql`
   }
 }
     ${MyEventFragmentDoc}`;
+export const SendEmailConfirmDonationByEventIdDocument = gql`
+    mutation SendEmailConfirmDonationByEventId($eventId: UUID!) {
+  sendEmailConfirmDonationByEventId(input: {eventId: $eventId}) {
+    rowEventAttendeeConfirms {
+      email
+    }
+    clientMutationId
+  }
+}
+    `;
 export const CreateEventBrandingDocument = gql`
     mutation CreateEventBranding($input: CreateEventBrandingInput!) {
   createEventBranding(input: $input) {
@@ -4692,6 +4709,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeleteEvent(variables: DeleteEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteEventMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteEventMutation>(DeleteEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteEvent', 'mutation');
+    },
+    SendEmailConfirmDonationByEventId(variables: SendEmailConfirmDonationByEventIdMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SendEmailConfirmDonationByEventIdMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SendEmailConfirmDonationByEventIdMutation>(SendEmailConfirmDonationByEventIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SendEmailConfirmDonationByEventId', 'mutation');
     },
     CreateEventBranding(variables: CreateEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateEventBrandingMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateEventBrandingMutation>(CreateEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateEventBranding', 'mutation');

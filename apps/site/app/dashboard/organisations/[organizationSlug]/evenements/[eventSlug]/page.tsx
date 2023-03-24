@@ -6,6 +6,7 @@ import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
 import { SendAllEmail } from "./SendAllEmail";
+import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
 const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
@@ -67,7 +68,7 @@ const AttendeesPage = async ({
 
   return (
     <section className="container grid w-full items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="mx-auto flex w-full max-w-3xl items-baseline justify-between gap-2">
+      <div className="mx-auto flex w-full max-w-3xl flex-row items-center justify-between gap-2">
         <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
           Tous les participants
         </h2>
@@ -78,6 +79,7 @@ const AttendeesPage = async ({
         >
           iFrame inscription
         </Link>
+        <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
         <SendAllEmail eventId={eventBySlug?.id} />
       </div>
       {flattenedAttendeesFromRegistrations.length > 0 ? (
