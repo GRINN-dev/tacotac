@@ -316,7 +316,9 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         ))}
       </div>
       <div className="my-4">
-        <Label htmlFor="placeholders">Placeholders</Label>
+        <Label htmlFor="placeholders" className="font-semibold">
+          Placeholders
+        </Label>
       </div>
 
       <div>
