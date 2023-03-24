@@ -73,7 +73,10 @@ export const generateDocsForAttendees = async (
   const sendEmailPayload: SendEmailPayload = {
     mailData: {
       to: rowData.email,
-      from: { name: "L'équipe", email: "contact@obole.eu" },
+      from: {
+        name: rowData.header_mail_name,
+        email: rowData.header_mail_contact,
+      },
       templateId: BILLET_TEMPLATE,
       dynamicTemplateData: {
         Event_Name: rowData.name,
@@ -93,7 +96,7 @@ export const generateDocsForAttendees = async (
         Code_Invit: rowData.sign_code,
         Pdf_Url: urlS3Pdf,
         Cancel: "test",
-        Current_Year: dayjs(rowData.starts_at).format("YYYY"),
+        Current_Year: dayjs().format("YYYY"),
       },
     },
   };

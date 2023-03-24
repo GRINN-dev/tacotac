@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { ChevronRight, Clipboard, Cog, FileDown, Home, PlusSquare } from "lucide-react";
 
+
+
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 
 export default function AttendeesLayout({
   children,
@@ -37,7 +39,7 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}`}
                     className={cn(
-                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      "group flex items-center rounded-md p-2 text-sm font-medium "
                     )}
                   >
                     <DropdownMenuItem className="self-center">Mes participants</DropdownMenuItem>
@@ -46,7 +48,7 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/infos`}
                     className={cn(
-                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      "group flex items-center rounded-md p-2 text-sm font-medium "
                     )}
                   >
                     <DropdownMenuItem className="self-center">
@@ -57,7 +59,7 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/create`}
                     className={cn(
-                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      "group flex items-center rounded-md p-2 text-sm font-medium "
                     )}
                   >
                     <DropdownMenuItem className="self-center">
@@ -69,7 +71,7 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/brandings`}
                     className={cn(
-                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      "group flex items-center rounded-md p-2 text-sm font-medium "
                     )}
                   >
                     <DropdownMenuItem className="self-center">
@@ -80,7 +82,7 @@ export default function AttendeesLayout({
                   <Link
                     href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/import`}
                     className={cn(
-                      "group flex items-center rounded-md p-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                      "group flex items-center rounded-md p-2 text-sm font-medium "
                     )}
                   >
                     <DropdownMenuItem className="self-center">

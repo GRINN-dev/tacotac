@@ -45,6 +45,9 @@ begin
         v_iter = 1,
         'TICKET_' || md5(random()::text || clock_timestamp()::text),
         substring(uuid_generate_v4()::text, 1, 6));
+
+        perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', attendees[v_iter].id, 'state','RESA_BILLET'));
+
     end loop;
   
     perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
@@ -56,6 +59,10 @@ $$ language plpgsql VOLATILE SECURITY DEFINER;
 comment on function register_attendees(event_id uuid, attendees publ.attendees[]) is E'@arg1variant patch';
 grant execute on function publ.register_attendees(uuid, publ.attendees[]) to :DATABASE_VISITOR;
 
+/*
+  FUNCTION: register_attendees_csv
+  DESCRIPTION: Register attendees from a csv import
+*/
 
 create or replace function publ.register_attendees_csv(event_id uuid, attendees_csv publ.attendees[]) returns publ.attendees as $$
 DECLARE 
@@ -68,7 +75,6 @@ begin
     for v_iter in 1..array_length(attendees_csv, 1) loop
 
       if not exists (select email from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where email = attendees_csv[v_iter].email and regs.event_id=v_event_id ) then
-
 
         insert into publ.registrations (event_id ) values (v_event_id) returning * into v_registration;
 
@@ -99,6 +105,8 @@ begin
         returning * into v_attendees ;
 
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
+        
+        perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', v_attendees.id, 'state','RESA_BILLET'));
       else 
         raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
       end if;
@@ -111,5 +119,5 @@ $$ language plpgsql VOLATILE SECURITY DEFINER;
 comment on function register_attendees_csv(event_id uuid, attendees_csv publ.attendees[]) is E'@arg1variant patch';
 grant execute on function publ.register_attendees_csv(uuid, publ.attendees[]) to :DATABASE_VISITOR;
 /*
-  END FUNCTION: register_attendees
+  END FUNCTION: register_attendees_csv
 */

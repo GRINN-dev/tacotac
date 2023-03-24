@@ -25,6 +25,7 @@ create table publ.events (
     capacity int,
     is_vip boolean,
     details text,
+    webhooks text[],
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
     
@@ -49,8 +50,8 @@ create table publ.events (
 
 -- RBAC
     grant select on publ.events to :DATABASE_VISITOR;
-    grant insert(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity) on publ.events to :DATABASE_VISITOR;
-    grant update(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity) on publ.events to :DATABASE_VISITOR;
+    grant insert(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity, webhooks) on publ.events to :DATABASE_VISITOR;
+    grant update(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity,webhooks) on publ.events to :DATABASE_VISITOR;
     grant delete on publ.events to :DATABASE_VISITOR;
 -- triggers
     create trigger _100_timestamps
@@ -124,6 +125,8 @@ create table publ.event_brandings (
   rich_text text,
   short_text varchar(32),
   award_winning_asso_list text[],
+  header_mail_name text default 'L''association',
+  header_mail_contact text default 'contact@obole.eu',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -137,8 +140,8 @@ create table publ.event_brandings (
 
 -- RBAC
     grant select on publ.event_brandings to :DATABASE_VISITOR;
-    grant insert( color_1, color_2, font, logo, placeholder, rich_text, short_text) on publ.event_brandings to :DATABASE_VISITOR;
-    grant update( color_1, color_2, font, logo, rich_text, short_text,award_winning_asso_list) on publ.event_brandings to :DATABASE_VISITOR;
+    grant insert( color_1, color_2, font, logo, placeholder, rich_text, short_text, header_mail_name, header_mail_contact) on publ.event_brandings to :DATABASE_VISITOR;
+    grant update( color_1, color_2, font, logo, rich_text, short_text,award_winning_asso_list, header_mail_name, header_mail_contact) on publ.event_brandings to :DATABASE_VISITOR;
     --grant ALL  on table publ.event_brandings to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps

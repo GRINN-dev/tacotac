@@ -40,4 +40,6 @@ export interface IRowAttendee {
   starts_at: string;
   ends_at: string;
   details: string;
+  header_mail_name: string;
+  header_mail_contact: string;
 }

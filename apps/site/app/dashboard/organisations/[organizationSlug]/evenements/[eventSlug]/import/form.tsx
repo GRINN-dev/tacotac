@@ -54,6 +54,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         const isMail = results.data.every((result: ICsv) => result?.email);
         if (results.errors.length > 0 || !isMail) {
           toast({
+            variant: "destructive",
             title: !isMail ? "Un email est manquant" : results.errors[0].message,
           });
           throw error;
@@ -93,6 +94,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         setError(error);
         setIsLoading(false);
         toast({
+          variant: "destructive",
           title:
             error.response.errors[0].errcode === "RGNST"
               ? error.response.errors[0].message
