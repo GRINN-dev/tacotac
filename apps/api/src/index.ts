@@ -19,7 +19,7 @@ async function main() {
   httpServer.addListener("request", app);
 
   // And finally, we open the listen port
-  const PORT = parseInt(process.env.API_PORT || "", 10) || 3000;
+  const PORT = parseInt(process.env.API_PORT || "", 10) || 8000;
   httpServer.listen(PORT, () => {
     const address = httpServer.address();
     const actualPort: string =
@@ -55,7 +55,7 @@ async function main() {
   });
 }
 
-main().catch((e) => {
+main().catch(e => {
   console.error("Fatal error occurred starting server!");
   console.error(e);
   process.exit(101);

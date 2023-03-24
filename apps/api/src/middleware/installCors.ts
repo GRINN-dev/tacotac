@@ -5,10 +5,18 @@ export const installCors = (app: Express) => {
   app.use(
     cors({
       origin: [
+        "null",
         "http://localhost:3000",
-        "https://chez-daddy-git-development.vercel.app/",
-        // regexp for chez-daddy + anything + 'vercel.app'
-        /https:\/\/chez-daddy.*.vercel.app$/,
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://localhost:3003",
+        "http://localhost:5867",
+        "http://localhost:7802",
+        "http://localhost:7803",
+        "http://localhost:7804",
+        /\.kaypi\.com$/,
+        // regexp for ticket + anything + 'vercel.app'
+        /https:\/\/kaypi.*\.vercel\.app$/,
       ],
       credentials: true,
     })

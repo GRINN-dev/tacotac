@@ -23,17 +23,12 @@ export type Scalars = {
   Datetime: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
-  /**
-   * A JSON Web Token defined by [RFC 7519](https://tools.ietf.org/html/rfc7519)
-   * which securely represents claims between two parties.
-   */
-  Jwt: any;
   /** A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122). */
   UUID: any;
 };
 
 /** Event from organizations */
-export type Attendee = Node & {
+export type Attendee = {
   __typename?: 'Attendee';
   civility: CivilityStatus;
   createdAt: Scalars['Datetime'];
@@ -48,8 +43,6 @@ export type Attendee = Node & {
   isNewsFondationEmail?: Maybe<Scalars['Boolean']>;
   isVip?: Maybe<Scalars['Boolean']>;
   lastname: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   notes?: Maybe<Scalars['String']>;
   panelNumber?: Maybe<Scalars['Int']>;
   pdfUrl?: Maybe<Scalars['String']>;
@@ -259,6 +252,30 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+/** All input for the `changePassword` mutation. */
+export type ChangePasswordInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  newPassword: Scalars['String'];
+  oldPassword: Scalars['String'];
+};
+
+/** The output of our `changePassword` mutation. */
+export type ChangePasswordPayload = {
+  __typename?: 'ChangePasswordPayload';
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 export enum CivilityStatus {
   /** Madame */
   Mme = 'MME',
@@ -290,6 +307,29 @@ export type CivilityStatusFilter = {
   notEqualTo?: InputMaybe<CivilityStatus>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<CivilityStatus>>;
+};
+
+/** All input for the `confirmAccountDeletion` mutation. */
+export type ConfirmAccountDeletionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  token: Scalars['String'];
+};
+
+/** The output of our `confirmAccountDeletion` mutation. */
+export type ConfirmAccountDeletionPayload = {
+  __typename?: 'ConfirmAccountDeletionPayload';
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** All input for the create `Attendee` mutation. */
@@ -537,6 +577,68 @@ export type CreateRegistrationPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
+/** All input for the create `UserAuthentication` mutation. */
+export type CreateUserAuthenticationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `UserAuthentication` to be created by this mutation. */
+  userAuthentication: UserAuthenticationInput;
+};
+
+/** The output of our create `UserAuthentication` mutation. */
+export type CreateUserAuthenticationPayload = {
+  __typename?: 'CreateUserAuthenticationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserAuthentication`. */
+  user?: Maybe<User>;
+  /** The `UserAuthentication` that was created by this mutation. */
+  userAuthentication?: Maybe<UserAuthentication>;
+  /** An edge for our `UserAuthentication`. May be used by Relay 1. */
+  userAuthenticationEdge?: Maybe<UserAuthenticationsEdge>;
+};
+
+
+/** The output of our create `UserAuthentication` mutation. */
+export type CreateUserAuthenticationPayloadUserAuthenticationEdgeArgs = {
+  orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
+};
+
+/** All input for the create `UserEmail` mutation. */
+export type CreateUserEmailInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `UserEmail` to be created by this mutation. */
+  userEmail: UserEmailInput;
+};
+
+/** The output of our create `UserEmail` mutation. */
+export type CreateUserEmailPayload = {
+  __typename?: 'CreateUserEmailPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>;
+  /** The `UserEmail` that was created by this mutation. */
+  userEmail?: Maybe<UserEmail>;
+};
+
 /** All input for the create `User` mutation. */
 export type CreateUserInput = {
   /**
@@ -596,17 +698,6 @@ export type DatetimeFilter = {
   notIn?: InputMaybe<Array<Scalars['Datetime']>>;
 };
 
-/** All input for the `deleteAttendeeByNodeId` mutation. */
-export type DeleteAttendeeByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Attendee` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
 /** All input for the `deleteAttendee` mutation. */
 export type DeleteAttendeeInput = {
   /**
@@ -642,27 +733,6 @@ export type DeleteAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
-/** All input for the `deleteEventBrandingByEventId` mutation. */
-export type DeleteEventBrandingByEventIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId: Scalars['UUID'];
-};
-
-/** All input for the `deleteEventBrandingByNodeId` mutation. */
-export type DeleteEventBrandingByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `EventBranding` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
 /** All input for the `deleteEventBranding` mutation. */
 export type DeleteEventBrandingInput = {
   /**
@@ -696,39 +766,6 @@ export type DeleteEventBrandingPayload = {
 /** The output of our delete `EventBranding` mutation. */
 export type DeleteEventBrandingPayloadEventBrandingEdgeArgs = {
   orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
-};
-
-/** All input for the `deleteEventByNodeId` mutation. */
-export type DeleteEventByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Event` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
-/** All input for the `deleteEventByOrganizationIdAndName` mutation. */
-export type DeleteEventByOrganizationIdAndNameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-  organizationId: Scalars['UUID'];
-};
-
-/** All input for the `deleteEventByOrganizationIdAndSlug` mutation. */
-export type DeleteEventByOrganizationIdAndSlugInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  organizationId: Scalars['UUID'];
-  slug: Scalars['String'];
 };
 
 /** All input for the `deleteEvent` mutation. */
@@ -775,17 +812,6 @@ export type DeleteFilePayload = {
   success?: Maybe<Scalars['Boolean']>;
 };
 
-/** All input for the `deleteLogByNodeId` mutation. */
-export type DeleteLogByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Log` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
 /** All input for the `deleteLog` mutation. */
 export type DeleteLogInput = {
   /**
@@ -821,37 +847,6 @@ export type DeleteLogPayloadLogEdgeArgs = {
   orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
 
-/** All input for the `deleteOrganizationByName` mutation. */
-export type DeleteOrganizationByNameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-};
-
-/** All input for the `deleteOrganizationByNodeId` mutation. */
-export type DeleteOrganizationByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Organization` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
-/** All input for the `deleteOrganizationBySlug` mutation. */
-export type DeleteOrganizationBySlugInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  slug: Scalars['String'];
-};
-
 /** All input for the `deleteOrganization` mutation. */
 export type DeleteOrganizationInput = {
   /**
@@ -860,28 +855,6 @@ export type DeleteOrganizationInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
-};
-
-/** All input for the `deleteOrganizationMembershipByNodeId` mutation. */
-export type DeleteOrganizationMembershipByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `OrganizationMembership` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
-/** All input for the `deleteOrganizationMembershipByOrganizationIdAndUserId` mutation. */
-export type DeleteOrganizationMembershipByOrganizationIdAndUserIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  organizationId: Scalars['UUID'];
-  userId: Scalars['UUID'];
 };
 
 /** All input for the `deleteOrganizationMembership` mutation. */
@@ -944,17 +917,6 @@ export type DeleteOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
-/** All input for the `deleteRegistrationByNodeId` mutation. */
-export type DeleteRegistrationByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Registration` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
 /** All input for the `deleteRegistration` mutation. */
 export type DeleteRegistrationInput = {
   /**
@@ -990,25 +952,66 @@ export type DeleteRegistrationPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
-/** All input for the `deleteUserByEmail` mutation. */
-export type DeleteUserByEmailInput = {
+/** All input for the `deleteUserAuthentication` mutation. */
+export type DeleteUserAuthenticationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
+  id: Scalars['UUID'];
 };
 
-/** All input for the `deleteUserByNodeId` mutation. */
-export type DeleteUserByNodeIdInput = {
+/** The output of our delete `UserAuthentication` mutation. */
+export type DeleteUserAuthenticationPayload = {
+  __typename?: 'DeleteUserAuthenticationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedUserAuthenticationNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserAuthentication`. */
+  user?: Maybe<User>;
+  /** The `UserAuthentication` that was deleted by this mutation. */
+  userAuthentication?: Maybe<UserAuthentication>;
+  /** An edge for our `UserAuthentication`. May be used by Relay 1. */
+  userAuthenticationEdge?: Maybe<UserAuthenticationsEdge>;
+};
+
+
+/** The output of our delete `UserAuthentication` mutation. */
+export type DeleteUserAuthenticationPayloadUserAuthenticationEdgeArgs = {
+  orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
+};
+
+/** All input for the `deleteUserEmail` mutation. */
+export type DeleteUserEmailInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `User` to be deleted. */
-  nodeId: Scalars['ID'];
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `UserEmail` mutation. */
+export type DeleteUserEmailPayload = {
+  __typename?: 'DeleteUserEmailPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedUserEmailNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>;
+  /** The `UserEmail` that was deleted by this mutation. */
+  userEmail?: Maybe<UserEmail>;
 };
 
 /** All input for the `deleteUser` mutation. */
@@ -1018,6 +1021,7 @@ export type DeleteUserInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the user. */
   id: Scalars['UUID'];
 };
 
@@ -1044,7 +1048,7 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-export type Event = Node & {
+export type Event = {
   __typename?: 'Event';
   addressLine1?: Maybe<Scalars['String']>;
   addressLine2?: Maybe<Scalars['String']>;
@@ -1059,6 +1063,11 @@ export type Event = Node & {
   endsAt?: Maybe<Scalars['Datetime']>;
   /** Reads a single `EventBranding` that is related to this `Event`. */
   eventBranding?: Maybe<EventBranding>;
+  /**
+   * Reads and enables pagination through a set of `EventBranding`.
+   * @deprecated Please use eventBranding instead
+   */
+  eventBrandings: EventBrandingsConnection;
   id: Scalars['UUID'];
   isVip?: Maybe<Scalars['Boolean']>;
   lat?: Maybe<Scalars['Float']>;
@@ -1068,8 +1077,6 @@ export type Event = Node & {
   logsList: Array<Log>;
   lon?: Maybe<Scalars['Float']>;
   name: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads a single `Organization` that is related to this `Event`. */
   organization?: Maybe<Organization>;
   organizationId: Scalars['UUID'];
@@ -1083,6 +1090,18 @@ export type Event = Node & {
   updatedAt: Scalars['Datetime'];
   webhooks?: Maybe<Array<Maybe<Scalars['String']>>>;
   zipCode?: Maybe<Scalars['String']>;
+};
+
+
+export type EventEventBrandingsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<EventBrandingCondition>;
+  filter?: InputMaybe<EventBrandingFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
 };
 
 
@@ -1118,7 +1137,7 @@ export type EventRegistrationsArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
-export type EventBranding = Node & {
+export type EventBranding = {
   __typename?: 'EventBranding';
   awardWinningAssoList?: Maybe<Array<Maybe<Scalars['String']>>>;
   color1?: Maybe<Scalars['String']>;
@@ -1132,8 +1151,6 @@ export type EventBranding = Node & {
   headerMailName?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   logo?: Maybe<Scalars['String']>;
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   placeholder?: Maybe<Scalars['JSON']>;
   richText?: Maybe<Scalars['String']>;
   shortText?: Maybe<Scalars['String']>;
@@ -1467,6 +1484,28 @@ export enum Fonts {
   Roboto = 'ROBOTO'
 }
 
+/** All input for the `forgotPassword` mutation. */
+export type ForgotPasswordInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
+};
+
+/** The output of our `forgotPassword` mutation. */
+export type ForgotPasswordPayload = {
+  __typename?: 'ForgotPasswordPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 export type GeneratePresignedPostInput = {
   key: Scalars['String'];
 };
@@ -1504,15 +1543,13 @@ export type IntFilter = {
 };
 
 /** Logs from events */
-export type Log = Node & {
+export type Log = {
   __typename?: 'Log';
   createdAt: Scalars['Datetime'];
   /** Reads a single `Event` that is related to this `Log`. */
   event?: Maybe<Event>;
   eventId?: Maybe<Scalars['UUID']>;
   id: Scalars['UUID'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   payload?: Maybe<Scalars['JSON']>;
   status: LogsStatus;
   updatedAt: Scalars['Datetime'];
@@ -1572,28 +1609,21 @@ export type LogPatch = {
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
-/** All input for the `login` mutation. */
 export type LoginInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  email?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
+  username: Scalars['String'];
 };
 
-/** The output of our `login` mutation. */
 export type LoginPayload = {
   __typename?: 'LoginPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  jwt?: Maybe<Scalars['Jwt']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
+  accessToken: Scalars['String'];
+  refreshToken: Scalars['String'];
+  user: User;
+};
+
+export type LogoutPayload = {
+  __typename?: 'LogoutPayload';
+  success?: Maybe<Scalars['Boolean']>;
 };
 
 /** A connection to a list of `Log` values. */
@@ -1676,9 +1706,38 @@ export type LogsStatusFilter = {
   notIn?: InputMaybe<Array<LogsStatus>>;
 };
 
+/** All input for the `makeEmailPrimary` mutation. */
+export type MakeEmailPrimaryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  emailId: Scalars['UUID'];
+};
+
+/** The output of our `makeEmailPrimary` mutation. */
+export type MakeEmailPrimaryPayload = {
+  __typename?: 'MakeEmailPrimaryPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>;
+  userEmail?: Maybe<UserEmail>;
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Enter your old password and a new password to change your password. */
+  changePassword?: Maybe<ChangePasswordPayload>;
+  /** If you're certain you want to delete your account, use `requestAccountDeletion` to request an account deletion token, and then supply the token through this mutation to complete account deletion. */
+  confirmAccountDeletion?: Maybe<ConfirmAccountDeletionPayload>;
   /** Creates a single `Attendee`. */
   createAttendee?: Maybe<CreateAttendeePayload>;
   /** Creates a single `Event`. */
@@ -1695,58 +1754,50 @@ export type Mutation = {
   createRegistration?: Maybe<CreateRegistrationPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
+  /** Creates a single `UserAuthentication`. */
+  createUserAuthentication?: Maybe<CreateUserAuthenticationPayload>;
+  /** Creates a single `UserEmail`. */
+  createUserEmail?: Maybe<CreateUserEmailPayload>;
   /** Deletes a single `Attendee` using a unique key. */
   deleteAttendee?: Maybe<DeleteAttendeePayload>;
-  /** Deletes a single `Attendee` using its globally unique id. */
-  deleteAttendeeByNodeId?: Maybe<DeleteAttendeePayload>;
   /** Deletes a single `Event` using a unique key. */
   deleteEvent?: Maybe<DeleteEventPayload>;
   /** Deletes a single `EventBranding` using a unique key. */
   deleteEventBranding?: Maybe<DeleteEventBrandingPayload>;
-  /** Deletes a single `EventBranding` using a unique key. */
-  deleteEventBrandingByEventId?: Maybe<DeleteEventBrandingPayload>;
-  /** Deletes a single `EventBranding` using its globally unique id. */
-  deleteEventBrandingByNodeId?: Maybe<DeleteEventBrandingPayload>;
-  /** Deletes a single `Event` using its globally unique id. */
-  deleteEventByNodeId?: Maybe<DeleteEventPayload>;
-  /** Deletes a single `Event` using a unique key. */
-  deleteEventByOrganizationIdAndName?: Maybe<DeleteEventPayload>;
-  /** Deletes a single `Event` using a unique key. */
-  deleteEventByOrganizationIdAndSlug?: Maybe<DeleteEventPayload>;
   deleteFile?: Maybe<DeleteFilePayload>;
   /** Deletes a single `Log` using a unique key. */
   deleteLog?: Maybe<DeleteLogPayload>;
-  /** Deletes a single `Log` using its globally unique id. */
-  deleteLogByNodeId?: Maybe<DeleteLogPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
-  /** Deletes a single `Organization` using a unique key. */
-  deleteOrganizationByName?: Maybe<DeleteOrganizationPayload>;
-  /** Deletes a single `Organization` using its globally unique id. */
-  deleteOrganizationByNodeId?: Maybe<DeleteOrganizationPayload>;
-  /** Deletes a single `Organization` using a unique key. */
-  deleteOrganizationBySlug?: Maybe<DeleteOrganizationPayload>;
   /** Deletes a single `OrganizationMembership` using a unique key. */
   deleteOrganizationMembership?: Maybe<DeleteOrganizationMembershipPayload>;
-  /** Deletes a single `OrganizationMembership` using its globally unique id. */
-  deleteOrganizationMembershipByNodeId?: Maybe<DeleteOrganizationMembershipPayload>;
-  /** Deletes a single `OrganizationMembership` using a unique key. */
-  deleteOrganizationMembershipByOrganizationIdAndUserId?: Maybe<DeleteOrganizationMembershipPayload>;
   /** Deletes a single `Registration` using a unique key. */
   deleteRegistration?: Maybe<DeleteRegistrationPayload>;
-  /** Deletes a single `Registration` using its globally unique id. */
-  deleteRegistrationByNodeId?: Maybe<DeleteRegistrationPayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
-  /** Deletes a single `User` using a unique key. */
-  deleteUserByEmail?: Maybe<DeleteUserPayload>;
-  /** Deletes a single `User` using its globally unique id. */
-  deleteUserByNodeId?: Maybe<DeleteUserPayload>;
+  /** Deletes a single `UserAuthentication` using a unique key. */
+  deleteUserAuthentication?: Maybe<DeleteUserAuthenticationPayload>;
+  /** Deletes a single `UserEmail` using a unique key. */
+  deleteUserEmail?: Maybe<DeleteUserEmailPayload>;
+  /** If you've forgotten your password, give us one of your email addresses and we'll send you a reset token. Note this only works if you have added an email address! */
+  forgotPassword?: Maybe<ForgotPasswordPayload>;
   generatePresignedPost?: Maybe<GeneratePresignedPostPayload>;
+  /** Use this mutation to log in to your account; this login uses sessions so you do not need to take further action. */
   login?: Maybe<LoginPayload>;
+  /** Use this mutation to logout from your account. Don't forget to clear the client state! */
+  logout?: Maybe<LogoutPayload>;
+  /** Your primary email is where we'll notify of account events; other emails may be used for discovery or login. Use this when you're changing your email address. */
+  makeEmailPrimary?: Maybe<MakeEmailPrimaryPayload>;
+  /** Use this mutation to create an account on our system. This may only be used if you are logged out. */
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
   registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
+  /** Begin the account deletion flow by requesting the confirmation email */
+  requestAccountDeletion?: Maybe<RequestAccountDeletionPayload>;
+  /** If you didn't receive the verification code for this email, we can resend it. We silently cap the rate of resends on the backend, so calls to this function may not result in another email being sent if it has been called recently. */
+  resendEmailVerificationCode?: Maybe<ResendEmailVerificationCodePayload>;
+  /** After triggering forgotPassword, you'll be sent a reset token. Combine this with your user ID and a new password to reset your password. */
+  resetPassword?: Maybe<ResetPasswordPayload>;
   /** scan du billet pour update la table attendees et logs */
   scanAttendee?: Maybe<ScanAttendeePayload>;
   /** scan de tous les tickets offline */
@@ -1757,51 +1808,39 @@ export type Mutation = {
   sendEmailConfirmDonationByEventId?: Maybe<SendEmailConfirmDonationByEventIdPayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
-  /** Updates a single `Attendee` using its globally unique id and a patch. */
-  updateAttendeeByNodeId?: Maybe<UpdateAttendeePayload>;
   updateAttendeeEmailAndSendEmail?: Maybe<UpdateAttendeeEmailAndSendEmailPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
   updateEvent?: Maybe<UpdateEventPayload>;
   /** Updates a single `EventBranding` using a unique key and a patch. */
   updateEventBranding?: Maybe<UpdateEventBrandingPayload>;
-  /** Updates a single `EventBranding` using a unique key and a patch. */
-  updateEventBrandingByEventId?: Maybe<UpdateEventBrandingPayload>;
-  /** Updates a single `EventBranding` using its globally unique id and a patch. */
-  updateEventBrandingByNodeId?: Maybe<UpdateEventBrandingPayload>;
-  /** Updates a single `Event` using its globally unique id and a patch. */
-  updateEventByNodeId?: Maybe<UpdateEventPayload>;
-  /** Updates a single `Event` using a unique key and a patch. */
-  updateEventByOrganizationIdAndName?: Maybe<UpdateEventPayload>;
-  /** Updates a single `Event` using a unique key and a patch. */
-  updateEventByOrganizationIdAndSlug?: Maybe<UpdateEventPayload>;
   /** Updates a single `Log` using a unique key and a patch. */
   updateLog?: Maybe<UpdateLogPayload>;
-  /** Updates a single `Log` using its globally unique id and a patch. */
-  updateLogByNodeId?: Maybe<UpdateLogPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
-  /** Updates a single `Organization` using a unique key and a patch. */
-  updateOrganizationByName?: Maybe<UpdateOrganizationPayload>;
-  /** Updates a single `Organization` using its globally unique id and a patch. */
-  updateOrganizationByNodeId?: Maybe<UpdateOrganizationPayload>;
-  /** Updates a single `Organization` using a unique key and a patch. */
-  updateOrganizationBySlug?: Maybe<UpdateOrganizationPayload>;
   /** Updates a single `OrganizationMembership` using a unique key and a patch. */
   updateOrganizationMembership?: Maybe<UpdateOrganizationMembershipPayload>;
-  /** Updates a single `OrganizationMembership` using its globally unique id and a patch. */
-  updateOrganizationMembershipByNodeId?: Maybe<UpdateOrganizationMembershipPayload>;
-  /** Updates a single `OrganizationMembership` using a unique key and a patch. */
-  updateOrganizationMembershipByOrganizationIdAndUserId?: Maybe<UpdateOrganizationMembershipPayload>;
   /** Updates a single `Registration` using a unique key and a patch. */
   updateRegistration?: Maybe<UpdateRegistrationPayload>;
-  /** Updates a single `Registration` using its globally unique id and a patch. */
-  updateRegistrationByNodeId?: Maybe<UpdateRegistrationPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
-  /** Updates a single `User` using a unique key and a patch. */
-  updateUserByEmail?: Maybe<UpdateUserPayload>;
-  /** Updates a single `User` using its globally unique id and a patch. */
-  updateUserByNodeId?: Maybe<UpdateUserPayload>;
+  /** Updates a single `UserAuthentication` using a unique key and a patch. */
+  updateUserAuthentication?: Maybe<UpdateUserAuthenticationPayload>;
+  /** Updates a single `UserEmail` using a unique key and a patch. */
+  updateUserEmail?: Maybe<UpdateUserEmailPayload>;
+  /** Once you have received a verification token for your email, you may call this mutation with that token to make your email verified. */
+  verifyEmail?: Maybe<VerifyEmailPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationChangePasswordArgs = {
+  input: ChangePasswordInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationConfirmAccountDeletionArgs = {
+  input: ConfirmAccountDeletionInput;
 };
 
 
@@ -1854,14 +1893,20 @@ export type MutationCreateUserArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAttendeeArgs = {
-  input: DeleteAttendeeInput;
+export type MutationCreateUserAuthenticationArgs = {
+  input: CreateUserAuthenticationInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAttendeeByNodeIdArgs = {
-  input: DeleteAttendeeByNodeIdInput;
+export type MutationCreateUserEmailArgs = {
+  input: CreateUserEmailInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteAttendeeArgs = {
+  input: DeleteAttendeeInput;
 };
 
 
@@ -1878,36 +1923,6 @@ export type MutationDeleteEventBrandingArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventBrandingByEventIdArgs = {
-  input: DeleteEventBrandingByEventIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventBrandingByNodeIdArgs = {
-  input: DeleteEventBrandingByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventByNodeIdArgs = {
-  input: DeleteEventByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventByOrganizationIdAndNameArgs = {
-  input: DeleteEventByOrganizationIdAndNameInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteEventByOrganizationIdAndSlugArgs = {
-  input: DeleteEventByOrganizationIdAndSlugInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteFileArgs = {
   input: DeleteFileInput;
 };
@@ -1920,32 +1935,8 @@ export type MutationDeleteLogArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLogByNodeIdArgs = {
-  input: DeleteLogByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteOrganizationArgs = {
   input: DeleteOrganizationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrganizationByNameArgs = {
-  input: DeleteOrganizationByNameInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrganizationByNodeIdArgs = {
-  input: DeleteOrganizationByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrganizationBySlugArgs = {
-  input: DeleteOrganizationBySlugInput;
 };
 
 
@@ -1956,26 +1947,8 @@ export type MutationDeleteOrganizationMembershipArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrganizationMembershipByNodeIdArgs = {
-  input: DeleteOrganizationMembershipByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrganizationMembershipByOrganizationIdAndUserIdArgs = {
-  input: DeleteOrganizationMembershipByOrganizationIdAndUserIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteRegistrationArgs = {
   input: DeleteRegistrationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRegistrationByNodeIdArgs = {
-  input: DeleteRegistrationByNodeIdInput;
 };
 
 
@@ -1986,14 +1959,20 @@ export type MutationDeleteUserArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserByEmailArgs = {
-  input: DeleteUserByEmailInput;
+export type MutationDeleteUserAuthenticationArgs = {
+  input: DeleteUserAuthenticationInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserByNodeIdArgs = {
-  input: DeleteUserByNodeIdInput;
+export type MutationDeleteUserEmailArgs = {
+  input: DeleteUserEmailInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationForgotPasswordArgs = {
+  input: ForgotPasswordInput;
 };
 
 
@@ -2006,6 +1985,12 @@ export type MutationGeneratePresignedPostArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationMakeEmailPrimaryArgs = {
+  input: MakeEmailPrimaryInput;
 };
 
 
@@ -2024,6 +2009,24 @@ export type MutationRegisterAttendeesArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterAttendeesCsvArgs = {
   input: RegisterAttendeesCsvInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRequestAccountDeletionArgs = {
+  input: RequestAccountDeletionInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationResendEmailVerificationCodeArgs = {
+  input: ResendEmailVerificationCodeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationResetPasswordArgs = {
+  input: ResetPasswordInput;
 };
 
 
@@ -2058,12 +2061,6 @@ export type MutationUpdateAttendeeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateAttendeeByNodeIdArgs = {
-  input: UpdateAttendeeByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAttendeeEmailAndSendEmailArgs = {
   input: UpdateAttendeeEmailAndSendEmailInput;
 };
@@ -2082,44 +2079,8 @@ export type MutationUpdateEventBrandingArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventBrandingByEventIdArgs = {
-  input: UpdateEventBrandingByEventIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventBrandingByNodeIdArgs = {
-  input: UpdateEventBrandingByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventByNodeIdArgs = {
-  input: UpdateEventByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventByOrganizationIdAndNameArgs = {
-  input: UpdateEventByOrganizationIdAndNameInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateEventByOrganizationIdAndSlugArgs = {
-  input: UpdateEventByOrganizationIdAndSlugInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateLogArgs = {
   input: UpdateLogInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLogByNodeIdArgs = {
-  input: UpdateLogByNodeIdInput;
 };
 
 
@@ -2130,38 +2091,8 @@ export type MutationUpdateOrganizationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrganizationByNameArgs = {
-  input: UpdateOrganizationByNameInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrganizationByNodeIdArgs = {
-  input: UpdateOrganizationByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrganizationBySlugArgs = {
-  input: UpdateOrganizationBySlugInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateOrganizationMembershipArgs = {
   input: UpdateOrganizationMembershipInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrganizationMembershipByNodeIdArgs = {
-  input: UpdateOrganizationMembershipByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrganizationMembershipByOrganizationIdAndUserIdArgs = {
-  input: UpdateOrganizationMembershipByOrganizationIdAndUserIdInput;
 };
 
 
@@ -2172,36 +2103,30 @@ export type MutationUpdateRegistrationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRegistrationByNodeIdArgs = {
-  input: UpdateRegistrationByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserByEmailArgs = {
-  input: UpdateUserByEmailInput;
+export type MutationUpdateUserAuthenticationArgs = {
+  input: UpdateUserAuthenticationInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserByNodeIdArgs = {
-  input: UpdateUserByNodeIdInput;
+export type MutationUpdateUserEmailArgs = {
+  input: UpdateUserEmailInput;
 };
 
-/** An object with a globally unique `ID`. */
-export type Node = {
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationVerifyEmailArgs = {
+  input: VerifyEmailInput;
 };
 
 /** A company, organization, or institution. */
-export type Organization = Node & {
+export type Organization = {
   __typename?: 'Organization';
   createdAt: Scalars['Datetime'];
   description: Scalars['String'];
@@ -2211,8 +2136,6 @@ export type Organization = Node & {
   /** The URL of the organization's logo. */
   logoUrl: Scalars['String'];
   name: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
   organizationMemberships: OrganizationMembershipsConnection;
   slug?: Maybe<Scalars['String']>;
@@ -2294,12 +2217,10 @@ export type OrganizationInput = {
   updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
-export type OrganizationMembership = Node & {
+export type OrganizationMembership = {
   __typename?: 'OrganizationMembership';
   createdAt: Scalars['Datetime'];
   id: Scalars['UUID'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads a single `Organization` that is related to this `OrganizationMembership`. */
   organization?: Maybe<Organization>;
   organizationId: Scalars['UUID'];
@@ -2399,6 +2320,8 @@ export enum OrganizationMembershipsOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  MemberNameAsc = 'MEMBER_NAME_ASC',
+  MemberNameDesc = 'MEMBER_NAME_DESC',
   Natural = 'NATURAL',
   OrganizationIdAsc = 'ORGANIZATION_ID_ASC',
   OrganizationIdDesc = 'ORGANIZATION_ID_DESC',
@@ -2518,53 +2441,39 @@ export type PageInfo = {
 };
 
 /** The root query type which gives access points into the data universe. */
-export type Query = Node & {
+export type Query = {
   __typename?: 'Query';
   attendee?: Maybe<Attendee>;
-  /** Reads a single `Attendee` using its globally unique `ID`. */
-  attendeeByNodeId?: Maybe<Attendee>;
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees?: Maybe<AttendeesConnection>;
   /** Reads a set of `Attendee`. */
   attendeesList?: Maybe<Array<Attendee>>;
+  /** Handy method to get the current session ID. */
+  currentSessionId?: Maybe<Scalars['UUID']>;
   /** The currently logged in user (or null if not logged in). */
   currentUser?: Maybe<User>;
-  /** Handy method to get the current user ID. */
+  /** Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead. */
   currentUserId?: Maybe<Scalars['UUID']>;
   dateTruncFunc?: Maybe<Scalars['Datetime']>;
   event?: Maybe<Event>;
   eventBranding?: Maybe<EventBranding>;
   eventBrandingByEventId?: Maybe<EventBranding>;
-  /** Reads a single `EventBranding` using its globally unique `ID`. */
-  eventBrandingByNodeId?: Maybe<EventBranding>;
   /** Reads and enables pagination through a set of `EventBranding`. */
   eventBrandings?: Maybe<EventBrandingsConnection>;
-  /** Reads a single `Event` using its globally unique `ID`. */
-  eventByNodeId?: Maybe<Event>;
   eventByOrganizationIdAndName?: Maybe<Event>;
   eventByOrganizationIdAndSlug?: Maybe<Event>;
   eventBySlug?: Maybe<Event>;
   /** Reads and enables pagination through a set of `Event`. */
   events?: Maybe<EventsConnection>;
   log?: Maybe<Log>;
-  /** Reads a single `Log` using its globally unique `ID`. */
-  logByNodeId?: Maybe<Log>;
   /** Reads and enables pagination through a set of `Log`. */
   logs?: Maybe<LogsConnection>;
   /** Reads a set of `Log`. */
   logsList?: Maybe<Array<Log>>;
-  /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<Node>;
-  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
-  nodeId: Scalars['ID'];
   organization?: Maybe<Organization>;
   organizationByName?: Maybe<Organization>;
-  /** Reads a single `Organization` using its globally unique `ID`. */
-  organizationByNodeId?: Maybe<Organization>;
   organizationBySlug?: Maybe<Organization>;
   organizationMembership?: Maybe<OrganizationMembership>;
-  /** Reads a single `OrganizationMembership` using its globally unique `ID`. */
-  organizationMembershipByNodeId?: Maybe<OrganizationMembership>;
   organizationMembershipByOrganizationIdAndUserId?: Maybe<OrganizationMembership>;
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
   organizationMemberships?: Maybe<OrganizationMembershipsConnection>;
@@ -2572,20 +2481,19 @@ export type Query = Node & {
   organizations?: Maybe<OrganizationsConnection>;
   /** Reads a set of `Organization`. */
   organizationsList?: Maybe<Array<Organization>>;
-  /**
-   * Exposes the root query type nested one level down. This is helpful for Relay 1
-   * which can only query top level fields if they are in a particular form.
-   */
-  query: Query;
   registration?: Maybe<Registration>;
-  /** Reads a single `Registration` using its globally unique `ID`. */
-  registrationByNodeId?: Maybe<Registration>;
   /** Reads and enables pagination through a set of `Registration`. */
   registrations?: Maybe<RegistrationsConnection>;
   user?: Maybe<User>;
-  userByEmail?: Maybe<User>;
-  /** Reads a single `User` using its globally unique `ID`. */
-  userByNodeId?: Maybe<User>;
+  userAuthentication?: Maybe<UserAuthentication>;
+  userAuthenticationByServiceAndIdentifier?: Maybe<UserAuthentication>;
+  /** Reads and enables pagination through a set of `UserAuthentication`. */
+  userAuthentications?: Maybe<UserAuthenticationsConnection>;
+  userByUsername?: Maybe<User>;
+  userEmail?: Maybe<UserEmail>;
+  userEmailByUserIdAndEmail?: Maybe<UserEmail>;
+  /** Reads a set of `UserEmail`. */
+  userEmailsList?: Maybe<Array<UserEmail>>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UsersConnection>;
 };
@@ -2594,12 +2502,6 @@ export type Query = Node & {
 /** The root query type which gives access points into the data universe. */
 export type QueryAttendeeArgs = {
   id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryAttendeeByNodeIdArgs = {
-  nodeId: Scalars['ID'];
 };
 
 
@@ -2628,8 +2530,8 @@ export type QueryAttendeesListArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryDateTruncFuncArgs = {
-  date?: InputMaybe<Scalars['Datetime']>;
-  unit?: InputMaybe<Scalars['String']>;
+  date: Scalars['Datetime'];
+  unit: Scalars['String'];
 };
 
 
@@ -2652,12 +2554,6 @@ export type QueryEventBrandingByEventIdArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryEventBrandingByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryEventBrandingsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -2667,12 +2563,6 @@ export type QueryEventBrandingsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryEventByNodeIdArgs = {
-  nodeId: Scalars['ID'];
 };
 
 
@@ -2692,8 +2582,8 @@ export type QueryEventByOrganizationIdAndSlugArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryEventBySlugArgs = {
-  eventSlug?: InputMaybe<Scalars['String']>;
-  organizationSlug?: InputMaybe<Scalars['String']>;
+  eventSlug: Scalars['String'];
+  organizationSlug: Scalars['String'];
 };
 
 
@@ -2713,12 +2603,6 @@ export type QueryEventsArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryLogArgs = {
   id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLogByNodeIdArgs = {
-  nodeId: Scalars['ID'];
 };
 
 
@@ -2746,12 +2630,6 @@ export type QueryLogsListArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryNodeArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryOrganizationArgs = {
   id: Scalars['UUID'];
 };
@@ -2764,12 +2642,6 @@ export type QueryOrganizationByNameArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryOrganizationByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryOrganizationBySlugArgs = {
   slug: Scalars['String'];
 };
@@ -2778,12 +2650,6 @@ export type QueryOrganizationBySlugArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryOrganizationMembershipArgs = {
   id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryOrganizationMembershipByNodeIdArgs = {
-  nodeId: Scalars['ID'];
 };
 
 
@@ -2837,12 +2703,6 @@ export type QueryRegistrationArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRegistrationByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryRegistrationsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -2862,14 +2722,57 @@ export type QueryUserArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserByEmailArgs = {
-  email: Scalars['String'];
+export type QueryUserAuthenticationArgs = {
+  id: Scalars['UUID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserByNodeIdArgs = {
-  nodeId: Scalars['ID'];
+export type QueryUserAuthenticationByServiceAndIdentifierArgs = {
+  identifier: Scalars['String'];
+  service: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserAuthenticationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAuthenticationCondition>;
+  filter?: InputMaybe<UserAuthenticationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserByUsernameArgs = {
+  username: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserEmailArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserEmailByUserIdAndEmailArgs = {
+  email: Scalars['String'];
+  userId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserEmailsListArgs = {
+  condition?: InputMaybe<UserEmailCondition>;
+  filter?: InputMaybe<UserEmailFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserEmailsOrderBy>>;
 };
 
 
@@ -2887,13 +2790,13 @@ export type QueryUsersArgs = {
 
 /** All input for the `registerAttendeesCsv` mutation. */
 export type RegisterAttendeesCsvInput = {
-  attendeesCsv?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  attendeesCsv: Array<InputMaybe<AttendeePatch>>;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
+  eventId: Scalars['UUID'];
 };
 
 /** The output of our `registerAttendeesCsv` mutation. */
@@ -2921,13 +2824,13 @@ export type RegisterAttendeesCsvPayloadAttendeeEdgeArgs = {
 
 /** All input for the `registerAttendees` mutation. */
 export type RegisterAttendeesInput = {
-  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  attendees: Array<InputMaybe<AttendeePatch>>;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
+  eventId: Scalars['UUID'];
 };
 
 /** The output of our `registerAttendees` mutation. */
@@ -2953,34 +2856,23 @@ export type RegisterAttendeesPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
-/** All input for the `register` mutation. */
 export type RegisterInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  email?: InputMaybe<Scalars['String']>;
-  firstname?: InputMaybe<Scalars['String']>;
-  lastname?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
+  firstname: Scalars['String'];
+  lastname: Scalars['String'];
+  password: Scalars['String'];
+  username?: InputMaybe<Scalars['String']>;
 };
 
-/** The output of our `register` mutation. */
 export type RegisterPayload = {
   __typename?: 'RegisterPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  jwt?: Maybe<Scalars['Jwt']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
+  accessToken: Scalars['String'];
+  refreshToken: Scalars['String'];
+  user: User;
 };
 
-export type Registration = Node & {
+export type Registration = {
   __typename?: 'Registration';
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees: AttendeesConnection;
@@ -2992,8 +2884,6 @@ export type Registration = Node & {
   eventId?: Maybe<Scalars['UUID']>;
   hearAboutList?: Maybe<Array<Maybe<Scalars['String']>>>;
   id: Scalars['UUID'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   updatedAt: Scalars['Datetime'];
 };
 
@@ -3106,6 +2996,76 @@ export enum RegistrationsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
+/** All input for the `requestAccountDeletion` mutation. */
+export type RequestAccountDeletionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our `requestAccountDeletion` mutation. */
+export type RequestAccountDeletionPayload = {
+  __typename?: 'RequestAccountDeletionPayload';
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** All input for the `resendEmailVerificationCode` mutation. */
+export type ResendEmailVerificationCodeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  emailId: Scalars['UUID'];
+};
+
+/** The output of our `resendEmailVerificationCode` mutation. */
+export type ResendEmailVerificationCodePayload = {
+  __typename?: 'ResendEmailVerificationCodePayload';
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** All input for the `resetPassword` mutation. */
+export type ResetPasswordInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  newPassword: Scalars['String'];
+  resetToken: Scalars['String'];
+  userId: Scalars['UUID'];
+};
+
+/** The output of our `resetPassword` mutation. */
+export type ResetPasswordPayload = {
+  __typename?: 'ResetPasswordPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  success?: Maybe<Scalars['Boolean']>;
+};
+
 export type RowEventAttendee = {
   __typename?: 'RowEventAttendee';
   addressLine1?: Maybe<Scalars['String']>;
@@ -3142,7 +3102,7 @@ export type ScanAttendeeInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  ticketPayload?: InputMaybe<TicketPayloadInput>;
+  ticketPayload: TicketPayloadInput;
 };
 
 /** The output of our `scanAttendee` mutation. */
@@ -3175,7 +3135,7 @@ export type ScanAttendeesOfflineInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  ticketPayloads?: InputMaybe<Array<InputMaybe<TicketPayloadInput>>>;
+  ticketPayloads: Array<InputMaybe<TicketPayloadInput>>;
 };
 
 /** The output of our `scanAttendeesOffline` mutation. */
@@ -3198,7 +3158,7 @@ export type SendEmailAllAttendeeEventInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
+  eventId: Scalars['UUID'];
 };
 
 /** The output of our `sendEmailAllAttendeeEvent` mutation. */
@@ -3221,7 +3181,7 @@ export type SendEmailConfirmDonationByEventIdInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
+  eventId: Scalars['UUID'];
 };
 
 /** The output of our `sendEmailConfirmDonationByEventId` mutation. */
@@ -3241,28 +3201,85 @@ export type SendEmailConfirmDonationByEventIdPayload = {
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value. */
   equalTo?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than the specified value. */
   greaterThan?: InputMaybe<Scalars['String']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes?: InputMaybe<Scalars['String']>;
   /** Contains the specified string (case-insensitive). */
   includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
   lessThan?: InputMaybe<Scalars['String']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Less than or equal to the specified value. */
   lessThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value. */
   notDistinctFrom?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value. */
   notEqualTo?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: InputMaybe<Scalars['String']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: InputMaybe<Scalars['String']>;
+};
+
+/** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
+export type Subscription = {
+  __typename?: 'Subscription';
+  /** Triggered when the logged in user's record is updated in some way. */
+  currentUserUpdated?: Maybe<UserSubscriptionPayload>;
 };
 
 /** An input for mutations affecting `TicketPayload` */
@@ -3305,22 +3322,9 @@ export type UuidFilter = {
   notIn?: InputMaybe<Array<Scalars['UUID']>>;
 };
 
-/** All input for the `updateAttendeeByNodeId` mutation. */
-export type UpdateAttendeeByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Attendee` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Attendee` being updated. */
-  patch: AttendeePatch;
-};
-
 /** All input for the `updateAttendeeEmailAndSendEmail` mutation. */
 export type UpdateAttendeeEmailAndSendEmailInput = {
-  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>>>;
+  attendees: Array<InputMaybe<AttendeePatch>>;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -3377,31 +3381,6 @@ export type UpdateAttendeePayloadAttendeeEdgeArgs = {
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
-/** All input for the `updateEventBrandingByEventId` mutation. */
-export type UpdateEventBrandingByEventIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  eventId: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `EventBranding` being updated. */
-  patch: EventBrandingPatch;
-};
-
-/** All input for the `updateEventBrandingByNodeId` mutation. */
-export type UpdateEventBrandingByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `EventBranding` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `EventBranding` being updated. */
-  patch: EventBrandingPatch;
-};
-
 /** All input for the `updateEventBranding` mutation. */
 export type UpdateEventBrandingInput = {
   /**
@@ -3436,45 +3415,6 @@ export type UpdateEventBrandingPayload = {
 /** The output of our update `EventBranding` mutation. */
 export type UpdateEventBrandingPayloadEventBrandingEdgeArgs = {
   orderBy?: InputMaybe<Array<EventBrandingsOrderBy>>;
-};
-
-/** All input for the `updateEventByNodeId` mutation. */
-export type UpdateEventByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Event` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-};
-
-/** All input for the `updateEventByOrganizationIdAndName` mutation. */
-export type UpdateEventByOrganizationIdAndNameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-  organizationId: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-};
-
-/** All input for the `updateEventByOrganizationIdAndSlug` mutation. */
-export type UpdateEventByOrganizationIdAndSlugInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  organizationId: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `Event` being updated. */
-  patch: EventPatch;
-  slug: Scalars['String'];
 };
 
 /** All input for the `updateEvent` mutation. */
@@ -3513,19 +3453,6 @@ export type UpdateEventPayloadEventEdgeArgs = {
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
 };
 
-/** All input for the `updateLogByNodeId` mutation. */
-export type UpdateLogByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Log` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Log` being updated. */
-  patch: LogPatch;
-};
-
 /** All input for the `updateLog` mutation. */
 export type UpdateLogInput = {
   /**
@@ -3562,43 +3489,6 @@ export type UpdateLogPayloadLogEdgeArgs = {
   orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
 
-/** All input for the `updateOrganizationByName` mutation. */
-export type UpdateOrganizationByNameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
-  /** An object where the defined keys will be set on the `Organization` being updated. */
-  patch: OrganizationPatch;
-};
-
-/** All input for the `updateOrganizationByNodeId` mutation. */
-export type UpdateOrganizationByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Organization` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Organization` being updated. */
-  patch: OrganizationPatch;
-};
-
-/** All input for the `updateOrganizationBySlug` mutation. */
-export type UpdateOrganizationBySlugInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** An object where the defined keys will be set on the `Organization` being updated. */
-  patch: OrganizationPatch;
-  slug: Scalars['String'];
-};
-
 /** All input for the `updateOrganization` mutation. */
 export type UpdateOrganizationInput = {
   /**
@@ -3609,32 +3499,6 @@ export type UpdateOrganizationInput = {
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Organization` being updated. */
   patch: OrganizationPatch;
-};
-
-/** All input for the `updateOrganizationMembershipByNodeId` mutation. */
-export type UpdateOrganizationMembershipByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `OrganizationMembership` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `OrganizationMembership` being updated. */
-  patch: OrganizationMembershipPatch;
-};
-
-/** All input for the `updateOrganizationMembershipByOrganizationIdAndUserId` mutation. */
-export type UpdateOrganizationMembershipByOrganizationIdAndUserIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  organizationId: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `OrganizationMembership` being updated. */
-  patch: OrganizationMembershipPatch;
-  userId: Scalars['UUID'];
 };
 
 /** All input for the `updateOrganizationMembership` mutation. */
@@ -3697,19 +3561,6 @@ export type UpdateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
-/** All input for the `updateRegistrationByNodeId` mutation. */
-export type UpdateRegistrationByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Registration` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Registration` being updated. */
-  patch: RegistrationPatch;
-};
-
 /** All input for the `updateRegistration` mutation. */
 export type UpdateRegistrationInput = {
   /**
@@ -3746,29 +3597,68 @@ export type UpdateRegistrationPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
-/** All input for the `updateUserByEmail` mutation. */
-export type UpdateUserByEmailInput = {
+/** All input for the `updateUserAuthentication` mutation. */
+export type UpdateUserAuthenticationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `UserAuthentication` being updated. */
+  patch: UserAuthenticationPatch;
 };
 
-/** All input for the `updateUserByNodeId` mutation. */
-export type UpdateUserByNodeIdInput = {
+/** The output of our update `UserAuthentication` mutation. */
+export type UpdateUserAuthenticationPayload = {
+  __typename?: 'UpdateUserAuthenticationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserAuthentication`. */
+  user?: Maybe<User>;
+  /** The `UserAuthentication` that was updated by this mutation. */
+  userAuthentication?: Maybe<UserAuthentication>;
+  /** An edge for our `UserAuthentication`. May be used by Relay 1. */
+  userAuthenticationEdge?: Maybe<UserAuthenticationsEdge>;
+};
+
+
+/** The output of our update `UserAuthentication` mutation. */
+export type UpdateUserAuthenticationPayloadUserAuthenticationEdgeArgs = {
+  orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
+};
+
+/** All input for the `updateUserEmail` mutation. */
+export type UpdateUserEmailInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `User` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `UserEmail` being updated. */
+  patch: UserEmailPatch;
+};
+
+/** The output of our update `UserEmail` mutation. */
+export type UpdateUserEmailPayload = {
+  __typename?: 'UpdateUserEmailPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>;
+  /** The `UserEmail` that was updated by this mutation. */
+  userEmail?: Maybe<UserEmail>;
 };
 
 /** All input for the `updateUser` mutation. */
@@ -3778,6 +3668,7 @@ export type UpdateUserInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the user. */
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `User` being updated. */
   patch: UserPatch;
@@ -3805,24 +3696,35 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
-export type User = Node & {
+/** A user who can log in to the application. */
+export type User = {
   __typename?: 'User';
+  /** Optional avatar URL. */
   avatarUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
-  email: Scalars['String'];
   firstname: Scalars['String'];
   hasPassword?: Maybe<Scalars['Boolean']>;
+  /** Unique identifier for the user. */
   id: Scalars['UUID'];
+  /** If true, the user has elevated privileges. */
   isAdmin: Scalars['Boolean'];
+  isVerified: Scalars['Boolean'];
+  isVolunteer: Scalars['Boolean'];
   lastname: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
   organizationMemberships: OrganizationMembershipsConnection;
+  phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
+  /** Reads and enables pagination through a set of `UserAuthentication`. */
+  userAuthentications: UserAuthenticationsConnection;
+  /** Reads and enables pagination through a set of `UserEmail`. */
+  userEmailsList: Array<UserEmail>;
+  /** Public-facing username (or 'handle') of the user. */
+  username: Scalars['String'];
 };
 
 
+/** A user who can log in to the application. */
 export type UserOrganizationMembershipsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -3834,17 +3736,233 @@ export type UserOrganizationMembershipsArgs = {
   orderBy?: InputMaybe<Array<OrganizationMembershipsOrderBy>>;
 };
 
+
+/** A user who can log in to the application. */
+export type UserUserAuthenticationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAuthenticationCondition>;
+  filter?: InputMaybe<UserAuthenticationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
+};
+
+
+/** A user who can log in to the application. */
+export type UserUserEmailsListArgs = {
+  condition?: InputMaybe<UserEmailCondition>;
+  filter?: InputMaybe<UserEmailFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserEmailsOrderBy>>;
+};
+
+/** Contains information about the login providers this user has used, so that they may disconnect them should they wish. */
+export type UserAuthentication = {
+  __typename?: 'UserAuthentication';
+  createdAt: Scalars['Datetime'];
+  /** Additional profile details extracted from this login method */
+  details: Scalars['JSON'];
+  id: Scalars['UUID'];
+  /** A unique identifier for the user within the login service. */
+  identifier: Scalars['String'];
+  /** The login service used, e.g. `twitter` or `github`. */
+  service: Scalars['String'];
+  updatedAt: Scalars['Datetime'];
+  /** Reads a single `User` that is related to this `UserAuthentication`. */
+  user?: Maybe<User>;
+  userId: Scalars['UUID'];
+};
+
+/**
+ * A condition to be used against `UserAuthentication` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type UserAuthenticationCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `service` field. */
+  service?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `UserAuthentication` object types. All fields are combined with a logical ‘and.’ */
+export type UserAuthenticationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UserAuthenticationFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<UserAuthenticationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UserAuthenticationFilter>>;
+  /** Filter by the object’s `service` field. */
+  service?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `UserAuthentication` */
+export type UserAuthenticationInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Additional profile details extracted from this login method */
+  details?: InputMaybe<Scalars['JSON']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  /** A unique identifier for the user within the login service. */
+  identifier: Scalars['String'];
+  /** The login service used, e.g. `twitter` or `github`. */
+  service: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  userId: Scalars['UUID'];
+};
+
+/** Represents an update to a `UserAuthentication`. Fields that are set will be updated. */
+export type UserAuthenticationPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Additional profile details extracted from this login method */
+  details?: InputMaybe<Scalars['JSON']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  /** A unique identifier for the user within the login service. */
+  identifier?: InputMaybe<Scalars['String']>;
+  /** The login service used, e.g. `twitter` or `github`. */
+  service?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A connection to a list of `UserAuthentication` values. */
+export type UserAuthenticationsConnection = {
+  __typename?: 'UserAuthenticationsConnection';
+  /** A list of edges which contains the `UserAuthentication` and cursor to aid in pagination. */
+  edges: Array<UserAuthenticationsEdge>;
+  /** A list of `UserAuthentication` objects. */
+  nodes: Array<UserAuthentication>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `UserAuthentication` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `UserAuthentication` edge in the connection. */
+export type UserAuthenticationsEdge = {
+  __typename?: 'UserAuthenticationsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UserAuthentication` at the end of the edge. */
+  node: UserAuthentication;
+};
+
+/** Methods to use when ordering `UserAuthentication`. */
+export enum UserAuthenticationsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ServiceAsc = 'SERVICE_ASC',
+  ServiceDesc = 'SERVICE_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
+
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type UserCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `email` field. */
-  email?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `username` field. */
+  username?: InputMaybe<Scalars['String']>;
 };
+
+/** A user's email address. */
+export type UserEmail = {
+  __typename?: 'UserEmail';
+  createdAt: Scalars['Datetime'];
+  /** The user's email address. */
+  email: Scalars['String'];
+  id: Scalars['UUID'];
+  isPrimary: Scalars['Boolean'];
+  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
+  isVerified: Scalars['Boolean'];
+  updatedAt: Scalars['Datetime'];
+  /** Reads a single `User` that is related to this `UserEmail`. */
+  user?: Maybe<User>;
+  userId: Scalars['UUID'];
+};
+
+/**
+ * A condition to be used against `UserEmail` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type UserEmailCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isPrimary` field. */
+  isPrimary?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `UserEmail` object types. All fields are combined with a logical ‘and.’ */
+export type UserEmailFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UserEmailFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isPrimary` field. */
+  isPrimary?: InputMaybe<BooleanFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<UserEmailFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UserEmailFilter>>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `UserEmail` */
+export type UserEmailInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** The user's email address. */
+  email: Scalars['String'];
+  id?: InputMaybe<Scalars['UUID']>;
+  isPrimary?: InputMaybe<Scalars['Boolean']>;
+  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
+  isVerified?: InputMaybe<Scalars['Boolean']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** Represents an update to a `UserEmail`. Fields that are set will be updated. */
+export type UserEmailPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** The user's email address. */
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isPrimary?: InputMaybe<Scalars['Boolean']>;
+  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
+  isVerified?: InputMaybe<Scalars['Boolean']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** Methods to use when ordering `UserEmail`. */
+export enum UserEmailsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  IsPrimaryAsc = 'IS_PRIMARY_ASC',
+  IsPrimaryDesc = 'IS_PRIMARY_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export type UserFilter = {
@@ -3852,8 +3970,6 @@ export type UserFilter = {
   and?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `email` field. */
-  email?: InputMaybe<StringFilter>;
   /** Filter by the object’s `hasPassword` field. */
   hasPassword?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `id` field. */
@@ -3864,30 +3980,52 @@ export type UserFilter = {
   or?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `username` field. */
+  username?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `User` */
 export type UserInput = {
+  /** Optional avatar URL. */
   avatarUrl?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
-  email: Scalars['String'];
   firstname: Scalars['String'];
+  /** Unique identifier for the user. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** If true, the user has elevated privileges. */
   isAdmin?: InputMaybe<Scalars['Boolean']>;
+  isVerified?: InputMaybe<Scalars['Boolean']>;
+  isVolunteer?: InputMaybe<Scalars['Boolean']>;
   lastname: Scalars['String'];
+  phoneNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Public-facing username (or 'handle') of the user. */
+  username: Scalars['String'];
 };
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
+  /** Optional avatar URL. */
   avatarUrl?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
-  email?: InputMaybe<Scalars['String']>;
   firstname?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the user. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** If true, the user has elevated privileges. */
   isAdmin?: InputMaybe<Scalars['Boolean']>;
+  isVerified?: InputMaybe<Scalars['Boolean']>;
+  isVolunteer?: InputMaybe<Scalars['Boolean']>;
   lastname?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+  /** Public-facing username (or 'handle') of the user. */
+  username?: InputMaybe<Scalars['String']>;
+};
+
+export type UserSubscriptionPayload = {
+  __typename?: 'UserSubscriptionPayload';
+  event?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 /** A connection to a list of `User` values. */
@@ -3916,16 +4054,40 @@ export type UsersEdge = {
 export enum UsersOrderBy {
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
-  EmailAsc = 'EMAIL_ASC',
-  EmailDesc = 'EMAIL_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  UsernameAsc = 'USERNAME_ASC',
+  UsernameDesc = 'USERNAME_DESC'
 }
+
+/** All input for the `verifyEmail` mutation. */
+export type VerifyEmailInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  token: Scalars['String'];
+  userEmailId: Scalars['UUID'];
+};
+
+/** The output of our `verifyEmail` mutation. */
+export type VerifyEmailPayload = {
+  __typename?: 'VerifyEmailPayload';
+  boolean?: Maybe<Scalars['Boolean']>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
 
 export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null };
 
@@ -3936,6 +4098,8 @@ export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slu
 export type OrganizationFragmentFragment = { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any };
 
 export type RegistrationFragmentFragment = { __typename?: 'Registration', eventId?: any | null, createdAt: any, hearAboutList?: Array<string | null> | null, id: any, updatedAt: any };
+
+export type MyUserFragment = { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> };
 
 export type CreateAttendeeMutationVariables = Exact<{
   input: CreateAttendeeInput;
@@ -3973,7 +4137,7 @@ export type SendEmailAllAttendeeEventMutationVariables = Exact<{
 export type SendEmailAllAttendeeEventMutation = { __typename?: 'Mutation', sendEmailAllAttendeeEvent?: { __typename?: 'SendEmailAllAttendeeEventPayload', clientMutationId?: string | null, rowEventAttendees?: Array<{ __typename?: 'RowEventAttendee', id?: string | null, email?: string | null } | null> | null } | null };
 
 export type UpdateAttendeeEmailAndSendEmailMutationVariables = Exact<{
-  attendees?: InputMaybe<Array<InputMaybe<AttendeePatch>> | InputMaybe<AttendeePatch>>;
+  attendees: Array<InputMaybe<AttendeePatch>> | InputMaybe<AttendeePatch>;
 }>;
 
 
@@ -3992,14 +4156,6 @@ export type ScanAttendeesOfflineMutationVariables = Exact<{
 
 
 export type ScanAttendeesOfflineMutation = { __typename?: 'Mutation', scanAttendeesOffline?: { __typename?: 'ScanAttendeesOfflinePayload', clientMutationId?: string | null, attendees?: Array<{ __typename?: 'Attendee', id: any } | null> | null } | null };
-
-export type LoginMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
-}>;
-
-
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginPayload', jwt?: any | null } | null };
 
 export type CreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -4084,6 +4240,34 @@ export type RegisterAttendeesCsvMutationVariables = Exact<{
 
 
 export type RegisterAttendeesCsvMutation = { __typename?: 'Mutation', registerAttendeesCsv?: { __typename?: 'RegisterAttendeesCsvPayload', clientMutationId?: string | null } | null };
+
+export type ForgotPasswordMutationVariables = Exact<{
+  input: ForgotPasswordInput;
+}>;
+
+
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword?: { __typename?: 'ForgotPasswordPayload', clientMutationId?: string | null } | null };
+
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginPayload', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: any } } | null };
+
+export type RegisterUserMutationVariables = Exact<{
+  input: RegisterInput;
+}>;
+
+
+export type RegisterUserMutation = { __typename?: 'Mutation', register?: { __typename?: 'RegisterPayload', refreshToken: string, accessToken: string, user: { __typename?: 'User', id: any } } | null };
+
+export type ResetPasswordMutationVariables = Exact<{
+  input: ResetPasswordInput;
+}>;
+
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword?: { __typename?: 'ResetPasswordPayload', success?: boolean | null } | null };
 
 export type GetAttendeeByIdQueryVariables = Exact<{
   attendeeId: Scalars['UUID'];
@@ -4182,6 +4366,27 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 
 export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any }> } }> } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
+export type GetAllUsersQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<UserFilter>;
+}>;
+
+
+export type GetAllUsersQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', totalCount: number, edges: Array<{ __typename?: 'UsersEdge', node: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> } }> } | null };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> } | null };
+
+export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> } | null };
+
 export const MyAttendeeFragmentDoc = gql`
     fragment MyAttendee on Attendee {
   id
@@ -4266,6 +4471,21 @@ export const RegistrationFragmentFragmentDoc = gql`
   updatedAt
 }
     `;
+export const MyUserFragmentDoc = gql`
+    fragment MyUser on User {
+  id
+  firstname
+  lastname
+  avatarUrl
+  isAdmin
+  createdAt
+  updatedAt
+  userEmailsList {
+    id
+    email
+  }
+}
+    `;
 export const CreateAttendeeDocument = gql`
     mutation CreateAttendee($input: CreateAttendeeInput!) {
   createAttendee(input: $input) {
@@ -4314,7 +4534,7 @@ export const SendEmailAllAttendeeEventDocument = gql`
 }
     `;
 export const UpdateAttendeeEmailAndSendEmailDocument = gql`
-    mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]) {
+    mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]!) {
   updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
     attendees {
       email
@@ -4339,13 +4559,6 @@ export const ScanAttendeesOfflineDocument = gql`
       id
     }
     clientMutationId
-  }
-}
-    `;
-export const LoginDocument = gql`
-    mutation Login($email: String!, $password: String!) {
-  login(input: {email: $email, password: $password}) {
-    jwt
   }
 }
     `;
@@ -4456,6 +4669,42 @@ export const RegisterAttendeesCsvDocument = gql`
     mutation RegisterAttendeesCsv($input: RegisterAttendeesCsvInput!) {
   registerAttendeesCsv(input: $input) {
     clientMutationId
+  }
+}
+    `;
+export const ForgotPasswordDocument = gql`
+    mutation ForgotPassword($input: ForgotPasswordInput!) {
+  forgotPassword(input: $input) {
+    clientMutationId
+  }
+}
+    `;
+export const LoginDocument = gql`
+    mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    accessToken
+    refreshToken
+    user {
+      id
+    }
+  }
+}
+    `;
+export const RegisterUserDocument = gql`
+    mutation RegisterUser($input: RegisterInput!) {
+  register(input: $input) {
+    user {
+      id
+    }
+    refreshToken
+    accessToken
+  }
+}
+    `;
+export const ResetPasswordDocument = gql`
+    mutation ResetPassword($input: ResetPasswordInput!) {
+  resetPassword(input: $input) {
+    success
   }
 }
     `;
@@ -4666,6 +4915,32 @@ export const GetOrganizationBySlugDocument = gql`
 }
     ${OrganizationFragmentFragmentDoc}
 ${MyEventFragmentDoc}`;
+export const GetAllUsersDocument = gql`
+    query GetAllUsers($first: Int, $offset: Int, $filter: UserFilter) {
+  users(first: $first, offset: $offset, filter: $filter) {
+    edges {
+      node {
+        ...MyUser
+      }
+    }
+    totalCount
+  }
+}
+    ${MyUserFragmentDoc}`;
+export const GetUserByIdDocument = gql`
+    query GetUserById($id: UUID!) {
+  user(id: $id) {
+    ...MyUser
+  }
+}
+    ${MyUserFragmentDoc}`;
+export const GetCurrentUserDocument = gql`
+    query GetCurrentUser {
+  currentUser {
+    ...MyUser
+  }
+}
+    ${MyUserFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -4689,7 +4964,7 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     SendEmailAllAttendeeEvent(variables: SendEmailAllAttendeeEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SendEmailAllAttendeeEventMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<SendEmailAllAttendeeEventMutation>(SendEmailAllAttendeeEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SendEmailAllAttendeeEvent', 'mutation');
     },
-    UpdateAttendeeEmailAndSendEmail(variables?: UpdateAttendeeEmailAndSendEmailMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
+    UpdateAttendeeEmailAndSendEmail(variables: UpdateAttendeeEmailAndSendEmailMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateAttendeeEmailAndSendEmailMutation>(UpdateAttendeeEmailAndSendEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateAttendeeEmailAndSendEmail', 'mutation');
     },
     ScanAttendee(variables: ScanAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeeMutation> {
@@ -4697,9 +4972,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     ScanAttendeesOffline(variables: ScanAttendeesOfflineMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeesOfflineMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<ScanAttendeesOfflineMutation>(ScanAttendeesOfflineDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ScanAttendeesOffline', 'mutation');
-    },
-    Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login', 'mutation');
     },
     CreateEvent(variables: CreateEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateEventMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateEventMutation>(CreateEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateEvent', 'mutation');
@@ -4737,6 +5009,18 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     RegisterAttendeesCsv(variables: RegisterAttendeesCsvMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesCsvMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesCsvMutation>(RegisterAttendeesCsvDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendeesCsv', 'mutation');
     },
+    ForgotPassword(variables: ForgotPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ForgotPasswordMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ForgotPasswordMutation>(ForgotPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ForgotPassword', 'mutation');
+    },
+    Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login', 'mutation');
+    },
+    RegisterUser(variables: RegisterUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterUserMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RegisterUserMutation>(RegisterUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterUser', 'mutation');
+    },
+    ResetPassword(variables: ResetPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResetPasswordMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ResetPasswordMutation>(ResetPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ResetPassword', 'mutation');
+    },
     GetAttendeeById(variables: GetAttendeeByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByIdQuery>(GetAttendeeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeById', 'query');
     },
@@ -4769,6 +5053,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetOrganizationBySlug(variables: GetOrganizationBySlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetOrganizationBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetOrganizationBySlugQuery>(GetOrganizationBySlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetOrganizationBySlug', 'query');
+    },
+    GetAllUsers(variables?: GetAllUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllUsersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAllUsersQuery>(GetAllUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllUsers', 'query');
+    },
+    GetUserById(variables: GetUserByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserByIdQuery>(GetUserByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetUserById', 'query');
+    },
+    GetCurrentUser(variables?: GetCurrentUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCurrentUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCurrentUserQuery>(GetCurrentUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetCurrentUser', 'query');
     }
   };
 }

@@ -42,11 +42,10 @@ mutation SendEmailAllAttendeeEvent($eventId: UUID!) {
   }
 }
 
-mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]) {
-  updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
+mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]!) {
+  updateAttendeeEmailAndSendEmail(input: { attendees: $attendees }) {
     attendees {
       email
-      
     }
   }
 }

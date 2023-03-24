@@ -1,11 +1,10 @@
-import { gql, makeExtendSchemaPlugin } from "graphile-utils";
-import { sendCookieToken, signToken } from "../utils/signToken";
 import { login as loginUtil } from "../utils/login";
 
 import { OurGraphQLContext } from "../middleware/installPostGraphile";
 import { ERROR_MESSAGE_OVERRIDES } from "../utils/handleErrors";
+import { makeExtendSchemaPlugin, gql } from "postgraphile";
 
-const AuthPlugin = makeExtendSchemaPlugin((build) => ({
+const AuthPlugin = makeExtendSchemaPlugin(build => ({
   typeDefs: gql`
     input RegisterInput {
       username: String
