@@ -2,6 +2,8 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { Cog, PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,12 +26,28 @@ const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset
     { title: "Début le", value: "startsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
-    { title: "Inscrits", value: "registrations", type: Type?.date, isSortable: false, isVisible: true },
+    { title: "Inscrits", value: "totalRegistrations", type: Type?.string, isSortable: true, isVisible: true },
+    {
+      title: "Inscrits confirmés",
+      value: "totalConfirmedRegistrations",
+      type: Type?.string,
+      isSortable: true,
+      isVisible: true,
+    },
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawEvent: IData[] = organization?.events?.nodes.map(
-    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, slug, registrations }) => ({
+    ({
+      name,
+      city,
+      startsAt,
+      bookingStartsAt,
+      bookingEndsAt,
+      slug,
+      totalRegistrations,
+      totalConfirmedRegistrations,
+    }) => ({
       Nom: name,
       Lieu: city,
       "Début le": (
@@ -43,7 +61,8 @@ const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset
       ),
       "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
       "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
-      Inscrits: registrations?.totalCount,
+      Inscrits: totalRegistrations,
+      "Inscrits confirmés": totalConfirmedRegistrations,
       slug: slug,
     })
   );

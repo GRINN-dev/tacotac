@@ -5,17 +5,6 @@ fragment MyEvent on Event {
   description
   addressLine2
   addressLine1
-  registrations {
-    nodes {
-      attendees {
-        nodes {
-          id
-        }
-        totalCount
-      }
-    }
-    totalCount
-  }
   city
   zipCode
   country
@@ -27,4 +16,6 @@ fragment MyEvent on Event {
   placeName
   webhooks
   organizationId
+  totalRegistrations
+  totalConfirmedRegistrations
 }
