@@ -532,8 +532,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
         </form>
         <div className="flex w-6/12 mt-16 md:mx-auto md:my-3 md:flex-col ">
           <button
-            className={roboto.className}
+            className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
             style={{
+              fontFamily: eventBranding.font,
               backgroundColor: `#${eventBranding.color1}`,
               borderRadius: "0.5rem",
               fontSize: "0.875rem",
