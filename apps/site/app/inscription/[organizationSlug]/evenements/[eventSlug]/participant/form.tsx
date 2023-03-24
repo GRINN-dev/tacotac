@@ -499,8 +499,9 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
 
           <div className="flex items-center gap-2 mt-8 styles.text">
             <button
-              className={montserrat.className}
+              className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
               style={{
+                // `${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`
                 backgroundColor: `#${eventBranding.color1}`,
                 borderRadius: "0.5rem",
                 fontSize: "0.875rem",
@@ -534,7 +535,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
           <button
             className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
             style={{
-              fontFamily: eventBranding.font,
               backgroundColor: `#${eventBranding.color1}`,
               borderRadius: "0.5rem",
               fontSize: "0.875rem",
