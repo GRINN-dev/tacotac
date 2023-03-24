@@ -187,7 +187,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                             type="text"
                             id="email"
                             className="col-span-2"
-                            placeholder="jeanned@mail.com"
+                            placeholder={eventBranding?.placeholder}
                             {...register(`attendees.${i}.email`, {
                               required: "Un email pour le participant est requis",
                               pattern: {
@@ -302,7 +302,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                         <Input
                           type="text"
                           id="email"
-                          placeholder="jeanned@mail.com"
+                          placeholder={eventBranding.placeholder}
                           className="col-span-2"
                           {...register(`attendees.${i}.email`, {
                             setValueAs: (v) => (v ? v : null),
@@ -391,7 +391,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                       type="text"
                       id="email"
                       className="col-span-2"
-                      placeholder="jeanned@mail.com"
+                      placeholder={eventBranding.placeholder}
                       {...register(`attendees.${i}.email`, {
                         setValueAs: (v) => (v ? v : null),
                         pattern: {

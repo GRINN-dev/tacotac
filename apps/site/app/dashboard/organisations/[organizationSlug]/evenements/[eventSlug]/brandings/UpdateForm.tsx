@@ -41,7 +41,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
-
+  const [placeholderEmail, setPlaceholderEmail] = useState(placeholder);
   const [files, setFiles] = useState<File[]>([]);
   const [awardWinningList, setAwardWinningList] = useState<string[]>(awardWinningAssoList || []);
   const [isTransitionning, startTransition] = useTransition();
@@ -69,6 +69,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     data.patch.awardWinningAssoList = awardWinningList;
     data.patch.color1 = sketchPickerColor1.hex.substring(1);
     data.patch.color2 = sketchPickerColor2.hex.substring(1);
+    data.patch.placeholder = placeholderEmail;
     await sdk()
       .UpdateEventBranding({
         input: data,
@@ -96,12 +97,15 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   };
 
   const [sketchPickerColor1, setSketchPickerColor1] = useState({
-    hex: "#fff",
+    hex: color2,
   });
-  const [sketchPickerColor2, setSketchPickerColor2] = useState({ hex: "#fff" });
+  const [sketchPickerColor2, setSketchPickerColor2] = useState({ hex: color1 });
   const { hex: hex1 } = sketchPickerColor1;
   const { hex: hex2 } = sketchPickerColor2;
-
+  const handleSetPlaceholder = (e) => {
+    const emailValue = e.currentTarget.value;
+    setPlaceholderEmail(emailValue);
+  };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       <div
@@ -298,6 +302,18 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             {awardWinning} <MinusCircle className="ml-2" />
           </div>
         ))}
+      </div>
+      <div>
+        <Label htmlFor="placeholder-email">Placeholder email</Label>
+      </div>
+      <div>
+        <Input
+          type="text"
+          id="placeholderEmail"
+          value={placeholderEmail}
+          placeholder="Saisir un placeholder pour l'email"
+          onChange={handleSetPlaceholder}
+        />
       </div>
       <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
