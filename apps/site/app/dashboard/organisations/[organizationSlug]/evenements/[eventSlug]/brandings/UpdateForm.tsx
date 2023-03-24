@@ -95,12 +95,14 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     newList.splice(index, 1);
     setAwardWinningList(newList);
   };
+  const { nom, prenom, email, telephone, zipcode } = placeholder || {};
+
   const [jsonData, setJsonData] = useState({
-    nom: "",
-    prenom: "",
-    email: "",
-    telephone: "",
-    zipcode: "",
+    nom: "Nom",
+    prenom: "Prénom",
+    email: "Email",
+    telephone: "Téléphone",
+    zipcode: "Code postal",
   });
   const [sketchPickerColor1, setSketchPickerColor1] = useState({
     hex: color2,
@@ -192,7 +194,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         <Controller
           name={"patch.font"}
           control={control}
-          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+          render={({ field: { onChange }, fieldState: { error } }) => (
             <>
               <Select defaultValue={font} onValueChange={onChange}>
                 <SelectTrigger className="w-[180px]">
@@ -326,6 +328,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           type="text"
           id="nom"
           name="nom"
+          defaultValue={nom}
           placeholder={jsonData.nom}
           onChange={handleJsonChange}
         />
@@ -339,6 +342,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           type="text"
           id="prenom"
           name="prenom"
+          defaultValue={prenom}
           placeholder={jsonData.prenom}
           onChange={handleJsonChange}
         />
@@ -350,6 +354,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         className="mb-4"
         type="tel"
         id="telephone"
+        defaultValue={telephone}
         name="telephone"
         placeholder={jsonData.telephone}
         onChange={handleJsonChange}
@@ -361,6 +366,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         className="mb-4"
         type="text"
         id="zipcode"
+        defaultValue={zipcode}
         name="zipcode"
         placeholder={jsonData.zipcode}
         onChange={handleJsonChange}
@@ -371,7 +377,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       <div>
         <Input
           className="mb-4"
-          type="email"
+          type="text"
+          defaultValue={email}
           id="email"
           name="email"
           placeholder={jsonData.email}
