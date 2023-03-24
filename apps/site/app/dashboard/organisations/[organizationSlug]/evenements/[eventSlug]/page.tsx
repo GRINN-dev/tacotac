@@ -7,6 +7,7 @@ import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
+import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
 
 const AttendeesPage = async ({
@@ -45,21 +46,21 @@ const AttendeesPage = async ({
       slug: "/participant/" + id,
     })
   );
- 
+
   return (
     <section className="container grid items-center w-full gap-6 pt-6 pb-8 md:py-10">
-      <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
+      <div className="mx-auto flex flex-row w-full max-w-3xl items-center justify-between gap-2">
         <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors scroll-m-20 first:mt-0 ">
           Tous les participants
         </h2>
         <Link
           className={buttonVariants({ variant: "outline", size: "lg" })}
           target="_blank"
-
           href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant`}
         >
           iFrame inscription
         </Link>
+        <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
       </div>
       {flattenedAttendeesFromRegistrations.length > 0 ? (
         <Collection
