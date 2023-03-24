@@ -2,9 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-
 import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
-
 import { toast } from "@/hooks/use-toast";
 import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -20,7 +18,6 @@ import { ToastAction } from "@/components/ui/toast";
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webhooks }) => {
-
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -130,7 +127,6 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
             : "Aucun webhook pour l'instant"}
         </ul>
 
-
         <Label className="mt-2" htmlFor="webhookList">
           Ajouter un webhook (Zapier, Maker, etc.)
           <div className="my-4 rounded-lg border p-4">
@@ -168,8 +164,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description, webho
           </div>
         </div>
       </div>
-      <div className="flex gap-2 mt-8">
-
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
