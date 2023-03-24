@@ -96,7 +96,7 @@ export const generateDocsForAttendees = async (
         Code_Invit: rowData.sign_code,
         Pdf_Url: urlS3Pdf,
         Cancel: "test",
-        Current_Year: dayjs(rowData.starts_at).format("YYYY"),
+        Current_Year: dayjs().format("YYYY"),
       },
     },
   };

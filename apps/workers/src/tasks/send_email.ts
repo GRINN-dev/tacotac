@@ -14,11 +14,15 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     attendeeId: string;
     sendEmailPayload: SendEmailPayload;
   };
+  console.log(
+    "🚀 ~ file: send_email.ts:17 ~ constsendEmail:Task= ~ attendeeId:",
+    attendeeId
+  );
 
   await sgMail
     .send({
       ...sendEmailPayload.mailData,
-      mailSettings: { sandboxMode: { enable: true } },
+      mailSettings: { sandboxMode: { enable: false } },
     })
     .then(async (response: any) => {
       console.log(response[0].statusCode);

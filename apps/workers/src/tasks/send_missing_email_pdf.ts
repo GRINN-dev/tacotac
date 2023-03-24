@@ -53,7 +53,7 @@ export const sendMissingEmailPdf: Task = async (
         Code_Invit: rows[0].sign_code,
         Pdf_Url: rows[0].pdf_url,
         Cancel: "test",
-        Current_Year: dayjs(rows[0].starts_at).format("YYYY"),
+        Current_Year: dayjs().format("YYYY"),
       },
     },
   };

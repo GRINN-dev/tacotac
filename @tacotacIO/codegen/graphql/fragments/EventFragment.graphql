@@ -25,5 +25,6 @@ fragment MyEvent on Event {
   createdAt
   updatedAt
   placeName
+  webhooks
   organizationId
 }
