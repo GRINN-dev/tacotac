@@ -45,6 +45,9 @@ begin
         v_iter = 1,
         'TICKET_' || md5(random()::text || clock_timestamp()::text),
         substring(uuid_generate_v4()::text, 1, 6));
+
+        perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', attendees[v_iter].id, 'state','RESA_BILLET'));
+
     end loop;
   
     perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
@@ -102,6 +105,8 @@ begin
         returning * into v_attendees ;
 
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
+        
+        perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', v_attendees.id, 'state','RESA_BILLET'));
       else 
         raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
       end if;

@@ -66,13 +66,13 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
   const { sendEmailPayload: sendEmailPayloadInscriptor, bufferPdf } =
     await generateDocsForAttendees(
       registrationId,
-      attendees?.at(0),
+      attendees[0],
       withPgClient,
       results
     );
 
   addJob("sendEmail", {
-    attendeeId: attendees.at(0).id,
+    attendeeId: attendees[0].id,
     sendEmailPayload: sendEmailPayloadInscriptor,
   });
 };

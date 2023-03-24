@@ -631,6 +631,7 @@ type Event implements Node {
   capacity: Int
   isVip: Boolean
   details: String
+  webhooks: [String]
   createdAt: Datetime!
   updatedAt: Datetime!
 
@@ -2919,6 +2920,7 @@ input EventInput {
   capacity: Int
   isVip: Boolean
   details: String
+  webhooks: [String]
   createdAt: Datetime
   updatedAt: Datetime
 }
@@ -3420,6 +3422,7 @@ input EventPatch {
   capacity: Int
   isVip: Boolean
   details: String
+  webhooks: [String]
   createdAt: Datetime
   updatedAt: Datetime
 }
