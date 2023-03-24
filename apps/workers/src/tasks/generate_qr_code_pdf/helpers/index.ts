@@ -73,7 +73,10 @@ export const generateDocsForAttendees = async (
   const sendEmailPayload: SendEmailPayload = {
     mailData: {
       to: rowData.email,
-      from: { name: "L'équipe", email: "contact@obole.eu" },
+      from: {
+        name: rowData.header_mail_name,
+        email: rowData.header_mail_contact,
+      },
       templateId: BILLET_TEMPLATE,
       dynamicTemplateData: {
         Event_Name: rowData.name,
