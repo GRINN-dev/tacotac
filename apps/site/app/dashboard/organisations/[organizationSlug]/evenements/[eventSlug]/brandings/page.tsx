@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { ArrowBigLeft } from "lucide-react";
 
-
-
 import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { UpdateEventBrandingForm } from "./UpdateForm";
 
 const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug } }) => {
-  const { eventBySlug } = await sdk().GetEventBySlug({ eventSlug: eventSlug, organizationSlug: organizationSlug });
+  const { eventBySlug } = await serverSdk().GetEventBySlug({
+    eventSlug: eventSlug,
+    organizationSlug: organizationSlug,
+  });
 
   return (
     <>
