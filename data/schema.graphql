@@ -2702,6 +2702,14 @@ type Mutation {
     input: ScanAttendeesOfflineInput!
   ): ScanAttendeesOfflinePayload
 
+  """Select event to retrieve all attendee and send email to all attendee"""
+  sendEmailAllAttendeeEvent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SendEmailAllAttendeeEventInput!
+  ): SendEmailAllAttendeeEventPayload
+
   """
   Select event to retrieve all attendee and send email to all attendee and confirm donation
   """
@@ -4573,6 +4581,48 @@ input ScanAttendeesOfflineInput {
   """
   clientMutationId: String
   ticketPayloads: [TicketPayloadInput]
+}
+
+"""The output of our `sendEmailAllAttendeeEvent` mutation."""
+type SendEmailAllAttendeeEventPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  rowEventAttendees: [RowEventAttendee]
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+type RowEventAttendee {
+  id: String
+  firstname: String
+  lastname: String
+  ticketNumber: String
+  signCode: String
+  email: String
+  qrCodeUrl: String
+  pdfUrl: String
+  name: String
+  placeName: String
+  addressLine1: String
+  startsAt: Datetime
+  endsAt: Datetime
+  details: String
+}
+
+"""All input for the `sendEmailAllAttendeeEvent` mutation."""
+input SendEmailAllAttendeeEventInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  eventId: UUID
 }
 
 """The output of our `sendEmailConfirmDonationByEventId` mutation."""

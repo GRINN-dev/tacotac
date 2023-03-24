@@ -14,7 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 
-interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
+interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {};
+
 export const UpdateEventForm: FC<iUpdateEvent> = ({ id, name, description }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
