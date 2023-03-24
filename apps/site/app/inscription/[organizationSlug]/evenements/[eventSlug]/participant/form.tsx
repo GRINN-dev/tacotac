@@ -508,6 +508,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                 color: "#fff",
                 fontWeight: "500",
                 padding: "0.75rem 1.5rem",
+                marginRight: "1rem",
               }}
               type="submit"
             >
