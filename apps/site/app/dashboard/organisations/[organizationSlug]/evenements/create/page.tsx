@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { ArrowBigLeft } from "lucide-react";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { CreateEventForm } from "./form";
 
-const EventPage = async ({ params: { organizationSlug } }) => {
+
+const CreateEventPage = async ({ params: { organizationSlug } }) => {
   const { organizationBySlug } = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
   });
@@ -27,4 +30,4 @@ const EventPage = async ({ params: { organizationSlug } }) => {
   );
 };
 
-export default EventPage;
+export default CreateEventPage;

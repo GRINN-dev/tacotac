@@ -8,11 +8,15 @@ import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
+import SimpleCollection from "@/components/table/SimpleCollection";
 import { buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
+
 
 interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -35,16 +39,14 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
 
   const [error, setError] = useState<Error | null>(null);
   const [parsedData, setParsedData] = useState([]);
-  const [tableRows, setTableRows] = useState([]);
-  const [values, setValues] = useState([]);
   const router = useRouter();
   const pathname = usePathname();
   const { handleSubmit } = useForm<RegisterAttendeesCsvInput>();
+  const [csvUploadrender, setCsvUploadRender] = useState([]);
 
   const handleCsvUpload = async (csvUpload: any) => {
     setParsedData([]);
-    setTableRows([]);
-    setValues([]);
+    setCsvUploadRender([]);
     parse(csvUpload[0], {
       header: true,
       skipEmptyLines: true,
@@ -52,14 +54,12 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         const isMail = results.data.every((result: ICsv) => result?.email);
         if (results.errors.length > 0 || !isMail) {
           toast({
+            variant: "destructive",
             title: !isMail ? "Un email est manquant" : results.errors[0].message,
           });
           throw error;
         }
-        results.data.map((d: ICsv) => {
-          setTableRows([...Object.keys(d)]);
-          setValues((prevValues) => [...prevValues, Object.values(d)]);
-        });
+        setCsvUploadRender(results.data);
 
         const resultsRewrite = results.data.map((result: ICsv) => {
           return {
@@ -73,6 +73,18 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
     });
   };
 
+  const arrayList = [
+    {
+      civility: "MME OU MR",
+      firstname: "Julie",
+      lastname: "Marron",
+      email: "julie.marron@blob.eu",
+      phoneNumber: "0998789898",
+      zipCode: "33000",
+      isVip: "false ou true",
+    },
+  ];
+
   const onSubmit = handleSubmit(async () => {
     await sdk()
       .RegisterAttendeesCsv({
@@ -82,6 +94,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         setError(error);
         setIsLoading(false);
         toast({
+          variant: "destructive",
           title:
             error.response.errors[0].errcode === "RGNST"
               ? error.response.errors[0].message
@@ -111,16 +124,20 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         <div className="my-4 rounded-lg border p-4">
           <div className="flex">
             <div className="shrink-0">
-              <AlertTriangle className="h-5 w-5 text-red-200" aria-hidden="true" />
+              <AlertTriangle className="h-5 w-5 text-red-300" aria-hidden="true" />
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-200">Attention </h3>
+              <h3 className="text-sm font-medium text-red-300">Attention </h3>
               <div className="mt-2 text-sm ">
                 <p>
                   {`L'import enregistrera directement les participants présents dans le csv et recevront, donc, automatiquement leur billet par mail.`}
                 </p>
               </div>
             </div>
+          </div>
+          <div className="mt-4">
+            <p className="mb-2 text-sm font-medium italic">Voici un exemple de csv a importer:</p>
+            <SimpleCollection arrayList={arrayList} />
           </div>
         </div>
         <FileDragNDrop
@@ -132,36 +149,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
             handleCsvUpload(file);
           }}
         />
-        <div className="-mx-4 mt-10 rounded-lg bg-black ring-1 ring-gray-300 sm:mx-0">
-          <table className="min-w-full divide-y divide-gray-300 ">
-            <thead>
-              <tr>
-                {tableRows.map((rows, index) => {
-                  return (
-                    <th key={index} className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold  sm:pl-6">
-                      {rows}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {values.map((value, index: Key) => {
-                return (
-                  <tr key={index}>
-                    {value.map((_val, i: Key) => {
-                      return (
-                        <td key={i} className="relative border-t py-4 pl-4 pr-3 text-sm sm:pl-6">
-                          {value[i]}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <div className="mt-10">{csvUploadrender?.length > 0 && <SimpleCollection arrayList={csvUploadrender} />}</div>
       </div>
 
       <div className="mt-8 flex gap-2">

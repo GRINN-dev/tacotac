@@ -19,7 +19,9 @@ begin
         returning * into v_attendee;
         
         v_attendees := array_append(v_attendees, v_attendee);
-   
+
+        perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', v_attendee.id, 'state','MAJ_INSCRIPTION'));
+
         perform graphile_worker.add_job('sendMissingEmailPdf', json_build_object('attendeeId', v_attendee.id));
 
     end loop;

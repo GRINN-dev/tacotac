@@ -27,5 +27,6 @@ fragment MyEvent on Event {
   updatedAt
   placeName
   capacity
+  webhooks
   organizationId
 }

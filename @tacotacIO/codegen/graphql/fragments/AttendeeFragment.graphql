@@ -8,4 +8,6 @@ fragment MyAttendee on Attendee {
   status
   panelNumber
   registrationId
+  qrCodeUrl
+  pdfUrl
 }

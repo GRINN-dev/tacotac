@@ -36,12 +36,14 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   richText,
   shortText,
   awardWinningAssoList,
+  headerMailName,
+  headerMailContact,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
-  const [image, setImage] = useState({ local: null, dev: null });
+
   const [files, setFiles] = useState<File[]>([]);
-  const [awardWinningList, setAwardWinningList] = useState<string[]>([]);
+  const [awardWinningList, setAwardWinningList] = useState<string[]>(awardWinningAssoList || []);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
@@ -50,12 +52,17 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
 
-  console.log("test");
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    const url = await uploadToS3(files.at(0));
+
+    if (files.length > 0) {
+      const url = await uploadToS3(files[0]);
+
+      data.patch.logo = url;
+    } else {
+      data.patch.logo = logo;
+    }
     data.id = id;
-    data.patch.logo = url;
     data.patch.awardWinningAssoList = awardWinningList;
     await sdk()
       .UpdateEventBranding({
@@ -154,14 +161,14 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           />
           {files.length > 0 ? (
             <img
-              className="w-1/2 aspect-[3/2] rounded-2xl object-cover"
+              className="aspect-[3/2] w-1/2 rounded-2xl object-cover"
               src={URL.createObjectURL(files[0])}
               alt="preview logo"
             />
           ) : logo ? (
-            <img className="w-1/2 aspect-[3/2] rounded-2xl object-cover" src={logo} alt="logo" />
+            <img className="aspect-[3/2] w-1/2 rounded-2xl object-cover" src={logo} alt="logo" />
           ) : (
-            <div className="w-1/2 aspect-[3/2] rounded-2xl object-cover border border-dashed"></div>
+            <div className="aspect-[3/2] w-1/2 rounded-2xl border border-dashed object-cover"></div>
           )}
         </div>
 
@@ -204,10 +211,20 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
-        <ul className="pl-4 list-disc">
-          {awardWinningAssoList?.map((awardWinning) => (
-            <li>{awardWinning}</li>
-          ))}
+
+        <ul className="list-disc pl-4">
+          {awardWinningList.length > 0
+            ? awardWinningList?.map((awardWinning, index) => (
+                <li key={awardWinning + index}>
+                  <div
+                    className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+                    onClick={() => removeItemClick(index)}
+                  >
+                    {awardWinning} <MinusCircle className="ml-2" />
+                  </div>
+                </li>
+              ))
+            : "Aucun lauréat pour le moment"}
         </ul>
 
         <Label className="mt-2" htmlFor="awardWinningAssoList">
@@ -222,32 +239,55 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             onChange={(evt) => setAwardWinning(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
             onClick={() => {
-              if (awardWinning) setAwardWinningList([...awardWinningList, awardWinning]);
-              setAwardWinning("");
+              if (awardWinning) {
+                setAwardWinningList([...awardWinningList, awardWinning]);
+                setAwardWinning("");
+              }
             }}
           >
             Ajouter <PlusCircle className="ml-2" />
           </div>
         </div>
-
-        {awardWinningList?.map((awardWinning, index) => (
-          <div
-            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
-            onClick={() => removeItemClick(index)}
-          >
-            {awardWinning} <MinusCircle className="ml-2" />
-          </div>
-        ))}
       </div>
-      <div className="flex gap-2 mt-8">
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="headerMailName">Header Mail - Intitulé</Label>
+        <Input
+          type="text"
+          id="headerMailName"
+          defaultValue={headerMailName}
+          placeholder="Saisir l'intitulé du header"
+          {...register("patch.headerMailName", {
+            required: "Un nom pour l'organisation est requis",
+          })}
+        />
+        {formState.errors?.patch?.headerMailName && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="headerMailContact">Header Mail - Contact</Label>
+        <Input
+          type="email"
+          id="headerMailContact"
+          defaultValue={headerMailContact}
+          placeholder="mon@email.com"
+          {...register("patch.headerMailContact", {
+            required: "Un email est requis",
+          })}
+        />
+        {formState.errors?.patch?.headerMailContact && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
+        )}
+      </div>
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {

@@ -23,3 +23,12 @@ mutation DeleteEvent($input: DeleteEventInput!) {
     }
   }
 }
+
+mutation SendEmailConfirmDonationByEventId($eventId: UUID!) {
+  sendEmailConfirmDonationByEventId(input: { eventId: $eventId }) {
+    rowEventAttendeeConfirms {
+      email
+    }
+    clientMutationId
+  }
+}
