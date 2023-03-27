@@ -112,12 +112,17 @@ begin
         substring(uuid_generate_v4()::text, 1, 6)  where v_registration.event_id=event_id
         returning * into v_attendee;
 
+        --ici j'initialise a null afin d'éviter la mémorisation de la dernière valeur
         v_attendee_imported.data:=v_attendee;
-
+        v_attendee_imported.error_code:=null;
+        v_attendee_imported.error_message:=null;
+        v_attendee_imported.error_value:=null;
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
         
         perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', attendees_csv[v_iter].id, 'state','RESA_BILLET'));
       else 
+
+        v_attendee_imported.data:=null;
         v_attendee_imported.error_code:='RGNST';
         v_attendee_imported.error_message:='Participant existe déjà';
         v_attendee_imported.error_value:=attendees_csv[v_iter].email;
@@ -125,10 +130,10 @@ begin
       end if;
        
         v_attendees := array_append(v_attendees, v_attendee_imported);
-
     end loop;
 
   return v_attendees;
+
 end;
 $$ language plpgsql VOLATILE SECURITY DEFINER;
 comment on function register_attendees_csv(event_id uuid, attendees_csv publ.attendees[]) is E'@arg1variant patch';

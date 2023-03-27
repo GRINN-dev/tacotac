@@ -104,8 +104,8 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
                     }
                   </p>
                   <p>
-                    {response.registerAttendeesCsv.attendeeImports.reduce((acc, { errorValue }) => {
-                      return acc.concat(errorValue + " - ");
+                    {response.registerAttendeesCsv.attendeeImports.reduce((acc, { errorValue, errorCode }) => {
+                      return acc.concat(errorCode === "RGNST" ? errorValue + " , " : "  ");
                     }, "")}
                   </p>
                 </div>
