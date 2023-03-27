@@ -79,6 +79,7 @@ const AttendeesPage = async ({
         >
           iFrame inscription
         </Link>
+        
         <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
         <SendAllEmail eventId={eventBySlug?.id} />
       </div>
