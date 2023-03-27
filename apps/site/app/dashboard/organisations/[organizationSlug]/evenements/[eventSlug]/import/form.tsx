@@ -108,7 +108,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
                       return acc.concat(errorValue + " - ");
                     }, "")}
                   </p>
-                </div>{" "}
+                </div>
               </>
             ),
           });
