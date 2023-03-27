@@ -3,8 +3,9 @@ import { PlusSquare, Send } from "lucide-react";
 
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../../components/table/Collection";
+import CopyToClipboard from "./CopyToClipboard";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
@@ -60,25 +61,30 @@ const AttendeesPage = async ({
           className={buttonVariants({ variant: "outline", size: "sm" })}
           href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/${id}`}
         >
-          <PlusSquare className=" h-4 w-4" />
+          <PlusSquare className="w-4 h-4 " />
         </Link>
       ),
     })
   );
 
   return (
-    <section className="container grid w-full items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="mx-auto flex w-full max-w-3xl flex-row items-center justify-between gap-2">
-        <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
+    <section className="container grid items-center w-full gap-6 pt-6 pb-8 md:py-10">
+      <div className="flex flex-row items-center justify-between w-full max-w-3xl gap-2 mx-auto">
+        <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors scroll-m-20 first:mt-0 ">
           Tous les participants
         </h2>
-        <Link
-          className={buttonVariants({ variant: "outline", size: "lg" })}
-          target="_blank"
-          href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant`}
-        >
-          iFrame inscription
-        </Link>
+        <div className="flex flex-col">
+          {" "}
+          <Link
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+            target="_blank"
+            href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant`}
+          >
+            iFrame inscription
+          </Link>
+          <CopyToClipboard />
+        </div>
+
         <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
         <SendAllEmail eventId={eventBySlug?.id} />
       </div>
@@ -100,7 +106,7 @@ const AttendeesPage = async ({
             href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/create`}
             className={buttonVariants({ size: "lg", variant: "outline" })}
           >
-            <PlusSquare className="mr-2 h-4 w-4" /> Ajouter un participant
+            <PlusSquare className="w-4 h-4 mr-2" /> Ajouter un participant
           </Link>
         </div>
       )}
