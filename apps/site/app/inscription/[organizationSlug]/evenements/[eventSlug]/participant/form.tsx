@@ -3,7 +3,7 @@
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Script from "next/script";
-import { CivilityStatus, EventStatus, GetEventByIdQuery, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import { CivilityStatus, EventStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -27,8 +27,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
 
   const { register, handleSubmit, formState, control, reset, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
