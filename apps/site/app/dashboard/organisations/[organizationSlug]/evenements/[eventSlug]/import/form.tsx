@@ -136,19 +136,6 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         throw error;
       });
     setIsLoading(false);
-    startTransition(() => {
-      // toast({
-      //   title: "Import terminé",
-      //   action: (
-      //     <ToastAction
-      //       onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true")}
-      //       altText="Retour"
-      //     >
-      //       Retour
-      //     </ToastAction>
-      //   ),
-      // });
-    });
   });
 
   return (
