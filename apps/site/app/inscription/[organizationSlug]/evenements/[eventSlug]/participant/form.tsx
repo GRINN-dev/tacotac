@@ -1,10 +1,16 @@
 "use client";
 
-import { FC, useState, useTransition } from "react";
+import { FC, MouseEvent, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Script from "next/script";
-import { CivilityStatus, EventStatus, GetEventByIdQuery, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
-import { CheckCircle2, Download } from "lucide-react";
+import {
+  CivilityStatus,
+  EventStatus,
+  GetEventByIdQuery,
+  GetEventBySlugQuery,
+  RegisterAttendeesInput,
+} from "@/../../@tacotacIO/codegen/dist";
+import { CheckCircle2, Download, MinusCircle } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 
@@ -16,6 +22,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
@@ -60,6 +67,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
     append({ status: EventStatus.Idle });
   };
 
+  const handleRemoveParticipant = async (event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, index: number) => {
+    event.stopPropagation();
+    const formHasError = await trigger();
+    if (!formHasError) return;
+    remove(index);
+  };
+
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
     const isValid = await trigger();
     const { isValidCaptcha } = await validCaptcha();
@@ -94,8 +108,20 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
             <Accordion type="single" collapsible defaultValue={"1"}>
               {fields.map((item, i) => (
                 <AccordionItem key={i} value={i.toString()}>
-                  <AccordionTrigger className={formState?.errors?.attendees ? "text-red-500" : ""}>
-                    {i > 0 ? `Participant ${i + 1}` : "Participant principal"}
+                  <AccordionTrigger
+                    className={formState?.errors?.attendees ? "text-red-500 hover:no-underline" : "hover:no-underline"}
+                  >
+                    <div className="mx-6 flex w-full justify-between">
+                      <div>{i > 0 ? `Participant ${i + 1} ` : "Participant principal"}</div>
+                      {i !== 0 && (
+                        <div
+                          className="inline-flex items-center rounded-full border border-transparent p-1 text-xs  shadow-sm focus:outline-none"
+                          onClick={(e) => handleRemoveParticipant(e, i)}
+                        >
+                          Supprimer ce participant <MinusCircle size="14" className="ml-2 text-xs" />
+                        </div>
+                      )}
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
@@ -178,13 +204,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                             placeholder="jeanned@mail.com"
                             {...register(`attendees.${i}.email`, {
                               required: "Un email pour le participant est requis",
-                               pattern: {
+                              pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                 message: "Merci d'entrer un email valide",
-                              }
+                              },
                             })}
                           />
-                          {formState.errors?.attendees?.[i].email && (
+                          {formState.errors?.attendees?.[i]?.email && (
                             <p className="text-sm text-red-800 dark:text-red-300">
                               {formState.errors?.attendees?.[i]?.email?.message}
                             </p>
@@ -285,25 +311,28 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                         </div>
                       </>
                     ) : (
-                      <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          type="text"
-                          id="email"
-                          placeholder="jeanned@mail.com"
-                          className="col-span-2"
-                          {...register(`attendees.${i}.email`,{
-                            setValueAs: v => v?v:null,
-                             pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: "Merci d'entrer un email valide",
-                          }})}
-                        />
-                        {formState.errors?.attendees?.[i]?.email && (
-                          <p className="text-sm text-red-800 dark:text-red-300">
-                            {formState.errors?.attendees?.[i]?.email?.message}
-                          </p>
-                        )}
+                      <div className="flex flex-col">
+                        <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+                          <Label htmlFor="email">Email</Label>
+                          <Input
+                            type="text"
+                            id="email"
+                            placeholder="jeanned@mail.com"
+                            className="col-span-2"
+                            {...register(`attendees.${i}.email`, {
+                              setValueAs: (v) => (v ? v : null),
+                              pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                message: "Merci d'entrer un email valide",
+                              },
+                            })}
+                          />
+                          {formState.errors?.attendees?.[i]?.email && (
+                            <p className="text-sm text-red-800 dark:text-red-300">
+                              {formState.errors?.attendees?.[i]?.email?.message}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     )}
                   </AccordionContent>
@@ -380,11 +409,11 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                       className="col-span-2"
                       placeholder="jeanned@mail.com"
                       {...register(`attendees.${i}.email`, {
-                        setValueAs: v => v?v:null,
+                        setValueAs: (v) => (v ? v : null),
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                           message: "Merci d'entrer un email valide",
-                        }
+                        },
                       })}
                     />
                     {formState.errors?.attendees?.[i].email && (
