@@ -4491,21 +4491,19 @@ type RegisterAttendeesCsvPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-  attendee: Attendee
+  attendeeImports: [AttendeeImport]
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
 
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
-
-  """An edge for our `Attendee`. May be used by Relay 1."""
-  attendeeEdge(
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttendeesEdge
+type AttendeeImport {
+  data: Attendee
+  errorCode: String
+  errorMessage: String
+  errorValue: String
 }
 
 """All input for the `registerAttendeesCsv` mutation."""

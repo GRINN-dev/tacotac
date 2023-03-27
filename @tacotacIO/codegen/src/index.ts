@@ -126,6 +126,14 @@ export type AttendeeFilter = {
   zipCode?: InputMaybe<StringFilter>;
 };
 
+export type AttendeeImport = {
+  __typename?: 'AttendeeImport';
+  data?: Maybe<Attendee>;
+  errorCode?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']>;
+  errorValue?: Maybe<Scalars['String']>;
+};
+
 /** An input for mutations affecting `Attendee` */
 export type AttendeeInput = {
   civility: CivilityStatus;
@@ -2899,9 +2907,7 @@ export type RegisterAttendeesCsvInput = {
 /** The output of our `registerAttendeesCsv` mutation. */
 export type RegisterAttendeesCsvPayload = {
   __typename?: 'RegisterAttendeesCsvPayload';
-  attendee?: Maybe<Attendee>;
-  /** An edge for our `Attendee`. May be used by Relay 1. */
-  attendeeEdge?: Maybe<AttendeesEdge>;
+  attendeeImports?: Maybe<Array<Maybe<AttendeeImport>>>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -2909,14 +2915,6 @@ export type RegisterAttendeesCsvPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `Registration` that is related to this `Attendee`. */
-  registration?: Maybe<Registration>;
-};
-
-
-/** The output of our `registerAttendeesCsv` mutation. */
-export type RegisterAttendeesCsvPayloadAttendeeEdgeArgs = {
-  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
 };
 
 /** All input for the `registerAttendees` mutation. */
@@ -4083,7 +4081,7 @@ export type RegisterAttendeesCsvMutationVariables = Exact<{
 }>;
 
 
-export type RegisterAttendeesCsvMutation = { __typename?: 'Mutation', registerAttendeesCsv?: { __typename?: 'RegisterAttendeesCsvPayload', clientMutationId?: string | null } | null };
+export type RegisterAttendeesCsvMutation = { __typename?: 'Mutation', registerAttendeesCsv?: { __typename?: 'RegisterAttendeesCsvPayload', clientMutationId?: string | null, attendeeImports?: Array<{ __typename?: 'AttendeeImport', errorCode?: string | null, errorMessage?: string | null, errorValue?: string | null, data?: { __typename?: 'Attendee', email?: string | null, id: any, status: EventStatus } | null } | null> | null } | null };
 
 export type GetAttendeeByIdQueryVariables = Exact<{
   attendeeId: Scalars['UUID'];
@@ -4456,6 +4454,16 @@ export const RegisterAttendeesCsvDocument = gql`
     mutation RegisterAttendeesCsv($input: RegisterAttendeesCsvInput!) {
   registerAttendeesCsv(input: $input) {
     clientMutationId
+    attendeeImports {
+      data {
+        email
+        id
+        status
+      }
+      errorCode
+      errorMessage
+      errorValue
+    }
   }
 }
     `;

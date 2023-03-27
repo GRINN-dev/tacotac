@@ -1,9 +1,7 @@
-
 /*
   FUNCTION: register_attendees
   DESCRIPTION: Register attendees to event, generate ticket_number, send worker
 */
-
 
 create or replace function publ.register_attendees(event_id uuid, attendees publ.attendees[]) returns publ.registrations as $$
 DECLARE 
@@ -59,15 +57,24 @@ $$ language plpgsql VOLATILE SECURITY DEFINER;
 comment on function register_attendees(event_id uuid, attendees publ.attendees[]) is E'@arg1variant patch';
 grant execute on function publ.register_attendees(uuid, publ.attendees[]) to :DATABASE_VISITOR;
 
+drop type if exists publ.attendee_import; 
+create type publ.attendee_import as (
+  data publ.attendees,
+  error_code text,
+  error_message text,
+  error_value text
+);
 /*
   FUNCTION: register_attendees_csv
   DESCRIPTION: Register attendees from a csv import
 */
 
-create or replace function publ.register_attendees_csv(event_id uuid, attendees_csv publ.attendees[]) returns publ.attendees as $$
+create or replace function publ.register_attendees_csv(event_id uuid, attendees_csv publ.attendees[]) returns publ.attendee_import[] as $$
 DECLARE 
   v_registration publ.registrations;
-  v_attendees publ.attendees;
+  v_attendee publ.attendees;
+  v_attendee_imported publ.attendee_import;
+  v_attendees publ.attendee_import[];
   v_iter int;
   v_event_id uuid;
 begin
@@ -78,7 +85,8 @@ begin
 
         insert into publ.registrations (event_id ) values (v_event_id) returning * into v_registration;
 
-        insert into publ.attendees (civility, 
+        insert into publ.attendees (
+        civility, 
         zip_code,
         status, 
         registration_id, 
@@ -89,8 +97,8 @@ begin
         is_inscriptor, 
         is_vip, 
         ticket_number, 
-        sign_code)
-        select attendees_csv[v_iter].civility,
+        sign_code
+        )select attendees_csv[v_iter].civility,
         attendees_csv[v_iter].zip_code,
         'IDLE', 
         v_registration.id, 
@@ -102,14 +110,21 @@ begin
         attendees_csv[v_iter].is_vip,
         'TICKET_' || md5(random()::text || clock_timestamp()::text),
         substring(uuid_generate_v4()::text, 1, 6)  where v_registration.event_id=event_id
-        returning * into v_attendees ;
+        returning * into v_attendee;
+
+        v_attendee_imported.data:=v_attendee;
 
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
         
-        perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', v_attendees.id, 'state','RESA_BILLET'));
+        perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', attendees_csv[v_iter].id, 'state','RESA_BILLET'));
       else 
-        raise exception 'Participant existe déjà: %', attendees_csv[v_iter].email using errcode = 'RGNST';
+        v_attendee_imported.error_code:='RGNST';
+        v_attendee_imported.error_message:='Participant existe déjà';
+        v_attendee_imported.error_value:=attendees_csv[v_iter].email;
+       
       end if;
+       
+        v_attendees := array_append(v_attendees, v_attendee_imported);
 
     end loop;
 
