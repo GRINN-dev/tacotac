@@ -8942,6 +8942,18 @@
               "deprecationReason": null
             },
             {
+              "name": "DESCRIPTION_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DESCRIPTION_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -9017,6 +9029,16 @@
               "defaultValue": null
             },
             {
+              "name": "description",
+              "description": "Checks for equality with the object’s `description` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": "Checks for equality with the object’s `createdAt` field.",
               "type": {
@@ -9070,6 +9092,16 @@
             {
               "name": "slug",
               "description": "Filter by the object’s `slug` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": "Filter by the object’s `description` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",
@@ -18288,13 +18320,17 @@
               "deprecationReason": null
             },
             {
-              "name": "attendee",
+              "name": "attendeeImports",
               "description": null,
               "args": [],
               "type": {
-                "kind": "OBJECT",
-                "name": "Attendee",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AttendeeImport",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -18310,45 +18346,61 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AttendeeImport",
+          "description": null,
+          "fields": [
             {
-              "name": "registration",
-              "description": "Reads a single `Registration` that is related to this `Attendee`.",
+              "name": "data",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "Registration",
+                "name": "Attendee",
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "attendeeEdge",
-              "description": "An edge for our `Attendee`. May be used by Relay 1.",
-              "args": [
-                {
-                  "name": "orderBy",
-                  "description": "The method to use when ordering `Attendee`.",
-                  "type": {
-                    "kind": "LIST",
-                    "name": null,
-                    "ofType": {
-                      "kind": "NON_NULL",
-                      "name": null,
-                      "ofType": {
-                        "kind": "ENUM",
-                        "name": "AttendeesOrderBy",
-                        "ofType": null
-                      }
-                    }
-                  },
-                  "defaultValue": "[PRIMARY_KEY_ASC]"
-                }
-              ],
+              "name": "errorCode",
+              "description": null,
+              "args": [],
               "type": {
-                "kind": "OBJECT",
-                "name": "AttendeesEdge",
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errorMessage",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "errorValue",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,

@@ -76,14 +76,18 @@ export const generateDocsForAttendees = async (
   };
 
   if (rowData?.is_inscriptor) {
+
     bufferPdf = await generatePdf(generatePdfFilePayload?.pdfData?.template);
+
     // on merge les pdfs SI il y a des pdfs issus des participants associés au premier inscris (via e spread operator)
     bufferPdf = (await mergePDFBuffers([
       bufferPdf,
       ...resultsStorePdfBuffer,
     ])) as Buffer;
   } else {
+
     bufferPdf = await generatePdf(generatePdfFilePayload?.pdfData?.template);
+
   }
 
   const { base64Data, type, image_name } = await generateBase64BufferForQrCode(

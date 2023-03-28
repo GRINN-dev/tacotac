@@ -26,6 +26,7 @@ const AttendeesPage = async ({
     { title: "Prenom", value: "firstname", type: Type?.string, isSortable: false, isVisible: true },
     { title: "email", value: "email", type: Type?.string, isSortable: false, isVisible: true },
     { title: "status", value: "status", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "Inscripteur", value: "isInscriptor", type: Type?.string, isSortable: false, isVisible: true },
     { title: "N° Panneau", value: "panelNumber", type: Type.number, isSortable: false, isVisible: true },
     { title: "QrCode", value: "qrCode", type: Type.string, isSortable: false, isVisible: true },
     { title: "Billet", value: "ticket", type: Type.string, isSortable: false, isVisible: true },
@@ -37,11 +38,12 @@ const AttendeesPage = async ({
   }, []);
 
   const rawAttendees: IData[] = flattenedAttendeesFromRegistrations?.map(
-    ({ id, lastname, firstname, email, status, panelNumber, qrCodeUrl, pdfUrl }) => ({
+    ({ id, lastname, firstname, email, status, panelNumber, qrCodeUrl, pdfUrl, isInscriptor }) => ({
       Nom: lastname,
       Prenom: firstname,
       email: email,
       status: status,
+      Inscripteur: isInscriptor ? "Oui" : "Non",
       "N° Panneau": panelNumber,
       QrCode: (
         <a className="underline" href={qrCodeUrl} target="_blank" rel="noreferrer">
@@ -79,10 +81,11 @@ const AttendeesPage = async ({
         >
           iFrame inscription
         </Link>
+        
         <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
         <SendAllEmail eventId={eventBySlug?.id} />
       </div>
-      {flattenedAttendeesFromRegistrations.length > 0 ? (
+      {flattenedAttendeesFromRegistrations?.length > 0 ? (
         <Collection
           totalCount={eventBySlug?.registrations?.totalCount}
           pageInfo={eventBySlug?.registrations?.pageInfo}

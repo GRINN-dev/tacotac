@@ -6,6 +6,7 @@ import { Send } from "lucide-react";
 
 
 import { sdk } from "@/lib/sdk";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 
@@ -31,16 +32,26 @@ export const SendAllEmail = ({ eventId }) => {
 
   return (
     <>
-      <Button
-        onClick={() => sendEmails(eventId)}
-        variant="ghost"
-        size="sm"
-        className={buttonVariants({ variant: "outline", size: "lg" })}
-      >
-        <Send className="mr-2 h-4 w-4" />
-        <span className="sr-only">Toggle</span>
-        Rappel email
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="outline"><Send className="mr-2 h-4 w-4" />Rappel email</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Attention</AlertDialogTitle>
+            <AlertDialogDescription>
+              <p>{"Êtes-vous sur de vous ? "}</p>
+              <p>{"Vous allez envoyer un email à tous les participants de l'événement."}</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={() => sendEmails(eventId)}>
+              Ok
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
