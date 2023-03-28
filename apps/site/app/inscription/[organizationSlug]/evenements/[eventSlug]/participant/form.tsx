@@ -254,10 +254,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                               <Controller
                                 name={"attendee.hearAbout"}
                                 control={control}
-                                {...register(`attendees.${i}.hearAbout`)}
+                                {...register(`attendees.${i}.hearAbout`, { required: "Une réponse est requise" })}
                                 render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                                   <>
-                                    <Select value={value} onValueChange={onChange}>
+                                    <Select value={value} onValueChange={onChange} required={true}>
                                       <SelectTrigger className="my-4">
                                         <SelectValue placeholder="Sélectionnez une réponse" />
                                       </SelectTrigger>
@@ -282,8 +282,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                                         </SelectGroup>
                                       </SelectContent>
                                     </Select>
-                                    {error?.message && (
-                                      <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>
+                                    {formState.errors?.attendees?.[i]?.hearAbout && (
+                                      <p className="text-sm text-red-800 dark:text-red-300">
+                                        {formState.errors?.attendees?.[i]?.hearAbout?.message}
+                                      </p>
                                     )}
                                   </>
                                 )}
@@ -298,12 +300,18 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                               </Label>{" "}
                               <Input
                                 type="checkbox"
+                                required
                                 id="isFundraisingGenerosityOk"
                                 className="flex w-4 h-4 text-right"
                                 {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
                                   required: "Cette information pour le participant est requise",
                                 })}
                               />
+                              {formState.errors?.attendees?.[i]?.isFundraisingGenerosityOk && (
+                                <p className="text-sm text-red-800 dark:text-red-300">
+                                  {formState.errors?.attendees?.[i]?.isFundraisingGenerosityOk.message}
+                                </p>
+                              )}
                             </div>
                           </>
                         ) : (
@@ -473,10 +481,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                         <Controller
                           name={"attendee.hearAbout"}
                           control={control}
-                          {...register(`attendees.${i}.hearAbout`)}
+                          {...register(`attendees.${i}.hearAbout`, { required: "Merci de sélectionner une réponse" })}
                           render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                             <>
-                              <Select value={value} onValueChange={onChange}>
+                              <Select value={value} onValueChange={onChange} required={true}>
                                 <SelectTrigger className="my-4">
                                   <SelectValue placeholder="Sélectionnez une réponse" />
                                 </SelectTrigger>
@@ -497,8 +505,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                                   </SelectGroup>
                                 </SelectContent>
                               </Select>
-                              {error?.message && (
-                                <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>
+                              {formState.errors?.attendees?.[i]?.hearAbout && (
+                                <p className="text-sm text-red-800 dark:text-red-300">
+                                  {formState.errors?.attendees?.[i]?.hearAbout?.message}
+                                </p>
                               )}
                             </>
                           )}
@@ -516,9 +526,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                           id="isFundraisingGenerosityOk"
                           className="flex w-4 h-4 text-right"
                           {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
-                            required: "Cette info pour le participant est requise",
+                            required: "Cette information est requise",
                           })}
                         />
+                        {formState.errors?.attendees?.[i]?.isFundraisingGenerosityOk && (
+                          <p className="text-sm text-red-800 dark:text-red-300">
+                            {formState.errors?.attendees?.[i]?.isFundraisingGenerosityOk?.message}
+                          </p>
+                        )}
                       </div>
                     </>
                   );
