@@ -33,7 +33,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
   addressLine2,
   capacity,
   placeName,
-  webhooks
+  webhooks,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
@@ -198,6 +198,21 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
       </h2>
 
       <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label>Liste des webhooks</Label>
+        <ul className="list-disc pl-4">
+          {webhookList?.length > 0
+            ? webhookList?.map((webhook, index) => (
+                <li key={webhook + index}>
+                  <div
+                    className="inline-flex items-center rounded-full border border-transparent p-1 shadow-sm focus:outline-none"
+                    onClick={() => removeItemClick(index)}
+                  >
+                    {webhook} <MinusCircle className="ml-2" />
+                  </div>
+                </li>
+              ))
+            : "Aucun webhook pour l'instant"}
+        </ul>
         <Label htmlFor="placeName">Nom du lieu</Label>
         <Input
           type="text"
@@ -269,7 +284,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
-      <Label className="mt-2" htmlFor="webhookList">
+        <Label className="mt-2" htmlFor="webhookList">
           Ajouter un webhook (Zapier, Maker, etc.)
           <div className="my-4 rounded-lg border p-4">
             <div className="flex">
@@ -302,7 +317,6 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             : "Aucun webhook pour l'instant"}
         </ul>
         <div className="flex space-x-4">
-        
           <Input
             type="text"
             id="webhookList"
@@ -310,7 +324,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             onChange={(evt) => setWebhook(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
             onClick={() => {
               if (webhook) {
                 setWebhookList([...webhookList, webhook]);
@@ -321,7 +335,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             Ajouter <PlusCircle className="ml-2" />
           </div>
         </div>
-        </div>
+      </div>
       <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
