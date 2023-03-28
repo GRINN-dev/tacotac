@@ -8,488 +8,84 @@
     <title>La nuit du bien commun</title>
 </head>
 
-<body class="relative w-screen h-screen">
+<body class="relative w-screen h-screen font_global">
     
-    <img class="qr_code" src="{{ticket.qr_code_url}}">
-    <div class="prenom_nom">{{ticket.first_name}} {{ticket.last_name}}</div>
-    <div class="categorie_un">
+    <img class="absolute w-[214px] h-[214px] bg-center bg-no-repeat bg-cover right-[5%] top-[103px]"
+        src="{{ticket.qr_code_url}}">
+    <div
+        class="text-black text-sm font-bold absolute w-[177px] h-[18px] text-center items-center justify-center flex-col right-[7%] top-[30%]">
+        {{ticket.first_name}} {{ticket.last_name}}</div>
+    <div class="absolute top-[-0.0002px] w-full h-[349.0136px] overflow-visible left-0">
         <svg preserveAspectRatio='none' viewBox='0 0 595 350' fill='none' xmlns='http://www.w3.org/2000/svg'
-            class="icon">
+            class="w-full h-full">
             <path
                 d='M0 8.8728e-06L595 1.39392e-05C595 1.39392e-05 442.667 16.5598 493.5 56.5C535.5 89.5 324.5 70.5 379.5 169C434.5 267.5 0 349.013 0 349.013V8.8728e-06Z'
                 fill='#004C86' />
         </svg>
     </div>
-    <div class="logo_obole" style="background-image: url('{{assetsUrl}}/logo_obole.jpeg');">
+    <div class="absolute w-[462px] h-[509px] bg-center bg-no-repeat bg-cover opacity-10 right-[5%] top-[45%]"
+        style="background-image: url('{{assetsUrl}}/logo_obole.jpeg');">
     </div>
-    <div class="logos_bottom"></div>
-    <div class="logo_event" style="background-image: url('{{ticket.logo}}');"></div>
-    {{!-- <img class="logo_event" src={{ticket.logo}} /> --}}
+    <div class="absolute w-full h-[66px] bg-[#878787] bottom-0"></div>
+    <div class="absolute w-[206px] h-[116px] rounded bg-center bg-no-repeat bg-cover left-1/4 top-[20%]"
+        style="background-image: url('{{ticket.logo}}');"></div>
 
-    <div class="heure_Debut">{{ticket.starts_at}}</div>
-    <div class="tiret_du_six">-</div>
-    <div class="heure_Fin">{{ticket.ends_at}}</div>
-    <div class="jour_j">{{ticket.day}}</div>
-    <div class="mois_aaaa">
-        <div class="mois_aaaa_text_block_1">{{ticket.month}}</div>
-        <div class="mois_aaaa_text_block_2">{{ticket.year}}</div>
+    <div class="text-white text-[13px] font-light absolute w-10 h-min flex-col left-10 top-[120px]">{{ticket.starts_at}}
+    </div>
+    <div class="text-white text-[13px] font-light absolute w-1 h-min flex-col left-[76px] top-[120px]">-</div>
+    <div class="text-white text-[13px] font-light absolute w-[51px] h-min flex-col left-[88px] top-[120px]">
+        {{ticket.ends_at}}</div>
+    <div class="text-white text-[43px] font-bold absolute w-min h-min whitespace-nowrap flex-col left-10 top-[68px]">
+        {{ticket.day}}</div>
+    <div class="absolute w-min h-min whitespace-nowrap flex-col left-[103px] top-[75px]">
+        <div class="text-white text-[15px] font-bold">{{ticket.month}}</div>
+        <div class="text-white text-[15px] font-bold mt-0.5">{{ticket.year}}</div>
 
     </div>
-    <div class="jour">{{ticket.string_day}}</div>
-    <div class="titre_event">{{ticket.event_name}}</div>
-    <div class="lieu_event">{{ticket.place_name}}</div>
-    <div class="accueil_icone_obole" style="background-image: url('{{assetsUrl}}/accueil_obole.jpeg');"></div>
-    {{!-- <div class="loremIpsumDolorSitAmetConsecte">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur.
-    </div> --}}
-    <div class="billet_edite">
-        <p class="labelWrapper">
-            <span class="label">Ce billet a été édité sur </span>
-            <a class="label2" href='http://kaypi.fr' target='_blank' rel='noreferrer'>
+    <div class="text-white text-[15px] font-bold absolute w-min h-min whitespace-nowrap flex-col left-10 top-[50px]">
+        {{ticket.string_day}}</div>
+    <div class="text-white text-xl font-black absolute w-min h-min whitespace-nowrap flex-col left-[175px] top-[50px]">
+        {{ticket.event_name}}</div>
+    <div class="text-white text-lg font-bold absolute w-min h-min whitespace-nowrap flex-col left-[175px] top-[85px]">
+        {{ticket.place_name}}</div>
+    <div class="absolute w-[57px] h-[57px] bg-center bg-no-repeat bg-cover right-[20%] bottom-[33%]"
+        style="background-image: url('{{assetsUrl}}/accueil_obole.jpeg');"></div>
+    
+    <div class="origin-top-left absolute w-[220px] h-4 flex-col left-6 top-[350px] billet-edit_transform">
+        <p class="text-[8px] shrink">
+            <span class="text-black text-[8px] leading-5 font-extralight italic">Ce billet a été édité sur </span>
+            <a class="text-black text-[8px] leading-5 font-extralight italic" href='http://kaypi.fr' target='_blank'
+                rel='noreferrer'>
                 kaypi.fr
             </a>
-            <span class="label3"> la billetterie d’</span>
-            <a class="label4" href='http://obole.eu' target='_blank' rel='noreferrer'>
+            <span class="text-black text-[8px] leading-5 font-extralight italic"> la billetterie d’</span>
+            <a class="text-black text-[8px] leading-5 font-extralight italic" href='http://obole.eu' target='_blank'
+                rel='noreferrer'>
                 Obole.eu
             </a>
         </p>
     </div>
-    <div class="address_details">
-        <div class="address_details_text_block">{{ticket.detail}}</div>
+    <div class="absolute w-[221px] h-[117px] flex-col left-[12%] bottom-[12%]">
+        <div class="text-[#001941] text-[10px] font-light mt-1">{{ticket.detail}}</div>
 
     </div>
-    <div class="address">{{ticket.city}} - {{ticket.address}}</div>
-    <div class="position_icone_obole" style="background-image: url('{{assetsUrl}}/assets/position_obole.jpeg');"></div>
-    {{!-- <div class="loremIpsumDolorSitAmetConsecte3">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo
-        consequat.
-    </div> --}}
-    {{!-- <div class="lOREM2">LOREM</div>
-    <div class="tickets_icone_obole" style="background-image: url('{{assetsUrl}}/assets/tickets_obole.jpeg');"></div>
-    --}}
-    <div class="billet_sign_code">BILLET_{{ticket.code_invit}}</div>
+    <div class="text-[#e7295c] text-[15px] font-medium capitalize absolute h-[15px] flex-col left-[15%] bottom-1/4">
+        {{ticket.city}} - {{ticket.address}}</div>
+    <div class="absolute w-[19px] h-[29px] bg-center bg-no-repeat bg-cover left-[12%] bottom-[24%]"
+        style="background-image: url('{{assetsUrl}}/assets/position_obole.jpeg');"></div>
+    
+    <div
+        class="origin-top-left text-black text-[8px] font-light absolute w-3 h-min text-center items-center flex-col right-[3%] top-[15%] billet-transform">
+        BILLET_{{ticket.code_invit}}</div>
     </div>
 </body>
 
 </html>
 <style>
-    .qr_code {
-        position: absolute;
-        right: 5%;
-        top: 103px;
-        width: 214px;
-        height: 214px;
 
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-
-    .prenom_nom {
-        color: #000;
-        font-size: 14px;
-        font-weight: bold;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        right: 7%;
-        top: 30%;
-        width: 177px;
-        height: 18px;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-    }
-
-    .categorie_un {
-        position: absolute;
-        left: 0;
-        top: -0.0002px;
-        width: 100%;
-        height: 349.0136px;
-        overflow: visible;
-    }
-
-    .icon {
-        width: 100%;
-        height: 100%;
-    }
-
-    .logo_obole {
-        position: absolute;
-        right: 5%;
-        top: 45%;
-        width: 462px;
-        height: 509px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        opacity: 0.1;
-    }
-
-    .logos_bottom {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 66px;
-        background-color: #878787;
-    }
-
-
-
-    .logo_event {
-        position: absolute;
-        left: 25%;
-        top: 20%;
-        width: 206px;
-        height: 116px;
-        border-radius: 4px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-
-
-    .text_block {
-        color: #fff;
-        font-size: 15px;
-        font-weight: 900;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .text_block_2 {
-        margin-top: 0;
-        color: #fff;
-        font-size: 15px;
-        font-weight: 900;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .heure_Debut {
-        color: #fff;
-        font-size: 13px;
-        font-weight: 300;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        left: 40px;
-        top: 120px;
-        width: 40px;
-        height: min-content;
-        flex-direction: column;
-    }
-
-    .tiret_du_six {
-        color: #fff;
-        font-size: 13px;
-        font-weight: 300;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        left: 76px;
-        top: 120px;
-        width: 4px;
-        height: min-content;
-        flex-direction: column;
-    }
-
-    .heure_Fin {
-        color: #fff;
-        font-size: 13px;
-        font-weight: 300;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        left: 88px;
-        top: 120px;
-        width: 51px;
-        height: min-content;
-        flex-direction: column;
-    }
-
-    .jour_j {
-        color: #fff;
-        font-size: 43px;
-        font-weight: bold;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        left: 40px;
-        top: 68px;
-        width: min-content;
-        height: min-content;
-        white-space: nowrap;
-        flex-direction: column;
-    }
-
-    .mois_aaaa {
-        position: absolute;
-        left: 103px;
-        top: 75px;
-        width: min-content;
-        height: min-content;
-        white-space: nowrap;
-        flex-direction: column;
-    }
-
-    .mois_aaaa_text_block_1 {
-        color: #fff;
-        font-size: 15px;
-        font-weight: bold;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .mois_aaaa_text_block_2 {
-        margin-top: 2px;
-        color: #fff;
-        font-size: 15px;
-        font-weight: bold;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .jour {
-        color: #fff;
-        font-size: 15px;
-        font-weight: bold;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        left: 40px;
-        top: 50px;
-        width: min-content;
-        height: min-content;
-        white-space: nowrap;
-        flex-direction: column;
-    }
-
-    .titre_event {
-        color: #fff;
-        font-size: 20px;
-        font-weight: 900;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        left: 175px;
-        top: 50px;
-        width: min-content;
-        height: min-content;
-        white-space: nowrap;
-        flex-direction: column;
-    }
-
-    .lieu_event {
-        color: #fff;
-        font-size: 18px;
-        font-weight: bold;
-        font-family: Lexend, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        left: 175px;
-        top: 85px;
-        width: min-content;
-        height: min-content;
-        white-space: nowrap;
-        flex-direction: column;
-    }
-
-    .accueil_icone_obole {
-        position: absolute;
-        right: 20%;
-        bottom: 33%;
-        width: 57px;
-        height: 57px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-    .loremIpsumDolorSitAmetConsecte {
-        color: #001941;
-        font-size: 8px;
-        font-weight: 300;
-        font-family: Lexend Deca, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        right: 10%;
-        bottom: 8%;
-        width: 333px;
-        height: 40px;
-        flex-direction: column;
-    }
-
-    .billet_edite {
-        transform-origin: top left;
-        position: absolute;
-        left: 24px;
-        top: 350px;
-        width: 220px;
-        height: 16px;
-        flex-direction: column;
-        transform: matrix(0, 1, -1, 0, 0, 0);
-    }
-
-    .labelWrapper {
-        font-size: 8px;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        flex-shrink: 1;
-    }
-
-    .label {
-        color: #000;
-        font-size: 8px;
-        line-height: 20px;
-        font-weight: 200;
-        font-style: italic;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .label2 {
-        color: #000;
-        font-size: 8px;
-        line-height: 20px;
-        font-weight: 200;
-        font-style: italic;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .label3 {
-        color: #000;
-        font-size: 8px;
-        line-height: 20px;
-        font-weight: 200;
-        font-style: italic;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .label4 {
-        color: #000;
-        font-size: 8px;
-        line-height: 20px;
-        font-weight: 200;
-        font-style: italic;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .address_details {
-        position: absolute;
-        left: 12%;
-        bottom: 12%;
-        width: 221px;
-        height: 117px;
-        flex-direction: column;
-    }
-
-
-
-    .address_details_text_block {
-        margin-top: 4px;
-        color: #001941;
-        font-size: 10px;
-        font-weight: 300;
-        font-family: Lexend Deca, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-    }
-
-    .address {
-        color: #e7295c;
-        font-size: 15px;
-        font-weight: 500;
-        font-family: Lexend Deca, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        text-transform: capitalize;
-        position: absolute;
-        left: 15%;
-        bottom: 25%;
-        height: 15px;
-        flex-direction: column;
-    }
-
-    .position_icone_obole {
-        position: absolute;
-        left: 12%;
-        bottom: 24%;
-        width: 19px;
-        height: 29px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-    .loremIpsumDolorSitAmetConsecte3 {
-        color: #001941;
-        font-size: 10px;
-        font-weight: 300;
-        font-family: Lexend Deca, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        right: 12%;
-        bottom: 16%;
-        width: 264px;
-        height: 62px;
-        flex-direction: column;
-    }
-
-    .lOREM2 {
-        color: #e7295c;
-        font-size: 15px;
-        font-weight: 500;
-        font-family: Lexend Deca, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        text-transform: capitalize;
-        position: absolute;
-        right: 27%;
-        bottom: 25%;
-        width: 86px;
-        height: 15px;
-        flex-direction: column;
-    }
-
-    .tickets_icone_obole {
-        position: absolute;
-        right: 37%;
-        bottom: 24%;
-        width: 30px;
-        height: 29px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-
-    .billet_sign_code {
-        transform-origin: top left;
-        color: #000;
-        font-size: 8px;
-        font-weight: 300;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
-            'Liberation Sans', sans-serif;
-        position: absolute;
-        right: 3%;
-        top: 15%;
-        width: 12px;
-        height: min-content;
-        text-align: center;
-        align-items: center;
-        flex-direction: column;
-        transform: matrix(0, 1, -1, 0, 0, 0);
-    }
+   
+  .billet-transform{
+     transform: matrix(0, 1, -1, 0, 0, 0);
+  }
+  .billet-edit_transform{transform: matrix(0, 1, -1, 0, 0, 0);}
 </style>
