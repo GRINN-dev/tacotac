@@ -21,7 +21,7 @@ export default function EventsLayout({
   };
 }) {
   return (
-    <section className="flex flex-wrap mt-4 ml-4">
+    <section className="mt-4 ml-4 flex flex-wrap">
       <nav className="flex flex-col" aria-label="Breadcrumb">
         <ol role="list" className="flex space-x-4  px-6 shadow">
           <li className="flex">
@@ -29,17 +29,17 @@ export default function EventsLayout({
               <Link
                 href={`/dashboard/organisations`}
                 className={cn(
-                  "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                  " group flex items-center rounded-md p-2 text-sm font-medium"
                 )}
               >
-                <Home className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+                <Home className="h-3 w-3 shrink-0" aria-hidden="true" />
                 <span className="sr-only">Home</span>
               </Link>
             </div>
           </li>
           <li className="flex">
             <div className="flex items-center">
-              <ChevronRight className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
+              <ChevronRight className="h-3 w-3 shrink-0" aria-hidden="true" />
 
               <DropdownMenu>
                 <DropdownMenuTrigger>
@@ -49,7 +49,7 @@ export default function EventsLayout({
                     <Link
                       href={`/dashboard/organisations/${organizationSlug}/evenements/`}
                       className={cn(
-                        "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                        " group flex items-center rounded-md p-2 text-sm font-medium"
                       )}
                     >
                   <DropdownMenuItem className="self-center">
@@ -62,11 +62,11 @@ export default function EventsLayout({
                     <Link
                       href={`/dashboard/organisations/${organizationSlug}/infos`}
                       className={cn(
-                        "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                        " group flex items-center rounded-md p-2 text-sm font-medium"
                       )}
                     >
                   <DropdownMenuItem className="self-center">
-                      <Cog aria-hidden className="w-4 h-4 mr-4" />
+                      <Cog aria-hidden className="mr-4 h-4 w-4" />
                       Infos organisation
                   </DropdownMenuItem>
 
@@ -74,11 +74,11 @@ export default function EventsLayout({
                     <Link
                       href={`/dashboard/organisations/${organizationSlug}/evenements/create`}
                       className={cn(
-                        "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                        " group flex items-center rounded-md p-2 text-sm font-medium"
                       )}
                     >
                   <DropdownMenuItem className="self-center">
-                      <PlusSquare className="w-4 h-4 mr-4" />
+                      <PlusSquare className="mr-4 h-4 w-4" />
                       Créer un événement
                   </DropdownMenuItem>
                     </Link>
