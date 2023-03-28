@@ -29,8 +29,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city }) => {
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
 
   const { register, handleSubmit, formState, control, reset, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
@@ -542,28 +540,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city }) => {
             Ajouter un participant
           </button>
         </div>
-        {/* <div>
-          <div className="flex items-center justify-start">
-            <span className="w-4 h-4 mr-2 border rounded-full"></span>
-            <p>couleur #1</p>
-          </div>
-          <div className="flex items-center justify-start">
-            <span className="w-4 h-4 mr-2 border rounded-full"></span>
-            <p>couleur #2</p>
-          </div>
-          <div className="flex items-center justify-start">
-            <span className="w-4 h-4 mr-2 border rounded-full"></span>
-            <p>police #1</p>
-          </div>
-        </div> */}
       </div>
       {showConfirmation === true ? (
         <div className="flex flex-col items-center justify-center mt-4 text-xl">
           <CheckCircle2 className="w-16 h-16 mb-8" />
           <h2>Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
-            Un email de confirmation pour votre inscription XXXXXXXX a été envoyé à {email} . Vérifiez vos courriers
-            indésirables si vous ne le recevez pas.
+            Un email de confirmation pour votre inscription a été envoyé à {email} . Vérifiez vos courriers indésirables
+            si vous ne le recevez pas.
           </p>
           <div className="flex items-center justify-between">
             <button className={buttonVariants({ size: "lg", className: "mt-12" })}>
