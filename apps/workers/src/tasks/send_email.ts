@@ -19,15 +19,14 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     attendeeId
   );
 
+  console.log(isDev);
   await sgMail
     .send({
       ...sendEmailPayload.mailData,
       mailSettings: { sandboxMode: { enable: isDev } },
     })
     .then(async (response: any) => {
-      console.log(response[0].statusCode);
-      console.log(response[0].headers);
-      console.log("Email sent successfully");
+      console.log("sendgrid response status code", response[0].statusCode);
       const { rows } = await withPgClient(pgClient =>
         pgClient.query(
           `update publ.attendees atts

@@ -8942,6 +8942,18 @@
               "deprecationReason": null
             },
             {
+              "name": "DESCRIPTION_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DESCRIPTION_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -9017,6 +9029,16 @@
               "defaultValue": null
             },
             {
+              "name": "description",
+              "description": "Checks for equality with the object’s `description` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": "Checks for equality with the object’s `createdAt` field.",
               "type": {
@@ -9070,6 +9092,16 @@
             {
               "name": "slug",
               "description": "Filter by the object’s `slug` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": "Filter by the object’s `description` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "StringFilter",

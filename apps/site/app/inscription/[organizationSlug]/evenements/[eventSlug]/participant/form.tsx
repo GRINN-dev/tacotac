@@ -40,7 +40,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-  const { register, handleSubmit, formState, control, trigger } = useForm<RegisterAttendeesInput>({
+
+  const { register, handleSubmit, formState, control, reset, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
       attendees: [
         {
@@ -97,7 +98,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const { nom, prenom, email, telephone, zipcode } = eventBranding?.placeholder || {};
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
 
       <div className={showConfirmation === true ? "hidden" : "flex w-full flex-col"}>
@@ -152,7 +153,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                         className="col-span-2"
                       />
                       {formState.errors?.attendees?.[i]?.lastname && (
-                        <p className="text-sm text-right text-red-800 dark:text-red-300">
+                        <p className="text-right text-sm text-red-800 dark:text-red-300">
                           {formState.errors?.attendees?.[i]?.lastname?.message}
                         </p>
                       )}
@@ -171,7 +172,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                         className="col-span-2"
                       />
                       {formState.errors?.attendees?.[i]?.firstname && (
-                        <p className="text-sm text-right text-red-800 dark:text-red-300">
+                        <p className="text-right text-sm text-red-800 dark:text-red-300">
                           {formState.errors?.attendees?.[i]?.firstname?.message}
                         </p>
                       )}
@@ -289,7 +290,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                           <Input
                             type="checkbox"
                             id="isFundraisingGenerosityOk"
-                            className="flex w-4 h-4 text-right"
+                            className="flex h-4 w-4 text-right"
                             {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
                               required: "Cette information pour le participant est requise",
                             })}
@@ -486,7 +487,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                     <Input
                       type="checkbox"
                       id="isFundraisingGenerosityOk"
-                      className="flex w-4 h-4 text-right"
+                      className="flex h-4 w-4 text-right"
                       {...register(`attendees.${i}.isFundraisingGenerosityOk`, {
                         required: "Cette info pour le participant est requise",
                       })}
@@ -497,7 +498,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
             })
           )}
 
-          <div className="flex items-center gap-2 mt-8 styles.text">
+          <div className="styles.text mt-8 flex items-center gap-2">
             <button
               className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
               style={{
@@ -517,7 +518,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
             <p>ou</p>
           </div>
           {error && (
-            <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+            <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
               {JSON.stringify(
                 error,
                 (key, value) => {
@@ -531,7 +532,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
             </p>
           )}
         </form>
-        <div className="flex w-6/12 mt-16 md:mx-auto md:my-3 md:flex-col ">
+        <div className="mt-16 flex w-6/12 md:mx-auto md:my-3 md:flex-col ">
           <button
             className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
             style={{
@@ -550,8 +551,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
         </div>
       </div>
       {showConfirmation === true ? (
-        <div className="flex flex-col items-center justify-center mt-4 text-xl">
-          <CheckCircle2 className="w-16 h-16 mb-8" />
+        <div className="mt-4 flex flex-col items-center justify-center text-xl">
+          <CheckCircle2 className="mb-8 h-16 w-16" />
           <h2 className="">Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
             Un email de confirmation pour votre inscription a été envoyé à {attendeeEmail} . Vérifiez vos courriers
