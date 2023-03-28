@@ -34,14 +34,19 @@ CREATE OR REPLACE FUNCTION public.to_slug(text)
 RETURNS text AS $$
 DECLARE
   slug text;
-BEGIN
+BEGIN  
   slug := translate(lower($1), ' ', '-');
+  slug := translate(unaccent($1), ' ', '-');
   slug := translate(slug, '.', '-');
   slug := translate(slug, '_', '-');
   slug := translate(slug, '/', '-');
   slug := translate(slug, '&', 'and');
   slug := translate(slug, '''', '');
   slug := translate(slug, '"', '');
+  slug := translate(slug, '’', '');
+  slug := regexp_replace(slug, E'[\U0001F600-\U0001F64F]', '', 'g'); -- Supprime les smileys Unicode
+  slug := regexp_replace(slug, E'[\U0001F300-\U0001F5FF]', '', 'g'); -- Supprime les emojis Unicode
+  slug := regexp_replace(slug, E'[\U0001F1E0-\U0001F1FF]', '', 'g'); -- Supprime les drapeaux Unicode
   RETURN slug;
 END;
 $$ LANGUAGE plpgsql;
