@@ -35,8 +35,8 @@ RETURNS text AS $$
 DECLARE
   slug text;
 BEGIN  
-  slug := translate(lower($1), ' ', '-');
-  slug := translate(unaccent($1), ' ', '-');
+  slug := lower($1);
+  slug := translate(unaccent(slug), ' ', '-');
   slug := translate(slug, '.', '-');
   slug := translate(slug, '_', '-');
   slug := translate(slug, '/', '-');
