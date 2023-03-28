@@ -34,7 +34,8 @@ CREATE OR REPLACE FUNCTION public.to_slug(text)
 RETURNS text AS $$
 DECLARE
   slug text;
-BEGIN
+BEGIN  
+  slug := translate(lower($1), ' ', '-');
   slug := translate(unaccent($1), ' ', '-');
   slug := translate(slug, '.', '-');
   slug := translate(slug, '_', '-');
