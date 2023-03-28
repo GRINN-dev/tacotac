@@ -6,7 +6,6 @@ import Script from "next/script";
 import {
   CivilityStatus,
   EventStatus,
-  GetEventByIdQuery,
   GetEventBySlugQuery,
   RegisterAttendeesInput,
 } from "@/../../@tacotacIO/codegen/dist";
@@ -23,7 +22,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
-export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
+export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [email, setEmail] = useState("");
@@ -103,21 +102,35 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                   <AccordionContent>
                     <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
                       <Label htmlFor="civility">
-                        Civilité <span className="text-red-500">*</span>{" "}
+                        Civilité <span className="text-red-500"> *</span>{" "}
                       </Label>
                       <Controller
                         name={`attendees.${i}.civility`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                           <>
-                            <Select onValueChange={onChange}>
+                            <Select value={value} onValueChange={onChange}>
                               <SelectTrigger className="w-[180px]">
                                 <SelectValue placeholder="Civilité" />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
-                                  <SelectItem value={CivilityStatus.Mr}>Monsieur</SelectItem>
-                                  <SelectItem value={CivilityStatus.Mme}>Madame</SelectItem>
+                                  <SelectItem
+                                    {...register(`attendees.${i}.civility`, {
+                                      required: "Une civilité pour le participant est requise",
+                                    })}
+                                    value={CivilityStatus.Mr}
+                                  >
+                                    Monsieur
+                                  </SelectItem>
+                                  <SelectItem
+                                    {...register(`attendees.${i}.civility`, {
+                                      required: "Une civilité pour le participant est requise",
+                                    })}
+                                    value={CivilityStatus.Mme}
+                                  >
+                                    Madame
+                                  </SelectItem>
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
@@ -233,7 +246,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                         </div>
                         <div className="mt-4 w-full items-center gap-1.5">
                           <Label htmlFor="civility" className="my-4">
-                            Comment avez-vous entendu parler de Lille pour le Bien Commun ?{" "}
+                            Comment avez-vous entendu parler de {city} pour le Bien Commun ?{" "}
                             <span className="text-red-500">*</span>
                           </Label>
                           <Controller
@@ -242,7 +255,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                             {...register(`attendees.${i}.hearAbout`)}
                             render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                               <>
-                                <Select onValueChange={onChange}>
+                                <Select value={value} onValueChange={onChange}>
                                   <SelectTrigger className="my-4">
                                     <SelectValue placeholder="Sélectionnez une réponse" />
                                   </SelectTrigger>
@@ -320,14 +333,14 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                 <>
                   <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
                     <Label htmlFor="civility">
-                      Civilité<span className="text-red-500">*</span>
+                      Civilité<span className="text-red-500"> *</span>
                     </Label>
                     <Controller
                       name={`attendees.${i}.civility`}
                       control={control}
                       render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                         <>
-                          <Select onValueChange={onChange}>
+                          <Select value={value} onValueChange={onChange}>
                             <SelectTrigger className="w-[180px]">
                               <SelectValue placeholder="Civilité" />
                             </SelectTrigger>
@@ -445,7 +458,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                   </div>
                   <div className="mt-4 w-full items-center gap-1.5">
                     <Label htmlFor="civility" className="my-4">
-                      Comment avez-vous entendu parler de Lille pour le Bien Commun ?{" "}
+                      Comment avez-vous entendu parler de {city} pour le Bien Commun ?{" "}
                       <span className="text-red-500">*</span>
                     </Label>
 
@@ -455,7 +468,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                       {...register(`attendees.${i}.hearAbout`)}
                       render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
                         <>
-                          <Select onValueChange={onChange}>
+                          <Select value={value} onValueChange={onChange}>
                             <SelectTrigger className="my-4">
                               <SelectValue placeholder="Sélectionnez une réponse" />
                             </SelectTrigger>
@@ -529,7 +542,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
             Ajouter un participant
           </button>
         </div>
-        <div>
+        {/* <div>
           <div className="flex items-center justify-start">
             <span className="w-4 h-4 mr-2 border rounded-full"></span>
             <p>couleur #1</p>
@@ -542,7 +555,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
             <span className="w-4 h-4 mr-2 border rounded-full"></span>
             <p>police #1</p>
           </div>
-        </div>
+        </div> */}
       </div>
       {showConfirmation === true ? (
         <div className="flex flex-col items-center justify-center mt-4 text-xl">
