@@ -136,8 +136,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                                     </SelectGroup>
                                   </SelectContent>
                                 </Select>
-                                {error?.message && (
-                                  <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>
+                                {formState.errors?.attendees?.[i]?.civility && (
+                                  <p className="text-sm text-red-800 dark:text-red-300">
+                                    {formState.errors?.attendees?.[i]?.civility?.message}
+                                  </p>
                                 )}
                               </>
                             )}
@@ -360,13 +362,29 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, city, bookingStartsAt
                                 </SelectTrigger>
                                 <SelectContent>
                                   <SelectGroup>
-                                    <SelectItem value={CivilityStatus.Mr}>Monsieur</SelectItem>
-                                    <SelectItem value={CivilityStatus.Mme}>Madame</SelectItem>
+                                    <SelectItem
+                                      {...register(`attendees.${i}.civility`, {
+                                        required: "Une civilité pour le participant est requise",
+                                      })}
+                                      value={CivilityStatus.Mr}
+                                    >
+                                      Monsieur
+                                    </SelectItem>
+                                    <SelectItem
+                                      {...register(`attendees.${i}.civility`, {
+                                        required: "Une civilité pour le participant est requise",
+                                      })}
+                                      value={CivilityStatus.Mme}
+                                    >
+                                      Madame
+                                    </SelectItem>
                                   </SelectGroup>
                                 </SelectContent>
                               </Select>
-                              {error?.message && (
-                                <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>
+                              {formState.errors?.attendees?.[i]?.civility && (
+                                <p className="text-sm text-red-800 dark:text-red-300">
+                                  {formState.errors?.attendees?.[i]?.civility?.message}
+                                </p>
                               )}
                             </>
                           )}
