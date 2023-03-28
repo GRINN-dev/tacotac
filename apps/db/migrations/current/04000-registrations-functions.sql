@@ -17,8 +17,8 @@ begin
   select * from publ.events where id = event_id into v_event;
 
   -- check des registration date de l'event
-  if  v_event.booking_starts_at <= NOW() and v_event.booking_ends_at >= now() then
-      raise exception 'Registration not started yet' using errcode = 'RGNST';
+  if  v_event.booking_starts_at > NOW() and v_event.booking_ends_at < now() then
+      raise exception 'Registration is not open' using errcode = 'RGNST';
   end if;
 
   -- creation de la registration et stockage du resultat dans la variable

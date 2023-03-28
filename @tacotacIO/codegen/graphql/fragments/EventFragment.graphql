@@ -9,11 +9,13 @@ fragment MyEvent on Event {
   zipCode
   country
   startsAt
+  endsAt
   bookingStartsAt
   bookingEndsAt
   createdAt
   updatedAt
   placeName
+  capacity
   webhooks
   organizationId
   totalRegistrations
