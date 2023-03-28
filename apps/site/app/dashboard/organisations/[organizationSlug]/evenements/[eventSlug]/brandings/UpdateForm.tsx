@@ -1,10 +1,11 @@
 "use client";
 
-import { FC, useEffect, useState, useTransition } from "react";
+import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Fonts, GetEventByIdQuery, UpdateEventBrandingInput } from "@/../../@tacotacIO/codegen/dist";
 import { useToast } from "@/hooks/use-toast";
 import { MinusCircle, PlusCircle } from "lucide-react";
+import { SketchPicker } from "react-color";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -13,15 +14,7 @@ import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 interface IUpdateBrandingEvent extends ExtractType<ExtractType<GetEventByIdQuery, "event">, "eventBranding"> {}
@@ -41,7 +34,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [awardWinning, setAwardWinning] = useState("");
-
   const [files, setFiles] = useState<File[]>([]);
   const [awardWinningList, setAwardWinningList] = useState<string[]>(awardWinningAssoList || []);
   const [isTransitionning, startTransition] = useTransition();
@@ -51,6 +43,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
   const pathname = usePathname();
   const { register, handleSubmit, formState, control } = useForm<UpdateEventBrandingInput>();
   const { toast } = useToast();
+  const [displayColorPicker1, setDisplayColorPicker1] = useState(false);
+  const [displayColorPicker2, setDisplayColorPicker2] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
@@ -64,6 +58,9 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     }
     data.id = id;
     data.patch.awardWinningAssoList = awardWinningList;
+    data.patch.color1 = sketchPickerColor1.hex.substring(1);
+    data.patch.color2 = sketchPickerColor2.hex.substring(1);
+    data.patch.placeholder = jsonData;
     await sdk()
       .UpdateEventBranding({
         input: data,
@@ -89,46 +86,106 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     newList.splice(index, 1);
     setAwardWinningList(newList);
   };
+  const { nom, prenom, email, telephone, zipcode } = placeholder || {};
 
+  const [jsonData, setJsonData] = useState({
+    nom: "Nom",
+    prenom: "Prénom",
+    email: "Email",
+    telephone: "Téléphone",
+    zipcode: "Code postal",
+  });
+  const [sketchPickerColor1, setSketchPickerColor1] = useState({
+    hex: color2,
+  });
+  const [sketchPickerColor2, setSketchPickerColor2] = useState({ hex: color1 });
+  const { hex: hex1 } = sketchPickerColor1;
+  const { hex: hex2 } = sketchPickerColor2;
+
+  const handleJsonChange = (e) => {
+    const { name, value } = e.target;
+    setJsonData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="color1">Couleur 1</Label>
-        <Input
-          type="text"
-          id="color1"
-          defaultValue={color1}
-          placeholder="color1"
-          {...register("patch.color1", {
-            required: "Un nom pour l'organisation est requis",
-          })}
-        />
-        {formState.errors?.patch?.color1 && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color1?.message}</p>
-        )}
+      <div
+        onClick={() => setDisplayColorPicker1(!displayColorPicker1)}
+        className="flex items-center justify-start p-2 text-sm border rounded-md cursor-pointer w-max border-slate-300"
+      >
+        Choisir couleur 1
+        <div
+          style={{
+            backgroundColor: hex1,
+            width: "30px",
+            height: "30px",
+            border: "2px solid white",
+            borderRadius: "30px",
+            marginLeft: "10px",
+          }}
+        >
+          {" "}
+        </div>
       </div>
+      {displayColorPicker1 ? (
+        <div className="mt-2 grid w-full items-center gap-1.5">
+          <div className="">
+            <SketchPicker
+              {...register("patch.color1", {
+                required: "Couleur requise",
+              })}
+              defaultValue={color1}
+              onChange={(color1) => {
+                setSketchPickerColor1(color1);
+              }}
+              color={sketchPickerColor1}
+            />
+          </div>
+        </div>
+      ) : null}
+      <div
+        onClick={() => setDisplayColorPicker2(!displayColorPicker2)}
+        className="flex items-center justify-start p-2 mt-4 text-sm border rounded-md cursor-pointer w-max border-slate-300"
+      >
+        Choisir couleur 2
+        <div
+          style={{
+            backgroundColor: hex2,
+            width: "30px",
+            height: "30px",
+            border: "2px solid white",
+            borderRadius: "30px",
+            marginLeft: "10px",
+          }}
+        >
+          {" "}
+        </div>
+      </div>
+      {displayColorPicker2 ? (
+        <div className="mt-4 grid w-full items-center gap-1.5">
+          <div className="">
+            <SketchPicker
+              {...register("patch.color2", {
+                required: "Couleur requise",
+              })}
+              defaultValue={color2}
+              onChange={(color2) => {
+                setSketchPickerColor2(color2);
+              }}
+              color={sketchPickerColor2}
+            />
+          </div>
+        </div>
+      ) : null}
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="color2">Couleur 2</Label>
-        <Input
-          type="text"
-          id="color2"
-          defaultValue={color2}
-          placeholder="color2"
-          {...register("patch.color2", {
-            required: "Un nom pour l'organisation est requis",
-          })}
-        />
-        {formState.errors?.patch?.color2 && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
-        )}
-      </div>
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Controller
           name={"patch.font"}
           control={control}
-          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+          render={({ field: { onChange }, fieldState: { error } }) => (
             <>
               <Select defaultValue={font} onValueChange={onChange}>
                 <SelectTrigger className="w-[180px]">
@@ -191,7 +248,6 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.richText?.message}</p>
         )}
       </div>
-
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
         <Label htmlFor="shortText">Court texte</Label>
@@ -199,9 +255,9 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           type="text"
           id="shortText"
           defaultValue={shortText}
-          placeholder="type url here"
+          placeholder="Entrez un texte court ici"
           {...register("patch.shortText", {
-            required: "Un nom pour l'organisation est requis",
+            required: "Un texte est requis",
           })}
         />
         {formState.errors?.patch?.shortText && (
@@ -212,12 +268,12 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
 
-        <ul className="list-disc pl-4">
+        <ul className="pl-4 list-disc">
           {awardWinningList.length > 0
             ? awardWinningList?.map((awardWinning, index) => (
                 <li key={awardWinning + index}>
                   <div
-                    className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+                    className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
                     onClick={() => removeItemClick(index)}
                   >
                     {awardWinning} <MinusCircle className="ml-2" />
@@ -235,11 +291,11 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             type="text"
             id="awardWinningAssoList"
             value={awardWinning}
-            placeholder="Saissir un lauréat"
+            placeholder="Saisir un lauréat"
             onChange={(evt) => setAwardWinning(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
+            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
             onClick={() => {
               if (awardWinning) {
                 setAwardWinningList([...awardWinningList, awardWinning]);
@@ -251,6 +307,79 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           </div>
         </div>
       </div>
+      <div className="my-4">
+        <Label htmlFor="placeholders" className="font-semibold">
+          Placeholders
+        </Label>
+      </div>
+
+      <div>
+        <Label htmlFor="placeholder-name">Placeholder nom</Label>
+      </div>
+      <div>
+        <Input
+          className="mb-4"
+          type="text"
+          id="nom"
+          name="nom"
+          defaultValue={nom}
+          placeholder={jsonData.nom}
+          onChange={handleJsonChange}
+        />
+      </div>
+      <div>
+        <Label htmlFor="placeholder-prenom">Placeholder prénom</Label>
+      </div>
+      <div>
+        <Input
+          className="mb-4"
+          type="text"
+          id="prenom"
+          name="prenom"
+          defaultValue={prenom}
+          placeholder={jsonData.prenom}
+          onChange={handleJsonChange}
+        />
+      </div>
+      <div>
+        <Label htmlFor="placeholder-phone">Placeholder téléphone</Label>
+      </div>
+      <Input
+        className="mb-4"
+        type="tel"
+        id="telephone"
+        defaultValue={telephone}
+        name="telephone"
+        placeholder={jsonData.telephone}
+        onChange={handleJsonChange}
+      />
+      <div>
+        <Label htmlFor="placeholder-zip">Placeholder code postal</Label>
+      </div>
+      <Input
+        className="mb-4"
+        type="text"
+        id="zipcode"
+        defaultValue={zipcode}
+        name="zipcode"
+        placeholder={jsonData.zipcode}
+        onChange={handleJsonChange}
+      />
+      <div>
+        <Label htmlFor="placeholder-email">Placeholder email</Label>
+      </div>
+      <div>
+        <Input
+          className="mb-4"
+          type="text"
+          defaultValue={email}
+          id="email"
+          name="email"
+          placeholder={jsonData.email}
+          onChange={handleJsonChange}
+        />
+      </div>
+
       <div className="mt-4 grid w-full items-center gap-1.5">
         <Label htmlFor="headerMailName">Header Mail - Intitulé</Label>
         <Input
@@ -281,13 +410,13 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
         )}
       </div>
-      <div className="mt-8 flex gap-2">
+      <div className="flex gap-2 mt-8">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
       </div>
       {error && (
-        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
+        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {

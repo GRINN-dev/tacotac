@@ -1,5 +1,10 @@
 import { run } from "graphile-worker";
-import { qrCodeGenPdf, sendEmail, sendWebHook, sendMissingEmailPdf } from "./tasks";
+import {
+  qrCodeGenPdf,
+  sendEmail,
+  sendWebHook,
+  sendMissingEmailPdf,
+} from "./tasks";
 
 const main = async () => {
   const runner = await run({

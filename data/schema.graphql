@@ -2070,6 +2070,8 @@ enum OrganizationsOrderBy {
   NAME_DESC
   SLUG_ASC
   SLUG_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
@@ -2092,6 +2094,9 @@ input OrganizationCondition {
   """Checks for equality with the object’s `slug` field."""
   slug: String
 
+  """Checks for equality with the object’s `description` field."""
+  description: String
+
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -2111,6 +2116,9 @@ input OrganizationFilter {
 
   """Filter by the object’s `slug` field."""
   slug: StringFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter

@@ -14,9 +14,8 @@ import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import SimpleCollection from "@/components/table/SimpleCollection";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
-
 
 interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -148,16 +147,23 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-300">Attention </h3>
-              <div className="mt-2 text-sm ">
+              <div className="my-2 text-sm ">
                 <p>
                   {`L'import enregistrera directement les participants présents dans le csv et recevront, donc, automatiquement leur billet par mail.`}
                 </p>
               </div>
+              <Button
+                className={buttonVariants({ size: "lg" })}
+                onClick={() => {
+                  window.open(
+                    "https://docs.google.com/spreadsheets/d/131AXHOhQKZKA_OWVTJ6aMC65rV-ugrTbaSNkpCOwTzM/edit?usp=sharing",
+                    "_ blank"
+                  );
+                }}
+              >
+                Voir un exemple
+              </Button>
             </div>
-          </div>
-          <div className="mt-4">
-            <p className="mb-2 text-sm font-medium italic">Voici un exemple de csv a importer:</p>
-            <SimpleCollection arrayList={arrayList} />
           </div>
         </div>
         <FileDragNDrop

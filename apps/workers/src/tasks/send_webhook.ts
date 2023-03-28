@@ -24,7 +24,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
     )
   );
 
-  attendeeAndEvent[0].webhooks.map(async (webhook: string) => {
+  attendeeAndEvent[0]?.webhooks?.map(async (webhook: string) => {
     await axios.post(webhook, {
       state: state,
       firstname: attendeeAndEvent[0].firstname,
