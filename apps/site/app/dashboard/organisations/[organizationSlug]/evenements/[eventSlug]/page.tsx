@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { PlusSquare, Send } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
@@ -86,7 +84,7 @@ const AttendeesPage = async ({
         <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
         <SendAllEmail eventId={eventBySlug?.id} />
       </div>
-      {flattenedAttendeesFromRegistrations.length > 0 ? (
+      {flattenedAttendeesFromRegistrations?.length > 0 ? (
         <Collection
           totalCount={eventBySlug?.registrations?.totalCount}
           pageInfo={eventBySlug?.registrations?.pageInfo}

@@ -76,14 +76,18 @@ DECLARE
   v_attendee_imported publ.attendee_import;
   v_attendees publ.attendee_import[];
   v_iter int;
-  v_event_id uuid;
 begin
-      v_event_id:=event_id;
     for v_iter in 1..array_length(attendees_csv, 1) loop
 
-      if not exists (select email from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where email = attendees_csv[v_iter].email and regs.event_id=v_event_id ) then
+      if exists (select 1 from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where atts.email = attendees_csv[v_iter].email and regs.event_id=register_attendees_csv.event_id ) then
 
-        insert into publ.registrations (event_id ) values (v_event_id) returning * into v_registration;
+        v_attendee_imported.data:=null;
+        v_attendee_imported.error_code:='RGNST';
+        v_attendee_imported.error_message:='Participant existe déjà';
+        v_attendee_imported.error_value:=attendees_csv[v_iter].email;
+      
+      else 
+        insert into publ.registrations (event_id ) values (register_attendees_csv.event_id) returning * into v_registration;
 
         insert into publ.attendees (
         civility, 
@@ -98,7 +102,7 @@ begin
         is_vip, 
         ticket_number, 
         sign_code
-        )select attendees_csv[v_iter].civility,
+        ) values( attendees_csv[v_iter].civility,
         attendees_csv[v_iter].zip_code,
         'IDLE', 
         v_registration.id, 
@@ -109,7 +113,7 @@ begin
         true,
         attendees_csv[v_iter].is_vip,
         'TICKET_' || md5(random()::text || clock_timestamp()::text),
-        substring(uuid_generate_v4()::text, 1, 6)  where v_registration.event_id=event_id
+        substring(uuid_generate_v4()::text, 1, 6))
         returning * into v_attendee;
 
         --ici j'initialise a null afin d'éviter la mémorisation de la dernière valeur
@@ -120,12 +124,6 @@ begin
         perform graphile_worker.add_job('qrCodeGenPdf', json_build_object('registrationId', v_registration.id));
         
         perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', attendees_csv[v_iter].id, 'state','RESA_BILLET'));
-      else 
-
-        v_attendee_imported.data:=null;
-        v_attendee_imported.error_code:='RGNST';
-        v_attendee_imported.error_message:='Participant existe déjà';
-        v_attendee_imported.error_value:=attendees_csv[v_iter].email;
        
       end if;
        
