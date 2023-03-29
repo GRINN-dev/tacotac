@@ -7,6 +7,7 @@ fragment MyEvent on Event {
   addressLine1
   city
   zipCode
+  totalConfirmedRegistrations
   country
   startsAt
   endsAt
