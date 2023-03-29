@@ -28,7 +28,7 @@ const roboto = Roboto({
 });
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
-export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, bookingStartsAt }) => {
+export const joCreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, bookingStartsAt }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [attendeeEmail, setAttendeeEmail] = useState("");
