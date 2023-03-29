@@ -5,12 +5,7 @@ import { sdk } from "@/lib/sdk";
 import { ImportAttendeesForm } from "./form";
 
 const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) => {
-  const { eventBySlug } = await sdk()
-    .GetEventBySlug({ eventSlug: eventSlug, organizationSlug: organizationSlug })
-    .catch((e) => {
-      console.error(e);
-    });
-
+  const { eventBySlug } = await sdk().GetEventBySlug({ eventSlug: eventSlug, organizationSlug: organizationSlug });
   return (
     <>
       <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
