@@ -38,9 +38,15 @@ export const Scanner = () => {
         },
       });
       localStorage.removeItem("offlineData");
+      toast({
+        title: "✅ Synchronisation réussie",
+      });
       return response;
     } catch (error) {
       console.log(error);
+      toast({
+        title: "⛔️ Echec synchronisation, réessayez plus tard",
+      });
       return error;
     }
   };
@@ -54,19 +60,7 @@ export const Scanner = () => {
             className="absolute p-2 text-white bg-red-600 rounded-md top-4 right-4"
             onClick={() => {
               console.log("synchronise");
-              scanAttendeesOffline()
-                .then((result) => {
-                  console.log("result", result);
-                  toast({
-                    title: "✅ Synchronisation ok",
-                  });
-                })
-                .catch((error) => {
-                  console.log("error", error);
-                  toast({
-                    title: "⛔️ Echec synchronisation",
-                  });
-                });
+              scanAttendeesOffline();
             }}
           >
             Synchroniser
