@@ -16,7 +16,6 @@ export function createHtmlTemplate<T>(data: T, templateName: string) {
       encoding: "utf-8",
     }
   );
-  console.log("🚀 ~ file: createHtmlTemplate.ts:20 ~ assetsPath:", assetsPath);
   const template = hbs.compile(html);
   const rendered = template({
     ...data,
