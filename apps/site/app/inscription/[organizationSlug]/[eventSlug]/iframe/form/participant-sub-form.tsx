@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { CivilityStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@tacotacIO/codegen";
-import { Controller, UseFieldArrayReturn, UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +15,7 @@ interface ParticipantSubFormProps {
   index: number;
   isInscriptor: boolean;
 }
-export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, methods, index }) => {
+export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, methods, index, isInscriptor }) => {
   const { register, formState, control } = methods;
   const i = index;
   const { nom, prenom, email, telephone, zipcode } = branding?.placeholder || {};
@@ -30,7 +30,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
           name={`attendees.${i}.civility`}
           control={control}
           rules={{ required: "Une civilité pour le participant est requise" }}
-          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+          render={({ field: { onChange, value } }) => (
             <>
               <Select value={value} onValueChange={onChange}>
                 <SelectTrigger className="w-[180px]">
@@ -88,7 +88,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
       <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
         <Label htmlFor="email">Email</Label>
         <Input
-          type="text"
+          type="email"
           id="email"
           className="col-span-2"
           placeholder="jeanned@mail.com"
@@ -98,76 +98,83 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
               message: "Merci d'entrer un email valide",
             },
+            required: { value: isInscriptor, message: "Un email pour le participant est requis" },
           })}
         />
         {formState.errors?.attendees?.[i].email && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.[i]?.email?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
-        <Label htmlFor="phoneNumber">Téléphone</Label>
-        <Input
-          type="number"
-          id="phoneNumber"
-          className="col-span-2"
-          placeholder="Entrez un numéro de téléphone"
-          {...register(`attendees.${i}.phoneNumber`)}
-        />
-      </div>
-      <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
-        <Label htmlFor="zipCode">Code postal</Label>
-        <Input
-          type="number"
-          id="zipCode"
-          placeholder="44000"
-          className="col-span-2"
-          {...register(`attendees.${i}.zipCode`, {
-            required: "Un code postal pour le participant est requis",
-          })}
-        />
-        {formState.errors?.attendees?.[i]?.zipCode && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.[i]?.zipCode?.message}</p>
-        )}
-      </div>
-      <div className="mt-4 w-full items-center gap-1.5">
-        <Label htmlFor="civility" className="my-4">
-          Comment avez-vous entendu parler de cet évenemnt ?
-        </Label>
+      {isInscriptor ? (
+        <>
+          <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+            <Label htmlFor="phoneNumber">Téléphone</Label>
+            <Input
+              type="number"
+              id="phoneNumber"
+              className="col-span-2"
+              placeholder="Entrez un numéro de téléphone"
+              {...register(`attendees.${i}.phoneNumber`)}
+            />
+          </div>
+          <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+            <Label htmlFor="zipCode">Code postal</Label>
+            <Input
+              type="number"
+              id="zipCode"
+              placeholder="44000"
+              className="col-span-2"
+              {...register(`attendees.${i}.zipCode`, {
+                required: "Un code postal pour le participant est requis",
+              })}
+            />
+            {formState.errors?.attendees?.[i]?.zipCode && (
+              <p className="text-sm text-red-800 dark:text-red-300">
+                {formState.errors?.attendees?.[i]?.zipCode?.message}
+              </p>
+            )}
+          </div>
+          <div className="mt-4 w-full items-center gap-1.5">
+            <Label htmlFor="civility" className="my-4">
+              Comment avez-vous entendu parler de cet évenemnt ?
+            </Label>
 
-        <Controller
-          name={"attendee.hearAbout"}
-          control={control}
-          {...register(`attendees.${i}.hearAbout`, { required: "Merci de sélectionner une réponse" })}
-          render={({ field: { onChange, value } }) => (
-            <>
-              <Select value={value} onValueChange={onChange} required={true}>
-                <SelectTrigger className="my-4">
-                  <SelectValue placeholder="Sélectionnez une réponse" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
-                    <SelectItem value={"par une association lauréate"}>Par une association lauréate</SelectItem>
-                    <SelectItem value={"par Obole, co-organisateur de l''événement"}>
-                      Par Obole, co-organisateur de l&apos;événement
-                    </SelectItem>
-                    <SelectItem value={"par le bouche à oreille"}>Par le bouche à oreille</SelectItem>
-                    <SelectItem value={"par la Fondation de France, co-organisateur de l''événement"}>
-                      Par la Fondation de France, co-organisateur de l&apos;événement
-                    </SelectItem>
-                    <SelectItem value={"autre"}>Autre</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {formState.errors?.attendees?.[i]?.hearAbout && (
-                <p className="text-sm text-red-800 dark:text-red-300">
-                  {formState.errors?.attendees?.[i]?.hearAbout?.message}
-                </p>
+            <Controller
+              name={"attendee.hearAbout"}
+              control={control}
+              {...register(`attendees.${i}.hearAbout`, { required: "Merci de sélectionner une réponse" })}
+              render={({ field: { onChange, value } }) => (
+                <>
+                  <Select value={value} onValueChange={onChange} required={true}>
+                    <SelectTrigger className="my-4">
+                      <SelectValue placeholder="Sélectionnez une réponse" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
+                        <SelectItem value={"par une association lauréate"}>Par une association lauréate</SelectItem>
+                        <SelectItem value={"par Obole, co-organisateur de l''événement"}>
+                          Par Obole, co-organisateur de l&apos;événement
+                        </SelectItem>
+                        <SelectItem value={"par le bouche à oreille"}>Par le bouche à oreille</SelectItem>
+                        <SelectItem value={"par la Fondation de France, co-organisateur de l''événement"}>
+                          Par la Fondation de France, co-organisateur de l&apos;événement
+                        </SelectItem>
+                        <SelectItem value={"autre"}>Autre</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {formState.errors?.attendees?.[i]?.hearAbout && (
+                    <p className="text-sm text-red-800 dark:text-red-300">
+                      {formState.errors?.attendees?.[i]?.hearAbout?.message}
+                    </p>
+                  )}
+                </>
               )}
-            </>
-          )}
-        />
-      </div>
+            />
+          </div>
+        </>
+      ) : null}
     </>
   );
 };

@@ -35,7 +35,7 @@ create table publ.attendees (
     firstname text not null,
     lastname text not null,
     email citext ,
-    phone_number text check(length(phone_number) between 5 and 15),
+    phone_number text,
     registration_id uuid references publ.registrations(id) on delete cascade,
     zip_code text ,
     hear_about text default 'autre',
