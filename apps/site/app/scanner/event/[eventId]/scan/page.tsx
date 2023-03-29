@@ -24,7 +24,6 @@ const EventSlug = async ({ params: { eventId } }) => {
         <div>
           {" "}
           {event?.totalConfirmedRegistrations} présents / {event?.totalRegistrations} inscrits{" "}
-          {/* TODO ici il faudra utiliser totalConfirmedRegistrations de Bat quand mergée */}
         </div>
         <div className="flex flex-col items-center justify-end gap-2 mt-20">
           <Scanner />
