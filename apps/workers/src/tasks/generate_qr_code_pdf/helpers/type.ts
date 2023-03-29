@@ -40,6 +40,38 @@ export interface IRowAttendee {
   starts_at: string;
   ends_at: string;
   details: string;
+  city: string;
   header_mail_name: string;
   header_mail_contact: string;
+  logo: string;
+}
+
+export interface CreateTicketPayload {
+  ticket: {
+    event_name: string;
+    logo: string;
+    first_name: string;
+    last_name: string;
+    ticket_number: string;
+    string_day: string;
+    day: number;
+    month: string;
+    year: number;
+    starts_at: string;
+    ends_at: string;
+    place_name: string;
+    address: string;
+    detail: string;
+    qr_code_url: string;
+    code_invit: string;
+    city: string;
+  };
+}
+
+export interface GeneratePdfFilesPayload {
+  pdfData: {
+    template: any;
+    linked_ressource_id: string;
+    document_type: string;
+  };
 }

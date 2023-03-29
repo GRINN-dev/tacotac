@@ -5,6 +5,7 @@ import moment from "moment";
 
 moment.locale("fr");
 
+// Construire le chemin absolu vers le répertoire "assets"
 export function createHtmlTemplate<T>(data: T, templateName: string) {
   const html = fs.readFileSync(
     path.join(
@@ -18,7 +19,7 @@ export function createHtmlTemplate<T>(data: T, templateName: string) {
   const template = hbs.compile(html);
   const rendered = template({
     ...data,
-    assetsUrl: process.env.ASSETS_URL || process.env.API_URL,
+    assetsUrl: process.env.NEXT_PUBLIC_API_ENDPOINT + "/static",
     createdAt: moment().format("ll"),
   });
   return rendered;

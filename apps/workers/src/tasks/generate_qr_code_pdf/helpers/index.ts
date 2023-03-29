@@ -7,8 +7,13 @@ import { generateQRCode } from "../../../utils/generateQRCode";
 import { BILLET_TEMPLATE } from "../../../utils/emailTemplates";
 import { MailDataRequired } from "@sendgrid/mail";
 import dayjs from "dayjs";
-import { IRowAttendee } from "./type";
+import {
+  CreateTicketPayload,
+  GeneratePdfFilesPayload,
+  IRowAttendee,
+} from "./type";
 import { WithPgClient } from "graphile-worker";
+import { createHtmlTemplate } from "../../../utils/createHtmlTemplate";
 
 interface SendEmailPayload {
   mailData: MailDataRequired;
@@ -36,20 +41,55 @@ export const generateDocsForAttendees = async (
     })
   );
 
+  const reworkedTicket = {
+    event_name: rowData.name,
+    logo: rowData.logo,
+    first_name: rowData.firstname,
+    last_name: rowData.lastname,
+    ticket_number: rowData.ticket_number,
+    string_day: dayjs(rowData.starts_at).format("dddd"),
+    day: dayjs(rowData.starts_at).day(),
+    month: dayjs(rowData.starts_at).format("MMMM"),
+    year: dayjs(rowData.starts_at).year(),
+    starts_at: dayjs(rowData.starts_at).format("HH:mm"),
+    ends_at: dayjs(rowData.ends_at).format("HH:mm"),
+    place_name: rowData.place_name,
+    address: rowData.address_line_1,
+    detail: rowData.details,
+    city: rowData.city,
+    qr_code_url: dataUrlQrCode,
+    code_invit: rowData.sign_code,
+  };
+  console.log("🚀 ~ file: index.ts:62 ~ reworkedTicket:", reworkedTicket);
+
+  const generatePdfFilePayload: GeneratePdfFilesPayload = {
+    pdfData: {
+      template: createHtmlTemplate<CreateTicketPayload>(
+        {
+          ticket: reworkedTicket,
+        },
+        "ticket_v1"
+      ),
+      linked_ressource_id: rowData.ticket_number,
+      document_type: "TICKET",
+    },
+  };
+
   if (rowData?.is_inscriptor) {
-    bufferPdf = await generatePdf(
-      `${rowData.ticket_number}  <img src="${dataUrlQrCode}" >  ${rowData.sign_code}}`
-    );
+
+    bufferPdf = await generatePdf(generatePdfFilePayload?.pdfData?.template);
+
     // on merge les pdfs SI il y a des pdfs issus des participants associés au premier inscris (via e spread operator)
     bufferPdf = (await mergePDFBuffers([
       bufferPdf,
       ...resultsStorePdfBuffer,
     ])) as Buffer;
   } else {
-    bufferPdf = await generatePdf(
-      `${rowData.ticket_number}  <img src="${dataUrlQrCode}" >  ${rowData.sign_code}}`
-    );
+
+    bufferPdf = await generatePdf(generatePdfFilePayload?.pdfData?.template);
+
   }
+
   const { base64Data, type, image_name } = await generateBase64BufferForQrCode(
     dataUrlQrCode
   );
@@ -79,21 +119,21 @@ export const generateDocsForAttendees = async (
       },
       templateId: BILLET_TEMPLATE,
       dynamicTemplateData: {
-        Event_Name: rowData.name,
-        First_Name: rowData.firstname,
-        Last_Name: rowData.lastname,
-        Ticket_Number: rowData.ticket_number,
-        String_Day: dayjs(rowData.starts_at).format("dddd"),
-        Day: dayjs(rowData.starts_at).day(),
-        Month: dayjs(rowData.starts_at).format("MMMM"),
-        Year: dayjs(rowData.starts_at).year(),
-        Starts_At: dayjs(rowData.starts_at).format("HH:mm"),
-        Ends_At: dayjs(rowData.ends_at).format("HH:mm"),
-        Place_Name: rowData.place_name,
-        Address: rowData.address_line_1,
-        Detail: rowData.details,
-        Qr_Code_Url: urlS3QrCode,
-        Code_Invit: rowData.sign_code,
+        e: rowData.name,
+        first_Name: rowData.firstname,
+        last_Name: rowData.lastname,
+        ticket_Number: rowData.ticket_number,
+        string_Day: dayjs(rowData.starts_at).format("dddd"),
+        day: dayjs(rowData.starts_at).day(),
+        month: dayjs(rowData.starts_at).format("MMMM"),
+        year: dayjs(rowData.starts_at).year(),
+        starts_At: dayjs(rowData.starts_at).format("HH:mm"),
+        ends_At: dayjs(rowData.ends_at).format("HH:mm"),
+        place_Name: rowData.place_name,
+        address: rowData.address_line_1,
+        detail: rowData.details,
+        qr_Code_Url: urlS3QrCode,
+        code_Invit: rowData.sign_code,
         Pdf_Url: urlS3Pdf,
         Cancel: "test",
         Current_Year: dayjs().format("YYYY"),

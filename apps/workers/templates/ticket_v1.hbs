@@ -1,0 +1,91 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>La nuit du bien commun</title>
+</head>
+
+<body class="relative w-screen h-screen font_global">
+    
+    <img class="absolute w-[214px] h-[214px] bg-center bg-no-repeat bg-cover right-[5%] top-[103px]"
+        src="{{ticket.qr_code_url}}">
+    <div
+        class="text-black text-sm font-bold absolute w-[177px] h-[18px] text-center items-center justify-center flex-col right-[7%] top-[30%]">
+        {{ticket.first_name}} {{ticket.last_name}}</div>
+    <div class="absolute top-[-0.0002px] w-full h-[349.0136px] overflow-visible left-0">
+        <svg preserveAspectRatio='none' viewBox='0 0 595 350' fill='none' xmlns='http://www.w3.org/2000/svg'
+            class="w-full h-full">
+            <path
+                d='M0 8.8728e-06L595 1.39392e-05C595 1.39392e-05 442.667 16.5598 493.5 56.5C535.5 89.5 324.5 70.5 379.5 169C434.5 267.5 0 349.013 0 349.013V8.8728e-06Z'
+                fill='#004C86' />
+        </svg>
+    </div>
+    <div class="absolute w-[462px] h-[509px] bg-center bg-no-repeat bg-cover opacity-10 right-[5%] top-[45%]"
+        style="background-image: url('{{assetsUrl}}/logo_obole.jpeg');">
+    </div>
+    <div class="absolute w-full h-[66px] bg-[#878787] bottom-0"></div>
+    <div class="absolute w-[206px] h-[116px] rounded bg-center bg-no-repeat bg-cover left-1/4 top-[20%]"
+        style="background-image: url('{{ticket.logo}}');"></div>
+
+    <div class="text-white text-[13px] font-light absolute w-10 h-min flex-col left-10 top-[120px]">{{ticket.starts_at}}
+    </div>
+    <div class="text-white text-[13px] font-light absolute w-1 h-min flex-col left-[76px] top-[120px]">-</div>
+    <div class="text-white text-[13px] font-light absolute w-[51px] h-min flex-col left-[88px] top-[120px]">
+        {{ticket.ends_at}}</div>
+    <div class="text-white text-[43px] font-bold absolute w-min h-min whitespace-nowrap flex-col left-10 top-[68px]">
+        {{ticket.day}}</div>
+    <div class="absolute w-min h-min whitespace-nowrap flex-col left-[103px] top-[75px]">
+        <div class="text-white text-[15px] font-bold">{{ticket.month}}</div>
+        <div class="text-white text-[15px] font-bold mt-0.5">{{ticket.year}}</div>
+
+    </div>
+    <div class="text-white text-[15px] font-bold absolute w-min h-min whitespace-nowrap flex-col left-10 top-[50px]">
+        {{ticket.string_day}}</div>
+    <div class="text-white text-xl font-black absolute w-min h-min whitespace-nowrap flex-col left-[175px] top-[50px]">
+        {{ticket.event_name}}</div>
+    <div class="text-white text-lg font-bold absolute w-min h-min whitespace-nowrap flex-col left-[175px] top-[85px]">
+        {{ticket.place_name}}</div>
+    <div class="absolute w-[57px] h-[57px] bg-center bg-no-repeat bg-cover right-[20%] bottom-[33%]"
+        style="background-image: url('{{assetsUrl}}/accueil_obole.jpeg');"></div>
+    
+    <div class="origin-top-left absolute w-[220px] h-4 flex-col left-6 top-[350px] billet-edit_transform">
+        <p class="text-[8px] shrink">
+            <span class="text-black text-[8px] leading-5 font-extralight italic">Ce billet a été édité sur </span>
+            <a class="text-black text-[8px] leading-5 font-extralight italic" href='http://kaypi.fr' target='_blank'
+                rel='noreferrer'>
+                kaypi.fr
+            </a>
+            <span class="text-black text-[8px] leading-5 font-extralight italic"> la billetterie d’</span>
+            <a class="text-black text-[8px] leading-5 font-extralight italic" href='http://obole.eu' target='_blank'
+                rel='noreferrer'>
+                Obole.eu
+            </a>
+        </p>
+    </div>
+    <div class="absolute w-[221px] h-[117px] flex-col left-[12%] bottom-[12%]">
+        <div class="text-[#001941] text-[10px] font-light mt-1">{{ticket.detail}}</div>
+
+    </div>
+    <div class="text-[#e7295c] text-[15px] font-medium capitalize absolute h-[15px] flex-col left-[15%] bottom-1/4">
+        {{ticket.city}} - {{ticket.address}}</div>
+    <div class="absolute w-[19px] h-[29px] bg-center bg-no-repeat bg-cover left-[12%] bottom-[24%]"
+        style="background-image: url('{{assetsUrl}}/assets/position_obole.jpeg');"></div>
+    
+    <div
+        class="origin-top-left text-black text-[8px] font-light absolute w-3 h-min text-center items-center flex-col right-[3%] top-[15%] billet-transform">
+        BILLET_{{ticket.code_invit}}</div>
+    </div>
+</body>
+
+</html>
+<style>
+
+   
+  .billet-transform{
+     transform: matrix(0, 1, -1, 0, 0, 0);
+  }
+  .billet-edit_transform{transform: matrix(0, 1, -1, 0, 0, 0);}
+</style>
