@@ -153,7 +153,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
               )}
             </div>
           </div>
-          <div className="mt-4 w-full items-center gap-1.5 flex">
+          <div className="flex items-baseline w-full gap-1 mt-4">
             <Label htmlFor="civility" className="my-4">
               Comment avez-vous entendu parler de cet événement ?<span className="text-red-500"> *</span>
             </Label>
@@ -183,15 +183,15 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  {formState.errors?.attendees?.[i]?.hearAbout && (
-                    <p className="text-sm text-red-800 dark:text-red-300">
-                      {formState.errors?.attendees?.[i]?.hearAbout?.message}
-                    </p>
-                  )}
                 </div>
               )}
             />
           </div>
+          {formState.errors?.attendees?.[i]?.hearAbout && (
+            <p className="-mt-1 text-sm text-red-800 dark:text-red-300">
+              {formState.errors?.attendees?.[i]?.hearAbout?.message}
+            </p>
+          )}
         </>
       ) : null}
     </>
