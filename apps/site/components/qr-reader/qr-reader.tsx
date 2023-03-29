@@ -25,6 +25,7 @@ export const QrReader: React.FC<QrReaderProps> = ({
   return (
     <section className={className} style={{ ...styles.containerStyle }}>
       <div
+        className="absolute top-0 left-0 w-full h-full rounded-md"
         style={{
           ...styles.container,
           ...videoContainerStyle,
@@ -42,16 +43,9 @@ export const QrReader: React.FC<QrReaderProps> = ({
             transform: constraints?.facingMode === "user" && "scaleX(-1)",
           }}
         />
-        {/* <div className="absolute top-0 border-black border-10 ">
-          <div className="absolute left-0 w-10 h-1 bg-white"></div>
-          <div className="absolute right-0 w-10 h-1 bg-white"></div>
-          <div className="absolute left-0 w-10 h-1 bg-white"></div>
-          <div className="absolute right-0 w-10 h-1 bg-white"></div>
-          <div className="absolute w-10 h-12 bg-white "></div>
-          <div className="absolute w-10 h-12 bg-white "></div>
-          <div className="absolute w-10 h-12 bg-white "></div>
-          <div className="absolute w-10 h-12 bg-white "></div>
-        </div> */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute border-2 border-white rounded-md top-10 left-4 bottom-10 right-4"></div>
+        </div>
       </div>
     </section>
   );

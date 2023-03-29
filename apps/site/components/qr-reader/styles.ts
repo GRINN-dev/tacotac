@@ -10,8 +10,14 @@ export const styles: any = {
     width: "100%",
     overflow: "hidden",
     transform: undefined,
+    display: "block",
+    height: "auto",
+    borderRadius: "50%",
   },
   containerStyle: {
-    position: "relative",
+    width: "100%",
+
+    overflow: "hidden",
+    paddingBottom: "100%",
   },
 };
