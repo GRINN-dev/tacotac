@@ -138,7 +138,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
                           <Controller
                             name={`attendees.${i}.civility`}
                             control={control}
-                            render={({ field: { onChange }, fieldState: { error } }) => (
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                               <>
                                 <Select value={value} onValueChange={onChange}>
                                   <SelectTrigger className="w-[180px]">
