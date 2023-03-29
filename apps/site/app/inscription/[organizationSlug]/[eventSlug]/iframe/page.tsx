@@ -7,16 +7,21 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
+  const currentDate = new Date();
 
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-baseline gap-2">
+      <div className="flex flex-col items-baseline w-full max-w-3xl gap-2 mx-auto">
         <div className="flex items-center">
           <div className="text-3xl font-semibold">{eventBySlug.name}</div>
-          <img src={eventBySlug?.eventBranding?.logo} alt="logo" className="ml-4 h-14 w-32 rounded-md" />
+          <img src={eventBySlug?.eventBranding?.logo} alt="logo" className="w-32 ml-4 rounded-md h-14" />
         </div>
-
+        {/* {currentDate < eventBySlug.bookingStartsAt ? ( */}
         <CreateAttendeeForm {...eventBySlug} />
+        {/* ) : (
+          <p className="text-red-500">Les inscriptions ne sont pas encore ouvertes pour cet événement.</p>
+        )} */}
+        {/* TODO à décommenter */}
       </div>
     </section>
   );
