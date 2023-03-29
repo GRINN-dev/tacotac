@@ -8,15 +8,12 @@ import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import SimpleCollection from "@/components/table/SimpleCollection";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
-
 
 interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -55,7 +52,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         if (results.errors.length > 0 || !isMail) {
           toast({
             variant: "destructive",
-            title: !isMail ? "Un email est manquant" : results.errors[0].message,
+            title: !isMail ? "Un email est au moins manquant dans le csv" : results.errors[0].message,
           });
           throw error;
         }
@@ -86,40 +83,64 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
   ];
 
   const onSubmit = handleSubmit(async () => {
+    console.log(id);
     await sdk()
       .RegisterAttendeesCsv({
         input: { eventId: id, attendeesCsv: parsedData },
+      })
+      .then((response) => {
+        if (response.registerAttendeesCsv.attendeeImports.find(({ errorCode }) => errorCode === "RGNST")) {
+          toast({
+            variant: "destructive",
+            action: (
+              <>
+                <div className="flex flex-col">
+                  <p>
+                    {
+                      response.registerAttendeesCsv.attendeeImports.find(({ errorCode }) => errorCode === "RGNST")
+                        .errorMessage
+                    }
+                  </p>
+                  <p>
+                    {response.registerAttendeesCsv.attendeeImports.reduce((acc, { errorValue, errorCode }) => {
+                      return acc.concat(errorCode === "RGNST" ? errorValue + " , " : "  ");
+                    }, "")}
+                  </p>
+                </div>
+              </>
+            ),
+          });
+        } else {
+          toast({
+            title: "Import terminé",
+            action: (
+              <ToastAction
+                onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true")}
+                altText="Retour"
+              >
+                Retour
+              </ToastAction>
+            ),
+          });
+        }
       })
       .catch((error) => {
         setError(error);
         setIsLoading(false);
         toast({
           variant: "destructive",
-          title:
-            error.response.errors[0].errcode === "RGNST"
-              ? error.response.errors[0].message
-              : "Oups ! une erreur est survenue",
+          title: "Oups ! une erreur est survenue",
         });
         throw error;
       });
     setIsLoading(false);
-    startTransition(() => {
-      toast({
-        title: "Import terminé",
-        action: (
-          <ToastAction
-            onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true")}
-            altText="Retour"
-          >
-            Retour
-          </ToastAction>
-        ),
-      });
-    });
   });
 
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
+      {id}
+      {name}
+      jojo{" "}
       <div className="mt-4 grid w-full items-center gap-1.5">
         <div className="my-4 rounded-lg border p-4">
           <div className="flex">
@@ -128,16 +149,23 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-300">Attention </h3>
-              <div className="mt-2 text-sm ">
+              <div className="my-2 text-sm ">
                 <p>
                   {`L'import enregistrera directement les participants présents dans le csv et recevront, donc, automatiquement leur billet par mail.`}
                 </p>
               </div>
+              <Button
+                className={buttonVariants({ size: "lg" })}
+                onClick={() => {
+                  window.open(
+                    "https://docs.google.com/spreadsheets/d/131AXHOhQKZKA_OWVTJ6aMC65rV-ugrTbaSNkpCOwTzM/edit?usp=sharing",
+                    "_ blank"
+                  );
+                }}
+              >
+                Voir un exemple
+              </Button>
             </div>
-          </div>
-          <div className="mt-4">
-            <p className="mb-2 text-sm font-medium italic">Voici un exemple de csv a importer:</p>
-            <SimpleCollection arrayList={arrayList} />
           </div>
         </div>
         <FileDragNDrop
@@ -151,7 +179,6 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         />
         <div className="mt-10">{csvUploadrender?.length > 0 && <SimpleCollection arrayList={csvUploadrender} />}</div>
       </div>
-
       <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Importer

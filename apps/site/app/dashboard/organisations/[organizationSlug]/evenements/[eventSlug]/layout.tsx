@@ -52,7 +52,7 @@ export default function AttendeesLayout({
                     )}
                   >
                     <DropdownMenuItem className="self-center">
-                      <Cog aria-hidden className="w-4 h-4 mr-4" />
+                      <Cog aria-hidden className="mr-4 h-4 w-4" />
                       Infos événements
                     </DropdownMenuItem>
                   </Link>

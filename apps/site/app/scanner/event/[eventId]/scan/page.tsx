@@ -14,7 +14,7 @@ const EventSlug = async ({ params: { eventId } }) => {
   return (
     <div className="">
       <div className="container">
-        <h1 className="my-4 text-3xl font-extrabold leading-tight tracking-tighter text-center sm:text-3xl md:text-5xl lg:text-6xl">
+        <h1 className="my-4 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           {event.name}
         </h1>
         <div> {event.description}</div>
@@ -23,10 +23,10 @@ const EventSlug = async ({ params: { eventId } }) => {
         <div>Capacité : {event?.capacity} places</div>
         <div>
           {" "}
-          {event?.totalConfirmedRegistrations} présents / {event?.registrations?.totalCount} inscrits{" "}
+          {} présents / {event?.totalRegistrations} inscrits{" "}
           {/* TODO ici il faudra utiliser totalConfirmedRegistrations de Bat quand mergée */}
         </div>
-        <div className="flex flex-col items-center justify-end gap-2 mt-20">
+        <div className="mt-20 flex flex-col items-center justify-end gap-2">
           <Scanner />
         </div>
         <div className="flex flex-col items-center">
@@ -43,7 +43,7 @@ const EventSlug = async ({ params: { eventId } }) => {
 
         <div className="absolute bottom-2">
           <Link href={"/scanner"} className="flex items-center">
-            <ArrowBigLeft className="w-10 h-10" /> Evénements
+            <ArrowBigLeft className="h-10 w-10" /> Evénements
           </Link>
         </div>
       </div>
