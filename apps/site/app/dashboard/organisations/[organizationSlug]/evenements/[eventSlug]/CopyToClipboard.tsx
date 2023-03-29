@@ -8,13 +8,10 @@ import "prismjs/themes/prism-okaidia.css";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-export const CopyToClipboard: FC = ({
-  organisationSlug,
-  eventSlug,
-}: {
+export const CopyToClipboard: FC<{
   organisationSlug: string;
   eventSlug: string;
-}) => {
+}> = ({ organisationSlug, eventSlug }) => {
   const [copied, setCopied] = useState(false);
   const code = `
   <style>
