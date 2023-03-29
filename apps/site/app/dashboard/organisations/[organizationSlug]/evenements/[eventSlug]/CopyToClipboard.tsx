@@ -27,7 +27,7 @@ export const CopyToClipboard: FC = ({
       box-shadow: 0 0 5px #ccc;
     }
   </style>
-  <iframe src={"https://www.kaypi-app.vercel.app/inscription/${organisationSlug}/${eventSlug}/iframe"} class="my-iframe" />
+  <iframe src={"https://kaypi-app.vercel.app/inscription/${organisationSlug}/${eventSlug}/iframe"} class="my-iframe" />
   `;
 
   // Returns a highlighted HTML string
