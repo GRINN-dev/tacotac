@@ -12,6 +12,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
     attendeeId: string;
     state: stateWebhook;
   };
+
   const { rows: attendeeAndEvent } = await withPgClient(pgClient =>
     pgClient.query(
       `select atts.firstname, atts.lastname, atts.panel_number, atts.status, evts.name, evts.webhooks 
@@ -23,7 +24,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
     )
   );
 
-  attendeeAndEvent[0].webhooks.map(async (webhook: string) => {
+  attendeeAndEvent[0]?.webhooks?.map(async (webhook: string) => {
     await axios.post(webhook, {
       state: state,
       firstname: attendeeAndEvent[0].firstname,

@@ -1,15 +1,12 @@
 "use client";
 
-import { FC, useState, useTransition } from "react";
+import { FC, MouseEvent, useState, useTransition } from "react";
 import Script from "next/script";
-import {
-  CivilityStatus,
-  EventStatus,
-  GetEventByIdQuery,
-  GetEventBySlugQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
-import { CheckCircle2, Download } from "lucide-react";
+import { CheckCircle2, Download, MinusCircle } from "lucide-react";
+
+import "@/styles/globals.css";
+import { Montserrat, Roboto } from "@next/font/google";
+import { CivilityStatus, EventStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/dist";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -20,12 +17,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: "400",
+});
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
-export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
+export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [email, setEmail] = useState("");
+  const [attendeeEmail, setAttendeeEmail] = useState("");
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
@@ -49,7 +55,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
       ],
     },
   });
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "attendees",
   });
@@ -60,12 +66,19 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
     append({ status: EventStatus.Idle });
   };
 
+  const handleRemoveParticipant = async (event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, index: number) => {
+    event.stopPropagation();
+    const formHasError = await trigger();
+    if (!formHasError) return;
+    remove(index);
+  };
+
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
     const isValid = await trigger();
     const { isValidCaptcha } = await validCaptcha();
     if (isValid && isValidCaptcha) {
       setIsLoading(true);
-      setEmail(data?.attendees?.[0].email);
+      setAttendeeEmail(data?.attendees?.[0].email);
       data.eventId = id;
       await sdk()
         .RegisterAttendees({
@@ -84,6 +97,8 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
       console.log("invalide");
     }
   });
+  const { nom, prenom, email, telephone, zipcode } = eventBranding?.placeholder || {};
+
   return (
     <div className="flex w-full flex-col">
       <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
@@ -94,8 +109,20 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
             <Accordion type="single" collapsible defaultValue={"1"}>
               {fields.map((item, i) => (
                 <AccordionItem key={i} value={i.toString()}>
-                  <AccordionTrigger className={formState?.errors?.attendees ? "text-red-500" : ""}>
-                    {i > 0 ? `Participant ${i + 1}` : "Participant principal"}
+                  <AccordionTrigger
+                    className={formState?.errors?.attendees ? "text-red-500 hover:no-underline" : "hover:no-underline"}
+                  >
+                    <div className="mx-6 flex w-full justify-between">
+                      <div>{i > 0 ? `Participant ${i + 1} ` : "Participant principal"}</div>
+                      {i !== 0 && (
+                        <div
+                          className="inline-flex items-center rounded-full border border-transparent p-1 text-xs  shadow-sm focus:outline-none"
+                          onClick={(e) => handleRemoveParticipant(e, i)}
+                        >
+                          Supprimer ce participant <MinusCircle size="14" className="ml-2 text-xs" />
+                        </div>
+                      )}
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
@@ -105,7 +132,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                       <Controller
                         name={`attendees.${i}.civility`}
                         control={control}
-                        render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+                        render={({ field: { onChange }, fieldState: { error } }) => (
                           <>
                             <Select onValueChange={onChange}>
                               <SelectTrigger className="w-[180px]">
@@ -175,7 +202,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                             type="text"
                             id="email"
                             className="col-span-2"
-                            placeholder="jeanned@mail.com"
+                            placeholder={eventBranding?.placeholder?.email}
                             {...register(`attendees.${i}.email`, {
                               required: "Un email pour le participant est requis",
                               pattern: {
@@ -184,7 +211,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                               },
                             })}
                           />
-                          {formState.errors?.attendees?.[i].email && (
+                          {formState.errors?.attendees?.[i]?.email && (
                             <p className="text-sm text-red-800 dark:text-red-300">
                               {formState.errors?.attendees?.[i]?.email?.message}
                             </p>
@@ -198,7 +225,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                             type="number"
                             id="phoneNumber"
                             className="col-span-2"
-                            placeholder="Entrez un numéro de téléphone"
+                            placeholder={eventBranding?.placeholder?.telephone}
                             {...register(`attendees.${i}.phoneNumber`, {
                               required: "Un téléphone pour le participant est requis",
                             })}
@@ -237,7 +264,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                             name={"attendee.hearAbout"}
                             control={control}
                             {...register(`attendees.${i}.hearAbout`)}
-                            render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+                            render={({ field: { onChange }, fieldState: { error } }) => (
                               <>
                                 <Select onValueChange={onChange}>
                                   <SelectTrigger className="my-4">
@@ -290,7 +317,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                         <Input
                           type="text"
                           id="email"
-                          placeholder="jeanned@mail.com"
+                          placeholder={eventBranding.placeholder}
                           className="col-span-2"
                           {...register(`attendees.${i}.email`, {
                             setValueAs: (v) => (v ? v : null),
@@ -344,7 +371,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                     <Input
                       type="text"
                       id="lastname"
-                      placeholder="Dupond"
+                      placeholder={nom}
                       {...register(`attendees.${i}.lastname`, {
                         required: "Un nom pour le participant est requis",
                       })}
@@ -361,7 +388,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                     <Input
                       type="text"
                       id="firstname"
-                      placeholder="Jeanne"
+                      placeholder={prenom}
                       {...register(`attendees.${i}.firstname`, {
                         required: "Un prénom pour le participant est requis",
                       })}
@@ -379,7 +406,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                       type="text"
                       id="email"
                       className="col-span-2"
-                      placeholder="jeanned@mail.com"
+                      placeholder={email}
                       {...register(`attendees.${i}.email`, {
                         setValueAs: (v) => (v ? v : null),
                         pattern: {
@@ -400,7 +427,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                       type="number"
                       id="phoneNumber"
                       className="col-span-2"
-                      placeholder="Entrez un numéro de téléphone"
+                      placeholder={telephone}
                       {...register(`attendees.${i}.phoneNumber`, {
                         required: "Un téléphone pour le participant est requis",
                       })}
@@ -416,7 +443,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                     <Input
                       type="number"
                       id="zipCode"
-                      placeholder="44000"
+                      placeholder={zipcode}
                       className="col-span-2"
                       {...register(`attendees.${i}.zipCode`, {
                         required: "Un code postal pour le participant est requis",
@@ -485,8 +512,20 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
             })
           )}
 
-          <div className="mt-8 flex items-center gap-2">
-            <button type="submit" className={buttonVariants({ size: "lg", className: "mr-3" })}>
+          <div className="styles.text mt-8 flex items-center gap-2">
+            <button
+              className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
+              style={{
+                backgroundColor: `#${eventBranding.color1}`,
+                borderRadius: "0.5rem",
+                fontSize: "0.875rem",
+                color: "#fff",
+                fontWeight: "500",
+                padding: "0.75rem 1.5rem",
+                marginRight: "1rem",
+              }}
+              type="submit"
+            >
               Continuer
             </button>
 
@@ -508,37 +547,38 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
           )}
         </form>
         <div className="mt-16 flex w-6/12 md:mx-auto md:my-3 md:flex-col ">
-          <button className={buttonVariants({ size: "lg", className: "-mt-14" })} onClick={handleAddParticipant}>
+          <button
+            className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
+            style={{
+              backgroundColor: `#${eventBranding.color1}`,
+              borderRadius: "0.5rem",
+              fontSize: "0.875rem",
+              color: "#fff",
+              fontWeight: "500",
+              padding: "0.75rem 1.5rem",
+              marginTop: "-3.5rem",
+            }}
+            onClick={handleAddParticipant}
+          >
             Ajouter un participant
           </button>
-        </div>
-        <div>
-          <div className="flex items-center justify-start">
-            <span className="mr-2 h-4 w-4 rounded-full border"></span>
-            <p>couleur #1</p>
-          </div>
-          <div className="flex items-center justify-start">
-            <span className="mr-2 h-4 w-4 rounded-full border"></span>
-            <p>couleur #2</p>
-          </div>
-          <div className="flex items-center justify-start">
-            <span className="mr-2 h-4 w-4 rounded-full border"></span>
-            <p>police #1</p>
-          </div>
         </div>
       </div>
       {showConfirmation === true ? (
         <div className="mt-4 flex flex-col items-center justify-center text-xl">
           <CheckCircle2 className="mb-8 h-16 w-16" />
-          <h2>Votre inscription est terminée !</h2>
+          <h2 className="">Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
-            Un email de confirmation pour votre inscription XXXXXXXX a été envoyé à {email} . Vérifiez vos courriers
+            Un email de confirmation pour votre inscription a été envoyé à {attendeeEmail} . Vérifiez vos courriers
             indésirables si vous ne le recevez pas.
           </p>
           <div className="flex items-center justify-between">
-            <button className={buttonVariants({ size: "lg", className: "mt-12" })}>
+            <button
+              className={buttonVariants({ size: "lg", className: "mt-12" })}
+              style={{ backgroundColor: `#${eventBranding.color2}` }}
+            >
               <Download className="mr-2" />
-              Télécharger vos billets
+              <p>Télécharger vos billets</p>
             </button>
           </div>
         </div>

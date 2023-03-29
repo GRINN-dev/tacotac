@@ -10,4 +10,5 @@ fragment MyAttendee on Attendee {
   registrationId
   qrCodeUrl
   pdfUrl
+  isInscriptor
 }

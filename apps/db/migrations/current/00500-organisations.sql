@@ -18,6 +18,7 @@ create table publ.organizations (
   create index on publ.organizations(updated_at);
   create index on publ.organizations(name);
   create index on publ.organizations(slug);
+  create index on publ.organizations(description);
 
 -- RBAC
   grant select on publ.organizations to :DATABASE_VISITOR;

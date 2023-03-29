@@ -1,11 +1,12 @@
 import Link from "next/link";
 import dayjs from "dayjs";
-import { Cog, PlusSquare } from "lucide-react";
+import { PlusSquare } from "lucide-react";
 
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../components/table/Collection";
+
 
 const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
@@ -19,17 +20,33 @@ const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset
   const { organizationBySlug: organization } = data;
 
   const headerEvent: IHeader[] = [
-    { title: "Nom", value: "name", type: Type?.string, isSortable: false, isVisible: true },
+    { title: "Nom", value: "name", type: Type?.string, isSortable: true, isVisible: true },
     { title: "Lieu", value: "city", type: Type?.string, isSortable: true, isVisible: true },
     { title: "Début le", value: "startsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
     { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
-    { title: "Inscrits", value: "registrations", type: Type?.date, isSortable: false, isVisible: true },
+    { title: "Inscrits", value: "totalRegistrations", type: Type?.number, isSortable: false, isVisible: true },
+    {
+      title: "Inscrits confirmés",
+      value: "totalConfirmedRegistrations",
+      type: Type?.number,
+      isSortable: false,
+      isVisible: true,
+    },
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
   const rawEvent: IData[] = organization?.events?.nodes.map(
-    ({ name, city, startsAt, bookingStartsAt, bookingEndsAt, slug, registrations }) => ({
+    ({
+      name,
+      city,
+      startsAt,
+      bookingStartsAt,
+      bookingEndsAt,
+      slug,
+      totalRegistrations,
+      totalConfirmedRegistrations,
+    }) => ({
       Nom: name,
       Lieu: city,
       "Début le": (
@@ -43,15 +60,16 @@ const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset
       ),
       "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
       "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
-      Inscrits: registrations?.totalCount,
+      Inscrits: totalRegistrations,
+      "Inscrits confirmés": totalConfirmedRegistrations,
       slug: slug,
     })
   );
   //pour pr
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
-        <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors scroll-m-20 first:mt-0 ">
+      <div className="mx-auto flex w-full max-w-3xl items-baseline justify-between gap-2">
+        <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
           Tous les évènements
         </h2>
       </div>
@@ -72,7 +90,7 @@ const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset
             href={`/dashboard/organisations/${organizationSlug}/evenements/create`}
             className={buttonVariants({ size: "lg", variant: "outline" })}
           >
-            <PlusSquare className="w-4 h-4 mr-2" /> Créer un évènement
+            <PlusSquare className="mr-2 h-4 w-4" /> Créer un évènement
           </Link>
         </div>
       )}
