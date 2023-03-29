@@ -77,7 +77,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
         <Input
           type="text"
           id="firstname"
-          placeholder="Jeanne"
+          placeholder={prenom}
           {...register(`attendees.${i}.firstname`, {
             required: "Un prénom pour le participant est requis",
           })}
@@ -98,7 +98,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
           type="email"
           id="email"
           className="col-span-2"
-          placeholder="jeanned@mail.com"
+          placeholder={email}
           {...register(`attendees.${i}.email`, {
             setValueAs: (v) => (v ? v : null),
             pattern: {
@@ -120,7 +120,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
               type="number"
               id="phoneNumber"
               className="col-span-2"
-              placeholder="Entrez un numéro de téléphone"
+              placeholder={telephone}
               {...register(`attendees.${i}.phoneNumber`)}
             />
           </div>
@@ -131,7 +131,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
             <Input
               type="number"
               id="zipCode"
-              placeholder="44000"
+              placeholder={zipcode}
               className="col-span-2"
               {...register(`attendees.${i}.zipCode`, {
                 required: "Un code postal pour le participant est requis",

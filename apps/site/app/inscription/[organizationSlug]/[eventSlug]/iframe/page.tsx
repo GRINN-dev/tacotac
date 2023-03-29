@@ -16,11 +16,12 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
           <div className="text-3xl font-semibold">{eventBySlug.name}</div>
           <img src={eventBySlug?.eventBranding?.logo} alt="logo" className="w-32 ml-4 rounded-md h-14" />
         </div>
-        {currentDate < eventBySlug.bookingStartsAt ? (
-          <CreateAttendeeForm {...eventBySlug} />
-        ) : (
+        {/* {currentDate < eventBySlug.bookingStartsAt ? ( */}
+        <CreateAttendeeForm {...eventBySlug} />
+        {/* ) : (
           <p className="text-red-500">Les inscriptions ne sont pas encore ouvertes pour cet événement.</p>
-        )}
+        )} */}
+        {/* TODO à décommenter */}
       </div>
     </section>
   );
