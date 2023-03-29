@@ -29,7 +29,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="mx-auto flex w-full max-w-3xl items-baseline justify-between gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+        <h1 className="font-zenon-bold text-text-accent text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
           Toutes les organisations
         </h1>
         <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "link" })}>
