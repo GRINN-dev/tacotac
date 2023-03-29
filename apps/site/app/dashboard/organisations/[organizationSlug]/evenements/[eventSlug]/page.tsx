@@ -109,7 +109,7 @@ const AttendeesPage = async ({
         )}
       </section>
       <div className="container max-w-prose">
-        <CopyToClipboard />
+        <CopyToClipboard eventSlug={eventSlug} organisationSlug={organizationSlug} />
       </div>
     </>
   );
