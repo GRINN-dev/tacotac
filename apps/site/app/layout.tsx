@@ -1,4 +1,5 @@
 import { Inter as FontSans } from "@next/font/google";
+import localFont from "@next/font/local";
 
 import "@/styles/globals.css";
 import { ServerThemeProvider } from "next-themes";
@@ -12,6 +13,22 @@ import { Toaster } from "@/components/ui/toaster";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
+});
+
+const fontZenonBold = localFont({
+  src: "../public/fonts/Zenon-Bold-Test.woff",
+  display: "swap",
+  variable: "--font-zenon-bold",
+  style: "normal",
+  weight: "700",
+});
+
+const fontZenonRegular = localFont({
+  src: "../public/fonts/Zenon-Regular-Test.woff",
+  display: "swap",
+  variable: "--font-zenon-regular",
+  style: "normal",
+  weight: "400",
 });
 
 const RootLayout = ({ children }) => {
@@ -45,7 +62,9 @@ const RootLayout = ({ children }) => {
         <body
           className={cn(
             "min-h-screen bg-white font-sans text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50",
-            fontSans.variable
+            fontSans.variable,
+            fontZenonBold.variable,
+            fontZenonRegular.variable
           )}
         >
           <Providers>{children}</Providers>
