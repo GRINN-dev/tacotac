@@ -54,7 +54,9 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
       </div>
 
       <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
-        <Label htmlFor="lastname">Nom</Label>
+        <Label htmlFor="lastname">
+          Nom<span className="text-red-500"> *</span>
+        </Label>
         <Input
           type="text"
           id="lastname"
@@ -69,7 +71,9 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
         )}
       </div>
       <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
-        <Label htmlFor="firstname">Prénom</Label>
+        <Label htmlFor="firstname">
+          Prénom <span className="text-red-500"> *</span>
+        </Label>
         <Input
           type="text"
           id="firstname"
@@ -86,7 +90,10 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
         )}
       </div>
       <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">
+          Email
+          {isInscriptor ? <span className="text-red-500"> *</span> : ""}
+        </Label>
         <Input
           type="email"
           id="email"
@@ -118,7 +125,9 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
             />
           </div>
           <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
-            <Label htmlFor="zipCode">Code postal</Label>
+            <Label htmlFor="zipCode">
+              Code postal <span className="text-red-500"> *</span>
+            </Label>
             <Input
               type="number"
               id="zipCode"
@@ -136,7 +145,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
           </div>
           <div className="mt-4 w-full items-center gap-1.5">
             <Label htmlFor="civility" className="my-4">
-              Comment avez-vous entendu parler de cet évenemnt ?
+              Comment avez-vous entendu parler de cet évenemnt ?<span className="text-red-500"> *</span>
             </Label>
 
             <Controller
