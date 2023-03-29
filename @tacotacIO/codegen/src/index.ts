@@ -4069,7 +4069,6 @@ export enum UsersOrderBy {
   UsernameDesc = 'USERNAME_DESC'
 }
 
-<<<<<<< HEAD
 /** All input for the `verifyEmail` mutation. */
 export type VerifyEmailInput = {
   /**
@@ -4094,10 +4093,7 @@ export type VerifyEmailPayload = {
   query?: Maybe<Query>;
 };
 
-export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null };
-=======
 export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null };
->>>>>>> main
 
 export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null };
 

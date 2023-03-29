@@ -121,3 +121,5 @@ $$ language plpgsql strict security definer volatile set search_path to pg_catal
 
 comment on function publ.forgot_password(email public.citext) is
   E'If you''ve forgotten your password, give us one of your email addresses and we''ll send you a reset token. Note this only works if you have added an email address!';
+
+grant execute on function publ.forgot_password(citext) to :DATABASE_VISITOR;
