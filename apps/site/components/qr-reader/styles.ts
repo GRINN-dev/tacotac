@@ -3,6 +3,8 @@ export const styles: any = {
     width: "100%",
     overflow: "hidden",
     position: "relative",
+    borderRadius: "10px",
+    border: "2px solid white",
   },
   video: {
     top: 0,
@@ -12,12 +14,12 @@ export const styles: any = {
     transform: undefined,
     display: "block",
     height: "auto",
-    borderRadius: "50%",
+    borderRadius: "8px",
   },
   containerStyle: {
+    position: "relative",
     width: "100%",
-
+    height: "100%",
     overflow: "hidden",
-    paddingBottom: "100%",
   },
 };
