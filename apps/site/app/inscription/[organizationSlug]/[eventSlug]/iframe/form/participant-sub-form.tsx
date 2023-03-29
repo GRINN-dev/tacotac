@@ -145,7 +145,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
           </div>
           <div className="mt-4 w-full items-center gap-1.5">
             <Label htmlFor="civility" className="my-4">
-              Comment avez-vous entendu parler de cet évenemnt ?<span className="text-red-500"> *</span>
+              Comment avez-vous entendu parler de cet événement ?<span className="text-red-500"> *</span>
             </Label>
 
             <Controller
