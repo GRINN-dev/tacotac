@@ -100,10 +100,9 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.event?.capacity?.message}</p>
         )}
       </div>
-      <Separator className="my-8" />
 
       <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
-        Date et ouverture de la billeterie
+       {"Début et Fin de l'événement"}
       </h2>
 
       <div className="mt-4 grid w-full items-center gap-1.5">
@@ -137,8 +136,11 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         )}
       </div>
 
+<h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
+  Début et Fin de la réservation
+</h2>
       <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="bookingStartsAt">Date de début des réservations</Label>
+        <Label htmlFor="bookingStartsAt">Début</Label>
         <Input
           type="datetime-local"
           id="bookingStartsAt"
@@ -155,7 +157,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
       </div>
 
       <div className="mt-4 grid w-full items-center gap-1.5">
-        <Label htmlFor="bookingEndsAt">Date de fin des réservations</Label>
+        <Label htmlFor="bookingEndsAt">Fin</Label>
         <Input
           type="datetime-local"
           id="bookingEndsAt"
@@ -170,7 +172,6 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           </p>
         )}
       </div>
-      <Separator className="my-8" />
 
       <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
         Lieu

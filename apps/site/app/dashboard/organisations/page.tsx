@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 
-
 const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
-  const { organizations } = await sdk().GetAllOrganization();
+  const { organizations } = await sdk().GetAllOrganization({
+    first: Number(first) || initLimit,
+    offset: Number(offset),
+    filter: filter ? JSON.parse(filter) : null,
+    orderBy: orderBy,
+  });
 
   const headerOrga: IHeader[] = [
     { title: "Nom", value: "name", type: Type?.string, isSortable: true, isVisible: true },
@@ -26,16 +28,16 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
 
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="flex items-baseline justify-between w-full max-w-3xl gap-2 mx-auto">
+      <div className="mx-auto flex w-full max-w-3xl items-baseline justify-between gap-2">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-          Toutes les organizations
+          Toutes les organisations
         </h1>
-        <Link  href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "link" })}>
-          <PlusSquare className="w-4 h-4 mr-2" /> Ajouter
+        <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "link" })}>
+          <PlusSquare className="mr-2 h-4 w-4" /> Ajouter
         </Link>
       </div>
 
-      <div id="organizations" className="w-full max-w-3xl mx-auto mt-4">
+      <div id="organizations" className="mx-auto mt-4 w-full max-w-3xl">
         {organizations?.nodes?.length > 0 ? (
           <Collection
             totalCount={organizations?.totalCount}
@@ -49,8 +51,11 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
             <p>
               Vous n&apos;avez pas encore créé d&apos;organisation <u>ou</u> aucun ne correspondant a votre recherche.
             </p>
-            <Link href={`/dashboard/organisations/create`} className={buttonVariants({ size: "lg", variant: "outline" })}>
-              <PlusSquare className="w-4 h-4 mr-2" /> Créer une organisation
+            <Link
+              href={`/dashboard/organisations/create`}
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+            >
+              <PlusSquare className="mr-2 h-4 w-4" /> Créer une organisation
             </Link>
           </div>
         )}
