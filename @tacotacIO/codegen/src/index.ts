@@ -3205,78 +3205,28 @@ export type SendEmailConfirmDonationByEventIdPayload = {
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: InputMaybe<Scalars['String']>;
-  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  distinctFromInsensitive?: InputMaybe<Scalars['String']>;
-  /** Ends with the specified string (case-sensitive). */
-  endsWith?: InputMaybe<Scalars['String']>;
-  /** Ends with the specified string (case-insensitive). */
-  endsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value. */
   equalTo?: InputMaybe<Scalars['String']>;
-  /** Equal to the specified value (case-insensitive). */
-  equalToInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than the specified value. */
   greaterThan?: InputMaybe<Scalars['String']>;
-  /** Greater than the specified value (case-insensitive). */
-  greaterThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
-  /** Greater than or equal to the specified value (case-insensitive). */
-  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
-  /** Included in the specified list (case-insensitive). */
-  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
-  /** Contains the specified string (case-sensitive). */
-  includes?: InputMaybe<Scalars['String']>;
   /** Contains the specified string (case-insensitive). */
   includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
   lessThan?: InputMaybe<Scalars['String']>;
-  /** Less than the specified value (case-insensitive). */
-  lessThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Less than or equal to the specified value. */
   lessThanOrEqualTo?: InputMaybe<Scalars['String']>;
-  /** Less than or equal to the specified value (case-insensitive). */
-  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
-  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  like?: InputMaybe<Scalars['String']>;
-  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  likeInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value. */
   notDistinctFrom?: InputMaybe<Scalars['String']>;
-  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  notDistinctFromInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not end with the specified string (case-sensitive). */
-  notEndsWith?: InputMaybe<Scalars['String']>;
-  /** Does not end with the specified string (case-insensitive). */
-  notEndsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value. */
   notEqualTo?: InputMaybe<Scalars['String']>;
-  /** Not equal to the specified value (case-insensitive). */
-  notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
-  /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
-  /** Does not contain the specified string (case-sensitive). */
-  notIncludes?: InputMaybe<Scalars['String']>;
-  /** Does not contain the specified string (case-insensitive). */
-  notIncludesInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLike?: InputMaybe<Scalars['String']>;
-  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLikeInsensitive?: InputMaybe<Scalars['String']>;
-  /** Does not start with the specified string (case-sensitive). */
-  notStartsWith?: InputMaybe<Scalars['String']>;
-  /** Does not start with the specified string (case-insensitive). */
-  notStartsWithInsensitive?: InputMaybe<Scalars['String']>;
-  /** Starts with the specified string (case-sensitive). */
-  startsWith?: InputMaybe<Scalars['String']>;
-  /** Starts with the specified string (case-insensitive). */
-  startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
 
 /** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
