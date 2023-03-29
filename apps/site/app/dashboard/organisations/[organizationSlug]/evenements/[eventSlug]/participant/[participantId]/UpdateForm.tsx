@@ -144,8 +144,8 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastnam
               <AlertDialogTitle>Êtes-vous sur de vous ? </AlertDialogTitle>
               <AlertDialogDescription>
                 <span className="flex flex-col space-y-4">
-                  <span>{"Vous allez supprimer un événement et tous les participants qui lui sont liés."}</span>
-                  <span>{"Vous serez rediriger vers la page organisations une fois la suppression terminé"}</span>
+                  <span>{"Vous allez supprimer un participant"}</span>
+                  <span>{"Vous serez rediriger vers la page des participants"}</span>
                 </span>
               </AlertDialogDescription>
             </AlertDialogHeader>
