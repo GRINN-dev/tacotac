@@ -1,17 +1,12 @@
 "use client";
 
-import { FC, useState, useTransition } from "react";
+import { FC, MouseEvent, useState, useTransition } from "react";
 import Script from "next/script";
+import { CheckCircle2, Download, MinusCircle } from "lucide-react";
 
 import "@/styles/globals.css";
-import {
-  CivilityStatus,
-  EventStatus,
-  GetEventBySlugQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
 import { Montserrat, Roboto } from "@next/font/google";
-import { CheckCircle2, Download } from "lucide-react";
+import { CivilityStatus, EventStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/dist";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -60,7 +55,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
       ],
     },
   });
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "attendees",
   });
@@ -69,6 +64,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
     const formHasError = await trigger();
     if (!formHasError) return;
     append({ status: EventStatus.Idle });
+  };
+
+  const handleRemoveParticipant = async (event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, index: number) => {
+    event.stopPropagation();
+    const formHasError = await trigger();
+    if (!formHasError) return;
+    remove(index);
   };
 
   const onSubmit = handleSubmit(async (data: RegisterAttendeesInput) => {
@@ -107,8 +109,20 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
             <Accordion type="single" collapsible defaultValue={"1"}>
               {fields.map((item, i) => (
                 <AccordionItem key={i} value={i.toString()}>
-                  <AccordionTrigger className={formState?.errors?.attendees ? "text-red-500" : ""}>
-                    {i > 0 ? `Participant ${i + 1}` : "Participant principal"}
+                  <AccordionTrigger
+                    className={formState?.errors?.attendees ? "text-red-500 hover:no-underline" : "hover:no-underline"}
+                  >
+                    <div className="mx-6 flex w-full justify-between">
+                      <div>{i > 0 ? `Participant ${i + 1} ` : "Participant principal"}</div>
+                      {i !== 0 && (
+                        <div
+                          className="inline-flex items-center rounded-full border border-transparent p-1 text-xs  shadow-sm focus:outline-none"
+                          onClick={(e) => handleRemoveParticipant(e, i)}
+                        >
+                          Supprimer ce participant <MinusCircle size="14" className="ml-2 text-xs" />
+                        </div>
+                      )}
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
@@ -197,7 +211,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding }) => {
                               },
                             })}
                           />
-                          {formState.errors?.attendees?.[i].email && (
+                          {formState.errors?.attendees?.[i]?.email && (
                             <p className="text-sm text-red-800 dark:text-red-300">
                               {formState.errors?.attendees?.[i]?.email?.message}
                             </p>
