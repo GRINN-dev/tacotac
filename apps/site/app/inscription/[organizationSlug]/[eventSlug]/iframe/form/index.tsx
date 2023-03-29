@@ -129,7 +129,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
                 <Input
                   type="checkbox"
                   id="isFundraisingGenerosityOk"
-                  className="flex w-4 h-4 text-right"
+                  className="flex w-4 h-4 ml-1 text-right"
                   {...register(`attendees.0.isFundraisingGenerosityOk`, {
                     required: "Cette information est requise",
                   })}
@@ -176,9 +176,17 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
               </p>
             )}
           </form>
-          <div className="flex w-6/12 mt-16 md:mx-auto md:my-3 md:flex-col ">
+          <div className="flex w-6/12 mt-8 md:-mt-11 md:mx-auto md:flex-col ">
             <button
-              className={buttonVariants({ size: "lg", className: "-mt-14" })}
+              style={{
+                backgroundColor: `#${eventBranding.color1}`,
+                borderRadius: "0.5rem",
+                fontSize: "0.875rem",
+                color: "#fff",
+                fontWeight: "500",
+                padding: "0.75rem 1.5rem",
+                marginRight: "1rem",
+              }}
               onClick={async () => {
                 // trigger validation and add a new field if ok
                 const formHasError = await trigger();

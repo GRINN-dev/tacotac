@@ -136,7 +136,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
             <Label htmlFor="zipCode">
               Code postal <span className="text-red-500"> *</span>
             </Label>
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full">
               <Input
                 type="number"
                 id="zipCode"
