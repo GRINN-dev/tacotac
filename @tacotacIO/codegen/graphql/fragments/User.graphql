@@ -1,0 +1,13 @@
+fragment MyUser on User {
+  id
+  firstname
+  lastname
+  avatarUrl
+  isAdmin
+  createdAt
+  updatedAt
+  userEmailsList {
+    id
+    email
+  }
+}

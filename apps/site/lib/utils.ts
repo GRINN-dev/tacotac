@@ -53,3 +53,28 @@ export const uploadToS3 = async (file: File): Promise<string> => {
   });
   return generatePresignedPost.url + "/" + generatePresignedPost.fields.key;
 };
+
+export const replaceEmptyStringWithNull = (obj: any) => {
+  return Object.keys(obj).reduce((acc, key) => {
+    if (obj[key] && typeof obj[key] === "object") {
+      acc[key] = replaceEmptyStringWithNull(obj[key]);
+    } else if (obj[key] === "") {
+      acc[key] = null;
+    } else {
+      acc[key] = obj[key];
+    }
+    return acc;
+  }, {});
+};
+
+export const getErrorFromFieldname = (input: { fieldName: string; errorObject: any }) => {
+  const path = input.fieldName.split(".");
+  const error =
+    path.length > 1
+      ? getErrorFromFieldname({
+          fieldName: path?.slice(1)?.join("."),
+          errorObject: input?.errorObject?.[path?.[0]],
+        })
+      : input?.errorObject?.[path?.[0]];
+  return error;
+};
