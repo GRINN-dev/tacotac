@@ -1,13 +1,16 @@
 "use client";
 
 import { FC, useState, useTransition } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import Script from "next/script";
-import { CivilityStatus, EventStatus, GetEventByIdQuery, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import {
+  CivilityStatus,
+  EventStatus,
+  GetEventByIdQuery,
+  GetEventBySlugQuery,
+  RegisterAttendeesInput,
+} from "@/../../@tacotacIO/codegen/dist";
 import { CheckCircle2, Download } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
@@ -16,7 +19,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -27,8 +29,6 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
 
   const { register, handleSubmit, formState, control, reset, trigger } = useForm<RegisterAttendeesInput>({
     defaultValues: {
@@ -178,10 +178,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                             placeholder="jeanned@mail.com"
                             {...register(`attendees.${i}.email`, {
                               required: "Un email pour le participant est requis",
-                               pattern: {
+                              pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                 message: "Merci d'entrer un email valide",
-                              }
+                              },
                             })}
                           />
                           {formState.errors?.attendees?.[i].email && (
@@ -292,12 +292,13 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                           id="email"
                           placeholder="jeanned@mail.com"
                           className="col-span-2"
-                          {...register(`attendees.${i}.email`,{
-                            setValueAs: v => v?v:null,
-                             pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: "Merci d'entrer un email valide",
-                          }})}
+                          {...register(`attendees.${i}.email`, {
+                            setValueAs: (v) => (v ? v : null),
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                              message: "Merci d'entrer un email valide",
+                            },
+                          })}
                         />
                         {formState.errors?.attendees?.[i]?.email && (
                           <p className="text-sm text-red-800 dark:text-red-300">
@@ -380,11 +381,11 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id }) => {
                       className="col-span-2"
                       placeholder="jeanned@mail.com"
                       {...register(`attendees.${i}.email`, {
-                        setValueAs: v => v?v:null,
+                        setValueAs: (v) => (v ? v : null),
                         pattern: {
                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                           message: "Merci d'entrer un email valide",
-                        }
+                        },
                       })}
                     />
                     {formState.errors?.attendees?.[i].email && (
