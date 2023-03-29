@@ -27,3 +27,23 @@
     width: 1.25em;
   }
 }
+
+/* create theming variables for colors, specifically text, primary, secondary, bg and accent for light and dark mode, dark-mode is toggled using data-theme attribute */
+
+:root {
+  --text: #212032;
+  --text-accent: #212032;
+  --primary: #2e51f5;
+  --secondary: #52baea;
+  --bg: #ecf2f9;
+  --accent: #ff0ae6;
+}
+
+[data-theme="dark"] {
+  --text: #ecf2f9;
+  --text-accent: #9afcf4;
+  --primary: #2e51f5;
+  --secondary: #52baea;
+  --bg: #212032;
+  --accent: #ff0ae6;
+}

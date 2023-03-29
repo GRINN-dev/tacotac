@@ -33,7 +33,7 @@ const fontZenonRegular = localFont({
 
 const RootLayout = ({ children }) => {
   return (
-    <ServerThemeProvider attribute="class">
+    <ServerThemeProvider attribute="data-theme">
       <html lang="fr">
         <head>
           <meta charSet="UTF-8" />
@@ -61,13 +61,13 @@ const RootLayout = ({ children }) => {
         </head>
         <body
           className={cn(
-            "min-h-screen bg-white font-sans text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50",
+            "bg-bg text-text min-h-screen font-sans antialiased",
             fontSans.variable,
             fontZenonBold.variable,
             fontZenonRegular.variable
           )}
         >
-          <Providers>{children}</Providers>
+          {children}
           <Toaster />
 
           <TailwindIndicator />

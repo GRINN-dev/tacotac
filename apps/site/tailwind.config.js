@@ -2,7 +2,7 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
+  darkMode: ["class", '[data-theme="dark"]'],
   content: ["pages/**/*.{ts,tsx}", "app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
   theme: {
     container: {
@@ -27,6 +27,32 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+      },
+      colors: {
+        /* :root {
+  --text: #212032;
+  --text-accent: #212032;
+  --primary: #2e51f5;
+  --secondary: #52baea;
+  --bg: #ecf2f9;
+  --accent: #ff0ae6;
+}
+
+:root [data-theme="dark"] {
+  --text: #ecf2f9;
+  --text-accent: #9afcf4;
+  --primary: #2e51f5;
+  --secondary: #52baea;
+  --bg: #212032;
+  --accent: #ff0ae6;
+}
+ */
+        text: "var(--text)",
+        "text-accent": "var(--text-accent)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        bg: "var(--bg)",
+        accent: "var(--accent)",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
