@@ -5,17 +5,22 @@ import { usePathname, useRouter } from "next/navigation";
 import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import dayjs from "dayjs";
-import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
+import { AlertTriangle, MinusCircle, PlusCircle, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
+
+
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({
@@ -74,6 +79,11 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
       });
     });
   });
+
+  const deleteEvent = async () => {
+    await sdk().DeleteEvent({ input: { id } });
+    router.push("dashboard/organisations");
+  };
 
   const removeItemClick = (index: number) => {
     const newList = [...webhookList];
@@ -336,10 +346,33 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
           </div>
         </div>
       </div>
-      <div className="mt-8 flex gap-2">
+      <div className="mt-8 flex justify-between gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">
+              <Trash className="mr-2 h-4 w-4" />
+              Supprimer cet évenement
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Êtes-vous sur de vous ? </AlertDialogTitle>
+              <AlertDialogDescription>
+                <span className="flex flex-col space-y-4">
+                  <span>{"Vous allez supprimer un événement et tous les participants qui lui sont liés."}</span>
+                  <span>{"Vous serez rediriger vers la page organisations une fois la suppression terminé"}</span>
+                </span>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={deleteEvent}>Ok</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       {error && (
         <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">

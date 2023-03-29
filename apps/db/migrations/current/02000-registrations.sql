@@ -5,7 +5,7 @@
 drop table if exists publ.registrations cascade;
 create table publ.registrations (
     id uuid not null default uuid_generate_v4() primary key unique, 
-    event_id uuid  references publ.events(id),
+    event_id uuid  references publ.events(id) on delete cascade,
     hear_about_list text[] default '{"par un mécène", "par une association lauréate", "par le bouche à oreille", "autre", "par Obole, co-organisateur de l''événement", "par la Fondation de France, co-organisateur de l''événement"}',
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
