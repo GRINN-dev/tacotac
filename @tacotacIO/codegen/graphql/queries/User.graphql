@@ -1,0 +1,22 @@
+query GetAllUsers($first: Int, $offset: Int, $filter: UserFilter) {
+  users(first: $first, offset: $offset, filter: $filter) {
+    edges {
+      node {
+        ...MyUser
+      }
+    }
+    totalCount
+  }
+}
+
+query GetUserById($id: UUID!) {
+  user(id: $id) {
+    ...MyUser
+  }
+}
+
+query GetCurrentUser {
+  currentUser {
+    ...MyUser
+  }
+}
