@@ -4,8 +4,6 @@ import { useReducer } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Camera } from "lucide-react";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { reducer } from "../../../../../lib/utils_reducer";
@@ -16,7 +14,6 @@ import { ManuallyEnteringTicket } from "./steps/ManuallyEnteringTicket";
 import { ScanReader } from "./steps/ScanReader";
 import { ScanningTicket } from "./steps/ScanningTicket";
 import { Start } from "./steps/Start";
-
 
 export const Scanner = () => {
   const [state, dispatch] = useReducer(reducer, {
@@ -37,7 +34,7 @@ export const Scanner = () => {
     return sdk()
       .ScanAttendeesOffline({
         input: {
-          ticketPayloads: { ...offlineData, panelNumber: state.pannel ? state.pannel : state.pannel_code },
+          ticketPayloads: offlineData,
         },
       })
       .finally(() => {
