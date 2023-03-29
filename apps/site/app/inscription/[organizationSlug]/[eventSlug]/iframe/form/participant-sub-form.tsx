@@ -31,7 +31,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
           control={control}
           rules={{ required: "Une civilité pour le participant est requise" }}
           render={({ field: { onChange, value } }) => (
-            <>
+            <div className="flex flex-col">
               <Select value={value} onValueChange={onChange}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Civilité" />
@@ -44,11 +44,11 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
                 </SelectContent>
               </Select>
               {formState.errors?.attendees?.[i]?.civility && (
-                <p className="text-sm text-red-800 dark:text-red-300">
+                <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
                   {formState.errors?.attendees?.[i]?.civility?.message}
                 </p>
               )}
-            </>
+            </div>
           )}
         />
       </div>
@@ -67,50 +67,58 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
           className="col-span-2"
         />
         {formState.errors?.attendees?.[i]?.lastname && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.[i].lastname?.message}</p>
+          <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
+            {formState.errors?.attendees?.[i].lastname?.message}
+          </p>
         )}
       </div>
       <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
         <Label htmlFor="firstname">
           Prénom <span className="text-red-500"> *</span>
         </Label>
-        <Input
-          type="text"
-          id="firstname"
-          placeholder={prenom}
-          {...register(`attendees.${i}.firstname`, {
-            required: "Un prénom pour le participant est requis",
-          })}
-          className="col-span-2"
-        />
-        {formState.errors?.attendees?.[i]?.firstname && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.attendees?.[i]?.firstname?.message}
-          </p>
-        )}
+        <div className="flex flex-col w-full">
+          <Input
+            type="text"
+            id="firstname"
+            placeholder={prenom}
+            {...register(`attendees.${i}.firstname`, {
+              required: "Un prénom pour le participant est requis",
+            })}
+            className="w-full col-span-2"
+          />
+          {formState.errors?.attendees?.[i]?.firstname && (
+            <p className="text-sm text-red-800 dark:text-red-300 whitespace-nowrap">
+              {formState.errors?.attendees?.[i]?.firstname?.message}
+            </p>
+          )}
+        </div>
       </div>
       <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
         <Label htmlFor="email">
           Email
           {isInscriptor ? <span className="text-red-500"> *</span> : ""}
         </Label>
-        <Input
-          type="email"
-          id="email"
-          className="col-span-2"
-          placeholder={email}
-          {...register(`attendees.${i}.email`, {
-            setValueAs: (v) => (v ? v : null),
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              message: "Merci d'entrer un email valide",
-            },
-            required: { value: isInscriptor, message: "Un email pour le participant est requis" },
-          })}
-        />
-        {formState.errors?.attendees?.[i].email && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.[i]?.email?.message}</p>
-        )}
+        <div className="flex flex-col">
+          <Input
+            type="email"
+            id="email"
+            className="col-span-2"
+            placeholder={email}
+            {...register(`attendees.${i}.email`, {
+              setValueAs: (v) => (v ? v : null),
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: "Merci d'entrer un email valide",
+              },
+              required: { value: isInscriptor, message: "Un email pour le participant est requis" },
+            })}
+          />
+          {formState.errors?.attendees?.[i].email && (
+            <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
+              {formState.errors?.attendees?.[i]?.email?.message}
+            </p>
+          )}
+        </div>
       </div>
       {isInscriptor ? (
         <>
@@ -128,22 +136,24 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
             <Label htmlFor="zipCode">
               Code postal <span className="text-red-500"> *</span>
             </Label>
-            <Input
-              type="number"
-              id="zipCode"
-              placeholder={zipcode}
-              className="col-span-2"
-              {...register(`attendees.${i}.zipCode`, {
-                required: "Un code postal pour le participant est requis",
-              })}
-            />
-            {formState.errors?.attendees?.[i]?.zipCode && (
-              <p className="text-sm text-red-800 dark:text-red-300">
-                {formState.errors?.attendees?.[i]?.zipCode?.message}
-              </p>
-            )}
+            <div className="flex flex-col">
+              <Input
+                type="number"
+                id="zipCode"
+                placeholder={zipcode}
+                className="col-span-2"
+                {...register(`attendees.${i}.zipCode`, {
+                  required: "Un code postal pour le participant est requis",
+                })}
+              />
+              {formState.errors?.attendees?.[i]?.zipCode && (
+                <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
+                  {formState.errors?.attendees?.[i]?.zipCode?.message}
+                </p>
+              )}
+            </div>
           </div>
-          <div className="mt-4 w-full items-center gap-1.5">
+          <div className="mt-4 w-full items-center gap-1.5 flex">
             <Label htmlFor="civility" className="my-4">
               Comment avez-vous entendu parler de cet événement ?<span className="text-red-500"> *</span>
             </Label>
@@ -153,7 +163,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
               control={control}
               {...register(`attendees.${i}.hearAbout`, { required: "Merci de sélectionner une réponse" })}
               render={({ field: { onChange, value } }) => (
-                <>
+                <div className="flex flex-col">
                   <Select value={value} onValueChange={onChange} required={true}>
                     <SelectTrigger className="my-4">
                       <SelectValue placeholder="Sélectionnez une réponse" />
@@ -178,7 +188,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
                       {formState.errors?.attendees?.[i]?.hearAbout?.message}
                     </p>
                   )}
-                </>
+                </div>
               )}
             />
           </div>
