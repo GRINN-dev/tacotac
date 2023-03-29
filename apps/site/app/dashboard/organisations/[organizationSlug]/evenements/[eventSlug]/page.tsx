@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ClipboardCopyIcon, PlusSquare, Send } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -8,6 +10,7 @@ import { Collection } from "../../../../../../components/table/Collection";
 import { CopyToClipboard } from "./CopyToClipboard";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
+
 
 const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
@@ -47,16 +50,14 @@ const AttendeesPage = async ({
       Inscripteur: isInscriptor ? "Oui" : "Non",
       "N° Panneau": panelNumber,
       QrCode: (
-        <a className="underline" href={qrCodeUrl} target="_blank" rel="noreferrer">
-          {" "}
+        <Link className={"underline"} href={qrCodeUrl}>
           Qr Code (pdf)
-        </a>
+        </Link>
       ),
       Billet: (
-        <a className="underline" href={pdfUrl} target="_blank" rel="noreferrer">
-          {" "}
+        <Link className={"underline"} href={pdfUrl}>
           Billet (pdf)
-        </a>
+        </Link>
       ),
       Details: (
         <Link

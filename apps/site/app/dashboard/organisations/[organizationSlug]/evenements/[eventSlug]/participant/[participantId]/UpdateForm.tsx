@@ -4,22 +4,19 @@ import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { EventStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
+import { Trash } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 interface iUpdateAttendee extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
 
@@ -53,6 +50,11 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastnam
       });
     });
   });
+
+  const deleteAttendee = async () => {
+    await sdk().DeleteAttendee({ input: { id } });
+    router.back();
+  };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
       <div className="mt-4 grid w-full items-center gap-1.5">
@@ -126,10 +128,33 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastnam
         )}
       </div>
 
-      <div className="mt-8 flex gap-2">
+      <div className="mt-8 flex justify-between gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">
+              <Trash className="mr-2 h-4 w-4" />
+              Supprimer ce participant
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Êtes-vous sur de vous ? </AlertDialogTitle>
+              <AlertDialogDescription>
+                <span className="flex flex-col space-y-4">
+                  <span>{"Vous allez supprimer un participant"}</span>
+                  <span>{"Vous serez rediriger vers la page des participants"}</span>
+                </span>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={deleteAttendee}>Ok</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       {error && (
         <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
