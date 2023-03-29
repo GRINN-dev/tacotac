@@ -31,16 +31,18 @@ export const Scanner = () => {
   const scanAttendeesOffline = async () => {
     const offlineData = JSON.parse(localStorage.getItem("offlineData") || "[]");
     console.log("offline", offlineData);
-    return sdk()
-      .ScanAttendeesOffline({
+    try {
+      const response = await sdk().ScanAttendeesOffline({
         input: {
           ticketPayloads: offlineData,
         },
-      })
-      .finally(() => {
-        localStorage.removeItem("offlineData");
-      })
-      .catch((error) => console.log(error));
+      });
+      localStorage.removeItem("offlineData");
+      return response;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   };
 
   return (
