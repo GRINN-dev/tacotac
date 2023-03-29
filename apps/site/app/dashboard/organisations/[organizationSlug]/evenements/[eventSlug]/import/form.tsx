@@ -8,12 +8,15 @@ import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import SimpleCollection from "@/components/table/SimpleCollection";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
+
 
 interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -114,10 +117,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
           toast({
             title: "Import terminé",
             action: (
-              <ToastAction
-                onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true")}
-                altText="Retour"
-              >
+              <ToastAction onClick={() => router.back()} altText="Retour">
                 Retour
               </ToastAction>
             ),

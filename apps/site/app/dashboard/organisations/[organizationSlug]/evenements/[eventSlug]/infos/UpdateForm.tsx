@@ -21,7 +21,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 
 
-
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({
   id,
@@ -69,10 +68,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
       toast({
         title: "Événement mis à jour",
         action: (
-          <ToastAction
-            onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true")}
-            altText="Retour"
-          >
+          <ToastAction onClick={() => router.back()} altText="Retour">
             Retour
           </ToastAction>
         ),
