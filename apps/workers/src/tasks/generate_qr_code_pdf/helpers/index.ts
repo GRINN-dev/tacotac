@@ -38,7 +38,7 @@ export const generateDocsForAttendees = async (
 
   if (rowData?.is_inscriptor) {
     bufferPdf = await generatePdf(
-      `${rowData.ticket_number}  <img src="${dataUrlQrCode}" >`
+      `${rowData.ticket_number}  <img src="${dataUrlQrCode}" >  ${rowData.sign_code}}`
     );
     // on merge les pdfs SI il y a des pdfs issus des participants associés au premier inscris (via e spread operator)
     bufferPdf = (await mergePDFBuffers([
@@ -47,7 +47,7 @@ export const generateDocsForAttendees = async (
     ])) as Buffer;
   } else {
     bufferPdf = await generatePdf(
-      `${rowData.ticket_number}  <img src="${dataUrlQrCode}" >`
+      `${rowData.ticket_number}  <img src="${dataUrlQrCode}" >  ${rowData.sign_code}}`
     );
   }
   const { base64Data, type, image_name } = await generateBase64BufferForQrCode(

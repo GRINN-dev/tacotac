@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import { motion, useAnimationControls } from "framer-motion";
 import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, XCircle } from "lucide-react";
 
+
+
 import { IData, IHeader, ITypeFilter } from "@/types/filter";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
@@ -94,7 +96,7 @@ export const Collection = ({
   const createFilterObject = (
     value: any,
     filter: string,
-    valueFilter: string | number | null,
+    valueFilter: any,
     dateFilter: any | null,
     isNull: boolean
   ) => {
@@ -115,7 +117,7 @@ export const Collection = ({
       `${title} ${foundTitle?.title} ${isNull ? "" : valueFilter || dayjs(dateFilter).format("DD/MM/YYYY")}`
     );
     //fin parti gestion affichage filtre
-    typeObject[filter] = isNull ? false : valueFilter || dateFilter;
+    typeObject[filter] = isNull ? false : isNaN(valueFilter) ? valueFilter : Number(valueFilter) || dateFilter;
 
     return { [value]: typeObject };
   };

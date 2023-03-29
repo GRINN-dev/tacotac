@@ -5,26 +5,19 @@ fragment MyEvent on Event {
   description
   addressLine2
   addressLine1
-  registrations {
-    nodes {
-      attendees {
-        nodes {
-          id
-        }
-        totalCount
-      }
-    }
-    totalCount
-  }
   city
   zipCode
   country
   startsAt
+  endsAt
   bookingStartsAt
   bookingEndsAt
   createdAt
   updatedAt
   placeName
+  capacity
   webhooks
   organizationId
+  totalRegistrations
+  totalConfirmedRegistrations
 }
