@@ -16,12 +16,11 @@ export function createHtmlTemplate<T>(data: T, templateName: string) {
       encoding: "utf-8",
     }
   );
-  const assetsPath = path.join(__dirname, "assets");
   console.log("🚀 ~ file: createHtmlTemplate.ts:20 ~ assetsPath:", assetsPath);
   const template = hbs.compile(html);
   const rendered = template({
     ...data,
-    assetsUrl: process.env.NEXT_PUBLIC_API_ENDPOINT + "/" + assetsPath,
+    assetsUrl: process.env.NEXT_PUBLIC_API_ENDPOINT + "/static",
     createdAt: moment().format("ll"),
   });
   return rendered;
