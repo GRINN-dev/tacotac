@@ -50,13 +50,13 @@ const AttendeesPage = async ({
       Inscripteur: isInscriptor ? "Oui" : "Non",
       "N° Panneau": panelNumber,
       QrCode: (
-        <Link className={"underline"} href={qrCodeUrl ? qrCodeUrl : ""} target="_blank">
-          Qr Code (pdf)
+        <Link className={"underline"} href={qrCodeUrl ? qrCodeUrl : ""} target={qrCodeUrl ? "_blank" : "_parent"}>
+          {qrCodeUrl ? "Qr Code (pdf)" : "rafraichir"}
         </Link>
       ),
       Billet: (
-        <Link className={"underline"} href={pdfUrl ? pdfUrl : ""} target="_blank">
-          Billet (pdf)
+        <Link className={"underline"} href={pdfUrl ? pdfUrl : ""} target={pdfUrl ? "_blank" : "_parent"}>
+          {qrCodeUrl ? "Billet (pdf)" : "rafraichir"}
         </Link>
       ),
       Details: (
