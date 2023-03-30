@@ -47,14 +47,12 @@ const AttendeesPage = async ({
       Inscripteur: isInscriptor ? "Oui" : "Non",
       "N° Panneau": panelNumber,
       QrCode: (
-        <a className="underline" href={qrCodeUrl} target="_blank" rel="noreferrer">
-          {" "}
+        <a className={"underline"} href={qrCodeUrl}>
           Qr Code (pdf)
         </a>
       ),
       Billet: (
-        <a className="underline" href={pdfUrl} target="_blank" rel="noreferrer">
-          {" "}
+        <a className={"underline"} href={pdfUrl}>
           Billet (pdf)
         </a>
       ),
@@ -79,7 +77,7 @@ const AttendeesPage = async ({
           <Link
             className={buttonVariants({ variant: "outline", size: "lg" })}
             target="_blank"
-            href={`/inscription/${organizationSlug}/evenements/${eventSlug}/participant`}
+            href={`/inscription/${organizationSlug}/${eventSlug}/iframe`}
           >
             iFrame inscription
           </Link>
@@ -111,7 +109,7 @@ const AttendeesPage = async ({
         )}
       </section>
       <div className="container max-w-prose">
-        <CopyToClipboard />
+        <CopyToClipboard eventSlug={eventSlug} organisationSlug={organizationSlug} />
       </div>
     </>
   );
