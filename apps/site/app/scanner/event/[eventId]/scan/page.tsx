@@ -18,7 +18,9 @@ const EventSlug = async ({ params: { eventId } }) => {
   return (
     <div className="">
       <div className="container">
-        <h1 className="my-4 text-3xl font-extrabold leading-tight tracking-tighter text-center font-zenon-bold sm:text-3xl md:text-5xl lg:text-6xl">
+        <h1
+          className={`my-4 text-3xl text-primary font-extrabold leading-tight tracking-tighter text-center font-zenon-bold sm:text-3xl md:text-5xl lg:text-6xl`}
+        >
           {event.name}
         </h1>
 
@@ -40,15 +42,20 @@ const EventSlug = async ({ params: { eventId } }) => {
         </div>
         <div className="flex flex-col items-center">
           <Button className={buttonVariants({ size: "sm", className: "absolute bottom-10 w-[200px]" })}>
-            <List className="mr-2" />{" "}
-            <AttendeesModal eventId={event?.id} eventName={event?.name} attendees={attendees} />
+            <div className="flex items-center justify-between">
+              {" "}
+              <List className="absolute mr-2 left-2" />{" "}
+              <AttendeesModal eventId={event?.id} eventName={event?.name} attendees={attendees} />
+            </div>
           </Button>
 
           <Link
             className={buttonVariants({ size: "sm", className: "absolute bottom-24 w-[200px]" })}
             href={`/inscription/${organisation?.organization?.slug}/evenements/${event?.slug}/participant`}
           >
-            <PlusCircle className="mr-2" /> <p>Ajouter un participant</p>
+            <div className="flex items-center justify-between">
+              <PlusCircle className="mr-2" /> <p>Ajouter un participant</p>
+            </div>
           </Link>
         </div>
 

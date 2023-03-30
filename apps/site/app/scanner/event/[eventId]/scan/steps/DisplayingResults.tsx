@@ -29,14 +29,14 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
       {state.step === "displaying_result" && state.ticket ? (
         <>
           <div className="flex items-center justify-center mb-8">
-            <p className="font-semibold text-green-700">Scanning 2/2</p>{" "}
+            <p className="font-semibold text-green-700 font-zenon-bold">Scanning 2/2</p>{" "}
             <Check className="ml-1 duration-800 animate-bounce" />{" "}
           </div>
           <Dialog defaultOpen>
             <DialogPortal>
               <DialogOverlay />
               <DialogContent className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                <DialogTitle className="mb-2 font-semibold">Récapitulatif du scanning</DialogTitle>
+                <DialogTitle className="mb-2 font-semibold font-zenon-bold">Récapitulatif du scanning</DialogTitle>
                 <fieldset className="mb-[15px] flex flex-col items-start justify-start ">
                   <span>Nom : {state?.ticket?.lastname}</span>
                   <span>Prénom : {state.ticket?.firstname}</span>
