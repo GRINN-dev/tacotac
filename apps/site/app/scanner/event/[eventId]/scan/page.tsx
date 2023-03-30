@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { EventStatus } from "@/../../@tacotacIO/codegen/dist";
 import { ArrowBigLeft, List, PlusCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import AttendeesModal from "./attendeesModal";
 import { Scanner } from "./scanner";
 
 const EventSlug = async ({ params: { eventId } }) => {
@@ -10,7 +12,9 @@ const EventSlug = async ({ params: { eventId } }) => {
     eventId: eventId,
   });
   const organisation = await sdk().GetOrganizationById({ id: event?.organizationId });
-
+  const attendees = event?.registrations?.nodes?.reduce((acc, { attendeesList }) => {
+    return acc.concat(attendeesList);
+  }, []);
   return (
     <div className="">
       <div className="container">
@@ -30,12 +34,11 @@ const EventSlug = async ({ params: { eventId } }) => {
           <Scanner />
         </div>
         <div className="flex flex-col items-center">
-          <Link
-            className={buttonVariants({ size: "sm", className: "absolute bottom-10" })}
-            href={`scanner/event/${event.id}/participants`}
-          >
-            <List className="mr-2" /> Liste des inscrits
-          </Link>
+          <Button className={buttonVariants({ size: "sm", className: "absolute bottom-10" })}>
+            <List className="mr-2" />{" "}
+            <AttendeesModal eventId={event?.id} eventName={event?.name} attendees={attendees} />
+          </Button>
+
           <Link
             className={buttonVariants({ size: "sm", className: "absolute bottom-24" })}
             href={`/inscription/${organisation?.organization?.slug}/evenements/${event?.slug}/participant`}
