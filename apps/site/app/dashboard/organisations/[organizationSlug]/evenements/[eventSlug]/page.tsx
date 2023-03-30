@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { ClipboardCopyIcon, PlusSquare, Send } from "lucide-react";
+import { EventStatus } from "@/../../@tacotacIO/codegen/dist";
+import { ClipboardCopyIcon, HelpCircle, PlusSquare, Send } from "lucide-react";
 
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
+import { eventStatusArray } from "@/types/status";
 import { sdk } from "@/lib/sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Collection } from "../../../../../../components/table/Collection";
 import { CopyToClipboard } from "./CopyToClipboard";
 import { SendAllEmail } from "./SendAllEmail";
@@ -43,7 +46,19 @@ const AttendeesPage = async ({
       Nom: lastname,
       Prenom: firstname,
       email: email,
-      status: status,
+      status: (
+        <div className="flex items-center justify-center space-x-2">
+          <p>{status}</p>
+          <HoverCard>
+            <HoverCardTrigger>
+              <HelpCircle className="h-4 w-4 text-sm" />
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <p className="text-sm">{eventStatusArray.find((value) => value.enum === status)?.name}</p>
+            </HoverCardContent>
+          </HoverCard>
+        </div>
+      ),
       Inscripteur: isInscriptor ? "Oui" : "Non",
       "N° Panneau": panelNumber,
       QrCode: (
@@ -84,6 +99,16 @@ const AttendeesPage = async ({
 
           <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
           <SendAllEmail eventId={eventBySlug?.id} />
+        </div>
+        <div className="m-auto flex w-1/2 flex-col items-center justify-center rounded-lg border p-4">
+          Liste des différents status
+          <ul>
+            {eventStatusArray.map((value, index) => (
+              <li key={value.enum + index} className="ml-4 text-sm">
+                {value.enum} - {value.name}
+              </li>
+            ))}
+          </ul>
         </div>
         {flattenedAttendeesFromRegistrations?.length > 0 ? (
           <Collection
