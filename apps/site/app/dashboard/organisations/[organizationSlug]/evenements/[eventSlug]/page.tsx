@@ -1,13 +1,11 @@
 import Link from "next/link";
-import { Attendee, EventStatus } from "@/../../@tacotacIO/codegen/dist";
-import { ClipboardCopyIcon, HelpCircle, PlusSquare, Send } from "lucide-react";
-
-
+import { Attendee } from "@/../../@tacotacIO/codegen/dist";
+import { HelpCircle, PlusSquare } from "lucide-react";
 
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { eventStatusArray } from "@/components/data/status";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Collection } from "../../../../../../components/table/Collection";
 import { CopyToClipboard } from "./CopyToClipboard";
