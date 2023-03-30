@@ -43,7 +43,7 @@ export const SendAllEmailConfirmDonation = ({ eventId }) => {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline">
+          <Button variant="outline" className="shadow hover:shadow-lg">
             <Send className="mr-2 h-4 w-4" />
             Rappel don
           </Button>

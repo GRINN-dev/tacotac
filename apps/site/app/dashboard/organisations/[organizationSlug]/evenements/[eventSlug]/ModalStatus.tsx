@@ -20,7 +20,7 @@ export const ModalStatus = () => {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline">Liste status</Button>
+          <Button variant="outline" className="shadow hover:shadow-lg">Liste status</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

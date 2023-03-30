@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Attendee } from "@/../../@tacotacIO/codegen/dist";
 import { HelpCircle, PlusSquare } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { eventStatusArray } from "@/components/data/status";
@@ -78,7 +80,7 @@ const AttendeesPage = async ({
       ),
       Details: (
         <Link
-          className={buttonVariants({ variant: "outline", size: "sm" })}
+          className={buttonVariants({ variant: "outline", size: "sm" }) + " shadow hover:shadow-lg"}
           href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/${id}`}
         >
           <PlusSquare className="h-4 w-4 " />
@@ -96,7 +98,7 @@ const AttendeesPage = async ({
           </h2>
           <ModalStatus/>
           <Link
-            className={buttonVariants({ variant: "outline", size: "lg" })}
+            className={buttonVariants({ variant: "outline", size: "lg" }) + " shadow hover:shadow-lg"}
             target="_blank"
             href={`/inscription/${organizationSlug}/${eventSlug}/iframe`}
           >
