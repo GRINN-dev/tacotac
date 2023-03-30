@@ -20,7 +20,6 @@ const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) 
         <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
           <ImportAttendeesForm {...eventBySlug} />
         </div>
-        <pre>{JSON.stringify(eventBySlug, null, 2)}</pre>
       </section>
     </>
   );

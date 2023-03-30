@@ -2811,6 +2811,7 @@ export type RegisterAttendeesCsvInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
   eventId: Scalars['UUID'];
+  isForcing: Scalars['Boolean'];
 };
 
 /** The output of our `registerAttendeesCsv` mutation. */

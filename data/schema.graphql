@@ -3361,6 +3361,7 @@ input RegisterAttendeesCsvInput {
   """
   clientMutationId: String
   eventId: UUID!
+  isForcing: Boolean!
 }
 
 """The output of our `registerAttendeesCsv` mutation."""
