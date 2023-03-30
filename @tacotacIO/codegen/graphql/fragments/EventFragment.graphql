@@ -20,15 +20,6 @@ fragment MyEvent on Event {
   webhooks
   organizationId
   totalRegistrations
-  registrations {
-    nodes {
-      attendees {
-        nodes {
-          firstname
-          lastname
-        }
-      }
-    }
-  }
+
   totalConfirmedRegistrations
 }

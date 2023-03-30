@@ -50,6 +50,13 @@ query GetEventById(
       ...EventBrandingFragment
     }
     capacity
+    registrations {
+      nodes {
+        attendeesList {
+          ...MyAttendee
+        }
+      }
+    }
     logsList(
       orderBy: $orderBy
       filter: $filter
