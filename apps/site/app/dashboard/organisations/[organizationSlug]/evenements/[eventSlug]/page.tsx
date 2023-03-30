@@ -2,6 +2,8 @@ import Link from "next/link";
 import { EventStatus } from "@/../../@tacotacIO/codegen/dist";
 import { ClipboardCopyIcon, HelpCircle, PlusSquare, Send } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { eventStatusArray } from "@/types/status";
 import { sdk } from "@/lib/sdk";
@@ -9,8 +11,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Collection } from "../../../../../../components/table/Collection";
 import { CopyToClipboard } from "./CopyToClipboard";
+import { ModalStatus } from "./ModalStatus";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
+
 
 const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
@@ -89,6 +93,7 @@ const AttendeesPage = async ({
           <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
             Tous les participants
           </h2>
+          <ModalStatus/>
           <Link
             className={buttonVariants({ variant: "outline", size: "lg" })}
             target="_blank"
@@ -100,16 +105,7 @@ const AttendeesPage = async ({
           <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
           <SendAllEmail eventId={eventBySlug?.id} />
         </div>
-        <div className="m-auto flex w-1/2 flex-col items-center justify-center rounded-lg border p-4">
-          Liste des différents status
-          <ul>
-            {eventStatusArray.map((value, index) => (
-              <li key={value.enum + index} className="ml-4 text-sm">
-                {value.enum} - {value.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+        
         {flattenedAttendeesFromRegistrations?.length > 0 ? (
           <Collection
             totalCount={eventBySlug?.registrations?.totalCount}
