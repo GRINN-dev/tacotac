@@ -54,7 +54,7 @@ export interface CreateTicketPayload {
     last_name: string;
     ticket_number: string;
     string_day: string;
-    day: number;
+    day: string;
     month: string;
     year: number;
     starts_at: string;

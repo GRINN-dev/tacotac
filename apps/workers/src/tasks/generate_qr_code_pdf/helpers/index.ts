@@ -48,7 +48,7 @@ export const generateDocsForAttendees = async (
     last_name: rowData.lastname,
     ticket_number: rowData.ticket_number,
     string_day: dayjs(rowData.starts_at).format("dddd"),
-    day: dayjs(rowData.starts_at).day(),
+    day: dayjs(rowData.starts_at).format("DD"),
     month: dayjs(rowData.starts_at).format("MMMM"),
     year: dayjs(rowData.starts_at).year(),
     starts_at: dayjs(rowData.starts_at).format("HH:mm"),
@@ -60,7 +60,6 @@ export const generateDocsForAttendees = async (
     qr_code_url: dataUrlQrCode,
     code_invit: rowData.sign_code,
   };
-  console.log("🚀 ~ file: index.ts:62 ~ reworkedTicket:", reworkedTicket);
 
   const generatePdfFilePayload: GeneratePdfFilesPayload = {
     pdfData: {
@@ -76,7 +75,6 @@ export const generateDocsForAttendees = async (
   };
 
   if (rowData?.is_inscriptor) {
-
     bufferPdf = await generatePdf(generatePdfFilePayload?.pdfData?.template);
 
     // on merge les pdfs SI il y a des pdfs issus des participants associés au premier inscris (via e spread operator)
@@ -85,9 +83,7 @@ export const generateDocsForAttendees = async (
       ...resultsStorePdfBuffer,
     ])) as Buffer;
   } else {
-
     bufferPdf = await generatePdf(generatePdfFilePayload?.pdfData?.template);
-
   }
 
   const { base64Data, type, image_name } = await generateBase64BufferForQrCode(
@@ -109,7 +105,6 @@ export const generateDocsForAttendees = async (
       [rowData.id, urlS3QrCode, urlS3Pdf]
     )
   );
-
   const sendEmailPayload: SendEmailPayload = {
     mailData: {
       to: rowData.email,
@@ -119,21 +114,21 @@ export const generateDocsForAttendees = async (
       },
       templateId: BILLET_TEMPLATE,
       dynamicTemplateData: {
-        e: rowData.name,
-        first_Name: rowData.firstname,
-        last_Name: rowData.lastname,
-        ticket_Number: rowData.ticket_number,
-        string_Day: dayjs(rowData.starts_at).format("dddd"),
-        day: dayjs(rowData.starts_at).day(),
-        month: dayjs(rowData.starts_at).format("MMMM"),
-        year: dayjs(rowData.starts_at).year(),
-        starts_At: dayjs(rowData.starts_at).format("HH:mm"),
-        ends_At: dayjs(rowData.ends_at).format("HH:mm"),
-        place_Name: rowData.place_name,
-        address: rowData.address_line_1,
-        detail: rowData.details,
-        qr_Code_Url: urlS3QrCode,
-        code_Invit: rowData.sign_code,
+        Event_name: rowData.name,
+        First_Name: rowData.firstname,
+        Last_Name: rowData.lastname,
+        Ticket_Number: rowData.ticket_number,
+        String_Day: dayjs(rowData.starts_at).format("dddd"),
+        Day: dayjs(rowData.starts_at).format("DD"),
+        Month: dayjs(rowData.starts_at).format("MMMM"),
+        Year: dayjs(rowData.starts_at).year(),
+        Starts_At: dayjs(rowData.starts_at).format("HH:mm"),
+        Ends_At: dayjs(rowData.ends_at).format("HH:mm"),
+        Place_Name: rowData.place_name,
+        Address: rowData.address_line_1,
+        Detail: rowData.details,
+        Qr_Code_Url: urlS3QrCode,
+        Code_Invit: rowData.sign_code,
         Pdf_Url: urlS3Pdf,
         Cancel: "test",
         Current_Year: dayjs().format("YYYY"),

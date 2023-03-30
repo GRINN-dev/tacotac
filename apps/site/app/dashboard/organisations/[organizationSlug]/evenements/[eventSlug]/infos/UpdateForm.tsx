@@ -78,7 +78,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
 
   const deleteEvent = async () => {
     await sdk().DeleteEvent({ input: { id } });
-    router.push("dashboard/organisations");
+    router.push("dashboard/organisations" + "?reload=true");
   };
 
   const removeItemClick = (index: number) => {

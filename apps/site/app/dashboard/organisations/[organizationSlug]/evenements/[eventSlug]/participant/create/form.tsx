@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+
 interface iCreateAttendeeForm extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
 export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
@@ -25,13 +26,18 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { register, handleSubmit, formState, control } = useForm<RegisterAttendeesInput>();
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
     data.eventId = id;
 
-    await sdk()
+    sdk()
       .RegisterAttendees({
         input: data,
+      })
+      .then(({ registerAttendees }) => {
+        startTransition(() => {
+          router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
+        });
       })
       .catch((error: any) => {
         setError(error);
@@ -47,9 +53,6 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
       });
 
     setIsLoading(false);
-    startTransition(() => {
-      router.push(pathname.substring(0, pathname.lastIndexOf("/participant/create") + 1) + "?reload=true");
-    });
   });
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>

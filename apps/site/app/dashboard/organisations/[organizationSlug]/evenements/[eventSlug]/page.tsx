@@ -50,12 +50,12 @@ const AttendeesPage = async ({
       Inscripteur: isInscriptor ? "Oui" : "Non",
       "N° Panneau": panelNumber,
       QrCode: (
-        <Link className={"underline"} href={qrCodeUrl}>
+        <Link className={"underline"} href={qrCodeUrl ? qrCodeUrl : ""} target="_blank">
           Qr Code (pdf)
         </Link>
       ),
       Billet: (
-        <Link className={"underline"} href={pdfUrl}>
+        <Link className={"underline"} href={pdfUrl ? pdfUrl : ""} target="_blank">
           Billet (pdf)
         </Link>
       ),
@@ -88,7 +88,7 @@ const AttendeesPage = async ({
           <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
           <SendAllEmail eventId={eventBySlug?.id} />
         </div>
-        {flattenedAttendeesFromRegistrations?.length > 0 ? (
+        {rawAttendees?.length > 0 ? (
           <Collection
             totalCount={eventBySlug?.registrations?.totalCount}
             pageInfo={eventBySlug?.registrations?.pageInfo}

@@ -73,18 +73,6 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
     });
   };
 
-  const arrayList = [
-    {
-      civility: "MME OU MR",
-      firstname: "Julie",
-      lastname: "Marron",
-      email: "julie.marron@blob.eu",
-      phoneNumber: "0998789898",
-      zipCode: "33000",
-      isVip: "false ou true",
-    },
-  ];
-
   const onSubmit = handleSubmit(async () => {
     console.log(id);
     await sdk()
@@ -117,7 +105,10 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
           toast({
             title: "Import terminé",
             action: (
-              <ToastAction onClick={() => router.back()} altText="Retour">
+              <ToastAction
+                onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/import") + 1) + "?reload=true")}
+                altText="Retour"
+              >
                 Retour
               </ToastAction>
             ),

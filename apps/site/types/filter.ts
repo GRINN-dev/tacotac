@@ -39,4 +39,4 @@ export interface IDataRow {
 
 
 //pour pr
-export const initLimit = 2;
+export const initLimit = 10;

@@ -19,7 +19,7 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     attendeeId
   );
 
-  console.log(isDev);
+  console.log("isDev: ", isDev);
   await sgMail
     .send({
       ...sendEmailPayload.mailData,

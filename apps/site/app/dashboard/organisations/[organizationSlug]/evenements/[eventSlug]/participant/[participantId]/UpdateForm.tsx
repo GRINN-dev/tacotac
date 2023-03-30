@@ -20,7 +20,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 interface iUpdateAttendee extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
 
-export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastname, email, status }) => {
+export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastname, email, status, registrationId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -42,7 +42,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastnam
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push(pathname + "?reload=true");
+      router.push(pathname.substring(0, pathname.lastIndexOf(`/participant/${id}`) + 1) + "?reload=true");
 
       toast({
         title: "Participant mis à jour",
@@ -52,8 +52,8 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastnam
   });
 
   const deleteAttendee = async () => {
-    await sdk().DeleteAttendee({ input: { id } });
-    router.back();
+    await sdk().DeleteRegistration({ input: { id: registrationId } });
+    router.push(pathname.substring(0, pathname.lastIndexOf(`/participant/${id}`) + 1) + "?reload=true");
   };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
