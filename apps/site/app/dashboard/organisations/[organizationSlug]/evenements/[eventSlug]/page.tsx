@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EventStatus } from "@/../../@tacotacIO/codegen/dist";
+import { Attendee, EventStatus } from "@/../../@tacotacIO/codegen/dist";
 import { ClipboardCopyIcon, HelpCircle, PlusSquare, Send } from "lucide-react";
 
 
@@ -41,9 +41,12 @@ const AttendeesPage = async ({
     { title: "Details", value: "details", type: Type?.string, isSortable: false, isVisible: true },
   ];
 
-  const flattenedAttendeesFromRegistrations = eventBySlug?.registrations?.nodes?.reduce((acc, { attendeesList }) => {
-    return acc.concat(attendeesList);
-  }, []);
+  const flattenedAttendeesFromRegistrations: Attendee[] = eventBySlug?.registrations?.nodes?.reduce(
+    (acc, { attendeesList }) => {
+      return acc.concat(attendeesList);
+    },
+    []
+  );
 
   const rawAttendees: IData[] = flattenedAttendeesFromRegistrations?.map(
     ({ id, lastname, firstname, email, status, panelNumber, qrCodeUrl, pdfUrl, isInscriptor }) => ({
