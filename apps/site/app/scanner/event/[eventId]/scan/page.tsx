@@ -18,37 +18,43 @@ const EventSlug = async ({ params: { eventId } }) => {
   return (
     <div className="">
       <div className="container">
-        <h1 className="my-4 text-3xl font-extrabold leading-tight tracking-tighter text-center sm:text-3xl md:text-5xl lg:text-6xl">
+        <h1 className="my-4 text-3xl font-extrabold leading-tight tracking-tighter text-center font-zenon-bold sm:text-3xl md:text-5xl lg:text-6xl">
           {event.name}
         </h1>
-        <div> {event.description}</div>
 
-        <div>Lieu : {event.city} </div>
-        <div>Capacité : {event?.capacity} places</div>
-        <div>
+        <div className="font-zenon-bold">
           {" "}
-          {event?.totalConfirmedRegistrations} présents / {event?.totalRegistrations} inscrits{" "}
+          <span>Lieu :</span> <span className="text-xl opacity-40">{event.city}</span>{" "}
         </div>
-        <div className="flex flex-col items-center justify-end gap-2 mt-20">
+        <div className="font-zenon-bold">
+          {" "}
+          <span>Capacité :</span> <span className="text-xl opacity-40">{event?.capacity}</span> places
+        </div>
+        <div className="font-zenon-bold">
+          {" "}
+          <span className="text-xl opacity-40">{event?.totalConfirmedRegistrations}</span> présents /{" "}
+          <span className="text-xl opacity-40">{event?.totalRegistrations}</span> inscrits{" "}
+        </div>
+        <div className="flex flex-col items-center justify-end gap-2 mt-8">
           <Scanner />
         </div>
         <div className="flex flex-col items-center">
-          <Button className={buttonVariants({ size: "sm", className: "absolute bottom-10" })}>
+          <Button className={buttonVariants({ size: "sm", className: "absolute bottom-10 w-[200px]" })}>
             <List className="mr-2" />{" "}
             <AttendeesModal eventId={event?.id} eventName={event?.name} attendees={attendees} />
           </Button>
 
           <Link
-            className={buttonVariants({ size: "sm", className: "absolute bottom-24" })}
+            className={buttonVariants({ size: "sm", className: "absolute bottom-24 w-[200px]" })}
             href={`/inscription/${organisation?.organization?.slug}/evenements/${event?.slug}/participant`}
           >
-            <PlusCircle className="mr-2" /> Ajouter un participant
+            <PlusCircle className="mr-2" /> <p>Ajouter un participant</p>
           </Link>
         </div>
 
-        <div className="absolute bottom-2">
+        <div className="absolute bottom-1">
           <Link href={"/scanner"} className="flex items-center">
-            <ArrowBigLeft className="w-10 h-10" /> Evénements
+            <ArrowBigLeft className="w-8 h-8 " />
           </Link>
         </div>
       </div>

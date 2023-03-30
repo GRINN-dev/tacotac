@@ -10,18 +10,16 @@ export const ScanReader: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ st
     <div>
       <QrReader
         containerStyle={{
-          width: "100%",
-          height: "100%",
           maxWidth: "500px",
           maxHeight: "500px",
           margin: "auto",
           marginTop: "20px",
           marginBottom: "20px",
-          borderRadius: "10px",
-          borderColor: "rgba(0, 0, 0, 0.48)",
+          borderRadius: "8px",
+          borderColor: "white",
           borderWidth: "2px",
           borderStyle: "solid",
-          shadow: "0 0 10px 0 rgba(0, 0, 0, 0.5)",
+          shadow: "0 0 20px 0 rgba(0, 0, 0, 0.5)",
         }}
         scanDelay={1000}
         onResult={(result, error) => {

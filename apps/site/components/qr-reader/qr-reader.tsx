@@ -25,7 +25,7 @@ export const QrReader: React.FC<QrReaderProps> = ({
   return (
     <section className={className} style={{ ...styles.containerStyle }}>
       <div
-        className="absolute top-0 left-0 w-full h-full rounded-md"
+        className=""
         style={{
           ...styles.container,
           ...videoContainerStyle,
@@ -33,7 +33,7 @@ export const QrReader: React.FC<QrReaderProps> = ({
       >
         {!!ViewFinder && <ViewFinder />}
         <video
-          className="border-8 border-gray-600 rounded-md shadow-inner border-spacing-16"
+          className=""
           muted
           id={videoId}
           style={{
@@ -43,9 +43,6 @@ export const QrReader: React.FC<QrReaderProps> = ({
             transform: constraints?.facingMode === "user" && "scaleX(-1)",
           }}
         />
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute border-2 border-white rounded-md top-10 left-4 bottom-10 right-4"></div>
-        </div>
       </div>
     </section>
   );
@@ -54,7 +51,7 @@ export const QrReader: React.FC<QrReaderProps> = ({
 QrReader.displayName = "QrReader";
 QrReader.defaultProps = {
   constraints: {
-    facingMode: "user",
+    facingMode: "environment",
   },
   videoId: "video",
   scanDelay: 500,

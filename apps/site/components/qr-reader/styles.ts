@@ -4,7 +4,6 @@ export const styles: any = {
     overflow: "hidden",
     position: "relative",
     borderRadius: "10px",
-    border: "2px solid white",
   },
   video: {
     top: 0,
@@ -18,8 +17,9 @@ export const styles: any = {
   },
   containerStyle: {
     position: "relative",
-    width: "100%",
-    height: "100%",
+    width: "80%",
+    height: "80%",
     overflow: "hidden",
   },
+  videoStyle: {},
 };
