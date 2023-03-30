@@ -1,6 +1,8 @@
 import { Send } from "lucide-react";
 
-import { eventStatusArray } from "@/types/status";
+
+
+import { eventStatusArray } from "@/components/data/status";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,6 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+
 
 export const ModalStatus = () => {
   return (

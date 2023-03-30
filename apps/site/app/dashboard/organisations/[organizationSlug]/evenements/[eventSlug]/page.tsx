@@ -5,8 +5,8 @@ import { ClipboardCopyIcon, HelpCircle, PlusSquare, Send } from "lucide-react";
 
 
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
-import { eventStatusArray } from "@/types/status";
 import { sdk } from "@/lib/sdk";
+import { eventStatusArray } from "@/components/data/status";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Collection } from "../../../../../../components/table/Collection";
