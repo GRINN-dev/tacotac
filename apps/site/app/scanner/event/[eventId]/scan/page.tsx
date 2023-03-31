@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { EventStatus } from "@/../../@tacotacIO/codegen/dist";
 import { ArrowBigLeft, List, PlusCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";

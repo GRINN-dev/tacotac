@@ -29,18 +29,19 @@ const AttendeesModal: FC<AttendeesModalProps> = ({ eventId, attendees, eventName
                       key={i}
                       className="p-2 mb-2 border rounded-md border-slate-700"
                       onClick={() => {
+                        console.log(attendees);
                         a?.email
                           ? sdk()
                               .ScanAttendee({
                                 scanAttendeeInput: {
                                   ticketPayload: {
-                                    email: a?.email,
+                                    email: a?.email ? a?.email : null,
                                     eventId: eventId,
                                     attendeeId: a?.id,
                                     firstname: a?.firstname,
                                     lastname: a?.lastname,
                                     panelNumber: a?.panelNumber ? a?.panelNumber : null,
-                                    signCode: a?.signCode,
+
                                     registrationId: a?.registrationId,
                                     ticketNumber: a?.ticketNumber,
                                   },
