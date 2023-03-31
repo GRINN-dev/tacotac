@@ -73,6 +73,8 @@ export type AttendeeCondition = {
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `isInscriptor` field. */
   isInscriptor?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `lastname` field. */
+  lastname?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `phoneNumber` field. */
   phoneNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `registrationId` field. */
@@ -101,6 +103,8 @@ export type AttendeeFilter = {
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `isInscriptor` field. */
   isInscriptor?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `lastname` field. */
+  lastname?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<AttendeeFilter>;
   /** Checks for any expressions in this list. */
@@ -217,6 +221,8 @@ export enum AttendeesOrderBy {
   IdDesc = 'ID_DESC',
   IsInscriptorAsc = 'IS_INSCRIPTOR_ASC',
   IsInscriptorDesc = 'IS_INSCRIPTOR_DESC',
+  LastnameAsc = 'LASTNAME_ASC',
+  LastnameDesc = 'LASTNAME_DESC',
   Natural = 'NATURAL',
   PhoneNumberAsc = 'PHONE_NUMBER_ASC',
   PhoneNumberDesc = 'PHONE_NUMBER_DESC',
@@ -4259,6 +4265,7 @@ export type GetAllEventsByOrganizationSlugQuery = { __typename?: 'Query', events
 export type GetEventByIdQueryVariables = Exact<{
   eventId: Scalars['UUID'];
   orderBy?: InputMaybe<Array<LogsOrderBy> | LogsOrderBy>;
+  attendeesOrderBy?: InputMaybe<Array<AttendeesOrderBy> | AttendeesOrderBy>;
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   filter?: InputMaybe<LogFilter>;
@@ -4741,7 +4748,7 @@ export const GetAllEventsByOrganizationSlugDocument = gql`
 }
     ${MyEventFragmentDoc}`;
 export const GetEventByIdDocument = gql`
-    query GetEventById($eventId: UUID!, $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC, $first: Int, $offset: Int, $filter: LogFilter) {
+    query GetEventById($eventId: UUID!, $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC, $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC, $first: Int, $offset: Int, $filter: LogFilter) {
   event(id: $eventId) {
     ...MyEvent
     eventBranding {
@@ -4750,7 +4757,7 @@ export const GetEventByIdDocument = gql`
     capacity
     registrations {
       nodes {
-        attendeesList {
+        attendeesList(orderBy: $attendeesOrderBy) {
           ...MyAttendee
         }
       }

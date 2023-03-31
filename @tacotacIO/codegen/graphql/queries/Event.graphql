@@ -40,6 +40,7 @@ query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
 query GetEventById(
   $eventId: UUID!
   $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC
+  $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC
   $first: Int
   $offset: Int
   $filter: LogFilter
@@ -52,7 +53,7 @@ query GetEventById(
     capacity
     registrations {
       nodes {
-        attendeesList {
+        attendeesList(orderBy: $attendeesOrderBy) {
           ...MyAttendee
         }
       }

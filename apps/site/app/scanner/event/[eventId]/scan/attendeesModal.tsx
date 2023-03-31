@@ -61,9 +61,7 @@ const AttendeesModal: FC<AttendeesModalProps> = ({ eventId, attendees, eventName
                         // TODO: quid de si pas de mail ? et du coup pas de panneau ? seraient tous en ticket_scan ?
                       }}
                     >
-                      <div>
-                        {a.firstname} {a.lastname}
-                      </div>
+                      <div>{a.lastname + " " + a.firstname}</div>
                       {a.email ? (
                         a.email
                       ) : (
