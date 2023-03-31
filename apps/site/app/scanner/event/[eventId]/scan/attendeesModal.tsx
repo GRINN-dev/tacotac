@@ -1,9 +1,9 @@
 "use client";
 
-import { FC } from "react";
-import { Attendee, MyAttendeeFragment } from "@/../../@tacotacIO/codegen/dist";
+import { FC, useState } from "react";
+import { Attendee } from "@/../../@tacotacIO/codegen/dist";
 import { Dialog, DialogContent, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
-import { Users } from "lucide-react";
+import { PlusCircle, Users } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 
@@ -14,6 +14,8 @@ interface AttendeesModalProps {
 }
 
 const AttendeesModal: FC<AttendeesModalProps> = ({ eventId, attendees, eventName }) => {
+  const [manualEmail, setManualEmail] = useState<string>();
+
   return (
     <div>
       <Dialog>
@@ -32,42 +34,85 @@ const AttendeesModal: FC<AttendeesModalProps> = ({ eventId, attendees, eventName
                       key={i}
                       className="p-2 mb-2 border rounded-md border-slate-700"
                       onClick={() => {
-                        console.log(attendees);
-                        a?.email
-                          ? sdk()
-                              .ScanAttendee({
-                                scanAttendeeInput: {
-                                  ticketPayload: {
-                                    email: a?.email ? a?.email : null,
-                                    eventId: eventId,
-                                    attendeeId: a?.id,
-                                    firstname: a?.firstname,
-                                    lastname: a?.lastname,
-                                    panelNumber: a?.panelNumber ? a?.panelNumber : null,
-                                    registrationId: a?.registrationId,
-                                    ticketNumber: a?.ticketNumber,
-                                  },
-                                },
-                              })
-                              .catch((error) => {
-                                console.log(error);
-                                console.log("a", a);
-                              })
-                          : console.log("no email");
+                        if (!a?.email) {
+                          return;
+                        }
+                        sdk()
+                          .ScanAttendee({
+                            scanAttendeeInput: {
+                              ticketPayload: {
+                                email: a?.email ? a?.email : manualEmail,
+                                eventId: eventId,
+                                attendeeId: a?.id,
+                                firstname: a?.firstname,
+                                lastname: a?.lastname,
+                                panelNumber: a?.panelNumber ? a?.panelNumber : null,
+                                registrationId: a?.registrationId,
+                                ticketNumber: a?.ticketNumber,
+                              },
+                            },
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          });
+
                         // TODO: quid de si pas de mail ? et du coup pas de panneau ? seraient tous en ticket_scan ?
                       }}
                     >
                       <div>
                         {a.firstname} {a.lastname}
                       </div>
-                      <div>{a.email}</div>
+                      {a.email ? (
+                        a.email
+                      ) : (
+                        <div className="flex items-center">
+                          <form>
+                            <input
+                              type="email"
+                              className="p-1 border rounded-md"
+                              value={manualEmail}
+                              placeholder="Ajoutez un email"
+                              onChange={(e) => setManualEmail(e.target.value)}
+                            />
+                          </form>
+                          <button
+                            type="submit"
+                            onClick={() =>
+                              sdk()
+                                .UpdateAttendee({
+                                  input: {
+                                    patch: { email: manualEmail },
+                                    id: a.id,
+                                  },
+                                })
+                                .catch((error) => console.log("error", error))
+                                .then(() =>
+                                  sdk().ScanAttendee({
+                                    scanAttendeeInput: {
+                                      ticketPayload: {
+                                        email: manualEmail,
+                                        eventId: eventId,
+                                        attendeeId: a?.id,
+                                        firstname: a?.firstname,
+                                        lastname: a?.lastname,
+                                        panelNumber: a?.panelNumber ? a?.panelNumber : null,
+                                        registrationId: a?.registrationId,
+                                        ticketNumber: a?.ticketNumber,
+                                      },
+                                    },
+                                  })
+                                )
+                            }
+                          >
+                            <PlusCircle className="ml-2" />
+                          </button>
+                        </div>
+                      )}
                       <div>{a.status}</div>
                     </div>
                   );
                 })}
               </div>
-
-              <div></div>
             </fieldset>
           </DialogContent>
         </DialogPortal>
