@@ -70,21 +70,15 @@ query GetEventBySlug(
   $filter: AttendeeFilter
   $first: Int
   $offset: Int
-  $orderBy: [AttendeesOrderBy!]
 ) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
     }
-    registrations {
+    registrations(first: $first, offset: $offset) {
       nodes {
-        attendeesList(
-          orderBy: $orderBy
-          offset: $offset
-          first: $first
-          filter: $filter
-        ) {
+        attendeesList(filter: $filter) {
           ...MyAttendee
         }
       }

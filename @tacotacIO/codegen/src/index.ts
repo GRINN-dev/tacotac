@@ -69,10 +69,14 @@ export type AttendeeCondition = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `email` field. */
   email?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `firstname` field. */
+  firstname?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `isInscriptor` field. */
   isInscriptor?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `lastname` field. */
+  lastname?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `phoneNumber` field. */
   phoneNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `registrationId` field. */
@@ -97,10 +101,14 @@ export type AttendeeFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `email` field. */
   email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `firstname` field. */
+  firstname?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `isInscriptor` field. */
   isInscriptor?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `lastname` field. */
+  lastname?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<AttendeeFilter>;
   /** Checks for any expressions in this list. */
@@ -213,10 +221,14 @@ export enum AttendeesOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   EmailAsc = 'EMAIL_ASC',
   EmailDesc = 'EMAIL_DESC',
+  FirstnameAsc = 'FIRSTNAME_ASC',
+  FirstnameDesc = 'FIRSTNAME_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   IsInscriptorAsc = 'IS_INSCRIPTOR_ASC',
   IsInscriptorDesc = 'IS_INSCRIPTOR_DESC',
+  LastnameAsc = 'LASTNAME_ASC',
+  LastnameDesc = 'LASTNAME_DESC',
   Natural = 'NATURAL',
   PhoneNumberAsc = 'PHONE_NUMBER_ASC',
   PhoneNumberDesc = 'PHONE_NUMBER_DESC',
@@ -4274,7 +4286,6 @@ export type GetEventBySlugQueryVariables = Exact<{
   filter?: InputMaybe<AttendeeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<AttendeesOrderBy> | AttendeesOrderBy>;
 }>;
 
 
@@ -4758,20 +4769,15 @@ export const GetEventByIdDocument = gql`
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}`;
 export const GetEventBySlugDocument = gql`
-    query GetEventBySlug($eventSlug: String!, $organizationSlug: String!, $filter: AttendeeFilter, $first: Int, $offset: Int, $orderBy: [AttendeesOrderBy!]) {
+    query GetEventBySlug($eventSlug: String!, $organizationSlug: String!, $filter: AttendeeFilter, $first: Int, $offset: Int) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
     }
-    registrations {
+    registrations(first: $first, offset: $offset) {
       nodes {
-        attendeesList(
-          orderBy: $orderBy
-          offset: $offset
-          first: $first
-          filter: $filter
-        ) {
+        attendeesList(filter: $filter) {
           ...MyAttendee
         }
       }

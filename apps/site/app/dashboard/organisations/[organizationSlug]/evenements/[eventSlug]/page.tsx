@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ClipboardCopyIcon, PlusSquare, Send } from "lucide-react";
 
+
+
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -9,17 +11,14 @@ import { CopyToClipboard } from "./CopyToClipboard";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
-const AttendeesPage = async ({
-  params: { organizationSlug, eventSlug },
-  searchParams: { offset, filter, first, orderBy },
-}) => {
+
+const AttendeesPage = async ({ params: { organizationSlug, eventSlug }, searchParams: { offset, filter, first } }) => {
   const { eventBySlug } = await sdk().GetEventBySlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
     first: Number(first) || initLimit,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
-    orderBy: orderBy,
   });
 
   const headerAttendees: IHeader[] = [

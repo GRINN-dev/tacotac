@@ -254,7 +254,7 @@ export const Collection = ({
                   <div className="-m-1.5">
                     <button
                       type="button"
-                      className="focus:none inline-flex rounded-md p-1.5 text-white focus:outline-none"
+                      className="focus:none inline-flex rounded-md p-1.5 focus:outline-none"
                     >
                       <span className="sr-only">Dismiss</span>
                       <XCircle className="h-5 w-5" aria-hidden="true" />
