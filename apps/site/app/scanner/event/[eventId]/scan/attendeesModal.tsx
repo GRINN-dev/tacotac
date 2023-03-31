@@ -33,7 +33,7 @@ const AttendeesModal: FC<AttendeesModalProps> = ({ eventId, attendees, eventName
                   return (
                     <div
                       key={i}
-                      className="p-2 mb-2 border rounded-md shadow-lg border-slate-700"
+                      className="p-2 mb-4 border rounded-md shadow-lg border-slate-700"
                       onClick={() => {
                         if (!a?.email) {
                           return;
