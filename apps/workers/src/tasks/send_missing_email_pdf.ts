@@ -17,7 +17,8 @@ export const sendMissingEmailPdf: Task = async (
   const { rows } = await withPgClient(pgClient =>
     pgClient.query(
       `SELECT atts.*,evts.id as event_id, evts.name, evts.place_name, 
-    evts.address_line_1, evts.starts_at, evts.ends_at, evtsb.header_mail_name, evtsb.header_mail_contact
+    evts.address_line_1, evts.starts_at, evts.ends_at, 
+    evtsb.header_mail_name, evtsb.header_mail_contact, evtsb.logo
     FROM publ.attendees atts
     inner join publ.registrations regs on regs.id = atts.registration_id
     inner join publ.events evts on evts.id = regs.event_id
@@ -40,6 +41,7 @@ export const sendMissingEmailPdf: Task = async (
         First_Name: rows[0].firstname,
         Last_Name: rows[0].lastname,
         Ticket_Number: rows[0].ticket_number,
+        Logo: rows[0].logo,
         String_Day: dayjs(rows[0].starts_at).format("dddd"),
         Day: dayjs(rows[0].starts_at).day(),
         Month: dayjs(rows[0].starts_at).format("MMMM"),
