@@ -9,8 +9,8 @@ interface EventCardProps extends ExtractArrayType<ExtractType<GetAllEventsQuery,
 const EventCard: FC<EventCardProps> = ({ startsAt, slug, placeName, name, id }) => {
   return (
     <div className="">
-      <div className="border rounded-[10px] text-right h-full w-full bg-[#D9D9D9] p-4 my-2 ">
-        <div className="font-semibold text-white">{name}</div>
+      <div className="border rounded-[10px] text-right h-full w-full bg-white shadow-md p-4 my-4 ">
+        <div className="font-semibold text-black font-zenon-bold">{name}</div>
         {dayjs(startsAt).format("DD/MM/YYYY")} <div>{placeName}</div>
       </div>
     </div>
