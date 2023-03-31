@@ -3,6 +3,7 @@
 import { FC } from "react";
 import { Attendee, MyAttendeeFragment } from "@/../../@tacotacIO/codegen/dist";
 import { Dialog, DialogContent, DialogOverlay, DialogPortal, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
+import { Users } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 
@@ -19,8 +20,10 @@ const AttendeesModal: FC<AttendeesModalProps> = ({ eventId, attendees, eventName
         <DialogTrigger>Liste des inscrits</DialogTrigger>
         <DialogPortal>
           <DialogOverlay />
-          <DialogContent className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-            <DialogTitle className="mb-2 font-semibold">Participants de {eventName} </DialogTitle>
+          <DialogContent className="overflow-hidden overflow-y-auto data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[50vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+            <DialogTitle className="flex items-center justify-start mb-4 text-lg font-semibold font-zenon-bold">
+              <Users className="mx-2 text-primary" /> Participants de {eventName}{" "}
+            </DialogTitle>
             <fieldset className="mb-[15px] flex flex-col items-start justify-start">
               <div className="grid w-full">
                 {attendees.map((a, i) => {
@@ -41,7 +44,6 @@ const AttendeesModal: FC<AttendeesModalProps> = ({ eventId, attendees, eventName
                                     firstname: a?.firstname,
                                     lastname: a?.lastname,
                                     panelNumber: a?.panelNumber ? a?.panelNumber : null,
-
                                     registrationId: a?.registrationId,
                                     ticketNumber: a?.ticketNumber,
                                   },
