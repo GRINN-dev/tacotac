@@ -5,6 +5,8 @@ import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogPortal, DialogTitle } from "@radix-ui/react-dialog";
 import { AlertCircle, Check, PlusCircle } from "lucide-react";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { Event, State } from "../types";
 
@@ -176,7 +178,10 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                             "offlineData",
                             JSON.stringify([
                               ...JSON.parse(localStorage.getItem("offlineData") || "[]"),
-                              { ...state.ticket, panelNumber: state.pannel ? state.pannel : state.pannel_code },
+                              {
+                                ...(state.ticket ? state.ticket : { signCode: state.sign_code }),
+                                panelNumber: state.pannel ? state.pannel : state.pannel_code,
+                              },
                             ])
                           ),
                             console.error(error);

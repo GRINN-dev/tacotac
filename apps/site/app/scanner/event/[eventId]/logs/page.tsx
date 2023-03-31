@@ -118,13 +118,9 @@ const LogsPage = async ({ params: { eventId } }) => {
                     </div>
                     <div className="flex min-w-0 flex-1 items-center justify-between space-x-4 ">
                       <div className="flex items-center justify-center space-x-2">
-                        <p className="text-sm ">{log.status}</p>
+                        <p className="text-sm "> <span>{valueStatus(log.status)} </span></p>
                         <p> - </p>
                         <p className="text-sm ">{log?.payload?.ticket_payload?.email}</p>
-                        <p> - </p>
-                        <p className="text-sm ">
-                          <span>{valueStatus(log.status)} </span>
-                        </p>
                       </div>
                       <div className="whitespace-nowrap text-right text-sm ">
                         <time dateTime={log.updatedAt}>{dayjs(log.updatedAt).format("DD/MM/YYYY - HH:mm:ss")}</time>
