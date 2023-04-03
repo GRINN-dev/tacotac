@@ -9,16 +9,13 @@ interface IDataEvent extends ExtractType<GetEventByIdQuery, "event"> {}
 
 export const ShowCurrentRegistrationAttendee = ({ eventId }) => {
   const [data, setData] = useState<IDataEvent>(null);
-  const [error, setError] = useState(null);
 
   const fetchData = useCallback(async () => {
     try {
       const { event } = await sdk().GetEventById({ eventId });
       setData(event);
-      setError(null);
     } catch (error) {
-      setData(null);
-      setError(error);
+      console.log(error);
     }
   }, []);
 
@@ -34,7 +31,6 @@ export const ShowCurrentRegistrationAttendee = ({ eventId }) => {
     <div>
       {" "}
       {data?.totalConfirmedRegistrations} présents / {data?.totalRegistrations} inscrits{" "}
-      {error && <div className="text-red-300">Une erreur est survenue</div>}
     </div>
   );
 };
