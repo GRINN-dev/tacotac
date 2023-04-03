@@ -1,4 +1,3 @@
-import { useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ArrowBigLeft, List, PlusCircle } from "lucide-react";
 
