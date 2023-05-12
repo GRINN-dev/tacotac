@@ -1,11 +1,15 @@
 import Link from "next/link";
-import { ClipboardCopyIcon, PlusSquare, Send } from "lucide-react";
+import { Attendee } from "@/../../@tacotacIO/codegen/dist";
+import { HelpCircle, PlusSquare } from "lucide-react";
 
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { eventStatusArray } from "@/components/data/status";
+import { buttonVariants } from "@/components/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Collection } from "../../../../../../components/table/Collection";
 import { CopyToClipboard } from "./CopyToClipboard";
+import { ModalStatus } from "./ModalStatus";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
@@ -33,16 +37,31 @@ const AttendeesPage = async ({
     { title: "Details", value: "details", type: Type?.string, isSortable: false, isVisible: true },
   ];
 
-  const flattenedAttendeesFromRegistrations = eventBySlug?.registrations?.nodes?.reduce((acc, { attendeesList }) => {
-    return acc.concat(attendeesList);
-  }, []);
+  const flattenedAttendeesFromRegistrations: Attendee[] = eventBySlug?.registrations?.nodes?.reduce(
+    (acc, { attendeesList }) => {
+      return acc.concat(attendeesList);
+    },
+    []
+  );
 
   const rawAttendees: IData[] = flattenedAttendeesFromRegistrations?.map(
     ({ id, lastname, firstname, email, status, panelNumber, qrCodeUrl, pdfUrl, isInscriptor }) => ({
       Nom: lastname,
       Prenom: firstname,
       email: email,
-      status: status,
+      status: (
+        <div className="flex items-center justify-center space-x-2">
+          <p>{status}</p>
+          <HoverCard>
+            <HoverCardTrigger>
+              <HelpCircle className="h-4 w-4 text-sm" />
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <p className="text-sm">{eventStatusArray.find((value) => value.enum === status)?.name}</p>
+            </HoverCardContent>
+          </HoverCard>
+        </div>
+      ),
       Inscripteur: isInscriptor ? "Oui" : "Non",
       "N° Panneau": panelNumber,
       QrCode: (
@@ -57,7 +76,7 @@ const AttendeesPage = async ({
       ),
       Details: (
         <Link
-          className={buttonVariants({ variant: "outline", size: "sm" })}
+          className={buttonVariants({ variant: "outline", size: "sm" }) + " shadow hover:shadow-lg"}
           href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/${id}`}
         >
           <PlusSquare className="text-primary h-4 w-4 " />
@@ -73,6 +92,7 @@ const AttendeesPage = async ({
           <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
             Tous les participants
           </h2>
+          <ModalStatus />
           <Link
             className={"border-primary h-10 items-center justify-center rounded-md border px-4 py-2"}
             target="_blank"
@@ -84,6 +104,7 @@ const AttendeesPage = async ({
           <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
           <SendAllEmail eventId={eventBySlug?.id} />
         </div>
+
         {flattenedAttendeesFromRegistrations?.length > 0 ? (
           <Collection
             totalCount={eventBySlug?.registrations?.totalCount}
