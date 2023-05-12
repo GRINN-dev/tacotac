@@ -76,7 +76,7 @@ export default function AttendeesLayout({
                   >
                     <DropdownMenuItem className="self-center">
                       <Clipboard aria-hidden className="mr-4 h-4 w-4" />
-                      Charte graphique formulaire
+                      Charte graphique billetterie
                     </DropdownMenuItem>
                   </Link>
                   <Link
