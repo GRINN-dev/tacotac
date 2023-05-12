@@ -118,6 +118,7 @@ export const generateDocsForAttendees = async (
         First_Name: rowData.firstname,
         Last_Name: rowData.lastname,
         Ticket_Number: rowData.ticket_number,
+        Logo: rowData.logo,
         String_Day: dayjs(rowData.starts_at).format("dddd"),
         Day: dayjs(rowData.starts_at).format("DD"),
         Month: dayjs(rowData.starts_at).format("MMMM"),

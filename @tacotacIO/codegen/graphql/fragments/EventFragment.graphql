@@ -19,5 +19,6 @@ fragment MyEvent on Event {
   webhooks
   organizationId
   totalRegistrations
+
   totalConfirmedRegistrations
 }

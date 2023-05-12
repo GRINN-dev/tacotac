@@ -8,7 +8,10 @@ import "prismjs/themes/prism-okaidia.css";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-export const CopyToClipboard: FC = () => {
+export const CopyToClipboard: FC<{
+  organisationSlug: string;
+  eventSlug: string;
+}> = ({ organisationSlug, eventSlug }) => {
   const [copied, setCopied] = useState(false);
   const code = `
   <style>
@@ -21,7 +24,7 @@ export const CopyToClipboard: FC = () => {
       box-shadow: 0 0 5px #ccc;
     }
   </style>
-  <iframe src="https://www.kaypi-app.vercel.app/inscription/the-organisation/canto/iframe" class="my-iframe" />
+  <iframe src={"https://kaypi-app.vercel.app/inscription/${organisationSlug}/${eventSlug}/iframe"} class="my-iframe" />
   `;
 
   // Returns a highlighted HTML string

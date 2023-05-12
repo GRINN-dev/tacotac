@@ -240,7 +240,7 @@ export const Collection = ({
           </DropdownMenu>
           {currentFilter && (
             <div
-              className="rounded-md border border-slate-300 p-2"
+              className="border-primary rounded-md border p-2"
               onClick={() => {
                 router.push(pathname);
                 setCurrentFilter("");
@@ -254,7 +254,7 @@ export const Collection = ({
                   <div className="-m-1.5">
                     <button
                       type="button"
-                      className="focus:none inline-flex rounded-md p-1.5 text-white focus:outline-none"
+                      className="focus:none inline-flex rounded-md p-1.5 focus:outline-none"
                     >
                       <span className="sr-only">Dismiss</span>
                       <XCircle className="h-5 w-5" aria-hidden="true" />
@@ -269,7 +269,7 @@ export const Collection = ({
 
         {/* begin table parts */}
         <div id="organizations" className="mx-auto mt-4 w-full">
-          <table className="flex flex-col rounded-lg border border-slate-300 px-6 py-3">
+          <table className="border-primary flex flex-col rounded-lg border px-6 py-3">
             <thead>
               <tr className="flex items-center">
                 {headerFormat?.map(
@@ -318,7 +318,7 @@ export const Collection = ({
                     (item, index) =>
                       item?.isVisible && (
                         <td
-                          className={` border-t ${
+                          className={`border-primary border-t ${
                             !isPending
                               ? "w-full p-2 text-center "
                               : "m-1  h-[2.05rem] w-full  animate-pulse rounded-lg bg-gray-200 opacity-20"
@@ -349,7 +349,7 @@ export const Collection = ({
               </div>
               <div className="flex flex-1 justify-between sm:justify-end">
                 <Button
-                  className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className=" relative inline-flex items-center rounded-md border bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                   disabled={!pageInfo?.hasPreviousPage}
                   onClick={() => {
                     startTransition(() => {
@@ -368,7 +368,7 @@ export const Collection = ({
                 </Button>
 
                 <Button
-                  className="relative inline-flex items-center rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className=" relative inline-flex items-center rounded-md border  px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                   disabled={!pageInfo?.hasNextPage}
                   onClick={() => {
                     startTransition(() => {

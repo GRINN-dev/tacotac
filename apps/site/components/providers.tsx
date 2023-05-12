@@ -11,5 +11,5 @@ import { ThemeProvider } from "next-themes";
 // * on both the server-side and the client-side.
 
 export default function Providers({ children }: { children: ReactNode }) {
-  return <ThemeProvider attribute="class">{children}</ThemeProvider>;
+  return <ThemeProvider attribute="data-theme">{children}</ThemeProvider>;
 }

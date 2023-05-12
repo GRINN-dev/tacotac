@@ -285,7 +285,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
             onChange={(evt) => setWebhook(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1  shadow-sm  focus:outline-none"
             onClick={() => {
               if (webhook) {
                 setWebhookList([...webhookList, webhook]);
@@ -300,7 +300,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         {webhookList?.map((webhook, index) => (
           <div
             key={webhook + index}
-            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm  focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1  shadow-sm  focus:outline-none"
             onClick={() => removeItemClick(index)}
           >
             {webhook} <MinusCircle className="ml-2" />

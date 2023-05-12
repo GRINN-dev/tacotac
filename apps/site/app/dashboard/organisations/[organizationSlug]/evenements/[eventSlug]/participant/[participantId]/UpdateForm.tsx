@@ -7,20 +7,46 @@ import { toast } from "@/hooks/use-toast";
 import { Trash } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface iUpdateAttendee extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
 
-export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastname, email, status, registrationId }) => {
+export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
+  id,
+  firstname,
+  lastname,
+  email,
+  status,
+  panelNumber,
+  phoneNumber,
+  zipCode,
+  hearAbout,
+  isVip,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -127,7 +153,76 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({ id, firstname, lastnam
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.email?.message}</p>
         )}
       </div>
-
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="phoneNumber">Téléphone</Label>
+        <Input
+          type="number"
+          id="phoneNumber"
+          defaultValue={phoneNumber}
+          placeholder="Obole"
+          {...register("patch.phoneNumber")}
+        />
+        {formState.errors?.patch?.phoneNumber && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.phoneNumber?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="zipCode">Code postale</Label>
+        <Input type="number" id="zipCode" defaultValue={zipCode} placeholder="44000" {...register("patch.zipCode")} />
+        {formState.errors?.patch?.zipCode && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.zipCode?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Controller
+          name={"patch.hearAbout"}
+          control={control}
+          defaultValue={hearAbout}
+          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+            <>
+              <Select onValueChange={onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Comment avez-vous entendu parler de Lille pour le Bien Commun ?" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
+                    <SelectItem value={"autre"}>Autre</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
+            </>
+          )}
+        />
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="isVip">{"Vip"}</Label>
+        <Input
+          type="checkbox"
+          defaultChecked={isVip}
+          id="isVip"
+          className="h-4 w-4 "
+          {...register("patch.isVip", {})}
+        />
+        {formState.errors?.patch?.isVip && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.isVip?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 grid w-full items-center gap-1.5">
+        <Label htmlFor="panelNumber">{"Numéro de panneau"}</Label>
+        <Input
+          type="number"
+          defaultValue={panelNumber}
+          id="panelNumber"
+          {...register("patch.panelNumber", {
+            valueAsNumber: true,
+          })}
+        />
+        {formState.errors?.patch?.panelNumber && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.panelNumber?.message}</p>
+        )}
+      </div>
       <div className="mt-8 flex justify-between gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour

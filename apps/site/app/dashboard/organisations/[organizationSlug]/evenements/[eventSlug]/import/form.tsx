@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, Key, useState, useTransition } from "react";
+import { FC, Key, useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { GetEventBySlugQuery, RegisterAttendeesCsvInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
@@ -8,15 +8,12 @@ import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import SimpleCollection from "@/components/table/SimpleCollection";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
-
 
 interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -36,14 +33,12 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
-
   const [error, setError] = useState<Error | null>(null);
   const [parsedData, setParsedData] = useState([]);
   const router = useRouter();
-  const pathname = usePathname();
-  const { handleSubmit } = useForm<RegisterAttendeesCsvInput>();
+  const { handleSubmit, reset } = useForm<RegisterAttendeesCsvInput>();
   const [csvUploadrender, setCsvUploadRender] = useState([]);
-
+  let isForcingImport: boolean = false;
   const handleCsvUpload = async (csvUpload: any) => {
     setParsedData([]);
     setCsvUploadRender([]);
@@ -73,11 +68,10 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
     });
   };
 
-  const onSubmit = handleSubmit(async () => {
-    console.log(id);
-    await sdk()
+  const onSubmit = handleSubmit(() => {
+    sdk()
       .RegisterAttendeesCsv({
-        input: { eventId: id, attendeesCsv: parsedData },
+        input: { eventId: id, attendeesCsv: parsedData, isForcing: isForcingImport },
       })
       .then((response) => {
         if (response.registerAttendeesCsv.attendeeImports.find(({ errorCode }) => errorCode === "RGNST")) {
@@ -86,6 +80,15 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
             action: (
               <>
                 <div className="flex flex-col">
+                  <button
+                    className={buttonVariants({ size: "lg" })}
+                    onClick={() => {
+                      isForcingImport = true;
+                      onSubmit();
+                    }}
+                  >
+                    Forcer import
+                  </button>
                   <p>
                     {
                       response.registerAttendeesCsv.attendeeImports.find(({ errorCode }) => errorCode === "RGNST")
@@ -101,6 +104,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
               </>
             ),
           });
+          isForcingImport = false;
         } else {
           toast({
             title: "Import terminé",
@@ -113,6 +117,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
               </ToastAction>
             ),
           });
+          isForcingImport = false;
         }
       })
       .catch((error) => {
@@ -129,9 +134,6 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
 
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      {id}
-      {name}
-      jojo{" "}
       <div className="mt-4 grid w-full items-center gap-1.5">
         <div className="my-4 rounded-lg border p-4">
           <div className="flex">
