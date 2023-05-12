@@ -43,6 +43,9 @@ input AttendeeCondition {
   """Checks for equality with the object’s `email` field."""
   email: String
 
+  """Checks for equality with the object’s `firstname` field."""
+  firstname: String
+
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
@@ -86,6 +89,9 @@ input AttendeeFilter {
 
   """Filter by the object’s `email` field."""
   email: StringFilter
+
+  """Filter by the object’s `firstname` field."""
+  firstname: StringFilter
 
   """Filter by the object’s `id` field."""
   id: UUIDFilter
@@ -220,6 +226,8 @@ enum AttendeesOrderBy {
   CREATED_AT_DESC
   EMAIL_ASC
   EMAIL_DESC
+  FIRSTNAME_ASC
+  FIRSTNAME_DESC
   ID_ASC
   ID_DESC
   IS_INSCRIPTOR_ASC
@@ -3369,6 +3377,7 @@ input RegisterAttendeesCsvInput {
   """
   clientMutationId: String
   eventId: UUID!
+  isForcing: Boolean!
 }
 
 """The output of our `registerAttendeesCsv` mutation."""

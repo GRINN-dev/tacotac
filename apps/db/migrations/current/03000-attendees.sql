@@ -68,6 +68,8 @@ create table publ.attendees (
   create index on publ.attendees(zip_code);
   create index on publ.attendees(sign_code);
   create index on publ.attendees(is_inscriptor);
+  create index on publ.attendees(firstname);
+  create index on publ.attendees(lastname);
 
 
 -- RBAC

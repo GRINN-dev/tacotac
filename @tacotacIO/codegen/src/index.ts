@@ -69,6 +69,8 @@ export type AttendeeCondition = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `email` field. */
   email?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `firstname` field. */
+  firstname?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `isInscriptor` field. */
@@ -99,6 +101,8 @@ export type AttendeeFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `email` field. */
   email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `firstname` field. */
+  firstname?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `isInscriptor` field. */
@@ -217,6 +221,8 @@ export enum AttendeesOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   EmailAsc = 'EMAIL_ASC',
   EmailDesc = 'EMAIL_DESC',
+  FirstnameAsc = 'FIRSTNAME_ASC',
+  FirstnameDesc = 'FIRSTNAME_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   IsInscriptorAsc = 'IS_INSCRIPTOR_ASC',
@@ -2817,6 +2823,7 @@ export type RegisterAttendeesCsvInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
   eventId: Scalars['UUID'];
+  isForcing: Scalars['Boolean'];
 };
 
 /** The output of our `registerAttendeesCsv` mutation. */
@@ -4283,7 +4290,6 @@ export type GetEventBySlugQueryVariables = Exact<{
   filter?: InputMaybe<AttendeeFilter>;
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<AttendeesOrderBy> | AttendeesOrderBy>;
 }>;
 
 
@@ -4781,20 +4787,15 @@ export const GetEventByIdDocument = gql`
 ${EventBrandingFragmentFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
 export const GetEventBySlugDocument = gql`
-    query GetEventBySlug($eventSlug: String!, $organizationSlug: String!, $filter: AttendeeFilter, $first: Int, $offset: Int, $orderBy: [AttendeesOrderBy!]) {
+    query GetEventBySlug($eventSlug: String!, $organizationSlug: String!, $filter: AttendeeFilter, $first: Int, $offset: Int) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
     }
-    registrations {
+    registrations(first: $first, offset: $offset) {
       nodes {
-        attendeesList(
-          orderBy: $orderBy
-          offset: $offset
-          first: $first
-          filter: $filter
-        ) {
+        attendeesList(filter: $filter) {
           ...MyAttendee
         }
       }

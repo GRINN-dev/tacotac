@@ -3,8 +3,6 @@
 import { toast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
 
-
-
 import { sdk } from "@/lib/sdk";
 import {
   AlertDialog,
