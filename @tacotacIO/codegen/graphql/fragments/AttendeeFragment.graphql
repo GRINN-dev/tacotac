@@ -13,4 +13,8 @@ fragment MyAttendee on Attendee {
   qrCodeUrl
   pdfUrl
   isInscriptor
+  zipCode
+  isVip
+  hearAbout
+  phoneNumber
 }
