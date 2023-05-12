@@ -23,10 +23,6 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
       [registrationId]
     )
   );
-  console.log(
-    "🚀 ~ file: index.ts:23 ~ constqrCodeGenPdf:Task= ~ attendees:",
-    attendees
-  );
 
   const storePdfBufferForMergedOnInscriptor: Buffer[] = [];
 

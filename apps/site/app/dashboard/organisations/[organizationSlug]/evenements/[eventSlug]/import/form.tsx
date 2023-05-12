@@ -15,7 +15,6 @@ import SimpleCollection from "@/components/table/SimpleCollection";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 
-
 interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
 interface ICsv {
@@ -110,7 +109,10 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
           toast({
             title: "Import terminé",
             action: (
-              <ToastAction onClick={() => router.back()} altText="Retour">
+              <ToastAction
+                onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/import") + 1) + "?reload=true")}
+                altText="Retour"
+              >
                 Retour
               </ToastAction>
             ),

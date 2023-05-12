@@ -7,16 +7,31 @@ import { toast } from "@/hooks/use-toast";
 import { Trash } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface iUpdateAttendee extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
 
@@ -53,7 +68,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push(pathname + "?reload=true");
+      router.push(pathname.substring(0, pathname.lastIndexOf(`/participant/${id}`) + 1) + "?reload=true");
 
       toast({
         title: "Participant mis à jour",
@@ -63,8 +78,8 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
   });
 
   const deleteAttendee = async () => {
-    await sdk().DeleteAttendee({ input: { id } });
-    router.back();
+    await sdk().DeleteRegistration({ input: { id: registrationId } });
+    router.push(pathname.substring(0, pathname.lastIndexOf(`/participant/${id}`) + 1) + "?reload=true");
   };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>

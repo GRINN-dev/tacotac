@@ -28,6 +28,11 @@ mutation RegisterAttendees($input: RegisterAttendeesInput!) {
   registerAttendees(input: $input) {
     registration {
       id
+       attendeesList {
+        id
+        qrCodeUrl
+        pdfUrl
+      }
     }
   }
 }

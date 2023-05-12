@@ -7,13 +7,11 @@ fragment MyEvent on Event {
   addressLine1
   city
   zipCode
-  totalConfirmedRegistrations
   country
   startsAt
   endsAt
   bookingStartsAt
   bookingEndsAt
-
   createdAt
   updatedAt
   placeName
