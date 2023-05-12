@@ -49,6 +49,9 @@ input AttendeeCondition {
   """Checks for equality with the object’s `isInscriptor` field."""
   isInscriptor: Boolean
 
+  """Checks for equality with the object’s `lastname` field."""
+  lastname: String
+
   """Checks for equality with the object’s `phoneNumber` field."""
   phoneNumber: String
 
@@ -89,6 +92,9 @@ input AttendeeFilter {
 
   """Filter by the object’s `isInscriptor` field."""
   isInscriptor: BooleanFilter
+
+  """Filter by the object’s `lastname` field."""
+  lastname: StringFilter
 
   """Negates the expression."""
   not: AttendeeFilter
@@ -218,6 +224,8 @@ enum AttendeesOrderBy {
   ID_DESC
   IS_INSCRIPTOR_ASC
   IS_INSCRIPTOR_DESC
+  LASTNAME_ASC
+  LASTNAME_DESC
   NATURAL
   PHONE_NUMBER_ASC
   PHONE_NUMBER_DESC

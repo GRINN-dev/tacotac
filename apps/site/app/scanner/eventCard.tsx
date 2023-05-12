@@ -6,12 +6,14 @@ import dayjs from "dayjs";
 
 interface EventCardProps extends ExtractArrayType<ExtractType<GetAllEventsQuery, "events">, "nodes"> {}
 
-const EventCard: FC<EventCardProps> = ({ startsAt, slug, placeName, name, id }) => {
+const EventCard: FC<EventCardProps> = ({ startsAt, placeName, name, city }) => {
   return (
     <div className="">
-      <div className="border rounded-[10px] text-right h-full w-full bg-[#D9D9D9] p-4 my-2 ">
-        <div className="font-semibold text-white">{name}</div>
-        {dayjs(startsAt).format("DD/MM/YYYY")} <div>{placeName}</div>
+      <div className="border rounded-[10px]  h-full w-full bg-white shadow-md p-4 my-4 ">
+        <div className="text-xl font-semibold text-left text-black font-zenon-bold">{name}</div>
+        <div className="text-sm text-right font-zenon-regular">
+          <div>Le {dayjs(startsAt).format("DD/MM/YYYY")}</div> <div>à {city}</div>
+        </div>
       </div>
     </div>
   );
