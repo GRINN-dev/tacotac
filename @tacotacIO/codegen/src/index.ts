@@ -4240,7 +4240,7 @@ export type GetAttendeesWithoutMailByRegistrationIdQuery = { __typename?: 'Query
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, totalConfirmedRegistrations?: number | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, totalConfirmedRegistrations?: number | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetAllEventsByOrganizationIdQueryVariables = Exact<{
   organizationId: Scalars['UUID'];
@@ -4702,6 +4702,9 @@ export const GetAllEventsDocument = gql`
   events(orderBy: [CREATED_AT_DESC]) {
     nodes {
       ...MyEvent
+      eventBranding {
+        ...EventBrandingFragment
+      }
     }
     pageInfo {
       hasNextPage
@@ -4712,7 +4715,8 @@ export const GetAllEventsDocument = gql`
     totalCount
   }
 }
-    ${MyEventFragmentDoc}`;
+    ${MyEventFragmentDoc}
+${EventBrandingFragmentFragmentDoc}`;
 export const GetAllEventsByOrganizationIdDocument = gql`
     query GetAllEventsByOrganizationId($organizationId: UUID!) {
   events(orderBy: [CREATED_AT_DESC], condition: {organizationId: $organizationId}) {

@@ -31,11 +31,11 @@
 /* create theming variables for colors, specifically text, primary, secondary, bg and accent for light and dark mode, dark-mode is toggled using data-theme attribute */
 
 :root {
-  --text: #212032;
-  --text-accent: #212032;
-  --primary: #2e51f5;
-  --secondary: #52baea;
-  --bg: #ecf2f9;
+  --text: #1E1D2D;
+    --text-accent: #531E77;
+    --primary: #ED3461;
+    --secondary: #531E77;
+    --bg: #E3EBF4;
   --accent: #ff0ae6;
 }
 

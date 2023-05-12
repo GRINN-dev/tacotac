@@ -2,6 +2,9 @@ query GetAllEvents {
   events(orderBy: [CREATED_AT_DESC]) {
     nodes {
       ...MyEvent
+      eventBranding {
+        ...EventBrandingFragment
+      }
     }
     pageInfo {
       hasNextPage
