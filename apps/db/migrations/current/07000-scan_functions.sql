@@ -24,6 +24,7 @@ DECLARE
   v_attendee_id uuid;
   v_attendee_email text;
   v_panel_number int:= ticket_payload.panel_number;--cast ici du typage car il etait impossible d'insérer tu texte de json en typ int dans attendees par exemple 
+  v_ticket_payload publ.ticket_payload;
 BEGIN
 
       if ticket_payload.sign_code is null then
@@ -33,11 +34,11 @@ BEGIN
         v_attendee_email:=ticket_payload.email;
       else
       --on récupere ici en cas de probleme qr code les infos necessaire de l'attendee via le sign_code
-        select regs.event_id, atts.ticket_number, atts.id, atts.email into v_event_id, v_ticket_number,v_attendee_id, v_attendee_email from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where atts.sign_code=ticket_payload.sign_code;
-        insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_SIGN_CODE',jsonb_build_object('ticket_payload',ticket_payload));
+        select regs.event_id,  atts.id, atts.registration_id, atts.firstname, atts.lastname, atts.ticket_number, atts.panel_number, atts.email into v_ticket_payload from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where atts.sign_code=ticket_payload.sign_code;
+        insert into publ.logs (event_id,status,payload) values (v_ticket_payload.event_id,'WARNING_SIGN_CODE',jsonb_build_object('ticket_payload',v_ticket_payload));
       end if;
 
-      if  ticket_payload.email is null then
+      if  ticket_payload.email is null and ticket_payload.sign_code is null then
         insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_EMAIL',jsonb_build_object('ticket_payload',ticket_payload));
       end if;
 
@@ -93,6 +94,7 @@ DECLARE
   v_ticket_number text;
   v_attendee_email text;
   v_iter int;
+   v_ticket_payload publ.ticket_payload;
 BEGIN
 
     for v_iter in 1..array_length(ticket_payloads,1) loop
@@ -105,11 +107,11 @@ BEGIN
               v_attendee_email:= ticket_payloads[v_iter].email;
             else
             --on récupere ici en cas de probleme qr code les infos necessaire de l'attendee via le sign_code
-              select regs.event_id, atts.ticket_number, atts.id, atts.email into v_event_id, v_ticket_number,v_attendee_id, v_attendee_email from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where atts.sign_code=ticket_payloads[v_iter].sign_code;
-              insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_SIGN_CODE',jsonb_build_object('ticket_payload',ticket_payloads[v_iter],'is_coming_from_offline_mode',true));
+               select regs.event_id,  atts.id, atts.registration_id, atts.firstname, atts.lastname, atts.ticket_number, atts.panel_number, atts.email into v_ticket_payload from publ.attendees atts inner join publ.registrations regs on regs.id=atts.registration_id where atts.sign_code=ticket_payloads[v_iter].sign_code;
+              insert into publ.logs (event_id,status,payload) values (v_ticket_payload.event_id,'WARNING_SIGN_CODE',jsonb_build_object('ticket_payload',v_ticket_payload,'is_coming_from_offline_mode',true));
             end if;
 
-            if  ticket_payloads[v_iter].email is null then
+            if  ticket_payloads[v_iter].email is null and ticket_payloads[v_iter].sign_code is null then
                 insert into publ.logs (event_id,status,payload) values (v_event_id,'WARNING_EMAIL',jsonb_build_object('ticket_payload',ticket_payloads[v_iter],'is_coming_from_offline_mode',true));
             end if;
             
@@ -121,7 +123,7 @@ BEGIN
                         END,
                 email = v_attendee_email, 
                 panel_number = v_panel_number 
-            where atts.id=v_attendee_id and atts.ticket_number=v_ticket_number returning * into v_attendee;
+            where atts.id=v_attendee_id and atts.ticket_number=v_ticket_number or atts.sign_code=ticket_payloads[v_iter].sign_code  returning * into v_attendee;
 
             if not found then
                 insert into publ.logs (event_id,status,payload) values (

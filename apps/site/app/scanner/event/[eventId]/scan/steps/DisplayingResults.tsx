@@ -184,7 +184,10 @@ export const DisplayingResults: FC<{ state: State; dispatch: Dispatch<Event> }> 
                               "offlineData",
                               JSON.stringify([
                                 ...JSON.parse(localStorage.getItem("offlineData") || "[]"),
-                                { ...state.ticket, panelNumber: state.pannel ? state.pannel : state.pannel_code },
+                                {
+                                  ...(state.ticket ? state.ticket : { signCode: state.sign_code }),
+                                  panelNumber: state.pannel ? state.pannel : state.pannel_code,
+                                },
                               ])
                             );
                           }
