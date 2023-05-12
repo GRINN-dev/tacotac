@@ -9,8 +9,6 @@ import installSharedStatic from "./installSharedStatic";
 import installWorkerUtils from "./installWorkerUtils";
 import { installJWTRefresh } from "./installJWTRefresh";
 import { installAuthorizationHeader } from "./installAuthorizationHeader";
-import { installCaptcha } from "./installCaptcha";
-import { installVoyager } from "./installVoyager";
 
 export {
   installDatabasePools,
@@ -24,6 +22,4 @@ export {
   installWorkerUtils,
   installCors,
   installAuthorizationHeader,
-  installCaptcha,
-  installVoyager,
 };

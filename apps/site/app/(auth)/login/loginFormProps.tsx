@@ -1,7 +1,7 @@
-import { LoginInput } from "@tacotacIO/codegen/dist";
+import { LoginInput } from "@/../../@tacotacIO/codegen/dist";
 
 import { sdk } from "@/lib/sdk";
-import { Field, GenericFormProps } from "@/components/generic/generic-form";
+import { Field, GenericFormProps } from "@/components/form/types";
 
 export const getLoginFormProps: () => GenericFormProps<LoginInput> = () => {
   const fields: Field<LoginInput>[] = [
@@ -11,10 +11,9 @@ export const getLoginFormProps: () => GenericFormProps<LoginInput> = () => {
       label: "Email",
       initialValue: "",
     },
-
     {
       name: "password",
-      type: "text",
+      type: "password",
       label: "Password",
       initialValue: "",
     },

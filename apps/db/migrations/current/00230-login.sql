@@ -22,12 +22,7 @@ begin
     -- It's an email
     select users.* into v_user
     from publ.users
-    inner join publ.user_emails
-    on (user_emails.user_id = users.id)
-    where user_emails.email = login.username
-    order by
-      user_emails.is_verified desc, -- Prefer verified email
-      user_emails.created_at asc -- Failing that, prefer the first registered (unverified users _should_ verify before logging in)
+    where email = login.username
     limit 1;
   else
     -- It's a username

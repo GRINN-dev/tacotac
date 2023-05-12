@@ -1,7 +1,7 @@
-import { ResetPasswordInput } from "@tacotacIO/codegen/dist";
+import { ResetPasswordInput } from "@/../../@tacotacIO/codegen/dist";
 
 import { sdk } from "@/lib/sdk";
-import { Field, GenericFormProps } from "@/components/generic/generic-form";
+import { Field, GenericFormProps } from "@/components/form/types";
 
 export const getResetPasswordFormProps: ({
   token,
@@ -14,7 +14,7 @@ export const getResetPasswordFormProps: ({
     {
       name: "newPassword",
       type: "text",
-      label: "Mouveau mot de passe",
+      label: "Nouveau mot de passe",
       initialValue: "",
     },
     {
@@ -22,6 +22,7 @@ export const getResetPasswordFormProps: ({
       type: "text",
       label: "token",
       initialValue: token,
+      hidden: true,
     },
 
     {
@@ -29,6 +30,7 @@ export const getResetPasswordFormProps: ({
       type: "text",
       label: "userId",
       initialValue: userId,
+      hidden: true,
     },
   ];
   const onSubmit = async (data: ResetPasswordInput) => {

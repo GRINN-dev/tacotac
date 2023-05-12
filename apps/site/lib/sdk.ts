@@ -1,39 +1,33 @@
-import { getSdk } from "@tacotacIO/codegen";
-import { GraphQLClient } from "graphql-request";
+import { getSdk } from "@/../../@tacotacIO/codegen/dist";
 
-
-
-
-
-const fetchWrapper = (args) => {
-  return (url, options = {} as any) => {
-    const headers = { "Content-Type": "application/json" };
-    const defaultOptions = {
+export const fetchWrapper = (args) => {
+  return (url, options: RequestInit) => {
+    const headers = {
+      ...{ "Content-Type": "application/json" },
+      ...options.headers,
+      ...args?.headers,
+    };
+    const defaultOptions: RequestInit = {
       method: "GET",
       credentials: "include",
-      headers: { ...headers, ...options.headers, ...args?.headers },
-      cache: "no-store" || options.cache,
       ...options,
+      headers,
+      cache: "no-store" || options.cache,
     };
-    console.log();
-    console.log();
-    console.log();
-    console.log("fetchWrapper", { url, options, defaultOptions });
-    console.log();
-    console.log();
-    console.log();
     return fetch(url, defaultOptions);
   };
 };
 
 export const sdk = (args?: any) =>
-  getSdk(
-    new GraphQLClient(
-      process.env.NEXT_PUBLIC_API_ENDPOINT
-        ? process.env.NEXT_PUBLIC_API_ENDPOINT + "/graphql"
-        : "http://localhost:8000/graphql",
-      {
-        fetch: fetchWrapper(args),
-      }
-    )
-  );
+  getSdk((doc, vars, options: RequestInit) => {
+    const url = process.env.NEXT_PUBLIC_API_ENDPOINT
+      ? process.env.NEXT_PUBLIC_API_ENDPOINT + "/graphql"
+      : "http://localhost:8000/graphql";
+    return fetchWrapper(args)(url, {
+      ...options,
+      method: "POST",
+      body: JSON.stringify({ query: doc, variables: vars }),
+    })
+      .then((res) => res.json())
+      .then(({ data }) => data);
+  });

@@ -1,10 +1,11 @@
+import { gql, makeExtendSchemaPlugin } from "graphile-utils";
+import { sendCookieToken, signToken } from "../utils/signToken";
 import { login as loginUtil } from "../utils/login";
 
 import { OurGraphQLContext } from "../middleware/installPostGraphile";
 import { ERROR_MESSAGE_OVERRIDES } from "../utils/handleErrors";
-import { makeExtendSchemaPlugin, gql } from "postgraphile";
 
-const AuthPlugin = makeExtendSchemaPlugin(build => ({
+const AuthPlugin = makeExtendSchemaPlugin((build) => ({
   typeDefs: gql`
     input RegisterInput {
       username: String
@@ -122,7 +123,16 @@ const AuthPlugin = makeExtendSchemaPlugin(build => ({
             )
             select new_user.id as user_id, new_session.uuid as session_id
             from new_user, new_session`,
-            [username, email, firstname, lastname, avatarUrl, password]
+            [
+              username ||
+                // generate a random username if none is provided
+                Math.random().toString(36).substring(7),
+              email,
+              firstname,
+              lastname,
+              avatarUrl,
+              password,
+            ]
           );
 
           if (!details || !details.user_id) {

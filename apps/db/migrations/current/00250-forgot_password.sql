@@ -4,7 +4,7 @@
  * account exists by the email address, so we email the entered email address
  * whether or not it's registered. If it's not registered, we track these
  * attempts in `unregistered_email_password_resets` to ensure that we don't
- * allow spamming the address; otherwise we store it to `user_email_secrets`.
+ * allow spamming the address; otherwise we store it to `user_secrets`.
  *
  * `publ.forgot_password` is responsible for checking these things and
  * queueing a reset password token to be emailed to the user. For what happens
@@ -33,21 +33,21 @@ comment on column priv.unregistered_email_password_resets.latest_attempt is
 
 create function publ.forgot_password(email citext) returns void as $$
 declare
-  v_user_email publ.user_emails;
+  v_user publ.users;
   v_token text;
   v_token_min_duration_between_emails interval = interval '3 minutes';
   v_token_max_duration interval = interval '3 days';
   v_now timestamptz = clock_timestamp(); -- Function can be called multiple during transaction
   v_latest_attempt timestamptz;
 begin
-  -- Find the matching user_email:
-  select user_emails.* into v_user_email
-  from publ.user_emails
-  where user_emails.email = forgot_password.email
+  -- Find the matching user:
+  select users.* into v_user
+  from publ.users
+  where users.email = forgot_password.email
   order by is_verified desc, id desc;
 
   -- If there is no match:
-  if v_user_email is null then
+  if v_user is null then
     -- This email doesn't exist in the system; trigger an email stating as much.
 
     -- We do not allow this email to be triggered more than once every 15
@@ -76,8 +76,8 @@ begin
   -- See if we've triggered a reset recently:
   if exists(
     select 1
-    from priv.user_email_secrets
-    where user_email_id = v_user_email.id
+    from priv.user_secrets
+    where user_id = v_user.id
     and password_reset_email_sent_at is not null
     and password_reset_email_sent_at > v_now - v_token_min_duration_between_emails
   ) then
@@ -102,18 +102,18 @@ begin
       else reset_password_token_generated
       end
     )
-  where user_id = v_user_email.user_id
+  where user_id = v_user.user_id
   returning reset_password_token into v_token;
 
   -- Don't allow spamming an email:
-  update priv.user_email_secrets
+  update priv.user_secrets
   set password_reset_email_sent_at = v_now
-  where user_email_id = v_user_email.id;
+  where user_id = v_user.id;
 
   -- Trigger email send:
   perform graphile_worker.add_job(
     'user__forgot_password',
-    json_build_object('id', v_user_email.user_id, 'email', v_user_email.email::text, 'token', v_token)
+    json_build_object('id', v_user.id, 'email', v_user.email::text, 'token', v_token)
   );
 
 end;
@@ -121,5 +121,3 @@ $$ language plpgsql strict security definer volatile set search_path to pg_catal
 
 comment on function publ.forgot_password(email public.citext) is
   E'If you''ve forgotten your password, give us one of your email addresses and we''ll send you a reset token. Note this only works if you have added an email address!';
-
-grant execute on function publ.forgot_password(citext) to :DATABASE_VISITOR;

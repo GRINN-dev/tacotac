@@ -1,7 +1,7 @@
-import { ForgotPasswordInput } from "@tacotacIO/codegen/dist";
+import { ForgotPasswordInput } from "@/../../@tacotacIO/codegen/dist";
 
 import { sdk } from "@/lib/sdk";
-import { Field, GenericFormProps } from "@/components/generic/generic-form";
+import { Field, GenericFormProps } from "@/components/form/types";
 
 export const getForgotPasswordFormProps: () => GenericFormProps<ForgotPasswordInput> = () => {
   const fields: Field<ForgotPasswordInput>[] = [

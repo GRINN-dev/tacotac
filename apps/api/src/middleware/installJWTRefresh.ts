@@ -1,6 +1,5 @@
 import jwtPkg, { JwtPayload } from "jsonwebtoken";
 import { Express } from "express";
-import { sendCookieToken, signToken } from "../utils/signToken";
 import { login } from "../utils/login";
 const { verify } = jwtPkg;
 
@@ -43,7 +42,9 @@ export const installJWTRefresh = (app: Express) => {
         }
       } catch (err) {
         console.error(err);
-        return;
+        return res
+          .status(401)
+          .send({ ok: false, accessToken: "", refreshToken: "" });
       }
     }
 

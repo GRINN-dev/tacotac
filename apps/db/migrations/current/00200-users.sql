@@ -5,14 +5,16 @@
 drop table if exists publ.users cascade;
 create table publ.users (
     id uuid not null default uuid_generate_v4() primary key unique, 
-    username citext not null unique check(length(username) >= 2 and length(username) <= 24 and username ~ '^[a-zA-Z]([_]?[a-zA-Z0-9])+$'),
+    username citext not null unique default uuid_generate_v4(),
     firstname text not null,
     lastname text not null,
     avatar_url text check(avatar_url ~ '^https?://[^/]+'),
     is_admin boolean not null default false,
     is_volunteer boolean not null default false,
-    phone_number text, 
+    phone_number text,   
+    email citext not null check (email ~ '[^@]+@[^@]+\.[^@]+'),
     is_verified boolean not null default false,
+    is_onboarded boolean not null default false,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );
@@ -21,10 +23,13 @@ create table publ.users (
   create index on publ.users(created_at);
   create index on publ.users(updated_at);
   create index on publ.users(username);
+  create index on publ.users(email);
+  create index on publ.users(is_volunteer);
+  create index on publ.users(lastname);
 
 -- RBAC
   grant select on publ.users to :DATABASE_VISITOR; 
-  grant update (firstname, lastname, avatar_url, is_volunteer, username, phone_number) on publ.users to :DATABASE_VISITOR;
+  grant update (firstname, lastname, avatar_url, is_volunteer, username, phone_number, is_onboarded) on publ.users to :DATABASE_VISITOR;
   grant delete on publ.users to :DATABASE_VISITOR;
 
 -- triggers
@@ -126,19 +131,32 @@ create table priv.user_secrets (
   failed_reset_password_attempts int not null default 0,
   first_failed_reset_password_attempt timestamptz,
   delete_account_token text,
-  delete_account_token_generated timestamptz
+  delete_account_token_generated timestamptz,
+  verification_token text,
+  verification_email_sent_at timestamptz,
+  password_reset_email_sent_at timestamptz
 );
 alter table priv.user_secrets enable row level security;
 comment on table priv.user_secrets is
   E'The contents of this table should never be visible to the user. Contains data mostly related to authentication.';
+
+
+
+
 
 /*
  * When we insert into `users` we _always_ want there to be a matching
  * `user_secrets` entry, so we have a trigger to enforce this:
  */
 create function priv.tg_user_secrets__insert_with_user() returns trigger as $$
-begin
-  insert into priv.user_secrets(user_id) values(NEW.id);
+declare
+  v_verification_token text;
+begin  
+  if NEW.is_verified is false then
+    v_verification_token = encode(gen_random_bytes(7), 'hex');
+  end if;
+
+  insert into priv.user_secrets(user_id, verification_token) values(NEW.id, v_verification_token);
   return NEW;
 end;
 $$ language plpgsql volatile set search_path to pg_catalog, public, pg_temp;
@@ -148,6 +166,13 @@ create trigger _500_insert_secrets
   execute procedure priv.tg_user_secrets__insert_with_user();
 comment on function priv.tg_user_secrets__insert_with_user() is
   E'Ensures that every user record has an associated user_secret record.';
+
+create trigger _900_send_verification_email
+  after insert on publ.users
+  for each row
+  when (NEW.is_verified is false)
+  execute procedure
+   priv.tg__add_job('users__send_verification_email');
 
 /*
  * Because you can register with username/password or using OAuth (social

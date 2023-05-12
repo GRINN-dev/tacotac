@@ -6,8 +6,5 @@ fragment MyUser on User {
   isAdmin
   createdAt
   updatedAt
-  userEmailsList {
-    id
-    email
-  }
+  email
 }

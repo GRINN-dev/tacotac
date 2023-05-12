@@ -2,7 +2,7 @@ import Link from "next/link"
 
 import { ForgotPasswordForm } from "./ForgotPasswordForm"
 
-export default async function ForgotPassordPage() {
+export default async function ForgotPasswordPage() {
   return (
     <div>
       <h1>Mot de passe oublié</h1>

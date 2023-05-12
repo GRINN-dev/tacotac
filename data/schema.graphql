@@ -704,38 +704,6 @@ type CreateUserAuthenticationPayload {
   ): UserAuthenticationsEdge
 }
 
-"""All input for the create `UserEmail` mutation."""
-input CreateUserEmailInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `UserEmail` to be created by this mutation."""
-  userEmail: UserEmailInput!
-}
-
-"""The output of our create `UserEmail` mutation."""
-type CreateUserEmailPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `User` that is related to this `UserEmail`."""
-  user: User
-
-  """The `UserEmail` that was created by this mutation."""
-  userEmail: UserEmail
-}
-
 """All input for the create `User` mutation."""
 input CreateUserInput {
   """
@@ -1128,37 +1096,6 @@ type DeleteUserAuthenticationPayload {
     """The method to use when ordering `UserAuthentication`."""
     orderBy: [UserAuthenticationsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserAuthenticationsEdge
-}
-
-"""All input for the `deleteUserEmail` mutation."""
-input DeleteUserEmailInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  id: UUID!
-}
-
-"""The output of our delete `UserEmail` mutation."""
-type DeleteUserEmailPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  deletedUserEmailNodeId: ID
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `User` that is related to this `UserEmail`."""
-  user: User
-
-  """The `UserEmail` that was deleted by this mutation."""
-  userEmail: UserEmail
 }
 
 """All input for the `deleteUser` mutation."""
@@ -2060,34 +1997,6 @@ input LogsStatusFilter {
   notIn: [LogsStatus!]
 }
 
-"""All input for the `makeEmailPrimary` mutation."""
-input MakeEmailPrimaryInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  emailId: UUID!
-}
-
-"""The output of our `makeEmailPrimary` mutation."""
-type MakeEmailPrimaryPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `User` that is related to this `UserEmail`."""
-  user: User
-  userEmail: UserEmail
-}
-
 """
 The root mutation type which contains root level fields which mutate data.
 """
@@ -2182,14 +2091,6 @@ type Mutation {
     input: CreateUserAuthenticationInput!
   ): CreateUserAuthenticationPayload
 
-  """Creates a single `UserEmail`."""
-  createUserEmail(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateUserEmailInput!
-  ): CreateUserEmailPayload
-
   """Deletes a single `Attendee` using a unique key."""
   deleteAttendee(
     """
@@ -2268,14 +2169,6 @@ type Mutation {
     input: DeleteUserAuthenticationInput!
   ): DeleteUserAuthenticationPayload
 
-  """Deletes a single `UserEmail` using a unique key."""
-  deleteUserEmail(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteUserEmailInput!
-  ): DeleteUserEmailPayload
-
   """
   If you've forgotten your password, give us one of your email addresses and we'll send you a reset token. Note this only works if you have added an email address!
   """
@@ -2306,16 +2199,6 @@ type Mutation {
   Use this mutation to logout from your account. Don't forget to clear the client state!
   """
   logout: LogoutPayload
-
-  """
-  Your primary email is where we'll notify of account events; other emails may be used for discovery or login. Use this when you're changing your email address.
-  """
-  makeEmailPrimary(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: MakeEmailPrimaryInput!
-  ): MakeEmailPrimaryPayload
 
   """
   Use this mutation to create an account on our system. This may only be used if you are logged out.
@@ -2480,14 +2363,6 @@ type Mutation {
     """
     input: UpdateUserAuthenticationInput!
   ): UpdateUserAuthenticationPayload
-
-  """Updates a single `UserEmail` using a unique key and a patch."""
-  updateUserEmail(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateUserEmailInput!
-  ): UpdateUserEmailPayload
 
   """
   Once you have received a verification token for your email, you may call this mutation with that token to make your email verified.
@@ -3307,30 +3182,6 @@ type Query {
     orderBy: [UserAuthenticationsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserAuthenticationsConnection
   userByUsername(username: String!): User
-  userEmail(id: UUID!): UserEmail
-  userEmailByUserIdAndEmail(email: String!, userId: UUID!): UserEmail
-
-  """Reads a set of `UserEmail`."""
-  userEmailsList(
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: UserEmailCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: UserEmailFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Skip the first `n` values."""
-    offset: Int
-
-    """The method to use when ordering `UserEmail`."""
-    orderBy: [UserEmailsOrderBy!]
-  ): [UserEmail!]
 
   """Reads and enables pagination through a set of `User`."""
   users(
@@ -3650,7 +3501,7 @@ input ResendEmailVerificationCodeInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  emailId: UUID!
+  userId: UUID!
 }
 
 """The output of our `resendEmailVerificationCode` mutation."""
@@ -3846,17 +3697,43 @@ input StringFilter {
   """
   distinctFrom: String
 
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: String
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: String
+
   """Equal to the specified value."""
   equalTo: String
+
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: String
 
   """Greater than the specified value."""
   greaterThan: String
 
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: String
+
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: String
 
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: String
+
   """Included in the specified list."""
   in: [String!]
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
+  """Contains the specified string (case-sensitive)."""
+  includes: String
 
   """Contains the specified string (case-insensitive)."""
   includesInsensitive: String
@@ -3869,17 +3746,78 @@ input StringFilter {
   """Less than the specified value."""
   lessThan: String
 
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: String
+
   """Less than or equal to the specified value."""
   lessThanOrEqualTo: String
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
 
   """Equal to the specified value, treating null like an ordinary value."""
   notDistinctFrom: String
 
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: String
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: String
+
   """Not equal to the specified value."""
   notEqualTo: String
 
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: String
+
   """Not included in the specified list."""
   notIn: [String!]
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: String
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: String
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: String
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: String
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: String
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: String
 }
 
 """
@@ -4310,41 +4248,6 @@ type UpdateUserAuthenticationPayload {
   ): UserAuthenticationsEdge
 }
 
-"""All input for the `updateUserEmail` mutation."""
-input UpdateUserEmailInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  id: UUID!
-
-  """
-  An object where the defined keys will be set on the `UserEmail` being updated.
-  """
-  patch: UserEmailPatch!
-}
-
-"""The output of our update `UserEmail` mutation."""
-type UpdateUserEmailPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """Reads a single `User` that is related to this `UserEmail`."""
-  user: User
-
-  """The `UserEmail` that was updated by this mutation."""
-  userEmail: UserEmail
-}
-
 """All input for the `updateUser` mutation."""
 input UpdateUserInput {
   """
@@ -4390,6 +4293,7 @@ type User {
   """Optional avatar URL."""
   avatarUrl: String
   createdAt: Datetime!
+  email: String!
   firstname: String!
   hasPassword: Boolean
 
@@ -4398,6 +4302,7 @@ type User {
 
   """If true, the user has elevated privileges."""
   isAdmin: Boolean!
+  isOnboarded: Boolean!
   isVerified: Boolean!
   isVolunteer: Boolean!
   lastname: String!
@@ -4473,28 +4378,6 @@ type User {
     """The method to use when ordering `UserAuthentication`."""
     orderBy: [UserAuthenticationsOrderBy!] = [PRIMARY_KEY_ASC]
   ): UserAuthenticationsConnection!
-
-  """Reads and enables pagination through a set of `UserEmail`."""
-  userEmailsList(
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: UserEmailCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: UserEmailFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Skip the first `n` values."""
-    offset: Int
-
-    """The method to use when ordering `UserEmail`."""
-    orderBy: [UserEmailsOrderBy!]
-  ): [UserEmail!]!
 
   """Public-facing username (or 'handle') of the user."""
   username: String!
@@ -4644,121 +4527,23 @@ input UserCondition {
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
+  """Checks for equality with the object’s `email` field."""
+  email: String
+
   """Checks for equality with the object’s `id` field."""
   id: UUID
+
+  """Checks for equality with the object’s `isVolunteer` field."""
+  isVolunteer: Boolean
+
+  """Checks for equality with the object’s `lastname` field."""
+  lastname: String
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
 
   """Checks for equality with the object’s `username` field."""
   username: String
-}
-
-"""A user's email address."""
-type UserEmail {
-  createdAt: Datetime!
-
-  """The user's email address."""
-  email: String!
-  id: UUID!
-  isPrimary: Boolean!
-
-  """
-  True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise.
-  """
-  isVerified: Boolean!
-  updatedAt: Datetime!
-
-  """Reads a single `User` that is related to this `UserEmail`."""
-  user: User
-  userId: UUID!
-}
-
-"""
-A condition to be used against `UserEmail` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input UserEmailCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: UUID
-
-  """Checks for equality with the object’s `isPrimary` field."""
-  isPrimary: Boolean
-
-  """Checks for equality with the object’s `userId` field."""
-  userId: UUID
-}
-
-"""
-A filter to be used against `UserEmail` object types. All fields are combined with a logical ‘and.’
-"""
-input UserEmailFilter {
-  """Checks for all expressions in this list."""
-  and: [UserEmailFilter!]
-
-  """Filter by the object’s `id` field."""
-  id: UUIDFilter
-
-  """Filter by the object’s `isPrimary` field."""
-  isPrimary: BooleanFilter
-
-  """Negates the expression."""
-  not: UserEmailFilter
-
-  """Checks for any expressions in this list."""
-  or: [UserEmailFilter!]
-
-  """Filter by the object’s `userId` field."""
-  userId: UUIDFilter
-}
-
-"""An input for mutations affecting `UserEmail`"""
-input UserEmailInput {
-  createdAt: Datetime
-
-  """The user's email address."""
-  email: String!
-  id: UUID
-  isPrimary: Boolean
-
-  """
-  True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise.
-  """
-  isVerified: Boolean
-  updatedAt: Datetime
-  userId: UUID
-}
-
-"""
-Represents an update to a `UserEmail`. Fields that are set will be updated.
-"""
-input UserEmailPatch {
-  createdAt: Datetime
-
-  """The user's email address."""
-  email: String
-  id: UUID
-  isPrimary: Boolean
-
-  """
-  True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise.
-  """
-  isVerified: Boolean
-  updatedAt: Datetime
-  userId: UUID
-}
-
-"""Methods to use when ordering `UserEmail`."""
-enum UserEmailsOrderBy {
-  ID_ASC
-  ID_DESC
-  IS_PRIMARY_ASC
-  IS_PRIMARY_DESC
-  NATURAL
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  USER_ID_ASC
-  USER_ID_DESC
 }
 
 """
@@ -4771,11 +4556,20 @@ input UserFilter {
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
 
+  """Filter by the object’s `email` field."""
+  email: StringFilter
+
   """Filter by the object’s `hasPassword` field."""
   hasPassword: BooleanFilter
 
   """Filter by the object’s `id` field."""
   id: UUIDFilter
+
+  """Filter by the object’s `isVolunteer` field."""
+  isVolunteer: BooleanFilter
+
+  """Filter by the object’s `lastname` field."""
+  lastname: StringFilter
 
   """Negates the expression."""
   not: UserFilter
@@ -4795,6 +4589,7 @@ input UserInput {
   """Optional avatar URL."""
   avatarUrl: String
   createdAt: Datetime
+  email: String!
   firstname: String!
 
   """Unique identifier for the user."""
@@ -4802,6 +4597,7 @@ input UserInput {
 
   """If true, the user has elevated privileges."""
   isAdmin: Boolean
+  isOnboarded: Boolean
   isVerified: Boolean
   isVolunteer: Boolean
   lastname: String!
@@ -4809,7 +4605,7 @@ input UserInput {
   updatedAt: Datetime
 
   """Public-facing username (or 'handle') of the user."""
-  username: String!
+  username: String
 }
 
 """Represents an update to a `User`. Fields that are set will be updated."""
@@ -4817,6 +4613,7 @@ input UserPatch {
   """Optional avatar URL."""
   avatarUrl: String
   createdAt: Datetime
+  email: String
   firstname: String
 
   """Unique identifier for the user."""
@@ -4824,6 +4621,7 @@ input UserPatch {
 
   """If true, the user has elevated privileges."""
   isAdmin: Boolean
+  isOnboarded: Boolean
   isVerified: Boolean
   isVolunteer: Boolean
   lastname: String
@@ -4869,8 +4667,14 @@ type UsersEdge {
 enum UsersOrderBy {
   CREATED_AT_ASC
   CREATED_AT_DESC
+  EMAIL_ASC
+  EMAIL_DESC
   ID_ASC
   ID_DESC
+  IS_VOLUNTEER_ASC
+  IS_VOLUNTEER_DESC
+  LASTNAME_ASC
+  LASTNAME_DESC
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
@@ -4888,7 +4692,7 @@ input VerifyEmailInput {
   """
   clientMutationId: String
   token: String!
-  userEmailId: UUID!
+  userId: UUID!
 }
 
 """The output of our `verifyEmail` mutation."""

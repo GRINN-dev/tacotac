@@ -30,12 +30,12 @@
 
 /* create theming variables for colors, specifically text, primary, secondary, bg and accent for light and dark mode, dark-mode is toggled using data-theme attribute */
 
-:root {
-  --text: #1E1D2D;
-    --text-accent: #531E77;
-    --primary: #ED3461;
-    --secondary: #531E77;
-    --bg: #E3EBF4;
+/* :root {
+  --text: #1e1d2d;
+  --text-accent: #531e77;
+  --primary: #ed3461;
+  --secondary: #531e77;
+  --bg: #e3ebf4;
   --accent: #ff0ae6;
 }
 
@@ -46,4 +46,82 @@
   --secondary: #52baea;
   --bg: #212032;
   --accent: #ff0ae6;
+} */
+
+@layer base {
+  :root {
+    --background: hsl(0 0% 100%);
+    --foreground: #20404e;
+
+    --muted: hsl(210 40% 96.1%);
+    --muted-foreground: hsl(215.4 16.3% 46.9%);
+
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(222.2 47.4% 11.2%);
+
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(222.2 47.4% 11.2%);
+
+    --border: hsl(214.3 31.8% 91.4%);
+    --input: hsl(214.3 31.8% 91.4%);
+
+    --primary: #20404e;
+    --primary-foreground: hsl(210 40% 98%);
+
+    --secondary: hsl(210 40% 96.1%);
+    --secondary-foreground: #1e3742;
+
+    --accent: hsl(41, 40%, 97%);
+    --accent-foreground: hsl(41, 99%, 45%);
+
+    --destructive: hsl(0 100% 50%);
+    --destructive-foreground: hsl(210 40% 98%);
+
+    --ring: hsl(215 20.2% 65.1%);
+
+    --radius: 0.5rem;
+  }
+
+  [data-theme="dark"] {
+    --background: hsl(224 71% 4%);
+    --foreground: hsl(213 31% 91%);
+
+    --muted: hsl(223 47% 11%);
+    --muted-foreground: hsl(215.4 16.3% 56.9%);
+
+    --popover: hsl(224 71% 4%);
+    --popover-foreground: hsl(215 20.2% 65.1%);
+
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(222.2 47.4% 11.2%);
+
+    --border: hsl(216 34% 17%);
+    --input: hsl(216 34% 17%);
+
+    --primary: hsl(210 40% 98%);
+    --primary-foreground: hsl(222.2 47.4% 1.2%);
+
+    --secondary: hsl(222.2 47.4% 11.2%);
+    --secondary-foreground: hsl(210 40% 98%);
+
+    --accent: hsl(216 34% 17%);
+    --accent-foreground: hsl(210 40% 98%);
+
+    --destructive: hsl(0 63% 31%);
+    --destructive-foreground: hsl(210 40% 98%);
+
+    --ring: hsl(216 34% 17%);
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }

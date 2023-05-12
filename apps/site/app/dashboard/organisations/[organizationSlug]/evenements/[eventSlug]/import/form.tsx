@@ -37,6 +37,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
   const [parsedData, setParsedData] = useState([]);
   const router = useRouter();
   const { handleSubmit, reset } = useForm<RegisterAttendeesCsvInput>();
+  const pathname = usePathname();
   const [csvUploadrender, setCsvUploadRender] = useState([]);
   let isForcingImport: boolean = false;
   const handleCsvUpload = async (csvUpload: any) => {

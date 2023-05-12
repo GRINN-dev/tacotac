@@ -8,7 +8,7 @@
 
 create function publ.request_account_deletion() returns boolean as $$
 declare
-  v_user_email publ.user_emails;
+  v_user publ.users;
   v_token text;
   v_token_max_duration interval = interval '3 days';
 begin
@@ -17,10 +17,10 @@ begin
   end if;
 
   -- Get the email to send account deletion token to
-  select * into v_user_email
-    from publ.user_emails
-    where user_id = publ.current_user_id()
-    order by is_primary desc, is_verified desc, id desc
+  select * into v_user
+    from publ.users
+    where id = publ.current_user_id()
+    order by is_verified desc, id desc
     limit 1;
 
   -- Fetch or generate token
@@ -44,7 +44,7 @@ begin
   returning delete_account_token into v_token;
 
   -- Trigger email send
-  perform graphile_worker.add_job('user__send_delete_account_email', json_build_object('email', v_user_email.email::text, 'token', v_token));
+  perform graphile_worker.add_job('user__send_delete_account_email', json_build_object('email', v_user.email::text, 'token', v_token));
   return true;
 end;
 $$ language plpgsql strict security definer volatile set search_path to pg_catalog, public, pg_temp;

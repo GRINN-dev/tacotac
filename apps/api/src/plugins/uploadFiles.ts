@@ -4,8 +4,8 @@ import {
   PresignedPost,
   PresignedPostOptions,
 } from "@aws-sdk/s3-presigned-post";
-import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { OurGraphQLContext } from "../middlewares/installPostgraphile";
+import { S3Client } from "@aws-sdk/client-s3";
+import { OurGraphQLContext } from "../middleware/installPostGraphile";
 
 /*
 Commande pour modification des cors : s3cmd setcors ./cors.xml s3://test-izicredit
@@ -85,44 +85,6 @@ export const GeneratePresignedUrl = makeExtendSchemaPlugin(() => {
           } catch (e) {
             console.error(e);
             throw e;
-          }
-        },
-
-        deleteFile: async (
-          _query,
-          args,
-          context: OurGraphQLContext,
-          _resolveInfo
-        ) => {
-          const { key } = args.input;
-          const { rootPgPool } = context;
-
-          // a "key" is the name of the file stored into our bucket
-          try {
-            await client.send(
-              new DeleteObjectCommand({
-                Bucket: process.env.BUCKET_NAME!,
-                Key: key,
-              })
-            );
-
-            const {
-              rows: [document],
-            } = await rootPgPool.query(
-              `DELETE FROM publ.documents
-              WHERE file_url = $1
-              RETURNING *;
-              `,
-              [key]
-            );
-            return {
-              success: true,
-            };
-          } catch (e) {
-            console.error(e);
-            return {
-              success: false,
-            };
           }
         },
       },
