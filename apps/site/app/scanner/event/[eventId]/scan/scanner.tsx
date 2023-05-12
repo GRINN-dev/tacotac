@@ -73,8 +73,8 @@ export const Scanner = () => {
         <ScanningTicket state={state} dispatch={dispatch} />
       ) : state.step === "scanning_ticket_success" ? (
         <div className="flex flex-col items-center justify-center mx-auto">
-          <div className="flex items-center mb-8">
-            <p className="font-semibold text-green-700">Scanning 1/2</p>{" "}
+          <div className="flex items-center mb-2">
+            <p className="font-semibold text-green-700 font-zenon-bold">Scanning 1/2</p>{" "}
           </div>
           <button
             className={buttonVariants({ size: "sm" })}
@@ -88,7 +88,7 @@ export const Scanner = () => {
           </button>
         </div>
       ) : state.step === "scanning_pannel" ? (
-        <>
+        <div className="flex flex-col items-center justify-center">
           <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
@@ -101,9 +101,9 @@ export const Scanner = () => {
               });
             }}
           >
-            trigger error pannel
+            Entrée manuelle du panneau
           </button>
-          <button
+          {/* <button
             className={buttonVariants({ size: "sm" })}
             onClick={() => {
               dispatch({
@@ -115,8 +115,8 @@ export const Scanner = () => {
             }}
           >
             Assigner num de panneau
-          </button>
-        </>
+          </button> */}
+        </div>
       ) : state.step === "manually_entering_ticket" ? (
         <ManuallyEnteringTicket state={state} dispatch={dispatch} />
       ) : state.step === "manually_entering_pannel" ? (

@@ -2,6 +2,9 @@ query GetAllEvents {
   events(orderBy: [CREATED_AT_DESC]) {
     nodes {
       ...MyEvent
+      eventBranding {
+        ...EventBrandingFragment
+      }
     }
     pageInfo {
       hasNextPage
@@ -40,6 +43,7 @@ query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
 query GetEventById(
   $eventId: UUID!
   $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC
+  $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC
   $first: Int
   $offset: Int
   $filter: LogFilter
@@ -50,6 +54,13 @@ query GetEventById(
       ...EventBrandingFragment
     }
     capacity
+    registrations {
+      nodes {
+        attendeesList(orderBy: $attendeesOrderBy) {
+          ...MyAttendee
+        }
+      }
+    }
     logsList(
       orderBy: $orderBy
       filter: $filter

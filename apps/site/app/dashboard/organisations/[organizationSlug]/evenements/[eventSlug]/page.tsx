@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { ClipboardCopyIcon, PlusSquare, Send } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -11,8 +9,10 @@ import { CopyToClipboard } from "./CopyToClipboard";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
-
-const AttendeesPage = async ({ params: { organizationSlug, eventSlug }, searchParams: { offset, filter, first } }) => {
+const AttendeesPage = async ({
+  params: { organizationSlug, eventSlug },
+  searchParams: { offset, filter, first, orderBy },
+}) => {
   const { eventBySlug } = await sdk().GetEventBySlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
@@ -60,7 +60,7 @@ const AttendeesPage = async ({ params: { organizationSlug, eventSlug }, searchPa
           className={buttonVariants({ variant: "outline", size: "sm" })}
           href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/${id}`}
         >
-          <PlusSquare className="h-4 w-4 " />
+          <PlusSquare className="text-primary h-4 w-4 " />
         </Link>
       ),
     })
@@ -74,7 +74,7 @@ const AttendeesPage = async ({ params: { organizationSlug, eventSlug }, searchPa
             Tous les participants
           </h2>
           <Link
-            className={buttonVariants({ variant: "outline", size: "lg" })}
+            className={"border-primary h-10 items-center justify-center rounded-md border px-4 py-2"}
             target="_blank"
             href={`/inscription/${organizationSlug}/${eventSlug}/iframe`}
           >

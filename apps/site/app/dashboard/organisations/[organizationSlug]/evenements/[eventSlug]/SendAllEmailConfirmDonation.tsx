@@ -3,8 +3,6 @@
 import { toast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
 
-
-
 import { sdk } from "@/lib/sdk";
 import {
   AlertDialog,
@@ -43,12 +41,10 @@ export const SendAllEmailConfirmDonation = ({ eventId }) => {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <span>
-          <Button variant="outline">
-            <Send className="mr-2 h-4 w-4" />
+          <Button className="border-primary border" variant="outline">
+            <Send className="text-primary mr-2 h-4 w-4" />
             Rappel don
           </Button>
-          </span>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

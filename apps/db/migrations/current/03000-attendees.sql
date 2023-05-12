@@ -61,6 +61,7 @@ create table publ.attendees (
   create index on publ.attendees(updated_at);
   create index on publ.attendees(status);
   create index on publ.attendees(email);
+  create index on publ.attendees(lastname);
   create index on publ.attendees(civility);
   create index on publ.attendees(registration_id);
   create index on publ.attendees(phone_number);

@@ -3702,8 +3702,11 @@ type RowEventAttendee {
   email: String
   endsAt: Datetime
   firstname: String
+  headerMailContact: String
+  headerMailName: String
   id: String
   lastname: String
+  logo: String
   name: String
   pdfUrl: String
   placeName: String
