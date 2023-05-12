@@ -13,7 +13,10 @@ create type publ.row_event_attendee as (
   address_line_1 text,
   starts_at timestamptz,
   ends_at timestamptz,
-  details text);
+  details text,
+  header_mail_name text, 
+  header_mail_contact text, 
+  logo text);
 
 /*
   FUNCTION: send_email_all_attendee_event
@@ -51,22 +54,27 @@ begin
         evts.address_line_1,
         evts.starts_at,
         evts.ends_at,
-        evts.details
+        evts.details,
+        evtsb.header_mail_name, 
+        evtsb.header_mail_contact, 
+        evtsb.logo
         from publ.attendees atts
         inner join publ.registrations regs on regs.id = atts.registration_id
         inner join publ.events evts on evts.id = regs.event_id
+        inner join publ.event_brandings evtsb on evtsb.event_id = evts.id
         where regs.event_id = v_event_id and atts.status ='IDLE'
     loop
 
         select  jsonb_build_object('mailData', jsonb_build_object(
             'to', v_row.email,
-            'from', jsonb_build_object('name', 'L''équipe', 'email', 'contact@obole.eu'),
+            'from', jsonb_build_object('name', v_row.header_mail_name, 'email', v_row.header_mail_contact),
             'templateId', 'd-4ff875093aa24081af57ffc3d405537c',
             'dynamicTemplateData', jsonb_build_object(
                 'Event_Name', v_row.name,
                 'First_Name', v_row.firstname,
                 'Last_Name', v_row.lastname,
                 'Ticket_Number', v_row.ticket_number,
+                'Logo',v_row.logo,
                 'String_Day', to_char(v_row.starts_at, 'Day'),
                 'Day', to_char(v_row.starts_at, 'D'),
                 'Month', to_char(v_row.starts_at, 'Month'),

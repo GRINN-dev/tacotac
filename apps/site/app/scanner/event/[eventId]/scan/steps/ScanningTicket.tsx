@@ -7,7 +7,8 @@ import { Event, State } from "../types";
 
 export const ScanningTicket: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ state, dispatch }) => {
   return (
-    <div>
+    <div className="hidden">
+      {/* TODO à supprimer, juste pour les tests */}
       <button
         className={buttonVariants({ size: "sm" })}
         onClick={() => {

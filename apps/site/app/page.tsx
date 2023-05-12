@@ -2,8 +2,12 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
+
+
 import { siteConfig } from "@/config/site";
+import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
+
 
 export default function IndexPage() {
   return (
@@ -16,6 +20,8 @@ export default function IndexPage() {
       </Head>
 
       <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
+        <Icons.logoWithName className="m-auto h-24 w-24" />
+
         <div className="flex max-w-[980px] flex-col items-start gap-2">
           <h1 className="font-zenon-bold text-text text-3xl leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
             <span className="opacity-40">Organisez vos</span> évenements <span className="opacity-40">de</span> collecte{" "}

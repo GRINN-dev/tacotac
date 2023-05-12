@@ -43,11 +43,17 @@ input AttendeeCondition {
   """Checks for equality with the object’s `email` field."""
   email: String
 
+  """Checks for equality with the object’s `firstname` field."""
+  firstname: String
+
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
   """Checks for equality with the object’s `isInscriptor` field."""
   isInscriptor: Boolean
+
+  """Checks for equality with the object’s `lastname` field."""
+  lastname: String
 
   """Checks for equality with the object’s `phoneNumber` field."""
   phoneNumber: String
@@ -84,11 +90,17 @@ input AttendeeFilter {
   """Filter by the object’s `email` field."""
   email: StringFilter
 
+  """Filter by the object’s `firstname` field."""
+  firstname: StringFilter
+
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
   """Filter by the object’s `isInscriptor` field."""
   isInscriptor: BooleanFilter
+
+  """Filter by the object’s `lastname` field."""
+  lastname: StringFilter
 
   """Negates the expression."""
   not: AttendeeFilter
@@ -214,10 +226,14 @@ enum AttendeesOrderBy {
   CREATED_AT_DESC
   EMAIL_ASC
   EMAIL_DESC
+  FIRSTNAME_ASC
+  FIRSTNAME_DESC
   ID_ASC
   ID_DESC
   IS_INSCRIPTOR_ASC
   IS_INSCRIPTOR_DESC
+  LASTNAME_ASC
+  LASTNAME_DESC
   NATURAL
   PHONE_NUMBER_ASC
   PHONE_NUMBER_DESC
@@ -3361,6 +3377,7 @@ input RegisterAttendeesCsvInput {
   """
   clientMutationId: String
   eventId: UUID!
+  isForcing: Boolean!
 }
 
 """The output of our `registerAttendeesCsv` mutation."""
@@ -3685,8 +3702,11 @@ type RowEventAttendee {
   email: String
   endsAt: Datetime
   firstname: String
+  headerMailContact: String
+  headerMailName: String
   id: String
   lastname: String
+  logo: String
   name: String
   pdfUrl: String
   placeName: String

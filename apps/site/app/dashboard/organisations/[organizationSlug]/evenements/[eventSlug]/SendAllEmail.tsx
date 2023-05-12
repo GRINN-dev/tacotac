@@ -3,12 +3,19 @@
 import { toast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
 
-
-
 import { sdk } from "@/lib/sdk";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
-
 
 export const SendAllEmail = ({ eventId }) => {
   const sendEmails = (eventId: string) => {
@@ -34,7 +41,10 @@ export const SendAllEmail = ({ eventId }) => {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline" className="shadow hover:shadow-lg"><Send className="mr-2 h-4 w-4" />Rappel email</Button>
+          <Button variant="outline" className="border-primary border">
+            <Send className="text-primary mr-2 h-4 w-4" />
+            Rappel email
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -46,9 +56,7 @@ export const SendAllEmail = ({ eventId }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction onClick={() => sendEmails(eventId)}>
-              Ok
-            </AlertDialogAction>
+            <AlertDialogAction onClick={() => sendEmails(eventId)}>Ok</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

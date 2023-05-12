@@ -2,8 +2,6 @@ import Link from "next/link";
 import { Attendee } from "@/../../@tacotacIO/codegen/dist";
 import { HelpCircle, PlusSquare } from "lucide-react";
 
-
-
 import { IData, IHeader, Type, initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
 import { eventStatusArray } from "@/components/data/status";
@@ -15,7 +13,6 @@ import { ModalStatus } from "./ModalStatus";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
-
 const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
   searchParams: { offset, filter, first, orderBy },
@@ -26,7 +23,6 @@ const AttendeesPage = async ({
     first: Number(first) || initLimit,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
-    orderBy: orderBy,
   });
 
   const headerAttendees: IHeader[] = [
@@ -83,7 +79,7 @@ const AttendeesPage = async ({
           className={buttonVariants({ variant: "outline", size: "sm" }) + " shadow hover:shadow-lg"}
           href={`/dashboard/organisations/${organizationSlug}/evenements/${eventSlug}/participant/${id}`}
         >
-          <PlusSquare className="h-4 w-4 " />
+          <PlusSquare className="text-primary h-4 w-4 " />
         </Link>
       ),
     })
@@ -96,9 +92,9 @@ const AttendeesPage = async ({
           <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
             Tous les participants
           </h2>
-          <ModalStatus/>
+          <ModalStatus />
           <Link
-            className={buttonVariants({ variant: "outline", size: "lg" }) + " shadow hover:shadow-lg"}
+            className={"border-primary h-10 items-center justify-center rounded-md border px-4 py-2"}
             target="_blank"
             href={`/inscription/${organizationSlug}/${eventSlug}/iframe`}
           >
@@ -108,7 +104,7 @@ const AttendeesPage = async ({
           <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
           <SendAllEmail eventId={eventBySlug?.id} />
         </div>
-        
+
         {flattenedAttendeesFromRegistrations?.length > 0 ? (
           <Collection
             totalCount={eventBySlug?.registrations?.totalCount}
