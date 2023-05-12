@@ -56,6 +56,7 @@ BEGIN
             v_event_id,
             'ERROR',
             jsonb_build_object('ticket_payload',ticket_payload));
+             raise exception 'Pas de participant' using errcode = 'RGNST';
       else
           insert into publ.logs (event_id,status,payload) values (
             v_event_id,
@@ -127,6 +128,7 @@ BEGIN
                   v_event_id,
                   'ERROR',
                   jsonb_build_object('ticket_payload',ticket_payloads[v_iter],'is_coming_from_offline_mode',true));
+                 
             else
                 insert into publ.logs (event_id,status,payload) values (
                 v_event_id,

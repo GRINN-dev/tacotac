@@ -52,8 +52,10 @@ export const ScanReader: FC<{ state: State; dispatch: Dispatch<Event> }> = ({ st
             }
           }
         }}
-        className="flex flex-col mx-auto"
-        constraints={{}}
+        className="mx-auto flex flex-col"
+        constraints={{
+          facingMode: "environment",
+        }}
       />
     </div>
   );

@@ -4,6 +4,7 @@ import { ArrowBigLeft, List, PlusCircle } from "lucide-react";
 import { sdk } from "@/lib/sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
 import AttendeesModal from "./attendeesModal";
+import { ShowCurrentRegistrationAttendee } from "./getData";
 import { Scanner } from "./scanner";
 
 const EventSlug = async ({ params: { eventId } }) => {
@@ -18,7 +19,7 @@ const EventSlug = async ({ params: { eventId } }) => {
     <div className="">
       <div className="container">
         <h1
-          className={`my-4 text-3xl text-primary font-extrabold leading-tight tracking-tighter text-center font-zenon-bold sm:text-3xl md:text-5xl lg:text-6xl`}
+          className={`text-primary font-zenon-bold my-4 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl`}
         >
           {event.name}
         </h1>
@@ -36,14 +37,15 @@ const EventSlug = async ({ params: { eventId } }) => {
           <span className="text-xl opacity-40">{event?.totalConfirmedRegistrations}</span> présents /{" "}
           <span className="text-xl opacity-40">{event?.totalRegistrations}</span> inscrits{" "}
         </div>
-        <div className="flex flex-col items-center justify-end gap-2 mt-8">
+        <ShowCurrentRegistrationAttendee eventId={eventId} />
+        <div className="mt-8 flex flex-col items-center justify-end gap-2">
           <Scanner />
         </div>
         <div className="flex flex-col items-center">
           <Button className={buttonVariants({ size: "sm", className: "absolute bottom-10 w-[200px]" })}>
             <div className="flex items-center justify-between">
               {" "}
-              <List className="absolute mr-2 left-2" />{" "}
+              <List className="absolute left-2 mr-2" />{" "}
               <AttendeesModal eventId={event?.id} eventName={event?.name} attendees={attendees} />
             </div>
           </Button>
@@ -60,7 +62,7 @@ const EventSlug = async ({ params: { eventId } }) => {
 
         <div className="absolute bottom-1">
           <Link href={"/scanner"} className="flex items-center">
-            <ArrowBigLeft className="w-8 h-8 " />
+            <ArrowBigLeft className="h-8 w-8 " />
           </Link>
         </div>
       </div>
