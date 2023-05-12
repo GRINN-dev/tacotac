@@ -3083,8 +3083,11 @@ export type RowEventAttendee = {
   email?: Maybe<Scalars['String']>;
   endsAt?: Maybe<Scalars['Datetime']>;
   firstname?: Maybe<Scalars['String']>;
+  headerMailContact?: Maybe<Scalars['String']>;
+  headerMailName?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   lastname?: Maybe<Scalars['String']>;
+  logo?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   pdfUrl?: Maybe<Scalars['String']>;
   placeName?: Maybe<Scalars['String']>;
