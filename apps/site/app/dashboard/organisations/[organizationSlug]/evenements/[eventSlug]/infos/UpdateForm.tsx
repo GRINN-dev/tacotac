@@ -330,7 +330,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             onChange={(evt) => setWebhook(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1 shadow-sm focus:outline-none"
             onClick={() => {
               if (webhook) {
                 setWebhookList([...webhookList, webhook]);
