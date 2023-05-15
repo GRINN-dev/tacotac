@@ -20,9 +20,9 @@ const AttendeesPage = async ({
   const { eventBySlug } = await sdk().GetEventBySlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
-    first: Number(first) || initLimit,
+    /*   first: Number(first) || initLimit,
     offset: Number(offset),
-    filter: filter ? JSON.parse(filter) : null,
+    filter: filter ? JSON.parse(filter) : null, */
   });
 
   const headerAttendees: IHeader[] = [

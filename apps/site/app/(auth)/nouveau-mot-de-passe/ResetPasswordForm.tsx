@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation"
 
-import { GenericForm } from "@/components/generic/generic-form"
-import { getResetPasswordFormProps } from "./getResetPasswordFormProps"
+import { GenericForm } from "@/components/form/generic-form"
+import { getResetPasswordFormProps } from "./resetPasswordFormProps"
 
 export const ResetPasswordForm = () => {
   const searchParams = useSearchParams()

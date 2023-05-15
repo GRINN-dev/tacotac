@@ -29,13 +29,9 @@ begin
   end if;
 
   -- Insert the new user
-  insert into publ.users (username, firstname, lastname, avatar_url) values
-    (v_username, firstname, lastname, avatar_url)
+  insert into publ.users (username, firstname, lastname, avatar_url, email, is_verified) values
+    (v_username, firstname, lastname, avatar_url, email, email_is_verified)
     returning * into v_user;
-
-	-- Add the user's email
-  insert into publ.user_emails (user_id, email, is_verified, is_primary)
-  values (v_user.id, email, email_is_verified, email_is_verified);
 
   -- Store the password
   if password is not null then
@@ -72,20 +68,22 @@ create function priv.register_user(
 declare
   v_user publ.users;
   v_email citext;
-  v_name text;
+  v_firstname text;
+  v_lastname text;
   v_username citext;
   v_avatar_url text;
   v_user_authentication_id uuid;
 begin
   -- Extract data from the user’s OAuth profile data.
   v_email := f_profile ->> 'email';
-  v_name := f_profile ->> 'name';
+  v_firstname := f_profile ->> 'firstname';
+  v_lastname := f_profile ->> 'lastname';
   v_username := f_profile ->> 'username';
   v_avatar_url := f_profile ->> 'avatar_url';
 
   -- Sanitise the username, and make it unique if necessary.
   if v_username is null then
-    v_username = coalesce(v_name, 'user');
+    v_username = coalesce(v_firstname, 'user');
   end if;
   v_username = regexp_replace(v_username, '^[^a-z]+', '', 'gi');
   v_username = regexp_replace(v_username, '[^a-z0-9]+', '_', 'gi');
@@ -115,7 +113,8 @@ begin
     username => v_username,
     email => v_email,
     email_is_verified => f_email_is_verified,
-    name => v_name,
+    firstname => v_firstname,
+    lastname => v_lastname,
     avatar_url => v_avatar_url
   );
 
@@ -159,10 +158,10 @@ declare
   v_matched_user_id uuid;
   v_matched_authentication_id uuid;
   v_email citext;
-  v_name text;
+  v_firstname text;
+  v_lastname text;
   v_avatar_url text;
   v_user publ.users;
-  v_user_email publ.user_emails;
 begin
   -- See if a user account already matches these details
   select id, user_id
@@ -177,7 +176,8 @@ begin
   end if;
 
   v_email = f_profile ->> 'email';
-  v_name := f_profile ->> 'name';
+  v_firstname := f_profile ->> 'firstname';
+  v_lastname := f_profile ->> 'lastname';
   v_avatar_url := f_profile ->> 'avatar_url';
 
   if v_matched_authentication_id is null then
@@ -198,11 +198,11 @@ begin
         ));
     elsif v_email is not null then
       -- See if the email is registered
-      select * into v_user_email from publ.user_emails where email = v_email and is_verified is true;
-      if v_user_email is not null then
+      select * into v_user from publ.users where email = v_email and is_verified is true;
+      if v_user is not null then
         -- User exists!
         insert into publ.user_authentications (user_id, service, identifier, details) values
-          (v_user_email.user_id, f_service, f_identifier, f_profile) returning id, user_id into v_matched_authentication_id, v_matched_user_id;
+          (v_user.id, f_service, f_identifier, f_profile) returning id, user_id into v_matched_authentication_id, v_matched_user_id;
         insert into priv.user_authentication_secrets (user_authentication_id, details) values
           (v_matched_authentication_id, f_auth_details);
         perform graphile_worker.add_job(
@@ -230,7 +230,8 @@ begin
         where user_authentication_id = v_matched_authentication_id;
       update publ.users
         set
-          name = coalesce(users.name, v_name),
+          firstname = coalesce(users.firstname, v_firstname),
+          lastname = coalesce(users.lastname, v_lastname),
           avatar_url = coalesce(users.avatar_url, v_avatar_url)
         where id = v_matched_user_id
         returning  * into v_user;

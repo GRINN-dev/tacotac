@@ -33,8 +33,7 @@ export default (app: Express) => {
 
   // This pool runs as the unprivileged user, it's what PostGraphile uses.
   const authPgPool = new Pool({
-    // TODO: use a different connection string for authPgPool
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.AUTH_DATABASE_URL,
   });
   authPgPool.on("error", swallowPoolError);
   app.set("authPgPool", authPgPool);

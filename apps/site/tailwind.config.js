@@ -3,20 +3,68 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class", '[data-theme="dark"]'],
-  content: ["pages/**/*.{ts,tsx}", "app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}"],
   theme: {
     container: {
       center: true,
-      padding: "1.5rem",
+      padding: "2rem",
       screens: {
-        "2xl": "1360px",
+        "2xl": "1400px",
       },
     },
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        bernier: ["var(--font-bernier)", ...fontFamily.sans],
         "zenon-bold": ["var(--font-zenon-bold)", ...fontFamily.serif],
         "zenon-regular": ["var(--font-zenon-regular)", ...fontFamily.serif],
+      },
+      colors: {
+        text: "var(--text)",
+        "text-accent": "var(--text-accent)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        bg: "var(--bg)",
+        accent: "var(--accent)",
+
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary: {
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
+        },
+        secondary: {
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
+        },
+        destructive: {
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)",
+        },
+        muted: {
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
+        },
+        accent: {
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
+        },
+        popover: {
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
+        },
+        card: {
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
@@ -28,37 +76,16 @@ module.exports = {
           to: { height: 0 },
         },
       },
-      colors: {
-        /* :root {
-  --text: #212032;
-  --text-accent: #212032;
-  --primary: #2e51f5;
-  --secondary: #52baea;
-  --bg: #ecf2f9;
-  --accent: #ff0ae6;
-}
-
-:root [data-theme="dark"] {
-  --text: #ecf2f9;
-  --text-accent: #9afcf4;
-  --primary: #2e51f5;
-  --secondary: #52baea;
-  --bg: #212032;
-  --accent: #ff0ae6;
-}
- */
-        text: "var(--text)",
-        "text-accent": "var(--text-accent)",
-        primary: "var(--primary)",
-        secondary: "var(--secondary)",
-        bg: "var(--bg)",
-        accent: "var(--accent)",
-      },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
+  ],
 };

@@ -8,10 +8,10 @@ import { buttonVariants } from "@/components/ui/button";
 
 const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderBy } }) => {
   const { organizations } = await sdk().GetAllOrganization({
-    first: Number(first) || initLimit,
+    /* first: Number(first) || initLimit,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
-    orderBy: orderBy,
+    orderBy: orderBy, */
   });
 
   const headerOrga: IHeader[] = [
@@ -20,7 +20,7 @@ const OrganizationsPage = async ({ searchParams: { offset, filter, first, orderB
     { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
   ];
 
-  const rawOrga: IData[] = organizations.nodes.map(({ name, description, slug }) => ({
+  const rawOrga: IData[] = organizations?.nodes?.map(({ name, description, slug }) => ({
     Nom: name,
     Description: description,
     slug: slug + "/evenements",

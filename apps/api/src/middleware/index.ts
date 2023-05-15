@@ -10,7 +10,6 @@ import installWorkerUtils from "./installWorkerUtils";
 import { installJWTRefresh } from "./installJWTRefresh";
 import { installAuthorizationHeader } from "./installAuthorizationHeader";
 import { installCaptcha } from "./installCaptcha";
-import { installVoyager } from "./installVoyager";
 
 export {
   installDatabasePools,
@@ -25,5 +24,4 @@ export {
   installCors,
   installAuthorizationHeader,
   installCaptcha,
-  installVoyager,
 };

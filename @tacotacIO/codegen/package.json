@@ -1,23 +1,22 @@
 {
-  "name": "@tacotacIO/codegen",
-  "version": "0.0.1",
-  "description": "Code generator for tacotacIO",
-  "main": "dist/index.js",
+  "dependencies": {
+    "graphql-tag": "^2.12.6"
+  },
   "devDependencies": {
     "@graphql-codegen/add": "^3.2.3",
-    "@graphql-codegen/cli": "^2.16.4",
-    "@graphql-codegen/typescript-graphql-request": "^4.5.8",
-    "@graphql-codegen/typescript-operations": "^2.5.12",
+    "@graphql-codegen/cli": "^2.16.5",
+    "@graphql-codegen/typescript-generic-sdk": "^3.1.0",
+    "@graphql-codegen/typescript-operations": "^2.5.13",
     "ts-node": "^10.9.1",
     "tsup": "^6.5.0"
   },
+  "main": "dist/index.js",
+  "name": "@tacotacIO/codegen",
   "scripts": {
-    "codegen": "graphql-codegen --config codegen.ts",
     "build": "graphql-codegen --config codegen.ts && tsup src/index.ts --dts",
+    "codegen": "graphql-codegen --config codegen.ts",
     "dev": "pnpm codegen --watch"
   },
-  "dependencies": {
-    "graphql-request": "^5.1.0",
-    "graphql-tag": "^2.12.6"
-  }
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

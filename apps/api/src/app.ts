@@ -74,8 +74,6 @@ export async function makeApp({
    * operate very rapidly to enable quick as possible server startup.
    */
   middleware.installCors(app);
-  middleware.installCaptcha(app);
-
   middleware.installAuthorizationHeader(app);
   middleware.installDatabasePools(app);
   middleware.installWorkerUtils(app);
@@ -88,11 +86,11 @@ export async function makeApp({
   // These are our assets: images/etc; served out of the /@app/server/public folder (if present)
   middleware.installSharedStatic(app);
   middleware.installPostGraphile(app);
-  middleware.installVoyager(app);
   /*
    * Error handling middleware
    */
   middleware.installErrorHandler(app);
+  middleware.installCaptcha(app);
 
   return app;
 }

@@ -126,3 +126,39 @@ query GetEventByEventSlug($eventSlug: String!) {
     }
   }
 }
+
+query GetEventLogsBySlug(
+  $eventSlug: String!
+  $organizationSlug: String!
+  $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC
+  $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC
+  $first: Int
+  $offset: Int
+  $filter: LogFilter
+) {
+  eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
+    ...MyEvent
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    capacity
+    registrations {
+      nodes {
+        attendeesList(orderBy: $attendeesOrderBy) {
+          ...MyAttendee
+        }
+      }
+    }
+    logsList(
+      orderBy: $orderBy
+      filter: $filter
+      first: $first
+      offset: $offset
+    ) {
+      id
+      status
+      payload
+      updatedAt
+    }
+  }
+}

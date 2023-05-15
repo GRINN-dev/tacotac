@@ -1,7 +1,4 @@
 // @ts-nocheck
-import { GraphQLClient } from 'graphql-request';
-import * as Dom from 'graphql-request/dist/types.dom';
-import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -632,33 +629,6 @@ export type CreateUserAuthenticationPayloadUserAuthenticationEdgeArgs = {
   orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
 };
 
-/** All input for the create `UserEmail` mutation. */
-export type CreateUserEmailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The `UserEmail` to be created by this mutation. */
-  userEmail: UserEmailInput;
-};
-
-/** The output of our create `UserEmail` mutation. */
-export type CreateUserEmailPayload = {
-  __typename?: 'CreateUserEmailPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `UserEmail`. */
-  user?: Maybe<User>;
-  /** The `UserEmail` that was created by this mutation. */
-  userEmail?: Maybe<UserEmail>;
-};
-
 /** All input for the create `User` mutation. */
 export type CreateUserInput = {
   /**
@@ -1007,33 +977,6 @@ export type DeleteUserAuthenticationPayloadUserAuthenticationEdgeArgs = {
   orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
 };
 
-/** All input for the `deleteUserEmail` mutation. */
-export type DeleteUserEmailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
-};
-
-/** The output of our delete `UserEmail` mutation. */
-export type DeleteUserEmailPayload = {
-  __typename?: 'DeleteUserEmailPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  deletedUserEmailNodeId?: Maybe<Scalars['ID']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `UserEmail`. */
-  user?: Maybe<User>;
-  /** The `UserEmail` that was deleted by this mutation. */
-  userEmail?: Maybe<UserEmail>;
-};
-
 /** All input for the `deleteUser` mutation. */
 export type DeleteUserInput = {
   /**
@@ -1163,6 +1106,7 @@ export type EventBranding = {
   color1?: Maybe<Scalars['String']>;
   color2?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
+  cssVariables?: Maybe<Scalars['JSON']>;
   /** Reads a single `Event` that is related to this `EventBranding`. */
   event?: Maybe<Event>;
   eventId: Scalars['UUID'];
@@ -1216,6 +1160,7 @@ export type EventBrandingInput = {
   color1?: InputMaybe<Scalars['String']>;
   color2?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  cssVariables?: InputMaybe<Scalars['JSON']>;
   eventId: Scalars['UUID'];
   font?: InputMaybe<Fonts>;
   headerMailContact?: InputMaybe<Scalars['String']>;
@@ -1234,6 +1179,7 @@ export type EventBrandingPatch = {
   color1?: InputMaybe<Scalars['String']>;
   color2?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  cssVariables?: InputMaybe<Scalars['JSON']>;
   eventId?: InputMaybe<Scalars['UUID']>;
   font?: InputMaybe<Fonts>;
   headerMailContact?: InputMaybe<Scalars['String']>;
@@ -1726,31 +1672,6 @@ export type LogsStatusFilter = {
   notIn?: InputMaybe<Array<LogsStatus>>;
 };
 
-/** All input for the `makeEmailPrimary` mutation. */
-export type MakeEmailPrimaryInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  emailId: Scalars['UUID'];
-};
-
-/** The output of our `makeEmailPrimary` mutation. */
-export type MakeEmailPrimaryPayload = {
-  __typename?: 'MakeEmailPrimaryPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `UserEmail`. */
-  user?: Maybe<User>;
-  userEmail?: Maybe<UserEmail>;
-};
-
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
@@ -1776,8 +1697,6 @@ export type Mutation = {
   createUser?: Maybe<CreateUserPayload>;
   /** Creates a single `UserAuthentication`. */
   createUserAuthentication?: Maybe<CreateUserAuthenticationPayload>;
-  /** Creates a single `UserEmail`. */
-  createUserEmail?: Maybe<CreateUserEmailPayload>;
   /** Deletes a single `Attendee` using a unique key. */
   deleteAttendee?: Maybe<DeleteAttendeePayload>;
   /** Deletes a single `Event` using a unique key. */
@@ -1797,8 +1716,6 @@ export type Mutation = {
   deleteUser?: Maybe<DeleteUserPayload>;
   /** Deletes a single `UserAuthentication` using a unique key. */
   deleteUserAuthentication?: Maybe<DeleteUserAuthenticationPayload>;
-  /** Deletes a single `UserEmail` using a unique key. */
-  deleteUserEmail?: Maybe<DeleteUserEmailPayload>;
   /** If you've forgotten your password, give us one of your email addresses and we'll send you a reset token. Note this only works if you have added an email address! */
   forgotPassword?: Maybe<ForgotPasswordPayload>;
   generatePresignedPost?: Maybe<GeneratePresignedPostPayload>;
@@ -1806,8 +1723,6 @@ export type Mutation = {
   login?: Maybe<LoginPayload>;
   /** Use this mutation to logout from your account. Don't forget to clear the client state! */
   logout?: Maybe<LogoutPayload>;
-  /** Your primary email is where we'll notify of account events; other emails may be used for discovery or login. Use this when you're changing your email address. */
-  makeEmailPrimary?: Maybe<MakeEmailPrimaryPayload>;
   /** Use this mutation to create an account on our system. This may only be used if you are logged out. */
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
@@ -1845,8 +1760,6 @@ export type Mutation = {
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `UserAuthentication` using a unique key and a patch. */
   updateUserAuthentication?: Maybe<UpdateUserAuthenticationPayload>;
-  /** Updates a single `UserEmail` using a unique key and a patch. */
-  updateUserEmail?: Maybe<UpdateUserEmailPayload>;
   /** Once you have received a verification token for your email, you may call this mutation with that token to make your email verified. */
   verifyEmail?: Maybe<VerifyEmailPayload>;
 };
@@ -1919,12 +1832,6 @@ export type MutationCreateUserAuthenticationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateUserEmailArgs = {
-  input: CreateUserEmailInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteAttendeeArgs = {
   input: DeleteAttendeeInput;
 };
@@ -1985,12 +1892,6 @@ export type MutationDeleteUserAuthenticationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserEmailArgs = {
-  input: DeleteUserEmailInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationForgotPasswordArgs = {
   input: ForgotPasswordInput;
 };
@@ -2005,12 +1906,6 @@ export type MutationGeneratePresignedPostArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationLoginArgs = {
   input: LoginInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationMakeEmailPrimaryArgs = {
-  input: MakeEmailPrimaryInput;
 };
 
 
@@ -2131,12 +2026,6 @@ export type MutationUpdateUserArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserAuthenticationArgs = {
   input: UpdateUserAuthenticationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserEmailArgs = {
-  input: UpdateUserEmailInput;
 };
 
 
@@ -2516,10 +2405,6 @@ export type Query = {
   /** Reads and enables pagination through a set of `UserAuthentication`. */
   userAuthentications?: Maybe<UserAuthenticationsConnection>;
   userByUsername?: Maybe<User>;
-  userEmail?: Maybe<UserEmail>;
-  userEmailByUserIdAndEmail?: Maybe<UserEmail>;
-  /** Reads a set of `UserEmail`. */
-  userEmailsList?: Maybe<Array<UserEmail>>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UsersConnection>;
 };
@@ -2780,29 +2665,6 @@ export type QueryUserByUsernameArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserEmailArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserEmailByUserIdAndEmailArgs = {
-  email: Scalars['String'];
-  userId: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserEmailsListArgs = {
-  condition?: InputMaybe<UserEmailCondition>;
-  filter?: InputMaybe<UserEmailFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<UserEmailsOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryUsersArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -3042,7 +2904,7 @@ export type ResendEmailVerificationCodeInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  emailId: Scalars['UUID'];
+  userId: Scalars['UUID'];
 };
 
 /** The output of our `resendEmailVerificationCode` mutation. */
@@ -3221,28 +3083,78 @@ export type SendEmailConfirmDonationByEventIdPayload = {
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: InputMaybe<Scalars['String']>;
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value. */
   equalTo?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than the specified value. */
   greaterThan?: InputMaybe<Scalars['String']>;
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified string (case-sensitive). */
+  includes?: InputMaybe<Scalars['String']>;
   /** Contains the specified string (case-insensitive). */
   includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
   lessThan?: InputMaybe<Scalars['String']>;
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Less than or equal to the specified value. */
   lessThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: InputMaybe<Scalars['String']>;
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value. */
   notDistinctFrom?: InputMaybe<Scalars['String']>;
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: InputMaybe<Scalars['String']>;
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value. */
   notEqualTo?: InputMaybe<Scalars['String']>;
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: InputMaybe<Scalars['String']>;
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: InputMaybe<Scalars['String']>;
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: InputMaybe<Scalars['String']>;
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: InputMaybe<Scalars['String']>;
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
 
 /** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
@@ -3603,34 +3515,6 @@ export type UpdateUserAuthenticationPayloadUserAuthenticationEdgeArgs = {
   orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
 };
 
-/** All input for the `updateUserEmail` mutation. */
-export type UpdateUserEmailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `UserEmail` being updated. */
-  patch: UserEmailPatch;
-};
-
-/** The output of our update `UserEmail` mutation. */
-export type UpdateUserEmailPayload = {
-  __typename?: 'UpdateUserEmailPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** Reads a single `User` that is related to this `UserEmail`. */
-  user?: Maybe<User>;
-  /** The `UserEmail` that was updated by this mutation. */
-  userEmail?: Maybe<UserEmail>;
-};
-
 /** All input for the `updateUser` mutation. */
 export type UpdateUserInput = {
   /**
@@ -3672,23 +3556,24 @@ export type User = {
   /** Optional avatar URL. */
   avatarUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
+  email: Scalars['String'];
   firstname: Scalars['String'];
   hasPassword?: Maybe<Scalars['Boolean']>;
   /** Unique identifier for the user. */
   id: Scalars['UUID'];
   /** If true, the user has elevated privileges. */
   isAdmin: Scalars['Boolean'];
+  isOnboarded: Scalars['Boolean'];
   isVerified: Scalars['Boolean'];
   isVolunteer: Scalars['Boolean'];
   lastname: Scalars['String'];
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
   organizationMemberships: OrganizationMembershipsConnection;
+  organizations: UsersOrganizationsConnection;
   phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
   /** Reads and enables pagination through a set of `UserAuthentication`. */
   userAuthentications: UserAuthenticationsConnection;
-  /** Reads and enables pagination through a set of `UserEmail`. */
-  userEmailsList: Array<UserEmail>;
   /** Public-facing username (or 'handle') of the user. */
   username: Scalars['String'];
 };
@@ -3708,6 +3593,17 @@ export type UserOrganizationMembershipsArgs = {
 
 
 /** A user who can log in to the application. */
+export type UserOrganizationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UsersOrganizationsRecordFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** A user who can log in to the application. */
 export type UserUserAuthenticationsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -3717,16 +3613,6 @@ export type UserUserAuthenticationsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<UserAuthenticationsOrderBy>>;
-};
-
-
-/** A user who can log in to the application. */
-export type UserUserEmailsListArgs = {
-  condition?: InputMaybe<UserEmailCondition>;
-  filter?: InputMaybe<UserEmailFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<UserEmailsOrderBy>>;
 };
 
 /** Contains information about the login providers this user has used, so that they may disconnect them should they wish. */
@@ -3842,97 +3728,19 @@ export enum UserAuthenticationsOrderBy {
 export type UserCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `email` field. */
+  email?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isVolunteer` field. */
+  isVolunteer?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `lastname` field. */
+  lastname?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `username` field. */
   username?: InputMaybe<Scalars['String']>;
 };
-
-/** A user's email address. */
-export type UserEmail = {
-  __typename?: 'UserEmail';
-  createdAt: Scalars['Datetime'];
-  /** The user's email address. */
-  email: Scalars['String'];
-  id: Scalars['UUID'];
-  isPrimary: Scalars['Boolean'];
-  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
-  isVerified: Scalars['Boolean'];
-  updatedAt: Scalars['Datetime'];
-  /** Reads a single `User` that is related to this `UserEmail`. */
-  user?: Maybe<User>;
-  userId: Scalars['UUID'];
-};
-
-/**
- * A condition to be used against `UserEmail` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type UserEmailCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `isPrimary` field. */
-  isPrimary?: InputMaybe<Scalars['Boolean']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['UUID']>;
-};
-
-/** A filter to be used against `UserEmail` object types. All fields are combined with a logical ‘and.’ */
-export type UserEmailFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<UserEmailFilter>>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `isPrimary` field. */
-  isPrimary?: InputMaybe<BooleanFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<UserEmailFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<UserEmailFilter>>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<UuidFilter>;
-};
-
-/** An input for mutations affecting `UserEmail` */
-export type UserEmailInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  /** The user's email address. */
-  email: Scalars['String'];
-  id?: InputMaybe<Scalars['UUID']>;
-  isPrimary?: InputMaybe<Scalars['Boolean']>;
-  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
-  isVerified?: InputMaybe<Scalars['Boolean']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-  userId?: InputMaybe<Scalars['UUID']>;
-};
-
-/** Represents an update to a `UserEmail`. Fields that are set will be updated. */
-export type UserEmailPatch = {
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  /** The user's email address. */
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  isPrimary?: InputMaybe<Scalars['Boolean']>;
-  /** True if the user has is_verified their email address (by clicking the link in the email we sent them, or logging in with a social login provider), false otherwise. */
-  isVerified?: InputMaybe<Scalars['Boolean']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-  userId?: InputMaybe<Scalars['UUID']>;
-};
-
-/** Methods to use when ordering `UserEmail`. */
-export enum UserEmailsOrderBy {
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  IsPrimaryAsc = 'IS_PRIMARY_ASC',
-  IsPrimaryDesc = 'IS_PRIMARY_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export type UserFilter = {
@@ -3940,10 +3748,16 @@ export type UserFilter = {
   and?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `email` field. */
+  email?: InputMaybe<StringFilter>;
   /** Filter by the object’s `hasPassword` field. */
   hasPassword?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isVolunteer` field. */
+  isVolunteer?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `lastname` field. */
+  lastname?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<UserFilter>;
   /** Checks for any expressions in this list. */
@@ -3959,18 +3773,20 @@ export type UserInput = {
   /** Optional avatar URL. */
   avatarUrl?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  email: Scalars['String'];
   firstname: Scalars['String'];
   /** Unique identifier for the user. */
   id?: InputMaybe<Scalars['UUID']>;
   /** If true, the user has elevated privileges. */
   isAdmin?: InputMaybe<Scalars['Boolean']>;
+  isOnboarded?: InputMaybe<Scalars['Boolean']>;
   isVerified?: InputMaybe<Scalars['Boolean']>;
   isVolunteer?: InputMaybe<Scalars['Boolean']>;
   lastname: Scalars['String'];
   phoneNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
   /** Public-facing username (or 'handle') of the user. */
-  username: Scalars['String'];
+  username?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
@@ -3978,11 +3794,13 @@ export type UserPatch = {
   /** Optional avatar URL. */
   avatarUrl?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
+  email?: InputMaybe<Scalars['String']>;
   firstname?: InputMaybe<Scalars['String']>;
   /** Unique identifier for the user. */
   id?: InputMaybe<Scalars['UUID']>;
   /** If true, the user has elevated privileges. */
   isAdmin?: InputMaybe<Scalars['Boolean']>;
+  isOnboarded?: InputMaybe<Scalars['Boolean']>;
   isVerified?: InputMaybe<Scalars['Boolean']>;
   isVolunteer?: InputMaybe<Scalars['Boolean']>;
   lastname?: InputMaybe<Scalars['String']>;
@@ -4024,8 +3842,14 @@ export type UsersEdge = {
 export enum UsersOrderBy {
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
+  EmailAsc = 'EMAIL_ASC',
+  EmailDesc = 'EMAIL_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  IsVolunteerAsc = 'IS_VOLUNTEER_ASC',
+  IsVolunteerDesc = 'IS_VOLUNTEER_DESC',
+  LastnameAsc = 'LASTNAME_ASC',
+  LastnameDesc = 'LASTNAME_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
@@ -4035,6 +3859,45 @@ export enum UsersOrderBy {
   UsernameDesc = 'USERNAME_DESC'
 }
 
+/** A `UsersOrganizationsRecord` edge in the connection. */
+export type UsersOrganizationEdge = {
+  __typename?: 'UsersOrganizationEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UsersOrganizationsRecord` at the end of the edge. */
+  node: UsersOrganizationsRecord;
+};
+
+/** A connection to a list of `UsersOrganizationsRecord` values. */
+export type UsersOrganizationsConnection = {
+  __typename?: 'UsersOrganizationsConnection';
+  /** A list of edges which contains the `UsersOrganizationsRecord` and cursor to aid in pagination. */
+  edges: Array<UsersOrganizationEdge>;
+  /** A list of `UsersOrganizationsRecord` objects. */
+  nodes: Array<UsersOrganizationsRecord>;
+  /** The count of *all* `UsersOrganizationsRecord` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** The return type of our `organizations` query. */
+export type UsersOrganizationsRecord = {
+  __typename?: 'UsersOrganizationsRecord';
+  organization?: Maybe<Organization>;
+  role?: Maybe<Scalars['String']>;
+};
+
+/** A filter to be used against `UsersOrganizationsRecord` object types. All fields are combined with a logical ‘and.’ */
+export type UsersOrganizationsRecordFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UsersOrganizationsRecordFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<UsersOrganizationsRecordFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UsersOrganizationsRecordFilter>>;
+  /** Filter by the object’s `role` field. */
+  role?: InputMaybe<StringFilter>;
+};
+
 /** All input for the `verifyEmail` mutation. */
 export type VerifyEmailInput = {
   /**
@@ -4043,7 +3906,7 @@ export type VerifyEmailInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
   token: Scalars['String'];
-  userEmailId: Scalars['UUID'];
+  userId: Scalars['UUID'];
 };
 
 /** The output of our `verifyEmail` mutation. */
@@ -4061,7 +3924,7 @@ export type VerifyEmailPayload = {
 
 export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, ticketNumber?: string | null, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null };
 
-export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null };
+export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null };
 
 export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null };
 
@@ -4069,7 +3932,7 @@ export type OrganizationFragmentFragment = { __typename?: 'Organization', id: an
 
 export type RegistrationFragmentFragment = { __typename?: 'Registration', eventId?: any | null, createdAt: any, hearAboutList?: Array<string | null> | null, id: any, updatedAt: any };
 
-export type MyUserFragment = { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> };
+export type MyUserFragment = { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string };
 
 export type CreateAttendeeMutationVariables = Exact<{
   input: CreateAttendeeInput;
@@ -4160,21 +4023,21 @@ export type CreateEventBrandingMutationVariables = Exact<{
 }>;
 
 
-export type CreateEventBrandingMutation = { __typename?: 'Mutation', createEventBranding?: { __typename?: 'CreateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null } | null };
+export type CreateEventBrandingMutation = { __typename?: 'Mutation', createEventBranding?: { __typename?: 'CreateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
 
 export type UpdateEventBrandingMutationVariables = Exact<{
   input: UpdateEventBrandingInput;
 }>;
 
 
-export type UpdateEventBrandingMutation = { __typename?: 'Mutation', updateEventBranding?: { __typename?: 'UpdateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null } | null };
+export type UpdateEventBrandingMutation = { __typename?: 'Mutation', updateEventBranding?: { __typename?: 'UpdateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
 
 export type DeleteEventBrandingMutationVariables = Exact<{
   input: DeleteEventBrandingInput;
 }>;
 
 
-export type DeleteEventBrandingMutation = { __typename?: 'Mutation', deleteEventBranding?: { __typename?: 'DeleteEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null } | null };
+export type DeleteEventBrandingMutation = { __typename?: 'Mutation', deleteEventBranding?: { __typename?: 'DeleteEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
 
 export type GeneratePresignedPostMutationVariables = Exact<{
   key: Scalars['String'];
@@ -4263,7 +4126,7 @@ export type GetAttendeesWithoutMailByRegistrationIdQuery = { __typename?: 'Query
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetAllEventsByOrganizationIdQueryVariables = Exact<{
   organizationId: Scalars['UUID'];
@@ -4289,7 +4152,7 @@ export type GetEventByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, ticketNumber?: string | null, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
+export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, ticketNumber?: string | null, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -4300,7 +4163,7 @@ export type GetEventBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, ticketNumber?: string | null, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, ticketNumber?: string | null, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetEventByEventSlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -4309,12 +4172,25 @@ export type GetEventByEventSlugQueryVariables = Exact<{
 
 export type GetEventByEventSlugQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', edges: Array<{ __typename?: 'EventsEdge', node: { __typename?: 'Event', id: any, capacity?: number | null, city?: string | null, description: string, placeName?: string | null, slug?: string | null, name: string, country?: string | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, zipCode?: string | null, startsAt?: any | null } }> } | null };
 
+export type GetEventLogsBySlugQueryVariables = Exact<{
+  eventSlug: Scalars['String'];
+  organizationSlug: Scalars['String'];
+  orderBy?: InputMaybe<Array<LogsOrderBy> | LogsOrderBy>;
+  attendeesOrderBy?: InputMaybe<Array<AttendeesOrderBy> | AttendeesOrderBy>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<LogFilter>;
+}>;
+
+
+export type GetEventLogsBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, totalConfirmedRegistrations?: number | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: EventStatus, panelNumber?: number | null, ticketNumber?: string | null, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
+
 export type GetEventBrandingByIdQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetEventBrandingByIdQuery = { __typename?: 'Query', eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null } | null };
+export type GetEventBrandingByIdQuery = { __typename?: 'Query', eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null };
 
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
@@ -4357,21 +4233,21 @@ export type GetAllUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetAllUsersQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', totalCount: number, edges: Array<{ __typename?: 'UsersEdge', node: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> } }> } | null };
+export type GetAllUsersQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', totalCount: number, edges: Array<{ __typename?: 'UsersEdge', node: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } }> } | null };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> } | null };
+export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, userEmailsList: Array<{ __typename?: 'UserEmail', id: any, email: string }> } | null };
+export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl: string } | null }> } } | null };
 
-export const MyAttendeeFragmentDoc = gql`
+export const MyAttendeeFragmentDoc = `
     fragment MyAttendee on Attendee {
   id
   firstname
@@ -4393,7 +4269,7 @@ export const MyAttendeeFragmentDoc = gql`
   phoneNumber
 }
     `;
-export const EventBrandingFragmentFragmentDoc = gql`
+export const EventBrandingFragmentFragmentDoc = `
     fragment EventBrandingFragment on EventBranding {
   awardWinningAssoList
   color1
@@ -4408,9 +4284,10 @@ export const EventBrandingFragmentFragmentDoc = gql`
   updatedAt
   headerMailName
   headerMailContact
+  cssVariables
 }
     `;
-export const MyEventFragmentDoc = gql`
+export const MyEventFragmentDoc = `
     fragment MyEvent on Event {
   id
   name
@@ -4435,7 +4312,7 @@ export const MyEventFragmentDoc = gql`
   totalConfirmedRegistrations
 }
     `;
-export const OrganizationFragmentFragmentDoc = gql`
+export const OrganizationFragmentFragmentDoc = `
     fragment OrganizationFragment on Organization {
   id
   name
@@ -4446,7 +4323,7 @@ export const OrganizationFragmentFragmentDoc = gql`
   updatedAt
 }
     `;
-export const RegistrationFragmentFragmentDoc = gql`
+export const RegistrationFragmentFragmentDoc = `
     fragment RegistrationFragment on Registration {
   eventId
   createdAt
@@ -4455,7 +4332,7 @@ export const RegistrationFragmentFragmentDoc = gql`
   updatedAt
 }
     `;
-export const MyUserFragmentDoc = gql`
+export const MyUserFragmentDoc = `
     fragment MyUser on User {
   id
   firstname
@@ -4464,13 +4341,10 @@ export const MyUserFragmentDoc = gql`
   isAdmin
   createdAt
   updatedAt
-  userEmailsList {
-    id
-    email
-  }
+  email
 }
     `;
-export const CreateAttendeeDocument = gql`
+export const CreateAttendeeDocument = `
     mutation CreateAttendee($input: CreateAttendeeInput!) {
   createAttendee(input: $input) {
     attendee {
@@ -4479,7 +4353,7 @@ export const CreateAttendeeDocument = gql`
   }
 }
     ${MyAttendeeFragmentDoc}`;
-export const UpdateAttendeeDocument = gql`
+export const UpdateAttendeeDocument = `
     mutation UpdateAttendee($input: UpdateAttendeeInput!) {
   updateAttendee(input: $input) {
     attendee {
@@ -4488,7 +4362,7 @@ export const UpdateAttendeeDocument = gql`
   }
 }
     ${MyAttendeeFragmentDoc}`;
-export const DeleteAttendeeDocument = gql`
+export const DeleteAttendeeDocument = `
     mutation DeleteAttendee($input: DeleteAttendeeInput!) {
   deleteAttendee(input: $input) {
     attendee {
@@ -4497,7 +4371,7 @@ export const DeleteAttendeeDocument = gql`
   }
 }
     ${MyAttendeeFragmentDoc}`;
-export const RegisterAttendeesDocument = gql`
+export const RegisterAttendeesDocument = `
     mutation RegisterAttendees($input: RegisterAttendeesInput!) {
   registerAttendees(input: $input) {
     registration {
@@ -4511,7 +4385,7 @@ export const RegisterAttendeesDocument = gql`
   }
 }
     `;
-export const SendEmailAllAttendeeEventDocument = gql`
+export const SendEmailAllAttendeeEventDocument = `
     mutation SendEmailAllAttendeeEvent($eventId: UUID!) {
   sendEmailAllAttendeeEvent(input: {eventId: $eventId}) {
     clientMutationId
@@ -4522,7 +4396,7 @@ export const SendEmailAllAttendeeEventDocument = gql`
   }
 }
     `;
-export const UpdateAttendeeEmailAndSendEmailDocument = gql`
+export const UpdateAttendeeEmailAndSendEmailDocument = `
     mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]!) {
   updateAttendeeEmailAndSendEmail(input: {attendees: $attendees}) {
     attendees {
@@ -4531,7 +4405,7 @@ export const UpdateAttendeeEmailAndSendEmailDocument = gql`
   }
 }
     `;
-export const ScanAttendeeDocument = gql`
+export const ScanAttendeeDocument = `
     mutation ScanAttendee($scanAttendeeInput: ScanAttendeeInput!) {
   scanAttendee(input: $scanAttendeeInput) {
     clientMutationId
@@ -4541,7 +4415,7 @@ export const ScanAttendeeDocument = gql`
   }
 }
     `;
-export const ScanAttendeesOfflineDocument = gql`
+export const ScanAttendeesOfflineDocument = `
     mutation ScanAttendeesOffline($input: ScanAttendeesOfflineInput!) {
   scanAttendeesOffline(input: $input) {
     attendees {
@@ -4551,7 +4425,7 @@ export const ScanAttendeesOfflineDocument = gql`
   }
 }
     `;
-export const CreateEventDocument = gql`
+export const CreateEventDocument = `
     mutation CreateEvent($input: CreateEventInput!) {
   createEvent(input: $input) {
     event {
@@ -4560,7 +4434,7 @@ export const CreateEventDocument = gql`
   }
 }
     ${MyEventFragmentDoc}`;
-export const UpdateEventDocument = gql`
+export const UpdateEventDocument = `
     mutation UpdateEvent($input: UpdateEventInput!) {
   updateEvent(input: $input) {
     event {
@@ -4569,7 +4443,7 @@ export const UpdateEventDocument = gql`
   }
 }
     ${MyEventFragmentDoc}`;
-export const DeleteEventDocument = gql`
+export const DeleteEventDocument = `
     mutation DeleteEvent($input: DeleteEventInput!) {
   deleteEvent(input: $input) {
     event {
@@ -4578,7 +4452,7 @@ export const DeleteEventDocument = gql`
   }
 }
     ${MyEventFragmentDoc}`;
-export const SendEmailConfirmDonationByEventIdDocument = gql`
+export const SendEmailConfirmDonationByEventIdDocument = `
     mutation SendEmailConfirmDonationByEventId($eventId: UUID!) {
   sendEmailConfirmDonationByEventId(input: {eventId: $eventId}) {
     rowEventAttendeeConfirms {
@@ -4588,7 +4462,7 @@ export const SendEmailConfirmDonationByEventIdDocument = gql`
   }
 }
     `;
-export const CreateEventBrandingDocument = gql`
+export const CreateEventBrandingDocument = `
     mutation CreateEventBranding($input: CreateEventBrandingInput!) {
   createEventBranding(input: $input) {
     eventBranding {
@@ -4598,7 +4472,7 @@ export const CreateEventBrandingDocument = gql`
   }
 }
     ${EventBrandingFragmentFragmentDoc}`;
-export const UpdateEventBrandingDocument = gql`
+export const UpdateEventBrandingDocument = `
     mutation UpdateEventBranding($input: UpdateEventBrandingInput!) {
   updateEventBranding(input: $input) {
     eventBranding {
@@ -4608,7 +4482,7 @@ export const UpdateEventBrandingDocument = gql`
   }
 }
     ${EventBrandingFragmentFragmentDoc}`;
-export const DeleteEventBrandingDocument = gql`
+export const DeleteEventBrandingDocument = `
     mutation DeleteEventBranding($input: DeleteEventBrandingInput!) {
   deleteEventBranding(input: $input) {
     eventBranding {
@@ -4618,7 +4492,7 @@ export const DeleteEventBrandingDocument = gql`
   }
 }
     ${EventBrandingFragmentFragmentDoc}`;
-export const GeneratePresignedPostDocument = gql`
+export const GeneratePresignedPostDocument = `
     mutation GeneratePresignedPost($key: String!) {
   generatePresignedPost(input: {key: $key}) {
     fields
@@ -4626,7 +4500,7 @@ export const GeneratePresignedPostDocument = gql`
   }
 }
     `;
-export const CreateOrganizationDocument = gql`
+export const CreateOrganizationDocument = `
     mutation CreateOrganization($input: CreateOrganizationInput!) {
   createOrganization(input: $input) {
     organization {
@@ -4635,7 +4509,7 @@ export const CreateOrganizationDocument = gql`
   }
 }
     `;
-export const UpdateOrganizationDocument = gql`
+export const UpdateOrganizationDocument = `
     mutation UpdateOrganization($input: UpdateOrganizationInput!) {
   updateOrganization(input: $input) {
     organization {
@@ -4644,7 +4518,7 @@ export const UpdateOrganizationDocument = gql`
   }
 }
     `;
-export const CreateRegistrationDocument = gql`
+export const CreateRegistrationDocument = `
     mutation CreateRegistration($registration: RegistrationInput!) {
   createRegistration(input: {registration: $registration}) {
     clientMutationId
@@ -4654,7 +4528,7 @@ export const CreateRegistrationDocument = gql`
   }
 }
     `;
-export const RegisterAttendeesCsvDocument = gql`
+export const RegisterAttendeesCsvDocument = `
     mutation RegisterAttendeesCsv($input: RegisterAttendeesCsvInput!) {
   registerAttendeesCsv(input: $input) {
     clientMutationId
@@ -4671,21 +4545,21 @@ export const RegisterAttendeesCsvDocument = gql`
   }
 }
     `;
-export const DeleteRegistrationDocument = gql`
+export const DeleteRegistrationDocument = `
     mutation DeleteRegistration($input: DeleteRegistrationInput!) {
   deleteRegistration(input: $input) {
     clientMutationId
   }
 }
     `;
-export const ForgotPasswordDocument = gql`
+export const ForgotPasswordDocument = `
     mutation ForgotPassword($input: ForgotPasswordInput!) {
   forgotPassword(input: $input) {
     clientMutationId
   }
 }
     `;
-export const LoginDocument = gql`
+export const LoginDocument = `
     mutation Login($input: LoginInput!) {
   login(input: $input) {
     accessToken
@@ -4696,7 +4570,7 @@ export const LoginDocument = gql`
   }
 }
     `;
-export const RegisterUserDocument = gql`
+export const RegisterUserDocument = `
     mutation RegisterUser($input: RegisterInput!) {
   register(input: $input) {
     user {
@@ -4707,21 +4581,21 @@ export const RegisterUserDocument = gql`
   }
 }
     `;
-export const ResetPasswordDocument = gql`
+export const ResetPasswordDocument = `
     mutation ResetPassword($input: ResetPasswordInput!) {
   resetPassword(input: $input) {
     success
   }
 }
     `;
-export const GetAttendeeByIdDocument = gql`
+export const GetAttendeeByIdDocument = `
     query GetAttendeeById($attendeeId: UUID!) {
   attendee(id: $attendeeId) {
     ...MyAttendee
   }
 }
     ${MyAttendeeFragmentDoc}`;
-export const GetAttendeesWithoutMailByRegistrationIdDocument = gql`
+export const GetAttendeesWithoutMailByRegistrationIdDocument = `
     query GetAttendeesWithoutMailByRegistrationId($registrationId: UUID!) {
   attendees(
     condition: {registrationId: $registrationId, isInscriptor: false, email: null}
@@ -4737,7 +4611,7 @@ export const GetAttendeesWithoutMailByRegistrationIdDocument = gql`
   }
 }
     `;
-export const GetAllEventsDocument = gql`
+export const GetAllEventsDocument = `
     query GetAllEvents {
   events(orderBy: [CREATED_AT_DESC]) {
     nodes {
@@ -4757,7 +4631,7 @@ export const GetAllEventsDocument = gql`
 }
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}`;
-export const GetAllEventsByOrganizationIdDocument = gql`
+export const GetAllEventsByOrganizationIdDocument = `
     query GetAllEventsByOrganizationId($organizationId: UUID!) {
   events(orderBy: [CREATED_AT_DESC], condition: {organizationId: $organizationId}) {
     nodes {
@@ -4766,7 +4640,7 @@ export const GetAllEventsByOrganizationIdDocument = gql`
   }
 }
     ${MyEventFragmentDoc}`;
-export const GetAllEventsByOrganizationSlugDocument = gql`
+export const GetAllEventsByOrganizationSlugDocument = `
     query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
   events(orderBy: [CREATED_AT_DESC], condition: {slug: $organizationSlug}) {
     nodes {
@@ -4782,7 +4656,7 @@ export const GetAllEventsByOrganizationSlugDocument = gql`
   }
 }
     ${MyEventFragmentDoc}`;
-export const GetEventByIdDocument = gql`
+export const GetEventByIdDocument = `
     query GetEventById($eventId: UUID!, $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC, $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC, $first: Int, $offset: Int, $filter: LogFilter) {
   event(id: $eventId) {
     ...MyEvent
@@ -4808,7 +4682,7 @@ export const GetEventByIdDocument = gql`
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
-export const GetEventBySlugDocument = gql`
+export const GetEventBySlugDocument = `
     query GetEventBySlug($eventSlug: String!, $organizationSlug: String!, $filter: AttendeeFilter, $first: Int, $offset: Int) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
@@ -4834,7 +4708,7 @@ export const GetEventBySlugDocument = gql`
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
-export const GetEventByEventSlugDocument = gql`
+export const GetEventByEventSlugDocument = `
     query GetEventByEventSlug($eventSlug: String!) {
   events(condition: {slug: $eventSlug}) {
     edges {
@@ -4856,14 +4730,40 @@ export const GetEventByEventSlugDocument = gql`
   }
 }
     `;
-export const GetEventBrandingByIdDocument = gql`
+export const GetEventLogsBySlugDocument = `
+    query GetEventLogsBySlug($eventSlug: String!, $organizationSlug: String!, $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC, $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC, $first: Int, $offset: Int, $filter: LogFilter) {
+  eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
+    ...MyEvent
+    eventBranding {
+      ...EventBrandingFragment
+    }
+    capacity
+    registrations {
+      nodes {
+        attendeesList(orderBy: $attendeesOrderBy) {
+          ...MyAttendee
+        }
+      }
+    }
+    logsList(orderBy: $orderBy, filter: $filter, first: $first, offset: $offset) {
+      id
+      status
+      payload
+      updatedAt
+    }
+  }
+}
+    ${MyEventFragmentDoc}
+${EventBrandingFragmentFragmentDoc}
+${MyAttendeeFragmentDoc}`;
+export const GetEventBrandingByIdDocument = `
     query GetEventBrandingById($id: UUID!) {
   eventBranding(id: $id) {
     ...EventBrandingFragment
   }
 }
     ${EventBrandingFragmentFragmentDoc}`;
-export const GetAllOrganizationDocument = gql`
+export const GetAllOrganizationDocument = `
     query GetAllOrganization($after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [OrganizationsOrderBy!] = CREATED_AT_ASC, $filter: OrganizationFilter, $offset: Int) {
   organizations(
     filter: $filter
@@ -4890,7 +4790,7 @@ export const GetAllOrganizationDocument = gql`
   }
 }
     ${OrganizationFragmentFragmentDoc}`;
-export const GetOrganizationByIdDocument = gql`
+export const GetOrganizationByIdDocument = `
     query GetOrganizationById($id: UUID!) {
   organization(id: $id) {
     ...OrganizationFragment
@@ -4904,7 +4804,7 @@ export const GetOrganizationByIdDocument = gql`
 }
     ${OrganizationFragmentFragmentDoc}
 ${MyEventFragmentDoc}`;
-export const GetOrganizationBySlugDocument = gql`
+export const GetOrganizationBySlugDocument = `
     query GetOrganizationBySlug($slug: String!, $after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [EventsOrderBy!] = CREATED_AT_ASC, $filter: EventFilter, $offset: Int) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
@@ -4935,7 +4835,7 @@ export const GetOrganizationBySlugDocument = gql`
 }
     ${OrganizationFragmentFragmentDoc}
 ${MyEventFragmentDoc}`;
-export const GetAllUsersDocument = gql`
+export const GetAllUsersDocument = `
     query GetAllUsers($first: Int, $offset: Int, $filter: UserFilter) {
   users(first: $first, offset: $offset, filter: $filter) {
     edges {
@@ -4947,147 +4847,156 @@ export const GetAllUsersDocument = gql`
   }
 }
     ${MyUserFragmentDoc}`;
-export const GetUserByIdDocument = gql`
+export const GetUserByIdDocument = `
     query GetUserById($id: UUID!) {
   user(id: $id) {
     ...MyUser
   }
 }
     ${MyUserFragmentDoc}`;
-export const GetCurrentUserDocument = gql`
+export const GetCurrentUserDocument = `
     query GetCurrentUser {
   currentUser {
     ...MyUser
+    organizations {
+      nodes {
+        role
+        organization {
+          id
+          name
+          slug
+          logoUrl
+        }
+      }
+    }
   }
 }
     ${MyUserFragmentDoc}`;
-
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
-
-
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
-
-export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
+export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    CreateAttendee(variables: CreateAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateAttendeeMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateAttendeeMutation>(CreateAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateAttendee', 'mutation');
+    CreateAttendee(variables: CreateAttendeeMutationVariables, options?: C): Promise<CreateAttendeeMutation> {
+      return requester<CreateAttendeeMutation, CreateAttendeeMutationVariables>(CreateAttendeeDocument, variables, options) as Promise<CreateAttendeeMutation>;
     },
-    UpdateAttendee(variables: UpdateAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateAttendeeMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdateAttendeeMutation>(UpdateAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateAttendee', 'mutation');
+    UpdateAttendee(variables: UpdateAttendeeMutationVariables, options?: C): Promise<UpdateAttendeeMutation> {
+      return requester<UpdateAttendeeMutation, UpdateAttendeeMutationVariables>(UpdateAttendeeDocument, variables, options) as Promise<UpdateAttendeeMutation>;
     },
-    DeleteAttendee(variables: DeleteAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteAttendeeMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<DeleteAttendeeMutation>(DeleteAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteAttendee', 'mutation');
+    DeleteAttendee(variables: DeleteAttendeeMutationVariables, options?: C): Promise<DeleteAttendeeMutation> {
+      return requester<DeleteAttendeeMutation, DeleteAttendeeMutationVariables>(DeleteAttendeeDocument, variables, options) as Promise<DeleteAttendeeMutation>;
     },
-    RegisterAttendees(variables: RegisterAttendeesMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesMutation>(RegisterAttendeesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendees', 'mutation');
+    RegisterAttendees(variables: RegisterAttendeesMutationVariables, options?: C): Promise<RegisterAttendeesMutation> {
+      return requester<RegisterAttendeesMutation, RegisterAttendeesMutationVariables>(RegisterAttendeesDocument, variables, options) as Promise<RegisterAttendeesMutation>;
     },
-    SendEmailAllAttendeeEvent(variables: SendEmailAllAttendeeEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SendEmailAllAttendeeEventMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<SendEmailAllAttendeeEventMutation>(SendEmailAllAttendeeEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SendEmailAllAttendeeEvent', 'mutation');
+    SendEmailAllAttendeeEvent(variables: SendEmailAllAttendeeEventMutationVariables, options?: C): Promise<SendEmailAllAttendeeEventMutation> {
+      return requester<SendEmailAllAttendeeEventMutation, SendEmailAllAttendeeEventMutationVariables>(SendEmailAllAttendeeEventDocument, variables, options) as Promise<SendEmailAllAttendeeEventMutation>;
     },
-    UpdateAttendeeEmailAndSendEmail(variables: UpdateAttendeeEmailAndSendEmailMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdateAttendeeEmailAndSendEmailMutation>(UpdateAttendeeEmailAndSendEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateAttendeeEmailAndSendEmail', 'mutation');
+    UpdateAttendeeEmailAndSendEmail(variables: UpdateAttendeeEmailAndSendEmailMutationVariables, options?: C): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
+      return requester<UpdateAttendeeEmailAndSendEmailMutation, UpdateAttendeeEmailAndSendEmailMutationVariables>(UpdateAttendeeEmailAndSendEmailDocument, variables, options) as Promise<UpdateAttendeeEmailAndSendEmailMutation>;
     },
-    ScanAttendee(variables: ScanAttendeeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeeMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<ScanAttendeeMutation>(ScanAttendeeDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ScanAttendee', 'mutation');
+    ScanAttendee(variables: ScanAttendeeMutationVariables, options?: C): Promise<ScanAttendeeMutation> {
+      return requester<ScanAttendeeMutation, ScanAttendeeMutationVariables>(ScanAttendeeDocument, variables, options) as Promise<ScanAttendeeMutation>;
     },
-    ScanAttendeesOffline(variables: ScanAttendeesOfflineMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ScanAttendeesOfflineMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<ScanAttendeesOfflineMutation>(ScanAttendeesOfflineDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ScanAttendeesOffline', 'mutation');
+    ScanAttendeesOffline(variables: ScanAttendeesOfflineMutationVariables, options?: C): Promise<ScanAttendeesOfflineMutation> {
+      return requester<ScanAttendeesOfflineMutation, ScanAttendeesOfflineMutationVariables>(ScanAttendeesOfflineDocument, variables, options) as Promise<ScanAttendeesOfflineMutation>;
     },
-    CreateEvent(variables: CreateEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateEventMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateEventMutation>(CreateEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateEvent', 'mutation');
+    CreateEvent(variables: CreateEventMutationVariables, options?: C): Promise<CreateEventMutation> {
+      return requester<CreateEventMutation, CreateEventMutationVariables>(CreateEventDocument, variables, options) as Promise<CreateEventMutation>;
     },
-    UpdateEvent(variables: UpdateEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateEventMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdateEventMutation>(UpdateEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateEvent', 'mutation');
+    UpdateEvent(variables: UpdateEventMutationVariables, options?: C): Promise<UpdateEventMutation> {
+      return requester<UpdateEventMutation, UpdateEventMutationVariables>(UpdateEventDocument, variables, options) as Promise<UpdateEventMutation>;
     },
-    DeleteEvent(variables: DeleteEventMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteEventMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<DeleteEventMutation>(DeleteEventDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteEvent', 'mutation');
+    DeleteEvent(variables: DeleteEventMutationVariables, options?: C): Promise<DeleteEventMutation> {
+      return requester<DeleteEventMutation, DeleteEventMutationVariables>(DeleteEventDocument, variables, options) as Promise<DeleteEventMutation>;
     },
-    SendEmailConfirmDonationByEventId(variables: SendEmailConfirmDonationByEventIdMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SendEmailConfirmDonationByEventIdMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<SendEmailConfirmDonationByEventIdMutation>(SendEmailConfirmDonationByEventIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SendEmailConfirmDonationByEventId', 'mutation');
+    SendEmailConfirmDonationByEventId(variables: SendEmailConfirmDonationByEventIdMutationVariables, options?: C): Promise<SendEmailConfirmDonationByEventIdMutation> {
+      return requester<SendEmailConfirmDonationByEventIdMutation, SendEmailConfirmDonationByEventIdMutationVariables>(SendEmailConfirmDonationByEventIdDocument, variables, options) as Promise<SendEmailConfirmDonationByEventIdMutation>;
     },
-    CreateEventBranding(variables: CreateEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateEventBrandingMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateEventBrandingMutation>(CreateEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateEventBranding', 'mutation');
+    CreateEventBranding(variables: CreateEventBrandingMutationVariables, options?: C): Promise<CreateEventBrandingMutation> {
+      return requester<CreateEventBrandingMutation, CreateEventBrandingMutationVariables>(CreateEventBrandingDocument, variables, options) as Promise<CreateEventBrandingMutation>;
     },
-    UpdateEventBranding(variables: UpdateEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateEventBrandingMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdateEventBrandingMutation>(UpdateEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateEventBranding', 'mutation');
+    UpdateEventBranding(variables: UpdateEventBrandingMutationVariables, options?: C): Promise<UpdateEventBrandingMutation> {
+      return requester<UpdateEventBrandingMutation, UpdateEventBrandingMutationVariables>(UpdateEventBrandingDocument, variables, options) as Promise<UpdateEventBrandingMutation>;
     },
-    DeleteEventBranding(variables: DeleteEventBrandingMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteEventBrandingMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<DeleteEventBrandingMutation>(DeleteEventBrandingDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteEventBranding', 'mutation');
+    DeleteEventBranding(variables: DeleteEventBrandingMutationVariables, options?: C): Promise<DeleteEventBrandingMutation> {
+      return requester<DeleteEventBrandingMutation, DeleteEventBrandingMutationVariables>(DeleteEventBrandingDocument, variables, options) as Promise<DeleteEventBrandingMutation>;
     },
-    GeneratePresignedPost(variables: GeneratePresignedPostMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GeneratePresignedPostMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GeneratePresignedPostMutation>(GeneratePresignedPostDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GeneratePresignedPost', 'mutation');
+    GeneratePresignedPost(variables: GeneratePresignedPostMutationVariables, options?: C): Promise<GeneratePresignedPostMutation> {
+      return requester<GeneratePresignedPostMutation, GeneratePresignedPostMutationVariables>(GeneratePresignedPostDocument, variables, options) as Promise<GeneratePresignedPostMutation>;
     },
-    CreateOrganization(variables: CreateOrganizationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateOrganizationMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateOrganizationMutation>(CreateOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateOrganization', 'mutation');
+    CreateOrganization(variables: CreateOrganizationMutationVariables, options?: C): Promise<CreateOrganizationMutation> {
+      return requester<CreateOrganizationMutation, CreateOrganizationMutationVariables>(CreateOrganizationDocument, variables, options) as Promise<CreateOrganizationMutation>;
     },
-    UpdateOrganization(variables: UpdateOrganizationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateOrganizationMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UpdateOrganizationMutation>(UpdateOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'UpdateOrganization', 'mutation');
+    UpdateOrganization(variables: UpdateOrganizationMutationVariables, options?: C): Promise<UpdateOrganizationMutation> {
+      return requester<UpdateOrganizationMutation, UpdateOrganizationMutationVariables>(UpdateOrganizationDocument, variables, options) as Promise<UpdateOrganizationMutation>;
     },
-    CreateRegistration(variables: CreateRegistrationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateRegistrationMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateRegistrationMutation>(CreateRegistrationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CreateRegistration', 'mutation');
+    CreateRegistration(variables: CreateRegistrationMutationVariables, options?: C): Promise<CreateRegistrationMutation> {
+      return requester<CreateRegistrationMutation, CreateRegistrationMutationVariables>(CreateRegistrationDocument, variables, options) as Promise<CreateRegistrationMutation>;
     },
-    RegisterAttendeesCsv(variables: RegisterAttendeesCsvMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterAttendeesCsvMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<RegisterAttendeesCsvMutation>(RegisterAttendeesCsvDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterAttendeesCsv', 'mutation');
+    RegisterAttendeesCsv(variables: RegisterAttendeesCsvMutationVariables, options?: C): Promise<RegisterAttendeesCsvMutation> {
+      return requester<RegisterAttendeesCsvMutation, RegisterAttendeesCsvMutationVariables>(RegisterAttendeesCsvDocument, variables, options) as Promise<RegisterAttendeesCsvMutation>;
     },
-    DeleteRegistration(variables: DeleteRegistrationMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteRegistrationMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<DeleteRegistrationMutation>(DeleteRegistrationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'DeleteRegistration', 'mutation');
+    DeleteRegistration(variables: DeleteRegistrationMutationVariables, options?: C): Promise<DeleteRegistrationMutation> {
+      return requester<DeleteRegistrationMutation, DeleteRegistrationMutationVariables>(DeleteRegistrationDocument, variables, options) as Promise<DeleteRegistrationMutation>;
     },
-    ForgotPassword(variables: ForgotPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ForgotPasswordMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<ForgotPasswordMutation>(ForgotPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ForgotPassword', 'mutation');
+    ForgotPassword(variables: ForgotPasswordMutationVariables, options?: C): Promise<ForgotPasswordMutation> {
+      return requester<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument, variables, options) as Promise<ForgotPasswordMutation>;
     },
-    Login(variables: LoginMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<LoginMutation>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Login', 'mutation');
+    Login(variables: LoginMutationVariables, options?: C): Promise<LoginMutation> {
+      return requester<LoginMutation, LoginMutationVariables>(LoginDocument, variables, options) as Promise<LoginMutation>;
     },
-    RegisterUser(variables: RegisterUserMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RegisterUserMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<RegisterUserMutation>(RegisterUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'RegisterUser', 'mutation');
+    RegisterUser(variables: RegisterUserMutationVariables, options?: C): Promise<RegisterUserMutation> {
+      return requester<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, variables, options) as Promise<RegisterUserMutation>;
     },
-    ResetPassword(variables: ResetPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResetPasswordMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<ResetPasswordMutation>(ResetPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'ResetPassword', 'mutation');
+    ResetPassword(variables: ResetPasswordMutationVariables, options?: C): Promise<ResetPasswordMutation> {
+      return requester<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, variables, options) as Promise<ResetPasswordMutation>;
     },
-    GetAttendeeById(variables: GetAttendeeByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeeByIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeeByIdQuery>(GetAttendeeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeeById', 'query');
+    GetAttendeeById(variables: GetAttendeeByIdQueryVariables, options?: C): Promise<GetAttendeeByIdQuery> {
+      return requester<GetAttendeeByIdQuery, GetAttendeeByIdQueryVariables>(GetAttendeeByIdDocument, variables, options) as Promise<GetAttendeeByIdQuery>;
     },
-    GetAttendeesWithoutMailByRegistrationId(variables: GetAttendeesWithoutMailByRegistrationIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAttendeesWithoutMailByRegistrationIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAttendeesWithoutMailByRegistrationIdQuery>(GetAttendeesWithoutMailByRegistrationIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAttendeesWithoutMailByRegistrationId', 'query');
+    GetAttendeesWithoutMailByRegistrationId(variables: GetAttendeesWithoutMailByRegistrationIdQueryVariables, options?: C): Promise<GetAttendeesWithoutMailByRegistrationIdQuery> {
+      return requester<GetAttendeesWithoutMailByRegistrationIdQuery, GetAttendeesWithoutMailByRegistrationIdQueryVariables>(GetAttendeesWithoutMailByRegistrationIdDocument, variables, options) as Promise<GetAttendeesWithoutMailByRegistrationIdQuery>;
     },
-    GetAllEvents(variables?: GetAllEventsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllEventsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllEventsQuery>(GetAllEventsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllEvents', 'query');
+    GetAllEvents(variables?: GetAllEventsQueryVariables, options?: C): Promise<GetAllEventsQuery> {
+      return requester<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, variables, options) as Promise<GetAllEventsQuery>;
     },
-    GetAllEventsByOrganizationId(variables: GetAllEventsByOrganizationIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllEventsByOrganizationIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllEventsByOrganizationIdQuery>(GetAllEventsByOrganizationIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllEventsByOrganizationId', 'query');
+    GetAllEventsByOrganizationId(variables: GetAllEventsByOrganizationIdQueryVariables, options?: C): Promise<GetAllEventsByOrganizationIdQuery> {
+      return requester<GetAllEventsByOrganizationIdQuery, GetAllEventsByOrganizationIdQueryVariables>(GetAllEventsByOrganizationIdDocument, variables, options) as Promise<GetAllEventsByOrganizationIdQuery>;
     },
-    GetAllEventsByOrganizationSlug(variables: GetAllEventsByOrganizationSlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllEventsByOrganizationSlugQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllEventsByOrganizationSlugQuery>(GetAllEventsByOrganizationSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllEventsByOrganizationSlug', 'query');
+    GetAllEventsByOrganizationSlug(variables: GetAllEventsByOrganizationSlugQueryVariables, options?: C): Promise<GetAllEventsByOrganizationSlugQuery> {
+      return requester<GetAllEventsByOrganizationSlugQuery, GetAllEventsByOrganizationSlugQueryVariables>(GetAllEventsByOrganizationSlugDocument, variables, options) as Promise<GetAllEventsByOrganizationSlugQuery>;
     },
-    GetEventById(variables: GetEventByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventByIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetEventByIdQuery>(GetEventByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventById', 'query');
+    GetEventById(variables: GetEventByIdQueryVariables, options?: C): Promise<GetEventByIdQuery> {
+      return requester<GetEventByIdQuery, GetEventByIdQueryVariables>(GetEventByIdDocument, variables, options) as Promise<GetEventByIdQuery>;
     },
-    GetEventBySlug(variables: GetEventBySlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventBySlugQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetEventBySlugQuery>(GetEventBySlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventBySlug', 'query');
+    GetEventBySlug(variables: GetEventBySlugQueryVariables, options?: C): Promise<GetEventBySlugQuery> {
+      return requester<GetEventBySlugQuery, GetEventBySlugQueryVariables>(GetEventBySlugDocument, variables, options) as Promise<GetEventBySlugQuery>;
     },
-    GetEventByEventSlug(variables: GetEventByEventSlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventByEventSlugQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetEventByEventSlugQuery>(GetEventByEventSlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventByEventSlug', 'query');
+    GetEventByEventSlug(variables: GetEventByEventSlugQueryVariables, options?: C): Promise<GetEventByEventSlugQuery> {
+      return requester<GetEventByEventSlugQuery, GetEventByEventSlugQueryVariables>(GetEventByEventSlugDocument, variables, options) as Promise<GetEventByEventSlugQuery>;
     },
-    GetEventBrandingById(variables: GetEventBrandingByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetEventBrandingByIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetEventBrandingByIdQuery>(GetEventBrandingByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetEventBrandingById', 'query');
+    GetEventLogsBySlug(variables: GetEventLogsBySlugQueryVariables, options?: C): Promise<GetEventLogsBySlugQuery> {
+      return requester<GetEventLogsBySlugQuery, GetEventLogsBySlugQueryVariables>(GetEventLogsBySlugDocument, variables, options) as Promise<GetEventLogsBySlugQuery>;
     },
-    GetAllOrganization(variables?: GetAllOrganizationQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllOrganizationQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllOrganizationQuery>(GetAllOrganizationDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllOrganization', 'query');
+    GetEventBrandingById(variables: GetEventBrandingByIdQueryVariables, options?: C): Promise<GetEventBrandingByIdQuery> {
+      return requester<GetEventBrandingByIdQuery, GetEventBrandingByIdQueryVariables>(GetEventBrandingByIdDocument, variables, options) as Promise<GetEventBrandingByIdQuery>;
     },
-    GetOrganizationById(variables: GetOrganizationByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetOrganizationByIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetOrganizationByIdQuery>(GetOrganizationByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetOrganizationById', 'query');
+    GetAllOrganization(variables?: GetAllOrganizationQueryVariables, options?: C): Promise<GetAllOrganizationQuery> {
+      return requester<GetAllOrganizationQuery, GetAllOrganizationQueryVariables>(GetAllOrganizationDocument, variables, options) as Promise<GetAllOrganizationQuery>;
     },
-    GetOrganizationBySlug(variables: GetOrganizationBySlugQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetOrganizationBySlugQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetOrganizationBySlugQuery>(GetOrganizationBySlugDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetOrganizationBySlug', 'query');
+    GetOrganizationById(variables: GetOrganizationByIdQueryVariables, options?: C): Promise<GetOrganizationByIdQuery> {
+      return requester<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>(GetOrganizationByIdDocument, variables, options) as Promise<GetOrganizationByIdQuery>;
     },
-    GetAllUsers(variables?: GetAllUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAllUsersQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetAllUsersQuery>(GetAllUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAllUsers', 'query');
+    GetOrganizationBySlug(variables: GetOrganizationBySlugQueryVariables, options?: C): Promise<GetOrganizationBySlugQuery> {
+      return requester<GetOrganizationBySlugQuery, GetOrganizationBySlugQueryVariables>(GetOrganizationBySlugDocument, variables, options) as Promise<GetOrganizationBySlugQuery>;
     },
-    GetUserById(variables: GetUserByIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserByIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetUserByIdQuery>(GetUserByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetUserById', 'query');
+    GetAllUsers(variables?: GetAllUsersQueryVariables, options?: C): Promise<GetAllUsersQuery> {
+      return requester<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, variables, options) as Promise<GetAllUsersQuery>;
     },
-    GetCurrentUser(variables?: GetCurrentUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCurrentUserQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCurrentUserQuery>(GetCurrentUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetCurrentUser', 'query');
+    GetUserById(variables: GetUserByIdQueryVariables, options?: C): Promise<GetUserByIdQuery> {
+      return requester<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, variables, options) as Promise<GetUserByIdQuery>;
+    },
+    GetCurrentUser(variables?: GetCurrentUserQueryVariables, options?: C): Promise<GetCurrentUserQuery> {
+      return requester<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, variables, options) as Promise<GetCurrentUserQuery>;
     }
   };
 }

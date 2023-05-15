@@ -1,4 +1,4 @@
-import { makeAddPgTableOrderByPlugin, orderByAscDesc } from "postgraphile";
+import { makeAddPgTableOrderByPlugin, orderByAscDesc } from "graphile-utils";
 
 export default makeAddPgTableOrderByPlugin(
   "publ",

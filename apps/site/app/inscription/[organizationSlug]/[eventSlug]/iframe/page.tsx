@@ -10,7 +10,9 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
   const currentDate = new Date();
 
   return (
-    <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
+    <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10"
+    style={...eventBySlug?.eventBranding?.cssVariables}
+    >
       <div className="flex flex-col items-baseline w-full max-w-3xl gap-2 mx-auto">
         <div className="flex items-center">
           <div className="text-3xl font-semibold">{eventBySlug.name}</div>

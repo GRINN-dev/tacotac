@@ -2,7 +2,7 @@ import Link from "next/link"
 
 import { ResetPasswordForm } from "./ResetPasswordForm"
 
-export default async function ForgotPassordPage() {
+export default async function ResetPasswordPage() {
   return (
     <div>
       <h1>Nouveau mot de passe</h1>

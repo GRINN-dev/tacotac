@@ -16,9 +16,10 @@ const config: CodegenConfig = {
           },
         },
         "typescript",
-        "typescript-operations",
-        "typescript-graphql-request",
+        "typescript-operations", // "typescript-graphql-request",
+        "typescript-generic-sdk",
       ],
+      config: { documentMode: "string" },
     },
   },
 };
