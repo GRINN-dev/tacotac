@@ -1,21 +1,7 @@
-import { ReactNode } from "react";
-import Link from "next/link";
-
 import { serverSdk } from "@/lib/server-sdk";
-import { cn } from "@/lib/utils";
-import { AdminPagesSidebar, MobileAdminDrawer, OrganizationsSidebar } from "@/components/navigation/admin-navigation";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { buttonVariants } from "@/components/ui";
 import { Card } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-export default async function Page({
-  params: { organizationSlug },
-  children,
-}: {
-  params: { organizationSlug: string };
-  children: ReactNode;
-}) {
+export default async function Page({ params: { organizationSlug } }: { params: { organizationSlug: string } }) {
   if (organizationSlug === "all") {
     return (
       <div className="flex h-full w-full items-center justify-center">
