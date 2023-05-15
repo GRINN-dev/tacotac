@@ -71,6 +71,9 @@ query GetOrganizationBySlug(
         registrations {
           totalCount
         }
+        organization {
+          slug
+        }
       }
       pageInfo {
         hasNextPage

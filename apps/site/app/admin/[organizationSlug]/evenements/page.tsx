@@ -27,53 +27,6 @@ const EventsPage = async ({
 
   const { organizationBySlug: organization } = data;
 
-  const headerEvent: IHeader[] = [
-    { title: "Nom", value: "name", type: Type?.string, isSortable: true, isVisible: true },
-    { title: "Lieu", value: "city", type: Type?.string, isSortable: true, isVisible: true },
-    { title: "Début le", value: "startsAt", type: Type?.date, isSortable: true, isVisible: true },
-    { title: "Début inscr.", value: "bookingStartsAt", type: Type?.date, isSortable: true, isVisible: true },
-    { title: "Fin inscr.", value: "bookingEndsAt", type: Type?.date, isSortable: true, isVisible: true },
-    { title: "Inscrits", value: "totalRegistrations", type: Type?.number, isSortable: false, isVisible: true },
-    {
-      title: "Inscrits confirmés",
-      value: "totalConfirmedRegistrations",
-      type: Type?.number,
-      isSortable: false,
-      isVisible: true,
-    },
-    { title: "slug", value: "slug", type: Type?.string, isSortable: false, isVisible: false },
-  ];
-
-  const rawEvent: IData[] = organization?.events?.nodes.map(
-    ({
-      name,
-      city,
-      startsAt,
-      bookingStartsAt,
-      bookingEndsAt,
-      slug,
-      totalRegistrations,
-      totalConfirmedRegistrations,
-    }) => ({
-      Nom: name,
-      Lieu: city,
-      "Début le": (
-        <div className="flex flex-col">
-          <div>{dayjs(startsAt).format("DD/MM/YYYY")}</div>{" "}
-          <div>
-            {" à "}
-            {dayjs(startsAt).format("HH:mm")}
-          </div>
-        </div>
-      ),
-      "Début inscr.": dayjs(bookingStartsAt).format("DD/MM/YYYY"),
-      "Fin inscr.": dayjs(bookingEndsAt).format("DD/MM/YYYY"),
-      Inscrits: totalRegistrations,
-      "Inscrits confirmés": totalConfirmedRegistrations,
-      slug: slug,
-    })
-  );
-  //pour pr
   return (
     <div className="grid h-full grid-cols-[300px_1fr]">
       <AllEventsSidebar organizationSlug={organizationSlug} />
@@ -89,13 +42,6 @@ const EventsPage = async ({
               </Link>
             </div>
             {organization?.events?.nodes?.length > 0 ? (
-              /*   <Collection
-                totalCount={organization?.events?.totalCount}
-                pageInfo={organization?.events?.pageInfo}
-                header={headerEvent}
-                data={rawEvent}
-                initLimit={initLimit}
-              /> */
               <ScrollArea className="mt-8 ">
                 <div className="px-8">
                   <DataTable columns={columns} data={organization.events.nodes} />

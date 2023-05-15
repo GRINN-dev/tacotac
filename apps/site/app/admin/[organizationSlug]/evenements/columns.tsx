@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { GetAllEventsQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllEventsQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
+import { sdk } from "@/lib/sdk";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -37,7 +38,7 @@ export interface Event {
   totalConfirmedRegistrations?: number;
 }
 
-export const columns: ColumnDef<Event>[] = [
+export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]["events"]["nodes"][number]>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
@@ -57,8 +58,23 @@ export const columns: ColumnDef<Event>[] = [
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>Voir les détails</DropdownMenuItem>
-            <DropdownMenuItem>Supprimer</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/admin/${row.original.organization.slug}/evenements/${row.original.slug}`}>
+                Voir les détails
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                window.confirm("Voulez-vous supprimer cet evenements ?") &&
+                  sdk().DeleteEvent({
+                    input: {
+                      id: row.original.id,
+                    },
+                  });
+              }}
+            >
+              Supprimer
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
