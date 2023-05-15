@@ -31,12 +31,12 @@ export const login: (input: LoginInput) => Promise<{
   sendCookieToken(res, refreshToken, "qid", {
     path: "/",
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-    domain: process.env.DOMAIN, // this is to limit our cookie to our domain, so the tokens are not sent to other domains like third party APIs,
+    // domain: process.env.DOMAIN, // this is to limit our cookie to our domain, so the tokens are not sent to other domains like third party APIs,
   });
   sendCookieToken(res, accessToken, "access_token", {
     path: "/",
     expires: new Date(Date.now() + 1000 * 60 * 15),
-    domain: process.env.DOMAIN,
+    // domain: process.env.DOMAIN,
   });
 
   return { accessToken, refreshToken };
