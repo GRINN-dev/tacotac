@@ -12,4 +12,5 @@ fragment EventBrandingFragment on EventBranding {
   updatedAt
   headerMailName
   headerMailContact
+  cssVariables
 }

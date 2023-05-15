@@ -90,6 +90,7 @@ export async function makeApp({
    * Error handling middleware
    */
   middleware.installErrorHandler(app);
+  middleware.installCaptcha(app);
 
   return app;
 }

@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { ClipboardCheck, Cog, Group, Import, Paintbrush, PictureInPicture, PlusSquare } from "lucide-react";
+import { ClipboardCheck, Cog, Group, Import, Paintbrush, PictureInPicture, PlusSquare, QrCode } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui";
@@ -11,10 +11,9 @@ import { buttonVariants } from "@/components/ui";
 export const EventsSidebar: FC<{
   organizationSlug: string;
   eventSlug: string;
-}> = ({ organizationSlug, eventSlug }) => {
+  eventId: string;
+}> = ({ organizationSlug, eventSlug, eventId }) => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const cafe = searchParams.get("cafe") || "all";
 
   const sections = [
     {
@@ -55,6 +54,11 @@ export const EventsSidebar: FC<{
           icon: PictureInPicture,
           href: `/admin/${organizationSlug}/evenements/${eventSlug}/integration`,
         },
+        {
+          name: "Scanner",
+          icon: QrCode,
+          href: `/scanner/event/${eventId}/scan`,
+        },
       ],
     },
   ];
@@ -68,13 +72,15 @@ export const EventsSidebar: FC<{
               {section.pages.map((page) => (
                 <li key={page.name}>
                   <Link
-                    href={`${page.href}?cafe=${cafe}`}
+                    href={`${page.href}`}
                     className={cn(
                       buttonVariants({
                         variant: "ghost",
                       }),
                       "gap-2",
-                      ((page.href !== "/admin" && pathname.startsWith(page.href)) || pathname === page.href) &&
+                      ((page.href !== `/admin/${organizationSlug}/evenements/${eventSlug}` &&
+                        pathname.startsWith(page.href)) ||
+                        pathname === page.href) &&
                         "font-bold underline"
                     )}
                   >

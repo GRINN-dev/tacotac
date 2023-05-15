@@ -9,6 +9,7 @@ import installSharedStatic from "./installSharedStatic";
 import installWorkerUtils from "./installWorkerUtils";
 import { installJWTRefresh } from "./installJWTRefresh";
 import { installAuthorizationHeader } from "./installAuthorizationHeader";
+import { installCaptcha } from "./installCaptcha";
 
 export {
   installDatabasePools,
@@ -22,4 +23,5 @@ export {
   installWorkerUtils,
   installCors,
   installAuthorizationHeader,
+  installCaptcha,
 };

@@ -1297,6 +1297,7 @@ type EventBranding {
   color1: String
   color2: String
   createdAt: Datetime!
+  cssVariables: JSON
 
   """Reads a single `Event` that is related to this `EventBranding`."""
   event: Event
@@ -1362,6 +1363,7 @@ input EventBrandingInput {
   color1: String
   color2: String
   createdAt: Datetime
+  cssVariables: JSON
   eventId: UUID!
   font: Fonts
   headerMailContact: String
@@ -1382,6 +1384,7 @@ input EventBrandingPatch {
   color1: String
   color2: String
   createdAt: Datetime
+  cssVariables: JSON
   eventId: UUID
   font: Fonts
   headerMailContact: String

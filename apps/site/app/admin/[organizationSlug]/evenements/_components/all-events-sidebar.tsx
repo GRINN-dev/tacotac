@@ -54,7 +54,8 @@ export const AllEventsSidebar: FC<{
                         variant: "ghost",
                       }),
                       "gap-2",
-                      ((page.href !== "/admin" && pathname.startsWith(page.href)) || pathname === page.href) &&
+                      ((page.href !== `/admin/${organizationSlug}/evenements` && pathname.startsWith(page.href)) ||
+                        pathname === page.href) &&
                         "font-bold underline"
                     )}
                   >

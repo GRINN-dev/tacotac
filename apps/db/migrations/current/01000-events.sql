@@ -122,6 +122,7 @@ create table publ.event_brandings (
   font text  references publ.fonts on delete cascade,
   logo text,
   placeholder json, 
+  css_variables json,
   rich_text text,
   short_text varchar(32),
   award_winning_asso_list text[],
@@ -140,8 +141,8 @@ create table publ.event_brandings (
 
 -- RBAC
     grant select on publ.event_brandings to :DATABASE_VISITOR;
-    grant insert( color_1, color_2, font, logo, placeholder, rich_text, short_text, header_mail_name, header_mail_contact,award_winning_asso_list) on publ.event_brandings to :DATABASE_VISITOR;
-    grant update( color_1, color_2, font, logo, rich_text, placeholder, short_text,award_winning_asso_list, header_mail_name, header_mail_contact) on publ.event_brandings to :DATABASE_VISITOR;
+    grant insert( color_1, css_variables, color_2, font, logo, placeholder, rich_text, short_text, header_mail_name, header_mail_contact,award_winning_asso_list) on publ.event_brandings to :DATABASE_VISITOR;
+    grant update( color_1, css_variables, color_2, font, logo, rich_text, placeholder, short_text,award_winning_asso_list, header_mail_name, header_mail_contact) on publ.event_brandings to :DATABASE_VISITOR;
     --grant ALL  on table publ.event_brandings to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps

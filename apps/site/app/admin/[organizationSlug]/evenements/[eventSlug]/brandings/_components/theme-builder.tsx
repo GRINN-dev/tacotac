@@ -1,22 +1,16 @@
 "use client";
 
-import { FC, useEffect, useRef } from "react";
-import { CivilityStatus, GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
-import { Controller, useForm } from "react-hook-form";
+import { FC, useRef } from "react";
+import {  GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import {  useForm } from "react-hook-form";
 
 import {
-  Input,
+  Button,
   Label,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from "@/components/ui";
 import { defaultTheme } from "./theme";
 import { CreateAttendeeForm } from "@/app/inscription/[organizationSlug]/[eventSlug]/iframe/form";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { sdk } from "@/lib/sdk";
 
 export const ThemeBuilder: FC<{
   eventBySlug: GetEventBySlugQuery["eventBySlug"];
@@ -26,27 +20,48 @@ export const ThemeBuilder: FC<{
     register,
     handleSubmit,
     watch,
-    trigger,
-    control,
-    formState: { errors },
+
+    formState: { errors, isDirty },
   } = useForm({
     defaultValues: {
-      branding: defaultTheme.reduce((acc, curr) => {
+      branding:
+        eventBySlug?.eventBranding?.cssVariables ||
+        defaultTheme.reduce((acc, curr) => {
         acc[curr.name] = curr.value;
         return acc;
       }, {} as any),
     },
   });
 
-  // objectifs:
-  // - isoler les composants d'un formulaire d'inscription (inputs, boutons, checkboxes, etc.)
-  // - avoir un input pour chacune des variables de personnalisation
-  // - refleter en temps réel l'effet de ces variables sur le formulaire
   return (
-    <div className="grid-cols-2 h-full md:grid">
-      <ScrollArea className="h-full border-r">
-        <form onChange={e=>{trigger()}}>
-          <h2>Couleurs</h2>
+    <div className="grid-cols-2 h-full xl:grid mt-12">
+
+      <section
+        ref={previewRef}
+        className="text-foreground bg-background p-4"
+        id="preview text-foreground bg-background"
+        style={
+          ...watch('branding') as any
+        }
+      >
+        <div className="p-4 border-4 rounded-3xl border-dashed">
+          <CreateAttendeeForm {...eventBySlug} />
+        </div>
+      </section>
+      <form
+        className="mt-12"
+        onSubmit={handleSubmit((data) => {
+          sdk().UpdateEventBranding({
+            input: {
+              id: eventBySlug.eventBranding.id,
+              patch: {
+                cssVariables: data.branding,
+              }
+            }
+          })
+        })}
+      >
+          <h2 className="text-3xl font-bold mb-6">Couleurs</h2>
           {defaultTheme.filter(x => x.type === "color").map((x) => (
             <Label htmlFor={x.name} key={x.name} className="mt-2 flex gap-2">
                 <input
@@ -72,19 +87,12 @@ export const ThemeBuilder: FC<{
             </Label>
           ))
         }
+        <Button
+          disabled={!isDirty}
+          className="mt-4"
+          type="submit"
+        >Mettre les couleurs à jours</Button>
         </form>
-      </ScrollArea>
-      <section
-        ref={previewRef}
-        className="text-foreground bg-background p-4"
-        id="preview text-foreground bg-background"
-        style={
-          ...watch('branding') as any
-        }
-      >
-              <CreateAttendeeForm {...eventBySlug} />
-
-      </section>
     </div>
   );
 };

@@ -14,20 +14,12 @@ const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug 
 
   return (
     <>
+      {" "}
+      <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+        Modifier la charte graphique
+      </h1>
       <ThemeBuilder eventBySlug={eventBySlug} />
-      <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-        <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
-          <Link href={`/admin/${organizationSlug}/evenements/${eventSlug}`}>
-            <ArrowBigLeft className="text-primary h-6 w-6" />
-          </Link>
-          <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-            Modifier la charte graphique
-          </h1>
-        </div>
-        <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
-          <UpdateEventBrandingForm {...eventBySlug?.eventBranding} />
-        </div>
-      </section>
+      <UpdateEventBrandingForm {...eventBySlug?.eventBranding} />
     </>
   );
 };

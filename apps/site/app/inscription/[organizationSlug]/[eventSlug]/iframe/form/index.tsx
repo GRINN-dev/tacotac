@@ -191,13 +191,10 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
             le recevez pas.
           </p>
           <div className="flex items-center justify-between">
-            <button
-              className={buttonVariants({ size: "lg", className: "mt-12" })}
-              style={{ backgroundColor: `#${eventBranding.color2}` }}
-            >
+            <Button className={buttonVariants({ size: "lg", className: "mt-12" })}>
               <Download className="mr-2" />
               <p>Télécharger vos billets</p>
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}

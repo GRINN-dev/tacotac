@@ -110,75 +110,8 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     }));
   };
   return (
-    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div
-        onClick={() => setDisplayColorPicker1(!displayColorPicker1)}
-        className="flex items-center justify-start p-2 text-sm border rounded-md cursor-pointer w-max border-slate-300"
-      >
-        Choisir couleur 1
-        <div
-          style={{
-            backgroundColor: hex1,
-            width: "30px",
-            height: "30px",
-            border: "2px solid white",
-            borderRadius: "30px",
-            marginLeft: "10px",
-          }}
-        >
-          {" "}
-        </div>
-      </div>
-      {displayColorPicker1 ? (
-        <div className="mt-2 grid w-full items-center gap-1.5">
-          <div className="">
-            <SketchPicker
-              {...register("patch.color1", {
-                required: "Couleur requise",
-              })}
-              defaultValue={color1}
-              onChange={(color1) => {
-                setSketchPickerColor1(color1);
-              }}
-              color={sketchPickerColor1}
-            />
-          </div>
-        </div>
-      ) : null}
-      <div
-        onClick={() => setDisplayColorPicker2(!displayColorPicker2)}
-        className="flex items-center justify-start p-2 mt-4 text-sm border rounded-md cursor-pointer w-max border-slate-300"
-      >
-        Choisir couleur 2
-        <div
-          style={{
-            backgroundColor: hex2,
-            width: "30px",
-            height: "30px",
-            border: "2px solid white",
-            borderRadius: "30px",
-            marginLeft: "10px",
-          }}
-        >
-          {" "}
-        </div>
-      </div>
-      {displayColorPicker2 ? (
-        <div className="mt-4 grid w-full items-center gap-1.5">
-          <div className="">
-            <SketchPicker
-              {...register("patch.color2", {
-                required: "Couleur requise",
-              })}
-              defaultValue={color2}
-              onChange={(color2) => {
-                setSketchPickerColor2(color2);
-              }}
-              color={sketchPickerColor2}
-            />
-          </div>
-        </div>
-      ) : null}
+    <form onSubmit={onSubmit} className={cn("mt-12 w-full", isSubmitting && "animate-pulse")}>
+      <h2 className="mb-6 text-3xl font-bold">Contenus</h2>
 
       <div className="mt-4 grid w-full items-center gap-1.5">
         {/* A remplacer par list */}
@@ -268,12 +201,12 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
 
-        <ul className="pl-4 list-disc">
+        <ul className="list-disc pl-4">
           {awardWinningList.length > 0
             ? awardWinningList?.map((awardWinning, index) => (
                 <li key={awardWinning + index}>
                   <div
-                    className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+                    className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
                     onClick={() => removeItemClick(index)}
                   >
                     {awardWinning} <MinusCircle className="ml-2" />
@@ -295,7 +228,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
             onChange={(evt) => setAwardWinning(evt?.currentTarget?.value)}
           />
           <div
-            className="inline-flex items-center p-1 text-white border border-transparent rounded-full shadow-sm focus:outline-none"
+            className="inline-flex items-center rounded-full border border-transparent p-1 text-white shadow-sm focus:outline-none"
             onClick={() => {
               if (awardWinning) {
                 setAwardWinningList([...awardWinningList, awardWinning]);
@@ -410,13 +343,13 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
         )}
       </div>
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour
         </button>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
