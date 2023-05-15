@@ -9,9 +9,16 @@ import { buttonVariants } from "@/components/ui";
 import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-export default async function AdminLayout({ children }: { children: ReactNode }) {
-  const { organizations } = await serverSdk().GetAllOrganization();
+export default async function Layout({
+  params: { organizationSlug },
+  children,
+}: {
+  params: { organizationSlug: string };
+  children: ReactNode;
+}) {
+  const { organizationBySlug } = await serverSdk().GetOrganizationBySlug({ slug: organizationSlug });
   const { currentUser } = await serverSdk().GetCurrentUser();
+  const { organizations } = await serverSdk().GetAllOrganization();
 
   if (!currentUser) {
     return (
@@ -35,11 +42,21 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         <div className="text-lg font-bold">Chez Daddy - admin</div>
       </div>
       <div className="flex h-[calc(100%-4rem)] w-full grow md:h-full">
-        <ScrollArea className="bg-primary-foreground  hidden flex-none flex-col border-r lg:flex">
-          <OrganizationsSidebar organizations={organizations.nodes} />
+        <ScrollArea
+          id="pages-admins"
+          className=" bg-secondary hidden w-56 flex-none flex-col border-r py-12 px-4 md:flex"
+        >
+          <AdminPagesSidebar organizations={organizations.nodes} currentUser={currentUser} />
         </ScrollArea>
 
-        {children}
+        <ScrollArea className="grow">
+          <main className="relative py-2 md:py-8 lg:py-12">
+            <div className="absolute top-2 right-2 z-10">
+              <ThemeToggle />
+            </div>
+            {children}
+          </main>
+        </ScrollArea>
       </div>
     </div>
   );

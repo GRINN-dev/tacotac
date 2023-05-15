@@ -18,5 +18,16 @@ query GetUserById($id: UUID!) {
 query GetCurrentUser {
   currentUser {
     ...MyUser
+    organizations {
+      nodes {
+        role
+        organization {
+          id
+          name
+          slug
+          logoUrl
+        }
+      }
+    }
   }
 }

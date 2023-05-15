@@ -4342,6 +4342,30 @@ type User {
     """The method to use when ordering `OrganizationMembership`."""
     orderBy: [OrganizationMembershipsOrderBy!] = [PRIMARY_KEY_ASC]
   ): OrganizationMembershipsConnection!
+  organizations(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UsersOrganizationsRecordFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): UsersOrganizationsConnection!
   phoneNumber: String
   updatedAt: Datetime!
 
@@ -4682,6 +4706,54 @@ enum UsersOrderBy {
   UPDATED_AT_DESC
   USERNAME_ASC
   USERNAME_DESC
+}
+
+"""A `UsersOrganizationsRecord` edge in the connection."""
+type UsersOrganizationEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UsersOrganizationsRecord` at the end of the edge."""
+  node: UsersOrganizationsRecord!
+}
+
+"""A connection to a list of `UsersOrganizationsRecord` values."""
+type UsersOrganizationsConnection {
+  """
+  A list of edges which contains the `UsersOrganizationsRecord` and cursor to aid in pagination.
+  """
+  edges: [UsersOrganizationEdge!]!
+
+  """A list of `UsersOrganizationsRecord` objects."""
+  nodes: [UsersOrganizationsRecord!]!
+
+  """
+  The count of *all* `UsersOrganizationsRecord` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""The return type of our `organizations` query."""
+type UsersOrganizationsRecord {
+  organization: Organization
+  role: String
+}
+
+"""
+A filter to be used against `UsersOrganizationsRecord` object types. All fields are combined with a logical ‘and.’
+"""
+input UsersOrganizationsRecordFilter {
+  """Checks for all expressions in this list."""
+  and: [UsersOrganizationsRecordFilter!]
+
+  """Negates the expression."""
+  not: UsersOrganizationsRecordFilter
+
+  """Checks for any expressions in this list."""
+  or: [UsersOrganizationsRecordFilter!]
+
+  """Filter by the object’s `role` field."""
+  role: StringFilter
 }
 
 """All input for the `verifyEmail` mutation."""

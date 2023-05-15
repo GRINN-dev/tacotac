@@ -78,3 +78,17 @@ select priv.really_create_user('admin', 'admin@localhost.com', true, 'Super', 'A
 update publ.users set is_admin = true where username = 'Michou';
 insert into publ.organizations (name, slug, description, logo_url) values ('Michou', 'michou', 'Michou est une organisation', 'https://randomuser.me/api/portraits/men/3.jpg');
 insert into publ.organization_memberships (organization_id, user_id, role) values ((select id from publ.organizations where slug='michou'), (select id from publ.users where username='Michou'), 'OWNER');
+
+drop function if exists publ.users_organizations cascade;
+create function publ.users_organizations(any_user publ.users) returns table(organization publ.organizations, role text) as $$
+  --select o.*, om.role from publ.organization_memberships om join publ.organizations o on o.id = om.organization_id where om.user_id = any_user.id
+  -- si user.is_admin, recupère toutes les organizations sinon juste ses memberships
+  begin
+  if any_user.is_admin then
+    return query select o as organization, 'ADMIN' as role from publ.organizations o;
+  else
+    return query select o as organization, om.role as role from publ.organization_memberships om join publ.organizations o on o.id = om.organization_id where om.user_id = any_user.id;
+  end if;
+  end;
+$$ language plpgsql stable security definer;
+grant execute on function publ.users_organizations to :DATABASE_VISITOR;

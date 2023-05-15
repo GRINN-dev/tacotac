@@ -30,6 +30,7 @@
     "@radix-ui/react-toggle-group": "^1.0.1",
     "@radix-ui/react-tooltip": "^1.0.3",
     "@tacotacIO/codegen": "workspace:*",
+    "@tanstack/react-table": "^8.9.1",
     "@types/papaparse": "^5.3.7",
     "@zxing/browser": "^0.1.1",
     "@zxing/library": "^0.19.2",
@@ -50,6 +51,7 @@
     "react-day-picker": "^8.7.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.42.1",
+    "recharts": "^2.6.2",
     "sharp": "^0.31.3",
     "tailwind-merge": "^1.8.0",
     "tailwindcss-animate": "^1.0.5"

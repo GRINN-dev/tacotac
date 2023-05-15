@@ -3566,6 +3566,7 @@ export type User = {
   lastname: Scalars['String'];
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
   organizationMemberships: OrganizationMembershipsConnection;
+  organizations: UsersOrganizationsConnection;
   phoneNumber?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
   /** Reads and enables pagination through a set of `UserAuthentication`. */
@@ -3585,6 +3586,17 @@ export type UserOrganizationMembershipsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<OrganizationMembershipsOrderBy>>;
+};
+
+
+/** A user who can log in to the application. */
+export type UserOrganizationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UsersOrganizationsRecordFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -3843,6 +3855,45 @@ export enum UsersOrderBy {
   UsernameAsc = 'USERNAME_ASC',
   UsernameDesc = 'USERNAME_DESC'
 }
+
+/** A `UsersOrganizationsRecord` edge in the connection. */
+export type UsersOrganizationEdge = {
+  __typename?: 'UsersOrganizationEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UsersOrganizationsRecord` at the end of the edge. */
+  node: UsersOrganizationsRecord;
+};
+
+/** A connection to a list of `UsersOrganizationsRecord` values. */
+export type UsersOrganizationsConnection = {
+  __typename?: 'UsersOrganizationsConnection';
+  /** A list of edges which contains the `UsersOrganizationsRecord` and cursor to aid in pagination. */
+  edges: Array<UsersOrganizationEdge>;
+  /** A list of `UsersOrganizationsRecord` objects. */
+  nodes: Array<UsersOrganizationsRecord>;
+  /** The count of *all* `UsersOrganizationsRecord` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** The return type of our `organizations` query. */
+export type UsersOrganizationsRecord = {
+  __typename?: 'UsersOrganizationsRecord';
+  organization?: Maybe<Organization>;
+  role?: Maybe<Scalars['String']>;
+};
+
+/** A filter to be used against `UsersOrganizationsRecord` object types. All fields are combined with a logical ‘and.’ */
+export type UsersOrganizationsRecordFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UsersOrganizationsRecordFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<UsersOrganizationsRecordFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UsersOrganizationsRecordFilter>>;
+  /** Filter by the object’s `role` field. */
+  role?: InputMaybe<StringFilter>;
+};
 
 /** All input for the `verifyEmail` mutation. */
 export type VerifyEmailInput = {
@@ -4178,7 +4229,7 @@ export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'Us
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null };
+export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl: string } | null }> } } | null };
 
 export const MyAttendeeFragmentDoc = `
     fragment MyAttendee on Attendee {
@@ -4764,6 +4815,17 @@ export const GetCurrentUserDocument = `
     query GetCurrentUser {
   currentUser {
     ...MyUser
+    organizations {
+      nodes {
+        role
+        organization {
+          id
+          name
+          slug
+          logoUrl
+        }
+      }
+    }
   }
 }
     ${MyUserFragmentDoc}`;

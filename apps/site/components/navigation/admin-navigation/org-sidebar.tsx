@@ -18,7 +18,7 @@ export const OrganizationsSidebar: FC<{
     <nav id="cofee-shops" className="group h-full w-max min-w-max py-12 px-2">
       <ul className="flex flex-col gap-6">
         <li>
-          <Link href={`${pathname}?cafe=all`} className="flex items-center">
+          <Link href={`/admin`} className="flex items-center">
             <Avatar>
               <AvatarFallback className={cn(cafe === "all" ? "bg-amber-500 text-white" : "bg-muted", "border")}>
                 Tous
@@ -30,16 +30,16 @@ export const OrganizationsSidebar: FC<{
                 "h-0 w-0 overflow-hidden opacity-0 transition-all  group-hover:ml-2  group-hover:h-auto group-hover:w-auto group-hover:opacity-100"
               )}
             >
-              Tous les cafés
+              Toutes les organisations
             </span>
           </Link>
         </li>
 
         {organizations.map((organization) => (
           <li key={organization.id}>
-            <Link href={`${pathname}?cafe=${organization.id}`} className="flex items-center ">
+            <Link href={`/admin/${organization.slug}`} className="flex items-center ">
               <Avatar>
-                {/* <AvatarImage src={organization?.pictureUrl} /> */}
+                <AvatarImage src={organization?.logoUrl} />
                 <AvatarFallback
                   className={cn(cafe === organization.id ? "bg-amber-500 text-white" : "bg-muted", "border")}
                 >

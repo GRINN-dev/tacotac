@@ -8,17 +8,18 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui";
 import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { MainNav } from "../_components/main-nav";
+import { TeamSwitcher } from "../_components/team-switcher";
+import { UserNav } from "../_components/user-nav";
 
-export default async function Layout({
-  params: { organizationSlug },
+export default async function AdminLayout({
   children,
+  params: { organizationSlug },
 }: {
-  params: { organizationSlug: string };
   children: ReactNode;
+  params: { organizationSlug: string };
 }) {
-  const { organizationBySlug } = await serverSdk().GetOrganizationBySlug({ slug: organizationSlug });
   const { currentUser } = await serverSdk().GetCurrentUser();
-  const { organizations } = await serverSdk().GetAllOrganization();
 
   if (!currentUser) {
     return (
@@ -36,28 +37,25 @@ export default async function Layout({
     );
   }
   return (
-    <div className="flex h-full max-h-full w-full flex-col">
-      <div className="bg-background align-center z-20 flex h-16 items-center gap-2 border-b px-4 py-2 shadow md:hidden">
-        <MobileAdminDrawer organizations={organizations.nodes} currentUser={currentUser} />
-        <div className="text-lg font-bold">Chez Daddy - admin</div>
-      </div>
-      <div className="flex h-[calc(100%-4rem)] w-full grow md:h-full">
-        <ScrollArea
-          id="pages-admins"
-          className=" bg-secondary hidden w-56 flex-none flex-col border-r py-12 px-4 md:flex"
-        >
-          <AdminPagesSidebar organizations={organizations.nodes} currentUser={currentUser} />
-        </ScrollArea>
+    <div className="h-full max-h-full  w-full">
+      <div className="border-b">
+        <div className="flex h-16 items-center px-4">
+          <TeamSwitcher
+            teams={currentUser.organizations.nodes.map(({ organization }) => ({
+              label: organization.name,
+              value: organization.slug,
+              pictureUrl: organization.logoUrl,
+            }))}
+          />
 
-        <ScrollArea className="grow">
-          <main className="relative py-2 md:py-8 lg:py-12">
-            <div className="absolute top-2 right-2 z-10">
-              <ThemeToggle />
-            </div>
-            {children}
-          </main>
-        </ScrollArea>
+          <MainNav className="mx-6" organizationSlug={organizationSlug} />
+          <div className="ml-auto flex items-center space-x-4">
+            {/* <Search /> */}
+            <UserNav currentUser={currentUser} />
+          </div>
+        </div>
       </div>
+      <ScrollArea className="h-[calc(100%-4rem)]">{children}</ScrollArea>
     </div>
   );
 }

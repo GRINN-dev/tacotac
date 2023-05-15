@@ -7,14 +7,13 @@ import { sdk } from "@/lib/sdk";
 import { buttonVariants } from "@/components/ui/button";
 import { Collection } from "../../../../../components/table/Collection";
 
-
 const EventsPage = async ({ params: { organizationSlug }, searchParams: { offset, filter, first, orderBy } }) => {
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,
-    first: Number(first) || initLimit,
+    /*   first: Number(first) || initLimit,
     offset: Number(offset),
     filter: filter ? JSON.parse(filter) : null,
-    orderBy: orderBy,
+    orderBy: orderBy, */
   });
 
   const { organizationBySlug: organization } = data;

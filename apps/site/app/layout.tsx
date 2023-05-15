@@ -9,6 +9,7 @@ import { Layout } from "@/components/layout";
 import Providers from "@/components/providers";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TokenFetcher } from "@/components/token-fetcher";
 import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
@@ -71,7 +72,7 @@ const RootLayout = ({ children }) => {
         <ThemeProvider>
           {children}
           <Toaster />
-          <TailwindIndicator />
+          <TailwindIndicator /> <TokenFetcher />
         </ThemeProvider>
       </body>
     </html>

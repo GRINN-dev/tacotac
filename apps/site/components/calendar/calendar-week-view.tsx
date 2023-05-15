@@ -1,19 +1,18 @@
-"use client"
+"use client";
 
-import { FC } from "react"
-import { useCalendar } from "@h6s/calendar"
-import { Plus } from "lucide-react"
+import { FC } from "react";
+import { Plus } from "lucide-react";
 
-import { isSameDate } from "@/lib/calendar"
-import { cn, detailDate } from "@/lib/utils"
-import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import { CalendarElement, CalendarElementProps } from "./calendar-element"
+import { getCalendar, isSameDate } from "@/lib/calendar";
+import { cn, detailDate } from "@/lib/utils";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { CalendarElement, CalendarElementProps } from "./calendar-element";
 
 export const CalendarWeekView: FC<{
-  elementsToDisplay: CalendarElementProps[]
-  onDateSelected: (date: Date) => void
-  headers: ReturnType<typeof useCalendar>["headers"]
-  body: ReturnType<typeof useCalendar>["body"]
+  elementsToDisplay: CalendarElementProps[];
+  onDateSelected: (date: Date) => void;
+  headers: ReturnType<typeof getCalendar>["headers"];
+  body: ReturnType<typeof getCalendar>["body"];
 }> = ({ elementsToDisplay, body, headers, onDateSelected }) => {
   return (
     <ScrollArea>
@@ -26,7 +25,7 @@ export const CalendarWeekView: FC<{
                 <p className="text-sm font-bold  capitalize" key={key}>
                   {detailDate(value)?.weekday}
                 </p>
-              )
+              );
             })}
           </div>
           <div className="flex flex-col">
@@ -40,9 +39,7 @@ export const CalendarWeekView: FC<{
                         : isCurrentMonth
                         ? " bg-accent"
                         : "bg-muted text-muted-foreground",
-                      new Date() > value && !isSameDate(new Date(), value)
-                        ? "opacity-50"
-                        : "",
+                      new Date() > value && !isSameDate(new Date(), value) ? "opacity-50" : "",
                       "relative h-[800px] w-full  border-r border-b",
                       // add border-l on first day of week, add border-t on first week of month
                       index % 7 === 0 && "border-l",
@@ -63,8 +60,7 @@ export const CalendarWeekView: FC<{
                     >
                       <div> {detailDate(value)?.day}</div>
                     </div>
-                    {new Date() > value &&
-                    !isSameDate(new Date(), value) ? null : (
+                    {new Date() > value && !isSameDate(new Date(), value) ? null : (
                       <button
                         className={cn(
                           "absolute bottom-2 right-2 grid place-content-center rounded-full p-1",
@@ -80,19 +76,14 @@ export const CalendarWeekView: FC<{
                     )}
 
                     {elementsToDisplay
-                      .filter((element) =>
-                        isSameDate(new Date(element.startsAt), value)
-                      )
+                      .filter((element) => isSameDate(new Date(element.startsAt), value))
                       .map((element, index) => (
                         <div
                           key={index}
                           className="absolute w-full"
                           style={{
                             top: `${
-                              ((element.startsAt.getHours() * 60 +
-                                element.startsAt.getMinutes()) /
-                                1440) *
-                              100
+                              ((element.startsAt.getHours() * 60 + element.startsAt.getMinutes()) / 1440) * 100
                             }%`,
 
                             height: `max(${
@@ -119,5 +110,5 @@ export const CalendarWeekView: FC<{
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
-  )
-}
+  );
+};
