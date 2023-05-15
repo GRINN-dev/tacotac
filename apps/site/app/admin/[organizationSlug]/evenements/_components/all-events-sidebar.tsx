@@ -39,7 +39,10 @@ export const AllEventsSidebar: FC<{
     },
   ];
   return (
-    <nav id="admin-pages" className={cn("mt-8 h-full lg:mt-0", params.eventSlug && "hidden")}>
+    <nav
+      id="admin-pages"
+      className={cn("bg-muted text-muted-foreground mt-8 h-full lg:mt-0", params.eventSlug && "hidden")}
+    >
       <ul className="flex flex-col gap-8">
         {sections.map((section) => (
           <li key={section.name}>

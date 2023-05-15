@@ -15,6 +15,7 @@ import { getLoginFormProps } from "./loginFormProps";
 
 export const LoginForm = () => {
   const router = useRouter();
+  const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const {
     register,
@@ -23,12 +24,15 @@ export const LoginForm = () => {
   } = useForm<LoginInput>();
   const onSubmit = async (data: LoginInput) => {
     setLoading(true);
-    await sdk().Login({
-      input: {
-        ...data,
-      },
-    });
+    await sdk()
+      .Login({
+        input: {
+          ...data,
+        },
+      })
+      .catch((e) => setError(e));
     setLoading(false);
+    router.push("/admin");
   };
   return (
     <div
@@ -63,6 +67,7 @@ export const LoginForm = () => {
         <Link className={buttonVariants({ variant: "link" })} href="/mot-de-passe-oublie">
           mot de passe oublié
         </Link>
+        {error && <p>{error}</p>}
       </form>
 
       <Separator className="mt-4" />

@@ -53,27 +53,27 @@ export const columns: ColumnDef<Event>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
+            {/*   <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
               Copy payment ID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuSeparator /> */}
+            <DropdownMenuItem>Voir les détails</DropdownMenuItem>
+            <DropdownMenuItem>Supprimer</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
-  {
+  /*   {
     accessorKey: "id",
     header: "id",
     cell: ({ row }) => {
       const id = String(row.getValue("id"));
       return <span className="text-muted-foreground hover:text-primary font-mono text-xs transition-colors">{id}</span>;
     },
-  },
+  }, */
   // { accessorKey: "status", header: "Statut" },
-  {
+  /*   {
     accessorKey: "bookingStartsAt",
     header: "Début inscr.",
     cell: ({ row }) => {
@@ -90,8 +90,8 @@ export const columns: ColumnDef<Event>[] = [
         </span>
       );
     },
-  },
-  {
+  }, */
+  /* {
     accessorKey: "bookingEndsAt",
     header: "Fin inscr.",
     cell: ({ row }) => {
@@ -108,7 +108,11 @@ export const columns: ColumnDef<Event>[] = [
         </span>
       );
     },
-  },
+  }, */
+  { accessorKey: "name", header: "Nom" },
+  { accessorKey: "city", header: "Ville" },
+  { accessorKey: "totalRegistrations", header: "Total inscr." },
+
   {
     accessorKey: "startsAt",
     header: "Début",
@@ -127,7 +131,7 @@ export const columns: ColumnDef<Event>[] = [
       );
     },
   },
-  {
+  /*   {
     accessorKey: "endsAt",
     header: "Fin",
     cell: ({ row }) => {
@@ -144,11 +148,8 @@ export const columns: ColumnDef<Event>[] = [
         </span>
       );
     },
-  },
-  { accessorKey: "name", header: "Nom" },
-  { accessorKey: "placeName", header: "Lieu" },
-  { accessorKey: "city", header: "Ville" },
+  }, */
+  /*   { accessorKey: "placeName", header: "Lieu" },
   { accessorKey: "capacity", header: "Capacité" },
-  { accessorKey: "totalRegistrations", header: "Total inscr." },
-  { accessorKey: "totalConfirmedRegistrations", header: "Total inscr. confirmées" },
+  { accessorKey: "totalConfirmedRegistrations", header: "Total inscr. confirmées" }, */
 ];

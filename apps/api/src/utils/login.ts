@@ -29,7 +29,7 @@ export const login: (input: LoginInput) => Promise<{
 
   // send the token via cookie
   sendCookieToken(res, refreshToken, "qid", {
-    // path: "/",
+    path: "/",
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     // domain: process.env.DOMAIN, // this is to limit our cookie to our domain, so the tokens are not sent to other domains like third party APIs,
     secure: true, // this is to ensure that the cookie is only sent over https
@@ -37,7 +37,7 @@ export const login: (input: LoginInput) => Promise<{
     sameSite: "none", // this is to ensure that the cookie is sent on cross-origin requests
   });
   sendCookieToken(res, accessToken, "access_token", {
-    // path: "/",
+    path: "/",
     expires: new Date(Date.now() + 1000 * 60 * 15),
     // domain: process.env.DOMAIN,
     secure: true,

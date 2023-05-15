@@ -51,9 +51,9 @@
 @layer base {
   :root {
     --background: hsl(0 0% 100%);
-    --foreground: #20404e;
+    --foreground: #1e1d2d;
 
-    --muted: hsl(210 40% 96.1%);
+    --muted: #e3ebf4;
     --muted-foreground: hsl(215.4 16.3% 46.9%);
 
     --popover: hsl(0 0% 100%);
@@ -65,14 +65,14 @@
     --border: hsl(214.3 31.8% 91.4%);
     --input: hsl(214.3 31.8% 91.4%);
 
-    --primary: #20404e;
+    --primary: #ed3461;
     --primary-foreground: hsl(210 40% 98%);
 
-    --secondary: hsl(210 40% 96.1%);
-    --secondary-foreground: #1e3742;
+    --secondary: #e3ebf4;
+    --secondary-foreground: #ed3461;
 
-    --accent: hsl(41, 40%, 97%);
-    --accent-foreground: hsl(41, 99%, 45%);
+    --accent: #531e77;
+    --accent-foreground: #e3ebf4;
 
     --destructive: hsl(0 100% 50%);
     --destructive-foreground: hsl(210 40% 98%);

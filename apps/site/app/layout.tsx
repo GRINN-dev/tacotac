@@ -1,4 +1,4 @@
-import { Inter as FontSans } from "@next/font/google";
+import { Quicksand as FontSans } from "@next/font/google";
 import localFont from "@next/font/local";
 
 import "@/styles/globals.css";
@@ -15,22 +15,6 @@ import { Toaster } from "@/components/ui/toaster";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-});
-
-const fontZenonBold = localFont({
-  src: "../public/fonts/Zenon-Bold-Test.woff",
-  display: "swap",
-  variable: "--font-zenon-bold",
-  style: "normal",
-  weight: "700",
-});
-
-const fontZenonRegular = localFont({
-  src: "../public/fonts/Zenon-Regular-Test.woff",
-  display: "swap",
-  variable: "--font-zenon-regular",
-  style: "normal",
-  weight: "400",
 });
 
 const RootLayout = ({ children }) => {
@@ -64,9 +48,7 @@ const RootLayout = ({ children }) => {
         className={cn(
           "bg-background text-foreground font-sans antialiased",
           "!absolute inset-4 flex border-4 border-amber-500",
-          fontSans.variable,
-          fontZenonBold.variable,
-          fontZenonRegular.variable
+          fontSans.variable
         )}
       >
         <ThemeProvider>

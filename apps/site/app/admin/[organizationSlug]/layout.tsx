@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui";
 import { Card } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { MainNav } from "../_components/main-nav";
+import { Search } from "../_components/search";
 import { TeamSwitcher } from "../_components/team-switcher";
 import { UserNav } from "../_components/user-nav";
 
@@ -38,8 +39,9 @@ export default async function AdminLayout({
   }
   return (
     <div className="h-full max-h-full  w-full">
-      <div className="border-b">
+      <div className="bg-muted text-muted-foreground border-b">
         <div className="flex h-16 items-center px-4">
+          <img alt="logo Kaypi" className="h-10 object-contain" src="/logo/Kaypi_Logo_RVB_Icone_Positif.jpg.svg" />
           <TeamSwitcher
             teams={currentUser.organizations.nodes.map(({ organization }) => ({
               label: organization.name,
@@ -50,12 +52,12 @@ export default async function AdminLayout({
 
           <MainNav className="mx-6" organizationSlug={organizationSlug} />
           <div className="ml-auto flex items-center space-x-4">
-            {/* <Search /> */}
+            <Search />
             <UserNav currentUser={currentUser} />
           </div>
         </div>
       </div>
-      <ScrollArea className="h-[calc(100%-4rem)]">{children}</ScrollArea>
+      <div className="h-[calc(100%-4rem)]">{children}</div>
     </div>
   );
 }

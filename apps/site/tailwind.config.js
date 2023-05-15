@@ -15,7 +15,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-        bernier: ["var(--font-bernier)", ...fontFamily.sans],
+        bernier: ["var(--)", ...fontFamily.sans],
         "zenon-bold": ["var(--font-zenon-bold)", ...fontFamily.serif],
         "zenon-regular": ["var(--font-zenon-regular)", ...fontFamily.serif],
       },

@@ -18,7 +18,7 @@ export default async function AttendeesLayout({
   });
   return (
     <>
-      <div className="grid grid-cols-[300px_1fr]">
+      <div className="grid h-full grid-cols-[300px_1fr]">
         <EventsSidebar eventSlug={eventSlug} organizationSlug={organizationSlug} eventId={eventBySlug?.id} />
         <ScrollArea className="h-full">{children}</ScrollArea>
       </div>

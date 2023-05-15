@@ -63,7 +63,7 @@ export const EventsSidebar: FC<{
     },
   ];
   return (
-    <nav id="admin-pages" className="mt-8 h-full lg:mt-0">
+    <nav id="admin-pages" className="bg-muted text-muted-foreground mt-8 h-full lg:mt-0">
       <ul className="flex flex-col gap-8">
         {sections.map((section) => (
           <li key={section.name}>

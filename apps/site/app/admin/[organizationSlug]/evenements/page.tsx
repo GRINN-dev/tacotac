@@ -8,8 +8,10 @@ import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AllEventsSidebar } from "./_components/all-events-sidebar";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
 
 const EventsPage = async ({
   params: { organizationSlug },
@@ -73,7 +75,7 @@ const EventsPage = async ({
   );
   //pour pr
   return (
-    <div className="grid grid-cols-[300px_1fr]">
+    <div className="grid h-full grid-cols-[300px_1fr]">
       <AllEventsSidebar organizationSlug={organizationSlug} />
       <ScrollArea className="h-full">
         <>
@@ -87,13 +89,19 @@ const EventsPage = async ({
               </Link>
             </div>
             {organization?.events?.nodes?.length > 0 ? (
-              <Collection
+              /*   <Collection
                 totalCount={organization?.events?.totalCount}
                 pageInfo={organization?.events?.pageInfo}
                 header={headerEvent}
                 data={rawEvent}
                 initLimit={initLimit}
-              />
+              /> */
+              <ScrollArea className="mt-8 ">
+                <div className="px-8">
+                  <DataTable columns={columns} data={organization.events.nodes} />
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             ) : (
               <div className="flex flex-col items-start gap-4">
                 <p>
@@ -108,12 +116,7 @@ const EventsPage = async ({
               </div>
             )}
           </section>
-          {/*   <ScrollArea className="mt-8 ">
-        <div className="px-8">
-          <DataTable columns={columns} data={organization.events.nodes} />
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea> */}
+          {/*   */}
         </>
       </ScrollArea>
     </div>
