@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
+import { useEffect } from "react";
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function TokenFetcher() {
   useEffect(() => {
@@ -12,7 +12,7 @@ export function TokenFetcher() {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    })
+    });
     let interval = setInterval(() => {
       fetch("http://localhost:8000/access_token", {
         method: "POST",
@@ -20,10 +20,10 @@ export function TokenFetcher() {
           "Content-Type": "application/json",
         },
         credentials: "include",
-      })
-    }, 10 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [])
+      });
+    }, 10 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  return <></>
+  return <></>;
 }

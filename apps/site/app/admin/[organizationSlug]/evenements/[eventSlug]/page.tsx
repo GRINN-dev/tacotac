@@ -8,7 +8,6 @@ import { eventStatusArray } from "@/components/data/status";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { CopyToClipboard } from "./CopyToClipboard";
 import { ModalStatus } from "./ModalStatus";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
@@ -93,13 +92,6 @@ const AttendeesPage = async ({
             Tous les participants
           </h2>
           <ModalStatus />
-          <Link
-            className={"border-primary h-10 items-center justify-center rounded-md border px-4 py-2"}
-            target="_blank"
-            href={`/inscription/${organizationSlug}/${eventSlug}/iframe`}
-          >
-            iFrame inscription
-          </Link>
 
           <SendAllEmailConfirmDonation eventId={eventBySlug?.id} />
           <SendAllEmail eventId={eventBySlug?.id} />
@@ -128,9 +120,6 @@ const AttendeesPage = async ({
           </div>
         )}
       </section>
-      <div className="container max-w-prose">
-        <CopyToClipboard eventSlug={eventSlug} organisationSlug={organizationSlug} />
-      </div>
     </>
   );
 };

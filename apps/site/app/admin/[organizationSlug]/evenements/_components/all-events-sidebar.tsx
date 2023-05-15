@@ -2,17 +2,17 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { ClipboardCheck, Cog, Group, Import, Paintbrush, PictureInPicture, PlusSquare } from "lucide-react";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { Calendar, PlusSquare, Table } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui";
 
-export const EventsSidebar: FC<{
+export const AllEventsSidebar: FC<{
   organizationSlug: string;
-  eventSlug: string;
-}> = ({ organizationSlug, eventSlug }) => {
+}> = ({ organizationSlug }) => {
   const pathname = usePathname();
+  const params = useParams();
   const searchParams = useSearchParams();
   const cafe = searchParams.get("cafe") || "all";
 
@@ -21,45 +21,25 @@ export const EventsSidebar: FC<{
       name: "",
       pages: [
         {
-          name: "Participants",
-          icon: Group,
-          href: `/admin/${organizationSlug}/evenements/${eventSlug}`,
+          name: "Calendrier",
+          icon: Calendar,
+          href: `/admin/${organizationSlug}/evenements/calendrier`,
         },
         {
-          name: "Infos event",
-          icon: Cog,
-          href: `/admin/${organizationSlug}/evenements/${eventSlug}/infos`,
+          name: "Tableau",
+          icon: Table,
+          href: `/admin/${organizationSlug}/evenements`,
         },
         {
-          name: "Import CSV",
-          icon: Import,
-          href: `/admin/${organizationSlug}/evenements/${eventSlug}/import`,
-        },
-        {
-          name: "Ajout participant",
+          name: "Créer un évènement",
           icon: PlusSquare,
-          href: `/admin/${organizationSlug}/evenements/${eventSlug}/participant/create`,
-        },
-        {
-          name: "Charte graphique billetterie",
-          icon: Paintbrush,
-          href: `/admin/${organizationSlug}/evenements/${eventSlug}/brandings`,
-        },
-        {
-          name: "Journal des interactions",
-          icon: ClipboardCheck,
-          href: `/admin/${organizationSlug}/evenements/${eventSlug}/logs`,
-        },
-        {
-          name: "Intégration",
-          icon: PictureInPicture,
-          href: `/admin/${organizationSlug}/evenements/${eventSlug}/integration`,
+          href: `/admin/${organizationSlug}/evenements/create`,
         },
       ],
     },
   ];
   return (
-    <nav id="admin-pages" className="mt-8 h-full lg:mt-0">
+    <nav id="admin-pages" className={cn("mt-8 h-full lg:mt-0", params.eventSlug && "hidden")}>
       <ul className="flex flex-col gap-8">
         {sections.map((section) => (
           <li key={section.name}>
