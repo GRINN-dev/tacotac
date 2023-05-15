@@ -12,7 +12,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ParticipantSubForm } from "./participant-sub-form";
@@ -78,7 +78,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
   });
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
 
       <>
@@ -93,11 +93,11 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
                         formState?.errors?.attendees ? "text-red-500 hover:no-underline" : "hover:no-underline"
                       }
                     >
-                      <div className="flex justify-between w-full mx-6">
+                      <div className="mx-6 flex w-full justify-between">
                         <div>{i > 0 ? `Participant ${i + 1} ` : "Participant principal"}</div>
                         {i !== 0 && (
                           <div
-                            className="inline-flex items-center p-1 text-xs border border-transparent rounded-full shadow-sm focus:outline-none"
+                            className="inline-flex items-center rounded-full border border-transparent p-1 text-xs shadow-sm focus:outline-none"
                             onClick={(e) => {
                               e.stopPropagation();
                               remove(i);
@@ -118,7 +118,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
               <ParticipantSubForm index={0} branding={eventBranding} methods={methods} isInscriptor={true} />
             )}
 
-            <div className="mt-4 flex flex-col w-full items-center justify-between gap-1.5">
+            <div className="mt-4 flex w-full flex-col items-center justify-between gap-1.5">
               <div className="flex items-start">
                 <Label htmlFor="isFundraisingGenerosityOk" className="col-span-2">
                   {
@@ -129,7 +129,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
                 <Input
                   type="checkbox"
                   id="isFundraisingGenerosityOk"
-                  className="flex w-4 h-4 ml-1 text-right"
+                  className="ml-1 flex h-4 w-4 text-right"
                   {...register(`attendees.0.isFundraisingGenerosityOk`, {
                     required: "Cette information est requise",
                   })}
@@ -137,32 +137,35 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
               </div>
             </div>
             {formState.errors?.attendees?.[0]?.isFundraisingGenerosityOk && (
-              <p className="mt-2 text-sm text-left text-red-800 dark:text-red-300">
+              <p className="mt-2 text-left text-sm text-red-800 dark:text-red-300">
                 {formState.errors?.attendees?.[0]?.isFundraisingGenerosityOk?.message}
               </p>
             )}
 
-            <div className="styles.text mt-8 flex items-center gap-2">
-              <button
+            <div className=" mt-8 flex items-center gap-2">
+              <Button
                 className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
-                style={{
-                  backgroundColor: `#${eventBranding.color1}`,
-                  borderRadius: "0.5rem",
-                  fontSize: "0.875rem",
-                  color: "#fff",
-                  fontWeight: "500",
-                  padding: "0.75rem 1.5rem",
-                  marginRight: "1rem",
-                }}
                 type="submit"
               >
                 Continuer
-              </button>
+              </Button>
 
               <p>ou</p>
+              <Button
+                type="button"
+                className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
+                onClick={async () => {
+                  // trigger validation and add a new field if ok
+                  const formHasError = await trigger();
+                  if (!formHasError) return;
+                  append({ status: EventStatus.Idle });
+                }}
+              >
+                Ajouter un participant
+              </Button>
             </div>
             {error && (
-              <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+              <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
                 {JSON.stringify(
                   error,
                   (key, value) => {
@@ -176,34 +179,12 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
               </p>
             )}
           </form>
-          <div className="flex w-6/12 mt-8 md:-mt-11 md:mx-auto md:flex-col ">
-            <button
-              className={`${eventBranding.font} === "roboto" ? ${roboto.className} : ${montserrat.className}`}
-              style={{
-                backgroundColor: `#${eventBranding.color1}`,
-                borderRadius: "0.5rem",
-                fontSize: "0.875rem",
-                color: "#fff",
-                fontWeight: "500",
-                padding: "0.75rem 1.5rem",
-                marginRight: "1rem",
-              }}
-              onClick={async () => {
-                // trigger validation and add a new field if ok
-                const formHasError = await trigger();
-                if (!formHasError) return;
-                append({ status: EventStatus.Idle });
-              }}
-            >
-              Ajouter un participant
-            </button>
-          </div>
         </div>
       </>
 
       {showConfirmation === true ? (
-        <div className="flex flex-col items-center justify-center mt-4 text-xl">
-          <CheckCircle2 className="w-16 h-16 mb-8" />
+        <div className="mt-4 flex flex-col items-center justify-center text-xl">
+          <CheckCircle2 className="mb-8 h-16 w-16" />
           <h2>Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
             Un email de confirmation pour votre inscription a été envoyé. Vérifiez vos courriers indésirables si vous ne

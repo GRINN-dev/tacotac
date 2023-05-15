@@ -4,6 +4,7 @@ import { ArrowBigLeft } from "lucide-react";
 import { sdk } from "@/lib/sdk";
 import { serverSdk } from "@/lib/server-sdk";
 import { UpdateEventBrandingForm } from "./UpdateForm";
+import { ThemeBuilder } from "./_components/theme-builder";
 
 const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug } }) => {
   const { eventBySlug } = await serverSdk().GetEventBySlug({
@@ -13,6 +14,7 @@ const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug 
 
   return (
     <>
+      <ThemeBuilder eventBySlug={eventBySlug} />
       <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
         <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
           <Link href={`/admin/${organizationSlug}/evenements/${eventSlug}`}>
