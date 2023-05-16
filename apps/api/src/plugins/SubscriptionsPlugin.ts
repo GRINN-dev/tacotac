@@ -4,7 +4,7 @@ import {
   embed /*, AugmentedGraphQLFieldResolver */,
   gql,
   makeExtendSchemaPlugin,
-} from "graphile-utils";
+} from "postgraphile";
 // graphile-utils doesn't export this yet
 import { GraphQLResolveInfo } from "graphql";
 
@@ -61,7 +61,7 @@ const currentUserTopicFromContext = async (
  *
  * And see the database trigger function `publ.tg__graphql_subscription()`.
  */
-const SubscriptionsPlugin = makeExtendSchemaPlugin((build) => {
+const SubscriptionsPlugin = makeExtendSchemaPlugin(build => {
   const { pgSql: sql } = build;
   return {
     typeDefs: gql`
