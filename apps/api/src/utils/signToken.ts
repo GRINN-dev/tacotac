@@ -37,7 +37,7 @@ export const sendCookieToken = (
     httpOnly: true,
     path: "/access_token",
     sameSite: "none",
-    domain: "*",
+    domain: process.env.DOMAIN,
     secure: true,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
   };
