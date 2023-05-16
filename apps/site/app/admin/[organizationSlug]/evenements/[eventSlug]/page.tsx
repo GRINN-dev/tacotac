@@ -8,9 +8,12 @@ import { eventStatusArray } from "@/components/data/status";
 import { Collection } from "@/components/table/Collection";
 import { buttonVariants } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ModalStatus } from "./ModalStatus";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
 
 const AttendeesPage = async ({
   params: { organizationSlug, eventSlug },
@@ -98,14 +101,22 @@ const AttendeesPage = async ({
         </div>
 
         {flattenedAttendeesFromRegistrations?.length > 0 ? (
-          <Collection
-            totalCount={eventBySlug?.registrations?.totalCount}
-            pageInfo={eventBySlug?.registrations?.pageInfo}
-            header={headerAttendees}
-            data={rawAttendees}
-            initLimit={initLimit}
-            isRedirectStop
-          />
+          <>
+            <ScrollArea className="mt-8 ">
+              <div className="px-8">
+                <DataTable columns={columns} data={flattenedAttendeesFromRegistrations} />
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+            <Collection
+              totalCount={eventBySlug?.registrations?.totalCount}
+              pageInfo={eventBySlug?.registrations?.pageInfo}
+              header={headerAttendees}
+              data={rawAttendees}
+              initLimit={initLimit}
+              isRedirectStop
+            />
+          </>
         ) : (
           <div className="flex flex-col items-start gap-4">
             <p>

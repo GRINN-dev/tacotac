@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { GetAllEventsQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllEventsQuery, GetEventBySlugQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, RefreshCcw } from "lucide-react";
 
@@ -18,22 +18,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export interface Event {
-  id?: string;
-  // status?: string;
-  bookingStartsAt?: string;
-  bookingEndsAt?: string;
-  startsAt?: string;
-  endsAt?: string;
-  name?: string;
-  placeName?: string;
-  city?: string;
-  capacity?: number;
-  totalRegistrations?: number;
-  totalConfirmedRegistrations?: number;
-}
-
-export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]["events"]["nodes"][number]>[] = [
+export const columns: ColumnDef<
+  GetEventBySlugQuery["eventBySlug"]["registrations"]["nodes"][number]["attendeesList"][number]
+>[] = [
   {
     id: "actions",
     header: () => {
@@ -55,9 +42,9 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
             </DropdownMenuItem>
             <DropdownMenuSeparator /> */}
             <DropdownMenuItem>
-              <Link href={`/admin/${row.original.organization.slug}/evenements/${row.original.slug}`}>
+              {/*   <Link href={`/admin/${row.original.organization.slug}/evenements/${row.original.slug}`}>
                 Voir les détails
-              </Link>
+              </Link> */}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -77,7 +64,7 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "lastname",
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -87,26 +74,8 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
       );
     },
   },
-  { accessorKey: "city", header: "Ville" },
-  { accessorKey: "totalRegistrations", header: "Total inscr." },
-  {
-    accessorKey: "startsAt",
-    header: "Début",
-    cell: ({ row }) => {
-      const startsAt = String(row.getValue("startsAt"));
-      return (
-        <span className=" text-xs">
-          {new Date(startsAt).toLocaleDateString("fr-FR", {
-            year: "2-digit",
-            month: "numeric",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-          })}
-        </span>
-      );
-    },
-  },
+  { accessorKey: "isVip", header: "VIP" },
+  { accessorKey: "status", header: "Statut" },
 ];
 
 const Refresher: FC = () => {
