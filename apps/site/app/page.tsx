@@ -2,12 +2,9 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
-
-
 import { siteConfig } from "@/config/site";
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
-
 
 export default function IndexPage() {
   return (
@@ -34,17 +31,17 @@ export default function IndexPage() {
           </p>
         </div>
         <div className="flex gap-4">
-          <Link href={siteConfig.links.dashboard} className={buttonVariants({ size: "lg" })}>
+          <Link href={"/admin"} className={buttonVariants({ size: "lg" })}>
             dashboard
           </Link>
-          <Link href={siteConfig.links.inscription} className={buttonVariants({ size: "lg" })}>
+          <Link href={"/register"} className={buttonVariants({ size: "lg", variant: "outline" })}>
             inscription
           </Link>
           <Link
             target="_blank"
             rel="noreferrer"
             href={siteConfig.links.scanner}
-            className={buttonVariants({ variant: "outline", size: "lg" })}
+            className={buttonVariants({ variant: "link", size: "lg" })}
           >
             scanner
           </Link>
