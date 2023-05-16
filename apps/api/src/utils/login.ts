@@ -42,6 +42,7 @@ export const login: (input: LoginInput) => Promise<{
     // domain: process.env.DOMAIN,
     secure: true,
     sameSite: "none",
+    domain: "*",
   });
 
   return { accessToken, refreshToken };
