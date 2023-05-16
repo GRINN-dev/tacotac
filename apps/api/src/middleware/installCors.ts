@@ -6,9 +6,9 @@ export const installCors = (app: Express) => {
     cors({
       origin: [
         "http://localhost:3000",
-        "https://chez-daddy-git-development.vercel.app/",
-        // regexp for chez-daddy + anything + 'vercel.app'
-        /https:\/\/chez-daddy.*.vercel.app$/,
+        "https://kaypi-git-development.vercel.app/",
+        // regexp for kaypi + anything + 'vercel.app'
+        /https:\/\/kaypi.*.vercel.app$/,
       ],
       credentials: true,
     })
