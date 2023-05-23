@@ -10,7 +10,8 @@
     "gm": "./scripts/with-env.sh  pnpm --filter db gm ",
     "build": "./scripts/with-env.sh turbo build",
     "server:start": "./scripts/with-env.sh pnpm --filter api start",
-    "workers:start": "./scripts/with-env.sh pnpm --filter workers start"
+    "workers:start": "./scripts/with-env.sh pnpm --filter workers start",
+    "generate:fixtures": "./scripts/with-env.sh pnpm ts-node ./apps/api/src/scripts/fixtures.ts"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "pg": "^8.8.0",
+    "ts-node": "^10.9.1",
     "turbo": "^1.9.4"
   }
 }

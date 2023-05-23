@@ -12,14 +12,14 @@ export default async function AttendeesLayout({
     eventSlug: string;
   };
 }) {
-  const { eventBySlug } = await serverSdk().GetEventBySlug({
+  const data = await serverSdk().GetEventBySlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
   return (
     <>
       <div className="grid h-full grid-cols-[300px_1fr]">
-        <EventsSidebar eventSlug={eventSlug} organizationSlug={organizationSlug} eventId={eventBySlug?.id} />
+        <EventsSidebar eventSlug={eventSlug} organizationSlug={organizationSlug} eventId={data?.eventBySlug?.id} />
         <ScrollArea className="h-full">{children}</ScrollArea>
       </div>
     </>

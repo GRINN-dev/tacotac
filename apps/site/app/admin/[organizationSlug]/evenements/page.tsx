@@ -13,7 +13,7 @@ import { columns } from "./columns";
 
 const EventsPage = async ({
   params: { organizationSlug },
-  searchParams: { offset = "0", filter = undefined, first = "10", orderBy = undefined },
+  searchParams: { offset = "0", filter = undefined, first = "2000", orderBy = undefined },
 }) => {
   const data = await sdk().GetOrganizationBySlug({
     slug: organizationSlug,

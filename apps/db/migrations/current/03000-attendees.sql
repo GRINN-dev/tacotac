@@ -110,3 +110,10 @@ create table publ.attendees (
   END TABLE: publ.attendees
 */
 
+
+
+drop function if exists publ.events_attendees cascade;
+create function publ.events_attendees(any_event publ.events) returns setof publ.attendees as $$
+  select * from publ.attendees where registration_id = any_event.id;
+$$ language sql stable;
+grant execute on function publ.events_attendees to :DATABASE_VISITOR;

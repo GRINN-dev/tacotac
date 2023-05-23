@@ -87,6 +87,11 @@ query GetEventBySlug(
     eventBranding {
       ...EventBrandingFragment
     }
+    attendees {
+      nodes {
+        ...MyAttendee
+      }
+    }
     registrations(first: $first, offset: $offset) {
       nodes {
         attendeesList(filter: $filter) {
