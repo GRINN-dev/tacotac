@@ -8,6 +8,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, RefreshCcw } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
+import { Filter } from "@/components/data-table/data-table-toolbar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -34,6 +36,66 @@ export interface Event {
 }
 
 export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]["events"]["nodes"][number]>[] = [
+  {
+    accessorKey: "totalRegistrations",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Total inscr.
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="">
+          <div className="text-accent text-3xl">{row.original.totalRegistrations}</div>
+          <div className="text-accent">participants</div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Nom
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  { accessorKey: "city", header: "Ville" },
+  {
+    accessorKey: "startsAt",
+    header: "Début",
+    cell: ({ row }) => {
+      const startsAt = String(row.getValue("startsAt"));
+      return (
+        <span className=" text-xs">
+          {new Date(startsAt).toLocaleDateString("fr-FR", {
+            year: "2-digit",
+            month: "numeric",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          })}
+        </span>
+      );
+    },
+  },
+  {
+    accessorKey: "isDraft",
+    header: "Brouillon",
+    cell: ({ row }) => {
+      return (
+        <Badge className="text-xs" variant={row.original.isDraft ? "secondary" : "default"}>
+          {row.original.isDraft ? "Brouillon" : "Publié"}
+        </Badge>
+      );
+    },
+  },
   {
     id: "actions",
     header: () => {
@@ -76,37 +138,6 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
       );
     },
   },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Nom
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  { accessorKey: "city", header: "Ville" },
-  { accessorKey: "totalRegistrations", header: "Total inscr." },
-  {
-    accessorKey: "startsAt",
-    header: "Début",
-    cell: ({ row }) => {
-      const startsAt = String(row.getValue("startsAt"));
-      return (
-        <span className=" text-xs">
-          {new Date(startsAt).toLocaleDateString("fr-FR", {
-            year: "2-digit",
-            month: "numeric",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-          })}
-        </span>
-      );
-    },
-  },
 ];
 
 const Refresher: FC = () => {
@@ -124,3 +155,26 @@ const Refresher: FC = () => {
     </Button>
   );
 };
+
+export const filters: Filter<GetOrganizationBySlugQuery["organizationBySlug"]["events"]["nodes"][number]>[] = [
+  {
+    columnId: "name",
+    type: "text",
+    displayName: "Nom",
+  },
+  {
+    columnId: "registrations",
+    type: "number-range",
+    displayName: "Inscriptions",
+  },
+  {
+    columnId: "startsAt",
+    type: "date-range",
+    displayName: "Début",
+  },
+  {
+    columnId: "isDraft",
+    type: "boolean",
+    displayName: "Brouillon",
+  },
+];

@@ -5,7 +5,7 @@ import Script from "next/script";
 import { CheckCircle2, Download, MinusCircle } from "lucide-react";
 
 import "@/styles/globals.css";
-import { Montserrat, Roboto } from "@next/font/google";
+import { Montserrat, Roboto } from "next/font/google";
 import { EventStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/dist";
 import { useFieldArray, useForm } from "react-hook-form";
 

@@ -1,12 +1,7 @@
-import { Quicksand as FontSans } from "@next/font/google";
-import localFont from "@next/font/local";
+import { Quicksand as FontSans } from "next/font/google";
 
 import "@/styles/globals.css";
-import { ServerThemeProvider } from "next-themes";
-
 import { cn } from "@/lib/utils";
-import { Layout } from "@/components/layout";
-import Providers from "@/components/providers";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TokenFetcher } from "@/components/token-fetcher";

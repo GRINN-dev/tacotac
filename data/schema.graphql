@@ -1184,6 +1184,7 @@ type Event {
     orderBy: [EventBrandingsOrderBy!] = [PRIMARY_KEY_ASC]
   ): EventBrandingsConnection! @deprecated(reason: "Please use eventBranding instead")
   id: UUID!
+  isDraft: Boolean!
   isVip: Boolean
   lat: Float
 
@@ -1463,6 +1464,12 @@ input EventCondition {
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
+  """Checks for equality with the object’s `isDraft` field."""
+  isDraft: Boolean
+
+  """Checks for equality with the object’s `isVip` field."""
+  isVip: Boolean
+
   """Checks for equality with the object’s `name` field."""
   name: String
 
@@ -1507,6 +1514,12 @@ input EventFilter {
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
+  """Filter by the object’s `isDraft` field."""
+  isDraft: BooleanFilter
+
+  """Filter by the object’s `isVip` field."""
+  isVip: BooleanFilter
+
   """Filter by the object’s `name` field."""
   name: StringFilter
 
@@ -1549,6 +1562,7 @@ input EventInput {
   details: String
   endsAt: Datetime
   id: UUID
+  isDraft: Boolean
   isVip: Boolean
   lat: Float
   lon: Float
@@ -1578,6 +1592,7 @@ input EventPatch {
   details: String
   endsAt: Datetime
   id: UUID
+  isDraft: Boolean
   isVip: Boolean
   lat: Float
   lon: Float
@@ -1692,6 +1707,10 @@ enum EventsOrderBy {
   ENDS_AT_DESC
   ID_ASC
   ID_DESC
+  IS_DRAFT_ASC
+  IS_DRAFT_DESC
+  IS_VIP_ASC
+  IS_VIP_DESC
   NAME_ASC
   NAME_DESC
   NATURAL
