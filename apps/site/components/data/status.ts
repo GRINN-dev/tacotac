@@ -1,6 +1,6 @@
 import { AttendeeStatus } from "@/../../@tacotacIO/codegen/dist";
 
-export const AttendeeStatusArray = [
+export const attendeeStatusArray = [
   { name: "En attente", enum: AttendeeStatus.Idle },
   { name: "Inscription annulée", enum: AttendeeStatus.Cancelled },
   { name: "Présence confirmée à l''évenement", enum: AttendeeStatus.Confirmed },
