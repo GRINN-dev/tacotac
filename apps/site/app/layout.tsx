@@ -42,7 +42,7 @@ const RootLayout = ({ children }) => {
       <body
         className={cn(
           "bg-background text-foreground font-sans antialiased",
-          "!absolute inset-4 flex border-4 border-amber-500",
+          "!absolute inset-0 flex",
           fontSans.variable
         )}
       >
