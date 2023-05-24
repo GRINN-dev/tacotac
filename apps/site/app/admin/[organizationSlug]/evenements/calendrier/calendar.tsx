@@ -2,13 +2,13 @@
 
 import { FC } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { GetAllEventsQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllEventsQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
 import { Flower2 } from "lucide-react";
 
 import { GenericCalendar } from "@/components/calendar/generic-calendar";
 
 export const EventsCalendar: FC<{
-  events: GetAllEventsQuery["events"]["nodes"];
+  events: GetOrganizationBySlugQuery["organizationBySlug"]["events"]["nodes"];
   currentUserId: string;
   organizationSlug: string;
 }> = ({ events, currentUserId, organizationSlug }) => {

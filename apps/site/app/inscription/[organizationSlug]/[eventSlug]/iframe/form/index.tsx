@@ -1,12 +1,12 @@
 "use client";
 
-import { FC, useState, useTransition } from "react";
+import { FC, useState } from "react";
 import Script from "next/script";
 import { CheckCircle2, Download, MinusCircle } from "lucide-react";
 
 import "@/styles/globals.css";
 import { Montserrat, Roboto } from "next/font/google";
-import { EventStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/dist";
+import { AttendeeStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@tacotacIO/codegen/dist";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -40,7 +40,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
           isFundraisingGenerosityOk: false,
           isInscriptor: false,
           isVip: false,
-          status: EventStatus.Idle,
+          status: AttendeeStatus.Idle,
         },
       ],
     },
@@ -158,7 +158,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
                   // trigger validation and add a new field if ok
                   const formHasError = await trigger();
                   if (!formHasError) return;
-                  append({ status: EventStatus.Idle });
+                  append({ status: AttendeeStatus.Idle });
                 }}
               >
                 Ajouter un participant
