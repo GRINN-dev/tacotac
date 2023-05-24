@@ -34,7 +34,7 @@ begin
         attendees[v_iter].hear_about,
         attendees[v_iter].zip_code,
         attendees[v_iter].is_fundraising_generosity_ok ,
-        attendees[v_iter].status, 
+        coalesce(attendees[v_iter].status, 'IDLE'), 
         v_registration.id, 
         attendees[v_iter].firstname, 
         attendees[v_iter].lastname, 

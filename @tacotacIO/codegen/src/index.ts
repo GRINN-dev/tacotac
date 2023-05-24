@@ -1810,10 +1810,8 @@ export type Mutation = {
   resendEmailVerificationCode?: Maybe<ResendEmailVerificationCodePayload>;
   /** After triggering forgotPassword, you'll be sent a reset token. Combine this with your user ID and a new password to reset your password. */
   resetPassword?: Maybe<ResetPasswordPayload>;
-  /** scan du billet pour update la table attendees et logs */
   scanAttendee?: Maybe<ScanAttendeePayload>;
-  /** scan de tous les tickets offline */
-  scanAttendeesOffline?: Maybe<ScanAttendeesOfflinePayload>;
+  scanAttendeesAsync?: Maybe<ScanAttendeesAsyncPayload>;
   /** Select event to retrieve all attendee and send email to all attendee */
   sendEmailAllAttendeeEvent?: Maybe<SendEmailAllAttendeeEventPayload>;
   /** Select event to retrieve all attendee and send email to all attendee and confirm donation */
@@ -2029,8 +2027,8 @@ export type MutationScanAttendeeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationScanAttendeesOfflineArgs = {
-  input: ScanAttendeesOfflineInput;
+export type MutationScanAttendeesAsyncArgs = {
+  input: ScanAttendeesAsyncInput;
 };
 
 
@@ -3068,15 +3066,13 @@ export type ScanAttendeeInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  ticketPayload: TicketPayloadInput;
+  payload: TicketPayloadInput;
 };
 
 /** The output of our `scanAttendee` mutation. */
 export type ScanAttendeePayload = {
   __typename?: 'ScanAttendeePayload';
-  attendee?: Maybe<Attendee>;
-  /** An edge for our `Attendee`. May be used by Relay 1. */
-  attendeeEdge?: Maybe<AttendeesEdge>;
+  boolean?: Maybe<Scalars['Boolean']>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -3084,30 +3080,22 @@ export type ScanAttendeePayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
-  /** Reads a single `Registration` that is related to this `Attendee`. */
-  registration?: Maybe<Registration>;
 };
 
-
-/** The output of our `scanAttendee` mutation. */
-export type ScanAttendeePayloadAttendeeEdgeArgs = {
-  orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
-};
-
-/** All input for the `scanAttendeesOffline` mutation. */
-export type ScanAttendeesOfflineInput = {
+/** All input for the `scanAttendeesAsync` mutation. */
+export type ScanAttendeesAsyncInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  ticketPayloads: Array<InputMaybe<TicketPayloadInput>>;
+  payloads: Array<InputMaybe<TicketPayloadInput>>;
 };
 
-/** The output of our `scanAttendeesOffline` mutation. */
-export type ScanAttendeesOfflinePayload = {
-  __typename?: 'ScanAttendeesOfflinePayload';
-  attendees?: Maybe<Array<Maybe<Attendee>>>;
+/** The output of our `scanAttendeesAsync` mutation. */
+export type ScanAttendeesAsyncPayload = {
+  __typename?: 'ScanAttendeesAsyncPayload';
+  boolean?: Maybe<Scalars['Boolean']>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -3250,15 +3238,9 @@ export type Subscription = {
 
 /** An input for mutations affecting `TicketPayload` */
 export type TicketPayloadInput = {
-  attendeeId?: InputMaybe<Scalars['UUID']>;
   email?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
-  firstname?: InputMaybe<Scalars['String']>;
-  lastname?: InputMaybe<Scalars['String']>;
+  metadata?: InputMaybe<Scalars['JSON']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
-  payload?: InputMaybe<Scalars['JSON']>;
-  registrationId?: InputMaybe<Scalars['UUID']>;
-  signCode?: InputMaybe<Scalars['String']>;
   ticketNumber?: InputMaybe<Scalars['String']>;
 };
 
@@ -4065,14 +4047,14 @@ export type ScanAttendeeMutationVariables = Exact<{
 }>;
 
 
-export type ScanAttendeeMutation = { __typename?: 'Mutation', scanAttendee?: { __typename?: 'ScanAttendeePayload', clientMutationId?: string | null, attendee?: { __typename?: 'Attendee', id: any } | null } | null };
+export type ScanAttendeeMutation = { __typename?: 'Mutation', scanAttendee?: { __typename?: 'ScanAttendeePayload', clientMutationId?: string | null, boolean?: boolean | null } | null };
 
 export type ScanAttendeesOfflineMutationVariables = Exact<{
-  input: ScanAttendeesOfflineInput;
+  input: ScanAttendeesAsyncInput;
 }>;
 
 
-export type ScanAttendeesOfflineMutation = { __typename?: 'Mutation', scanAttendeesOffline?: { __typename?: 'ScanAttendeesOfflinePayload', clientMutationId?: string | null, attendees?: Array<{ __typename?: 'Attendee', id: any } | null> | null } | null };
+export type ScanAttendeesOfflineMutation = { __typename?: 'Mutation', scanAttendeesAsync?: { __typename?: 'ScanAttendeesAsyncPayload', boolean?: boolean | null, clientMutationId?: string | null } | null };
 
 export type CreateEventMutationVariables = Exact<{
   input: CreateEventInput;
@@ -4503,18 +4485,14 @@ export const ScanAttendeeDocument = `
     mutation ScanAttendee($scanAttendeeInput: ScanAttendeeInput!) {
   scanAttendee(input: $scanAttendeeInput) {
     clientMutationId
-    attendee {
-      id
-    }
+    boolean
   }
 }
     `;
 export const ScanAttendeesOfflineDocument = `
-    mutation ScanAttendeesOffline($input: ScanAttendeesOfflineInput!) {
-  scanAttendeesOffline(input: $input) {
-    attendees {
-      id
-    }
+    mutation ScanAttendeesOffline($input: ScanAttendeesAsyncInput!) {
+  scanAttendeesAsync(input: $input) {
+    boolean
     clientMutationId
   }
 }

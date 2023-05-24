@@ -2361,22 +2361,18 @@ type Mutation {
     """
     input: ResetPasswordInput!
   ): ResetPasswordPayload
-
-  """scan du billet pour update la table attendees et logs"""
   scanAttendee(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: ScanAttendeeInput!
   ): ScanAttendeePayload
-
-  """scan de tous les tickets offline"""
-  scanAttendeesOffline(
+  scanAttendeesAsync(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: ScanAttendeesOfflineInput!
-  ): ScanAttendeesOfflinePayload
+    input: ScanAttendeesAsyncInput!
+  ): ScanAttendeesAsyncPayload
 
   """Select event to retrieve all attendee and send email to all attendee"""
   sendEmailAllAttendeeEvent(
@@ -3697,18 +3693,12 @@ input ScanAttendeeInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  ticketPayload: TicketPayloadInput!
+  payload: TicketPayloadInput!
 }
 
 """The output of our `scanAttendee` mutation."""
 type ScanAttendeePayload {
-  attendee: Attendee
-
-  """An edge for our `Attendee`. May be used by Relay 1."""
-  attendeeEdge(
-    """The method to use when ordering `Attendee`."""
-    orderBy: [AttendeesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): AttendeesEdge
+  boolean: Boolean
 
   """
   The exact same `clientMutationId` that was provided in the mutation input,
@@ -3720,24 +3710,21 @@ type ScanAttendeePayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-
-  """Reads a single `Registration` that is related to this `Attendee`."""
-  registration: Registration
 }
 
-"""All input for the `scanAttendeesOffline` mutation."""
-input ScanAttendeesOfflineInput {
+"""All input for the `scanAttendeesAsync` mutation."""
+input ScanAttendeesAsyncInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  ticketPayloads: [TicketPayloadInput]!
+  payloads: [TicketPayloadInput]!
 }
 
-"""The output of our `scanAttendeesOffline` mutation."""
-type ScanAttendeesOfflinePayload {
-  attendees: [Attendee]
+"""The output of our `scanAttendeesAsync` mutation."""
+type ScanAttendeesAsyncPayload {
+  boolean: Boolean
 
   """
   The exact same `clientMutationId` that was provided in the mutation input,
@@ -3943,15 +3930,9 @@ type Subscription {
 
 """An input for mutations affecting `TicketPayload`"""
 input TicketPayloadInput {
-  attendeeId: UUID
   email: String
-  eventId: UUID
-  firstname: String
-  lastname: String
+  metadata: JSON
   panelNumber: Int
-  payload: JSON
-  registrationId: UUID
-  signCode: String
   ticketNumber: String
 }
 

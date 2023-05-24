@@ -10,12 +10,13 @@ import {
   GetOrganizationBySlugQuery,
 } from "@/../../@tacotacIO/codegen/dist";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, RefreshCcw } from "lucide-react";
+import { ArrowUpDown, ExternalLink, MoreHorizontal, RefreshCcw } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
+import { cn } from "@/lib/utils";
 import { Filter } from "@/components/data-table/data-table-toolbar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -90,6 +91,26 @@ export const columns: (input: {
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+  },
+  {
+    accessorKey: "qrCodeUrl",
+    header: "QR Code",
+    cell: ({ row }) => (
+      <>
+        {row.original.qrCodeUrl ? (
+          <Link
+            className={cn(buttonVariants({ variant: "link", size: "sm" }))}
+            href={row.original.qrCodeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ExternalLink className="mr-2 h-4 w-4" /> Voir le billet
+          </Link>
+        ) : (
+          <span className="text-muted-foreground">Pas de billet</span>
+        )}
+      </>
+    ),
   },
   {
     id: "actions",

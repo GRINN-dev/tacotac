@@ -29,7 +29,7 @@ export const generateDocsForAttendees = async (
   bufferPdf: Buffer;
 }> => {
   let bufferPdf: Buffer;
-  const { dataUrlQrCode } = await generateQRCode(
+  /*   const { dataUrlQrCode } = await generateQRCode(
     JSON.stringify({
       ticketNumber: rowData.ticket_number,
       firstname: rowData.firstname,
@@ -38,6 +38,15 @@ export const generateDocsForAttendees = async (
       attendeeId: rowData.id,
       registrationId: registrationId,
       eventId: rowData.event_id,
+    })
+  ); */
+  const { dataUrlQrCode } = await generateQRCode(
+    JSON.stringify({
+      t_num: rowData.ticket_number,
+      name: rowData.firstname,
+      email: !!rowData.email,
+      event: rowData.event_id,
+      vip: rowData.is_vip,
     })
   );
 

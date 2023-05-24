@@ -6,7 +6,7 @@ import { sdk } from "@/lib/sdk";
 export const scannerMachine = ({ eventId }: { eventId: string }) =>
   createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QGUDGBDAdpsAnAdAJYQA2YAxMgCoCCASlQPrIDCNAcuwJLsDiA2gAYAuolAAHAPaxCAF0KTMYkAA9EAWgBMmgIz5NAdgMAOAJw7T50wFYALDoA0IAJ6IAbIL2GzOwaYPWOjp2AL4hTmhYOASwGNiEmFDq8qgA1mCy5ACi7FRZdIxUXCwA0llM7ACqALIAQvlCokggUjLyispqCJoAzPg9PW5Gmp4Ggm62A7ZOrgj2BvimgtY21m7GHsa2YRFx0fixUQlJKemZbOwsWQAyjcqtcgpKzV06tsb4Om7Wg9aCmpYLLZTDNEGNTPh-msDN4DMFTDsQJFsHh8AA3PCEABmzmOyUIZ3IEEUYCImDRknS+GR+wxuGxuMS+LOCASFIw7UwjTuzQenM6iGsmls-WsQpGYphJgMoIQbh0mkW5lsa08PU01gMCPCSL2qLpDLx8kJxJwZIpVJp+sxOKNBIyrPJkg5T25OiaEmkjw6L0FCs+PTe3yGtlsbgmsqMHzhbm0wJ0PVsws0iKtMT2ePEWDAJHIFyutxE9y9-N93QmnzhGwM8vlCbWsuMemBlkBKssHgMqb16aOTKzOFzOTyBQAChwbowqnUGkXeSWngKECZBJ9jJpjD8elsw03ZSMIcYAt9BsMNaZjN2oqjDvF+9mh7l8oxx+xJ9P6nR+O7i21F2WVhFQwEwBXxeljTRZUDD4VWMMxBAMRN7GsYweivFFezvJIBxzSgLhfCdCw9FoFx9UAunWD5VTDGtbDhHpBGmFx3FjfADDDfxBlsQRUMQ9D9lvTBMwfPCOAIt9bh-ec-zI1RECCBM2I8SxEIvHoAlldY3H0QFtFjFVJi7HU03wPBcEkXByDoLJqHoKgeU9GTnnIjRt2095uPY9S4X8EFmIQDY+lQlYRgmYIeP41EIEIWBxBIdBnHULEMlQAALSB1HQWRZDATAIDAMBMry9QcNzZBKlqaouHsudHO9Zy5IQN4VX0b4vjsXpxmFWVNW0zQhiFYFdGFNw0OMnt8Gi2L4sS5LZDSjKspyvKCqKiASpE-MbgckinKXBN1XwIZ1nC3Qd1lUxJkhP4bpQhUekCSKCDmtK8SW3L8ooU1STZSlSRMl7Ure7KPoKx12Sy10RB2vl-xcgKHs+XR1NjQYHtMHpZV8VjYy1P4YQ3cZtnG69npSoGmXelaKDMiz8DirKsQsgBbakJsB4Hls+8HnUhxRuVq3b6qXRDVzDCwNkEaCN0g-yFL0Jsw3sXwxjcfwnsmmKGcSwSMtODI1o2wdsifAosmqGguCI39hbLIJTEVWsVR+GEJjFC7TG05ZzFFo8BkvEmMM16aEvUXX1v12RDdKygaAANSyRgAHkADEU+uHgshh0iGteCxrB0jdgS2f4NVl2YDohFVDBWOF+q+bVdlJ4PtbDvUI8INIDawdaY6263pNt+Hsb6RMLzxhVRrorGRj6CwjClu6Ha2DXYAAVwAI2ZuR5ESIkSXNP62eb9et5344eZdfnocF2HZNecMC5+P5zC2RCHusRshXwSZNwx94Hbqh0KvTe29srHHILTAgDNZBM1wKzEyp8wG7ygJfPmXJoZSTqqWYe6N8BwV0DxDwhgeh+QrmdT4OgtQaibEKYw4wQFn3AXvKB9N4qwJZsfIOSDz6JDQZyAWxE7653kuxBYXkxjaFIRqJiFciaQn6jxGsNgbC6FXhmJkkdRLsEKMUMoNUhE532puH+fxeianUqhBin9-KBD6MmBUOheKoXVoHWkNpGQnHtJkVhMC4EIImgaW0mjvH8KhsIbOe0yzqjnqQh2DsvggWMFjdSQUAjsW4vKRCEwNZTVboDRaINqbRxEsOZ85tLYD2wXDRqCo6LXUEN7MwvEbGzD+F4CYTZkYMWBD8MIOpMCSHyvAZoaYbY4MauoSYIoPIIUMj5LUsp1Be0aaszc3EpbxI1sQMg4yaldHUAxKiYpX5mABJqWR7hNRHQ2P1T2D0tgrzcTeDRXiu6yD2ffDQbxIRvCbJ4DGG4jCY38h4LwJhzB+ACEEUIzzMJCXvIOT5IiAorH6GMLYnThgIU0oxfQfx-i+E8MEGEGsoHIqXOoBUBcLyeHGIxFU2S3AzwvD-AB8oLk0WAXCluM0krk0KVzVaPcjY5gpXbPwiomxBEaQMdUywQWzDrD-ZUTYwr2DMBrDmlMimfXFfDLUfQuo1k3FLIBjh-JGHckmaU9hEzJlyVrPl4d8TvJKUiweEy84jCUh5YUVDEI1ixjK-obwVg8UYgmB2jDkHHH1bUsYIo-ioTov1OiPwepHiVGGsF6pNSN11M3IJnjmQZHjV0Oi2l6H-EJVa2ssp3gLFGlI9cMLvLWH6SEIAA */
+      /** @xstate-layout N4IgpgJg5mDOIC5QGUDGBDAdpsAnAdAJYQA2YAxMgCoCCASlQPrIDCNAcuwJLsDiA2gAYAuolAAHAPaxCAF0KTMYkAA9EAWgBMmgIz5NAdgMAOAJw7T50wFYALDoA0IAJ6IAbIL2GzOwaYPWOjp2AL4hTmhYOASwGNiEmFDq8qgA1mCy5ACi7FRZdIxUXCwA0llM7ACqALIAQvlCokggUjLyispqCJoAzPg9PW5Gmp4Ggm62A7ZOrgj2BvimgtY21m7GHsa2YRFx0fixUQlJKemZbOwsWQAyjcqtcgpKzV06tsb4Om7Wg9aCmpYLLZTDNEGNTPh-msDN4DMFTDsQJFsHgDntjslCGkMpQLoVimUqHdmg92s9QK9jNZ8LY-r1rAYeiYBstQQhAn1NLZdLpjEy+f5Ecj9od4ol1OIsGASOQLldbiJ7tJHh0XohNBNPnCNgY3F8gj01mzjHpgZZAbTLB4DEK9qjRZgMZKcDKcnkCgAFDg3RhVOoNRUk5Vkzpg4yCT7GTRUgZbWzrRwudV+fDGALfQbDTQrYy2qL29Hi53S7K5fKML3sH1++p0fg6JoSYNPUPs0y2fRwnoA3y9NzaNk9HQfWnGMyCRm2ezWPl5lExQtJYsy1gcCvehWNlrN1UUsE6TSLd7vMyMw0DNnfBZjqPAmeTCduOcixcSqUrvGVm71rekltqhAgh0PpdT8fwelMPkAkvDZ9EBbR+1pSYbXCJE7QIPBcEkXByDoLJqHoIlAybNp-z3BB1B6WDjwnZC4X8EEkwQDY+j5FYRgmYJBFzVDhVRCBCFgcQSHQZx1AAMwyVAAAtIHUdBZFkMBMAgMAwHklS3xdShKlqaouCI38d3JVREDeWl9G+L47F6cYuTZBk3EsgIuVMHl4x6Z9+ME4TRIkqTZIgeTFOU1T1KwILl1lDh5WJEiVRM14BkPIYEzpYcpzZds+mWXLrBnA9DR0LyCAEoSRLEyTZBkuSFKUlS1I0yL31Ld1GCyaoaC4TclVI3dTMArkFly5ZIMgplrAczxLPeA9gJ6QQ7083j0PwKqZIxOrQrU8gIEUMAiEwAA3SR0nwPiCHW6TNpChqwAQBITowMlGji7c+sSxA+Sc8YDEsbiqNvRNZksBZ8vMRluLPHjdnzS6Apu+qwvITDsPwXzZHE7CAFtztWq7Ee2+7HskZ6nle4j3oS1tIZpPVII8IcoyjNkgL0E143sXwxjcQUVrh-Ayt8sSHTk04MiarSSzdcsOq6nqgw+1sgjc-A9QmfKmQ1WlJqYq1IRWHRIbTWMSsFnyKvUUWgvF2RJai5AaAANSyRgAHkADEPeuHgsjev9+teCxqQBaNgS2f5s00VmBghWlDBWOENS+BF+fnc3yr863MWxO2IqlmU5W-SmA8+wDxj6Hpw7+wINSrgxWZGPoLCMQRDRNNytjN2AAFcACNsbkeREl2-bDpOs6LoOfvB8U44HuO0mFPJkR-eM5W3G+fAfj+cwtjPfLjWsQ9JipUwq7MXpdG7meh+OUecHH06Dqn3uB7vxIF6e5fFFehteupgBQQbJBA33fnPEeqMCAYyxrgXGr9b4QKgF-JeL1V4l3XgBI2tgFgGGQpHCC2ZphMV8Jqf4mxdQ2BsNfNO+wjp4EIOJZwGJ5BnAfgdEmk9Vr0NwIw5h4pWEZBQWTX+6CjJKwAsfDshpj4jHyjCEwDcmJ6kPBaNYnhuwMlTrDdOPC+EsMIGwvaj9OEv24QwphBizjCJ-pgP+4jAHkVrp8Ic8ZoRTk3sQ2YRgPhwn7K5YC3JuRmz0ZYgRhicRQPRiJTGOM8YC1Cfwk4ETZA2LQcINeEjyLdmbhBNybl9TdmMDHRkqYAh4NsOMI2gxtiIkwJIVS8BmgXQASGAC6hJgdhongpk9E-psnUGmbeZtiBkFaWRAalFuLb3BsOS+Ng8GXgZGrDYGpTBuHbsebur5bbjMDhoN4kI3gmk8OfaMRgeiXmmt4cwfgAhBFCLQgsRwizvj2WXM+-QxhbAmGmGEE4rkdmzIIf4vhPDBBhGbKB7zWzqAPNSSCnhxiLVpIyTejdII0neOsiFHi4RmyFpbK6tVbphXtm8xWjiBq+FViaIIIKBjdmWJc5RQQaTmFmpxewZgzYE3FFtO6MKAJ-Ryv2XUVI27diCGyIwTkpywnsFXLkmgCUWyznaG2WIzjkpdEK8iQQRj4F1MeLkRtGS6lZvS-obwVjcUWsBNyYDZ7DygHq6lYwOx-D5Dg7WAQWWzBnAsNRHhgLZj+iEixSTMRnDdV0HBTlwz-FBbK9WbJ3gLA2doKiuhgi9OsGEMIQA */
       id: "Scanner",
       initial: "idle",
       tsTypes: {} as import("./scanner-machine.typegen").Typegen0,
@@ -58,12 +58,12 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
 
             SCAN_PANEL: [
               {
-                target: "fetching-attendee",
+                target: "display-fetched-attendee-and-panel",
                 cond: "attendeeIsFetched",
                 actions: "assignPanelNumber",
               },
               {
-                target: "display-fetched-attendee-and-panel",
+                target: "fetching-attendee",
                 actions: "assignPanelNumber",
               },
             ],
@@ -173,7 +173,7 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
             isMissingEmail: boolean;
             isVIP: boolean;
             fullName: string;
-            isValid: boolean;
+            event: string;
           };
           email: string;
           panel: number;
@@ -186,9 +186,9 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
           | { type: "RESTART" }
           | { type: "CANCEL" }
           | { type: "ENTER_EMAIL"; payload: string }
-          | { type: "SAVE_OFFLINE"; payload: { ticketNumber: string; panelNumber: number } }
-          | { type: "SUBMIT"; payload: { ticketNumber: string; panelNumber: number } }
-          | { type: "ENTER_PANEL_NUMBER"; payload: number }
+          | { type: "SAVE_OFFLINE" }
+          | { type: "SUBMIT" }
+          | { type: "ENTER_PANEL_NUMBER"; payload: string }
           | {
               type: "SCAN_TICKET";
               payload: {
@@ -196,7 +196,7 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
                 isMissingEmail: boolean;
                 isVIP: boolean;
                 fullName: string;
-                isValid: boolean;
+                event: string;
               };
             }
           | { type: "SCAN_PANEL"; payload: string },
@@ -212,7 +212,7 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
           isMissingEmail: false,
           isVIP: false,
           fullName: "",
-          isValid: false,
+          event: "",
         },
         panel: null,
         attendee: null,
@@ -224,11 +224,17 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
     },
     {
       guards: {
-        ticketIsValid: ({ ticket }) => ticket.isValid,
-        attendeeIsFetched: ({ attendee }) => attendee !== null,
+        ticketIsValid: ({ ticket }) => {
+          console.log("ticket ", ticket);
+          return true;
+        },
+        attendeeIsFetched: ({ attendee }) => {
+          console.log("attendee is fetched", !!attendee?.id);
+          return !!attendee?.id;
+        },
         submissionIsSuccessful: (_, event) => {
-          console.log(event);
-          return event.data?.scanAttendee?.attendee?.id !== null;
+          console.log("submission", event);
+          return event.data?.scanAttendee?.boolean;
         },
         qrCodeDetected: (_, event) => event.payload !== null,
       },
@@ -240,7 +246,7 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
           }),
         }),
         assignAttendee: assign({
-          attendee: (_, event) => event.data.attendeeByTicketNumber,
+          attendee: (context, event) => event.data.attendeeByTicketNumber,
         }),
         assignPanelNumber: assign({
           panel: (_, event) => Number(event.payload),
@@ -252,6 +258,7 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
             isMissingEmail: event.payload.isMissingEmail,
             isVIP: event.payload.isVIP,
             fullName: event.payload.fullName,
+            event: event.payload.event,
           }),
         }),
         assignEmail: assign({
@@ -268,17 +275,19 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
             ticketNumber: context.ticket.number,
           });
         },
-        submitScanPayload: (context: { ticket: { number: string }; panel: number }) => {
+        submitScanPayload: (context) => {
           return sdk().ScanAttendee({
             scanAttendeeInput: {
-              ticketPayload: {
+              payload: {
                 ticketNumber: context.ticket.number,
                 panelNumber: context.panel,
+                metadata: context,
               },
             },
           });
         },
-        verifyTicket: async (context: { ticket: { number: string } }, event) => {
+        verifyTicket: async (context, event) => {
+          console.log("verifyTicket", event);
           if (event.type === "ENTER_TICKET_NUMBER") {
             const { attendeeByTicketNumber } = await sdk().GetAttendeeByTicketNumber({
               ticketNumber: context.ticket.number,
@@ -287,7 +296,7 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
 
             return attendeeByTicketNumber?.registration?.eventId === eventId;
           }
-          return true;
+          return context.ticket?.event === eventId;
         },
 
         // services à inclure côté react: verifyTicket

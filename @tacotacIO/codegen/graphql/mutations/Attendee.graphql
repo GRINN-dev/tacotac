@@ -28,7 +28,7 @@ mutation RegisterAttendees($input: RegisterAttendeesInput!) {
   registerAttendees(input: $input) {
     registration {
       id
-       attendeesList {
+      attendeesList {
         id
         qrCodeUrl
         pdfUrl
@@ -57,17 +57,13 @@ mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]!) {
 mutation ScanAttendee($scanAttendeeInput: ScanAttendeeInput!) {
   scanAttendee(input: $scanAttendeeInput) {
     clientMutationId
-    attendee {
-      id
-    }
+    boolean
   }
 }
 
-mutation ScanAttendeesOffline($input: ScanAttendeesOfflineInput!) {
-  scanAttendeesOffline(input: $input) {
-    attendees {
-      id
-    }
+mutation ScanAttendeesOffline($input: ScanAttendeesAsyncInput!) {
+  scanAttendeesAsync(input: $input) {
+    boolean
     clientMutationId
   }
 }
