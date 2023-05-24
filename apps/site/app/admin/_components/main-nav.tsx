@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Calendar, Cog } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -20,7 +21,10 @@ export function MainNav({ className, organizationSlug, ...props }: NavProps) {
           pathname.includes("evenements") && "text-primary"
         )}
       >
-        Évènements
+        <span className="hidden sm:inline">Évènements</span>
+        <span className="sm:hidden">
+          <Calendar />{" "}
+        </span>
       </Link>
       <Link
         href={organizationSlug ? `/admin/${organizationSlug}/infos` : "/admin/all/parametres"}
@@ -29,7 +33,10 @@ export function MainNav({ className, organizationSlug, ...props }: NavProps) {
           pathname.includes("parametres") && "text-primary"
         )}
       >
-        Paramètres
+        <span className="hidden sm:inline">Paramètres</span>
+        <span className="sm:hidden">
+          <Cog />{" "}
+        </span>
       </Link>
     </nav>
   );

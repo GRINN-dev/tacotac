@@ -9,7 +9,7 @@ const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) 
   return (
     <>
       <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-        <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
+        <div className="mx-auto flex max-w-3xl items-baseline gap-2">
           <Link href={`/admin/${organizationSlug}/${eventSlug}`}>
             <ArrowBigLeft className="text-primary h-6 w-6" />
           </Link>
@@ -17,7 +17,7 @@ const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) 
             Importer une liste de participants
           </h1>
         </div>
-        <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
+        <div className="mx-auto flex max-w-3xl items-baseline gap-2">
           <ImportAttendeesForm {...eventBySlug} />
         </div>
       </section>

@@ -8,18 +8,25 @@ import dayjs from "dayjs";
 import { AlertTriangle, MinusCircle, PlusCircle, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
-
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({
@@ -87,8 +94,8 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
     setWebhookList(newList);
   };
   return (
-    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+    <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="name">Nom</Label>
         <Input
           type="text"
@@ -104,7 +111,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
@@ -116,7 +123,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.description?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="city">Capacité</Label>
         <Input
           type="number"
@@ -131,13 +138,13 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.capacity?.message}</p>
         )}
       </div>
-      <Separator className="my-8" />
+      <Separator className="my-8 w-12" />
 
       <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
         Date et ouverture de la billeterie
       </h2>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="startsAt">Début</Label>
         <Input
           type="datetime-local"
@@ -152,7 +159,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
           </p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="endsAt">Fin</Label>
         <Input
           type="datetime-local"
@@ -166,7 +173,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="bookingStartsAt">Date de début des réservations</Label>
         <Input
           type="datetime-local"
@@ -182,7 +189,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="bookingEndsAt">Date de fin des réservations</Label>
         <Input
           type="datetime-local"
@@ -197,13 +204,13 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
           </p>
         )}
       </div>
-      <Separator className="my-8" />
+      <Separator className="my-8 w-12" />
 
       <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
         Lieu
       </h2>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label>Liste des webhooks</Label>
         <ul className="list-disc pl-4">
           {webhookList?.length > 0
@@ -232,7 +239,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="addressLine1">Adresse</Label>
         <Input
           type="text"
@@ -246,7 +253,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="addressLine2">Complément d&apos;adresse</Label>
         <Input
           type="text"
@@ -260,7 +267,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="zipCode">Code postal</Label>
         <Input
           type="text"
@@ -274,7 +281,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="city">Ville</Label>
         <Input type="text" id="city" placeholder="Ville" defaultValue={city} {...register("patch.city")} />
         {formState.errors?.patch?.city && (
@@ -282,27 +289,25 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="country">Pays</Label>
         <Input type="text" id="country" placeholder="Pays" defaultValue={country} {...register("patch.country")} />
         {formState.errors?.patch?.country && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.country?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label className="mt-2" htmlFor="webhookList">
           Ajouter un webhook (Zapier, Maker, etc.)
           <div className="my-4 rounded-lg border p-4">
-            <div className="flex">
-              <div className="shrink-0">
-                <AlertTriangle className="h-5 w-5 text-red-200" aria-hidden="true" />
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-200">Attention </h3>
-                <div className="mt-2 text-sm ">
-                  <p>{`Le webhook doit recevoir les données qu'on lui envoi, et non un webhook de demande d'infos.`}</p>
-                  <p className="italic">{`L'url doit ressembler à ceci : https://hook.eu1.make.com/m71ivakh5nnwknu1zwmdefle1u2c1qjs`}</p>
-                </div>
+            <div className="shrink-0">
+              <AlertTriangle className="h-5 w-5 text-red-200" aria-hidden="true" />
+            </div>
+            <div className="ml-3 break-words">
+              <h3 className="text-sm font-medium text-red-200">Attention </h3>
+              <div className="mt-2 text-sm ">
+                <p>{`Le webhook doit recevoir les données qu'on lui envoi, et non un webhook de demande d'infos.`}</p>
+                <p className="italic">{`L'url doit ressembler à ceci : https://xxx`}</p>
               </div>
             </div>
           </div>

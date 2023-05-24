@@ -134,8 +134,8 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
   });
 
   return (
-    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+    <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
+      <div className="mt-4 grid items-center gap-1.5">
         <div className="my-4 rounded-lg border p-4">
           <div className="flex">
             <div className="shrink-0">

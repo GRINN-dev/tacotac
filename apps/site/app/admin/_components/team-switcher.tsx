@@ -37,6 +37,7 @@ interface TeamSwitcherProps extends PopoverTriggerProps {
     label: string;
     value: string;
     pictureUrl?: string;
+    isCurrent?: boolean;
   }[];
   organizationSlug?: string;
 }
@@ -63,9 +64,8 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
 
   type Team = (typeof groups)[number]["teams"][number];
 
-  const [selectedTeam, setSelectedTeam] = React.useState<Team> /* groups[0].teams[0] */(
-    // find the team that corresponds to the current organizationSlug
-    groups.flatMap((group) => group.teams).find((team) => team.value === organizationSlug) || groups[0].teams[0]
+  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
+    groups.flatMap(({ teams }) => teams).find(({ isCurrent }) => isCurrent) || groups[0].teams[0]
   );
   const router = useRouter();
   return (
@@ -78,7 +78,7 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
             role="combobox"
             aria-expanded={open}
             aria-label="Select a team"
-            className={cn("w-[200px] justify-between", className)}
+            className={cn("justify-between", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
@@ -95,7 +95,7 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
               </AvatarFallback>
             </Avatar>
             {selectedTeam.label}
-            <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">

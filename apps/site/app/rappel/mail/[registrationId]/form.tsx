@@ -6,14 +6,11 @@ import { GetAttendeesWithoutMailByRegistrationIdQuery } from "@/../../@tacotacIO
 import { toast } from "@/hooks/use-toast";
 import { useFieldArray, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 
 interface iUpdateAttendeeMail extends ExtractType<GetAttendeesWithoutMailByRegistrationIdQuery, "attendees"> {}
 
@@ -48,7 +45,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
     const { isValidCaptcha } = await validCaptcha();
     if (isValid && isValidCaptcha) {
       setIsLoading(true);
-      
+
       await sdk().UpdateAttendeeEmailAndSendEmail({
         attendees: data.nodes,
       });
@@ -66,11 +63,11 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
       <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
         Mettre à jour le mail de mes participants
       </h2>
-      <form onSubmit={onSubmit} className={cn("mt-4 w-full space-y-4", isSubmitting && "animate-pulse")}>
+      <form onSubmit={onSubmit} className={cn("mt-4 space-y-4", isSubmitting && "animate-pulse")}>
         <Script src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_CAPTCHA_KEY_SITE}`} />
         {fields.map((item, index) => (
           <div className="rounded-lg border p-4" key={item.id}>
-            <div className="mt-4 grid w-full items-center gap-1.5">
+            <div className="mt-4 grid items-center gap-1.5">
               <Label htmlFor="firstname">Prénom</Label>
               <Input
                 type="text"
@@ -82,7 +79,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
                 className="col-span-2"
               />
             </div>
-            <div className="mt-4 grid w-full items-center gap-1.5">
+            <div className="mt-4 grid items-center gap-1.5">
               <Label htmlFor="lastname">Nom</Label>
               <Input
                 type="text"
@@ -94,7 +91,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
                 className="col-span-2"
               />
             </div>
-            <div className="mt-4 grid w-full items-center gap-1.5">
+            <div className="mt-4 grid items-center gap-1.5">
               <Label htmlFor="email">Email</Label>
               <Input
                 type="email"

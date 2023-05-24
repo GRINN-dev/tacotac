@@ -82,8 +82,8 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
     router.push(pathname.substring(0, pathname.lastIndexOf(`/participant/${id}`) + 1) + "?reload=true");
   };
   return (
-    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+    <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
+      <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"patch.status"}
           control={control}
@@ -107,7 +107,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           )}
         />
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="firstname">Prénom</Label>
         <Input
           type="text"
@@ -123,7 +123,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="lastname">Nom</Label>
         <Input
           type="text"
@@ -138,7 +138,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.lastname?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="email">Email</Label>
         <Input
           type="email"
@@ -153,7 +153,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.email?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="phoneNumber">Téléphone</Label>
         <Input
           type="number"
@@ -166,14 +166,14 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.phoneNumber?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="zipCode">Code postale</Label>
         <Input type="number" id="zipCode" defaultValue={zipCode} placeholder="44000" {...register("patch.zipCode")} />
         {formState.errors?.patch?.zipCode && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.zipCode?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"patch.hearAbout"}
           control={control}
@@ -196,7 +196,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           )}
         />
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="isVip">{"Vip"}</Label>
         <Input
           type="checkbox"
@@ -209,7 +209,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.isVip?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="panelNumber">{"Numéro de panneau"}</Label>
         <Input
           type="number"

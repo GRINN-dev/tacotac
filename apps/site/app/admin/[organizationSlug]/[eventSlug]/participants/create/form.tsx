@@ -57,8 +57,8 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
     setIsLoading(false);
   });
   return (
-    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+    <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
+      <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"attendees.0.status"}
           control={control}
@@ -83,7 +83,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           )}
         />
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"attendees.0.civility"}
           control={control}
@@ -105,7 +105,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           )}
         />
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="firstname">Prénom</Label>
         <Input
           type="text"
@@ -122,7 +122,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="lastname">Nom</Label>
         <Input
           type="text"
@@ -139,7 +139,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="email">Email</Label>
         <Input
           type="text"
@@ -157,7 +157,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.at(0)?.email?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="phoneNumber">Téléphone</Label>
         <Input
           type="number"
@@ -173,7 +173,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           </p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="zipCode">Code postale</Label>
         <Input
           type="number"
@@ -189,7 +189,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           </p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"attendees.0.hearAbout"}
           control={control}
@@ -211,7 +211,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           )}
         />
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="isFundraisingGenerosityOk">
           {
             "J'ai bien compris qu'il s'agit d'une soirée de levée de dons et que les associations comptent sur la générosité des participants."
@@ -227,7 +227,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
         />
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="isVip">{"Vip"}</Label>
         <Input type="checkbox" id="isVip" className="h-4 w-4 " {...register("attendees.0.isVip", {})} />
         {formState.errors?.attendees?.at(0)?.isVip && (

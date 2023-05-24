@@ -6,15 +6,12 @@ import dayjs from "dayjs";
 import { motion, useAnimationControls } from "framer-motion";
 import { ChevronLeft, ChevronRight, ChevronsUpDown, Filter, PlusCircle, XCircle } from "lucide-react";
 
-
-
 import { IData, IHeader, ITypeFilter } from "@/types/filter";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-
 
 interface iTableEvent {
   header: IHeader[];
@@ -252,10 +249,7 @@ export const Collection = ({
                 </div>
                 <div className="ml-auto pl-3">
                   <div className="-m-1.5">
-                    <button
-                      type="button"
-                      className="focus:none inline-flex rounded-md p-1.5 focus:outline-none"
-                    >
+                    <button type="button" className="focus:none inline-flex rounded-md p-1.5 focus:outline-none">
                       <span className="sr-only">Dismiss</span>
                       <XCircle className="h-5 w-5" aria-hidden="true" />
                     </button>
@@ -268,7 +262,7 @@ export const Collection = ({
         {/* end filter parts */}
 
         {/* begin table parts */}
-        <div id="organizations" className="mx-auto mt-4 w-full">
+        <div id="organizations" className="mx-auto mt-4">
           <table className="border-primary flex flex-col rounded-lg border px-6 py-3">
             <thead>
               <tr className="flex items-center">
@@ -308,7 +302,7 @@ export const Collection = ({
             <tbody className="flex flex-col">
               {dataformat.map((row, index) => (
                 <tr
-                  className={`flex items-start ${!isRedirectStop?'hover:cursor-pointer':''}`}
+                  className={`flex items-start ${!isRedirectStop ? "hover:cursor-pointer" : ""}`}
                   onClick={() => {
                     !isRedirectStop && router.push(`${pathname}/${row?.slug}`);
                   }}

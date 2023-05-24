@@ -45,8 +45,8 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
     });
   });
   return (
-    <form onSubmit={onSubmit} className={cn("mt-4 w-full", isSubmitting && "animate-pulse")}>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+    <form onSubmit={onSubmit} className={cn("mt-4 ", isSubmitting && "animate-pulse")}>
+      <div className="mt-4 grid  items-center gap-1.5">
         <Label htmlFor="name">Nom</Label>
         <Input
           type="text"
@@ -62,7 +62,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid  items-center gap-1.5">
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
@@ -77,7 +77,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
         )}
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid  items-center gap-1.5">
         <Label htmlFor="logoUrl">Logo</Label>
         <Input type="text" id="logoUrl" placeholder="Logo" defaultValue={logoUrl} {...register("patch.logoUrl", {})} />
         {formState.errors?.patch?.logoUrl && (

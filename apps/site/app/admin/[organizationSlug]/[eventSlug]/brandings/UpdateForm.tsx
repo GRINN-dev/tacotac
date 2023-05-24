@@ -110,10 +110,10 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
     }));
   };
   return (
-    <form onSubmit={onSubmit} className={cn("mt-12 w-full", isSubmitting && "animate-pulse")}>
+    <form onSubmit={onSubmit} className={cn("mt-12", isSubmitting && "animate-pulse")}>
       <h2 className="mb-6 text-3xl font-bold">Contenus</h2>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         {/* A remplacer par list */}
         <Controller
           name={"patch.font"}
@@ -137,7 +137,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           )}
         />
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="logo">Logo</Label>
         <div className="flex flex-row space-x-4">
           <FileDragNDrop
@@ -166,7 +166,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.logo?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         {/* A remplacer par list */}
         <Label htmlFor="richText">Contenu rich text</Label>
         <Textarea
@@ -181,7 +181,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.richText?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         {/* A remplacer par list */}
         <Label htmlFor="shortText">Court texte</Label>
         <Input
@@ -197,7 +197,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.shortText?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         {/* A remplacer par list */}
         <Label>Liste des lauréats</Label>
 
@@ -313,7 +313,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
         />
       </div>
 
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="headerMailName">Header Mail - Intitulé</Label>
         <Input
           type="text"
@@ -328,7 +328,7 @@ export const UpdateEventBrandingForm: FC<IUpdateBrandingEvent> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.color2?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid w-full items-center gap-1.5">
+      <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="headerMailContact">Header Mail - Contact</Label>
         <Input
           type="email"

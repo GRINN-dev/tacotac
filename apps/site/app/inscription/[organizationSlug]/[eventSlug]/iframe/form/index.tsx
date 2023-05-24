@@ -83,7 +83,7 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
 
       <>
         <div className={showConfirmation === true ? "hidden" : "flex w-full flex-col"}>
-          <form onSubmit={onSubmit} className={cn("mt-4 w-full", isLoading && "animate-pulse")}>
+          <form onSubmit={onSubmit} className={cn("mt-4", isLoading && "animate-pulse")}>
             {fields?.length > 1 ? (
               <Accordion type="single" collapsible defaultValue={"1"}>
                 {fields.map((item, i) => (

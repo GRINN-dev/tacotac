@@ -22,7 +22,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
 
   return (
     <>
-      <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+      <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
         <Label htmlFor="civility">
           Civilité<span className="text-red-500"> *</span>
         </Label>
@@ -44,7 +44,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
                 </SelectContent>
               </Select>
               {formState.errors?.attendees?.[i]?.civility && (
-                <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
+                <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
                   {formState.errors?.attendees?.[i]?.civility?.message}
                 </p>
               )}
@@ -53,7 +53,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
         />
       </div>
 
-      <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+      <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
         <Label htmlFor="lastname">
           Nom<span className="text-red-500"> *</span>
         </Label>
@@ -67,16 +67,16 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
           className="col-span-2"
         />
         {formState.errors?.attendees?.[i]?.lastname && (
-          <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
+          <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
             {formState.errors?.attendees?.[i].lastname?.message}
           </p>
         )}
       </div>
-      <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+      <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
         <Label htmlFor="firstname">
           Prénom <span className="text-red-500"> *</span>
         </Label>
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           <Input
             type="text"
             id="firstname"
@@ -84,16 +84,16 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
             {...register(`attendees.${i}.firstname`, {
               required: "Un prénom pour le participant est requis",
             })}
-            className="w-full col-span-2"
+            className="col-span-2 w-full"
           />
           {formState.errors?.attendees?.[i]?.firstname && (
-            <p className="text-sm text-red-800 dark:text-red-300 whitespace-nowrap">
+            <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
               {formState.errors?.attendees?.[i]?.firstname?.message}
             </p>
           )}
         </div>
       </div>
-      <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+      <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
         <Label htmlFor="email">
           Email
           {isInscriptor ? <span className="text-red-500"> *</span> : ""}
@@ -114,7 +114,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
             })}
           />
           {formState.errors?.attendees?.[i].email && (
-            <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
+            <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
               {formState.errors?.attendees?.[i]?.email?.message}
             </p>
           )}
@@ -122,7 +122,7 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
       </div>
       {isInscriptor ? (
         <>
-          <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+          <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
             <Label htmlFor="phoneNumber">Téléphone</Label>
             <Input
               type="number"
@@ -132,11 +132,11 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
               {...register(`attendees.${i}.phoneNumber`)}
             />
           </div>
-          <div className="mt-4 grid w-full grid-cols-3 items-center gap-1.5">
+          <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
             <Label htmlFor="zipCode">
               Code postal <span className="text-red-500"> *</span>
             </Label>
-            <div className="flex flex-col w-full">
+            <div className="flex w-full flex-col">
               <Input
                 type="number"
                 id="zipCode"
@@ -147,13 +147,13 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
                 })}
               />
               {formState.errors?.attendees?.[i]?.zipCode && (
-                <p className="text-sm text-red-800 whitespace-nowrap dark:text-red-300">
+                <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
                   {formState.errors?.attendees?.[i]?.zipCode?.message}
                 </p>
               )}
             </div>
           </div>
-          <div className="flex items-baseline w-full gap-1 mt-4">
+          <div className="mt-4 flex w-full items-baseline gap-1">
             <Label htmlFor="civility" className="my-4">
               Comment avez-vous entendu parler de cet événement ?<span className="text-red-500"> *</span>
             </Label>

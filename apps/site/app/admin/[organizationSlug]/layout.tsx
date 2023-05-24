@@ -45,6 +45,7 @@ export default async function AdminLayout({
               label: organization.name,
               value: organization.slug,
               pictureUrl: organization.logoUrl,
+              isCurrent: organization.slug === organizationSlug,
             }))}
           />
 

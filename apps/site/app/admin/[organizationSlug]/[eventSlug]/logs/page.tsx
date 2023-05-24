@@ -103,7 +103,7 @@ const LogsPage = async ({
         Logs de {eventLogsBySlug.name}
       </h1>
 
-      <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
+      <div className="mx-auto flex max-w-3xl items-baseline gap-2">
         <div className="flow-root">
           <ul role="list" className="-mb-8">
             {eventLogsBySlug?.logsList?.map((log, logId) => (

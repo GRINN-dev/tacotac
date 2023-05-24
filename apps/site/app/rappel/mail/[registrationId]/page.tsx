@@ -7,7 +7,7 @@ const UpdateAttendeeMailPage = async ({ params: { registrationId } }) => {
   });
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="mx-auto flex w-full max-w-3xl items-baseline gap-2">
+      <div className="mx-auto flex max-w-3xl items-baseline gap-2">
         <UpdateAttendeeMailForm {...attendees} />
       </div>
     </section>

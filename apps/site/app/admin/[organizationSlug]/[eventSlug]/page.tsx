@@ -22,7 +22,7 @@ const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
   return (
     <ScrollArea className="h-full">
       <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-        <div className="mx-auto  w-full max-w-3xl gap-2">
+        <div className="mx-auto  max-w-3xl gap-2">
           <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
             Tous les Participants
           </h2>
@@ -30,7 +30,7 @@ const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
             Inviter un participant
           </Link>
         </div>
-        <div className="mx-auto flex w-full max-w-3xl flex-row items-center justify-between gap-2">
+        <div className="mx-auto flex max-w-3xl flex-row items-center justify-between gap-2">
           <ModalStatus />
 
           <SendAllEmailConfirmDonation eventId={data?.eventBySlug?.id} />

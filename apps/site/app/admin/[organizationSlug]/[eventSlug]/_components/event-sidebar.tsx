@@ -1,12 +1,23 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { ClipboardCheck, Cog, Group, Import, Paintbrush, PictureInPicture, PlusSquare, QrCode } from "lucide-react";
+import {
+  ClipboardCheck,
+  Cog,
+  Group,
+  Import,
+  Menu,
+  Paintbrush,
+  PictureInPicture,
+  PlusSquare,
+  QrCode,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const EventsSidebar: FC<{
   organizationSlug: string;
@@ -14,6 +25,10 @@ export const EventsSidebar: FC<{
   eventId: string;
 }> = ({ organizationSlug, eventSlug, eventId }) => {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   const sections = [
     {
@@ -62,8 +77,8 @@ export const EventsSidebar: FC<{
       ],
     },
   ];
-  return (
-    <nav id="admin-pages" className="h-full pt-8 lg:pt-0">
+  const Nav = ({ className }: { className?: string }) => (
+    <nav id="" className={cn("h-full px-4 pt-8 lg:pt-0", className)}>
       <ul className="flex flex-col gap-8">
         {sections.map((section) => (
           <li key={section.name}>
@@ -93,5 +108,23 @@ export const EventsSidebar: FC<{
         ))}
       </ul>
     </nav>
+  );
+  return (
+    <>
+      <Nav className="hidden md:block" />
+      <Sheet
+        open={open}
+        onOpenChange={(open) => {
+          setOpen(open);
+        }}
+      >
+        <SheetTrigger className="md:hidden">
+          <Menu />
+        </SheetTrigger>
+        <SheetContent position="left" size="content">
+          <Nav />
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
