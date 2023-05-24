@@ -1,10 +1,10 @@
-import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
 import { siteConfig } from "@/config/site";
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function IndexPage() {
   return (
@@ -16,8 +16,8 @@ export default function IndexPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-        <Icons.logoWithName className="m-auto h-24 w-24" />
+      <ScrollArea className="container grid h-full w-full max-w-prose items-center gap-6 pt-6 pb-8 md:py-10">
+        <Icons.logoWithName className=" h-24 w-24" />
 
         <div className="flex max-w-[980px] flex-col items-start gap-2">
           <h1 className="font-zenon-bold text-text text-3xl leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
@@ -30,7 +30,7 @@ export default function IndexPage() {
             leurs panneaux en un rien de temps.
           </p>
         </div>
-        <div className="flex gap-4">
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <Link href={"/admin"} className={buttonVariants({ size: "lg" })}>
             dashboard
           </Link>
@@ -46,7 +46,7 @@ export default function IndexPage() {
             scanner
           </Link>
         </div>
-      </section>
+      </ScrollArea>
     </>
   );
 }

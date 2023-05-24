@@ -9,6 +9,9 @@ query GetAllEvents {
       eventBranding {
         ...EventBrandingFragment
       }
+      registrations {
+        totalCount
+      }
     }
     pageInfo {
       hasNextPage

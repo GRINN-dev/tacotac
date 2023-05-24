@@ -153,7 +153,7 @@ export const TeamSwitcher = ({ className, teams }: TeamSwitcherProps) => {
                     }}
                   >
                     <PlusCircle className="mr-2 h-5 w-5" />
-                    Create Team
+                    Créer une équipe
                   </CommandItem>
                 </DialogTrigger>
               </CommandGroup>
@@ -163,8 +163,10 @@ export const TeamSwitcher = ({ className, teams }: TeamSwitcherProps) => {
       </Popover>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create team</DialogTitle>
-          <DialogDescription>Add a new team to manage products and customers.</DialogDescription>
+          <DialogTitle>Créer une équipe</DialogTitle>
+          <DialogDescription>
+            Ajouter une nouvelle équipe afin qu&apos;elle prenne en charge la gestion de ses propres évènements.
+          </DialogDescription>
         </DialogHeader>
         <div>
           <div className="space-y-4 py-2 pb-4">
@@ -194,9 +196,9 @@ export const TeamSwitcher = ({ className, teams }: TeamSwitcherProps) => {
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => setShowNewTeamDialog(false)}>
-            Cancel
+            Annuler
           </Button>
-          <Button type="submit">Continue</Button>
+          <Button type="submit">Continuer</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

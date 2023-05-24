@@ -17,15 +17,6 @@ export function MainNav({ className, organizationSlug, ...props }: NavProps) {
         href={organizationSlug ? `/admin/${organizationSlug}` : "/admin/all"}
         className={cn(
           "hover:text-primary text-muted-foreground text-sm font-medium transition-colors",
-          organizationSlug && pathname.split("/").length === 3 && "text-primary"
-        )}
-      >
-        Stats
-      </Link>
-      <Link
-        href={organizationSlug ? `/admin/${organizationSlug}/evenements` : "/admin/all/evenements"}
-        className={cn(
-          "hover:text-primary text-muted-foreground text-sm font-medium transition-colors",
           pathname.includes("evenements") && "text-primary"
         )}
       >

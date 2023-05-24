@@ -1,13 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { ReactNode } from "react";
 import Link from "next/link";
 
 import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
-import { AdminPagesSidebar, MobileAdminDrawer, OrganizationsSidebar } from "@/components/navigation/admin-navigation";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui";
 import { Card } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { MainNav } from "../_components/main-nav";
 import { Search } from "../_components/search";
 import { TeamSwitcher } from "../_components/team-switcher";
