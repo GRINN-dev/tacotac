@@ -9,9 +9,9 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid h-full grid-cols-[300px_1fr]">
+    <div className="flex h-full w-full">
       <AllEventsSidebar organizationSlug={organizationSlug} />
-      <ScrollArea className="bg-background text-foreground h-full rounded-tl-3xl">{children}</ScrollArea>
+      <ScrollArea className="bg-background text-foreground h-full grow rounded-tl-3xl">{children}</ScrollArea>
     </div>
   );
 }

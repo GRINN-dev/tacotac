@@ -38,9 +38,10 @@ interface TeamSwitcherProps extends PopoverTriggerProps {
     value: string;
     pictureUrl?: string;
   }[];
+  organizationSlug?: string;
 }
 
-export const TeamSwitcher = ({ className, teams }: TeamSwitcherProps) => {
+export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitcherProps) => {
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
 
@@ -62,7 +63,10 @@ export const TeamSwitcher = ({ className, teams }: TeamSwitcherProps) => {
 
   type Team = (typeof groups)[number]["teams"][number];
 
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>(groups[0].teams[0]);
+  const [selectedTeam, setSelectedTeam] = React.useState<Team> /* groups[0].teams[0] */(
+    // find the team that corresponds to the current organizationSlug
+    groups.flatMap((group) => group.teams).find((team) => team.value === organizationSlug) || groups[0].teams[0]
+  );
   const router = useRouter();
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>

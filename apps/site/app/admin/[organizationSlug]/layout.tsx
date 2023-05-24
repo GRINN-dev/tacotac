@@ -50,7 +50,7 @@ export default async function AdminLayout({
 
           <MainNav className="mx-6" organizationSlug={organizationSlug} />
           <div className="ml-auto flex items-center space-x-4">
-            <Search />
+            {/* <Search /> */}
             <UserNav currentUser={currentUser} />
           </div>
         </div>
