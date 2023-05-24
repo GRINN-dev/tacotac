@@ -1,8 +1,6 @@
 import { Send } from "lucide-react";
 
-
-
-import { eventStatusArray } from "@/components/data/status";
+import { attendeeStatusArray } from "@/components/data/status";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,20 +12,21 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-
 export const ModalStatus = () => {
   return (
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline" className="shadow hover:shadow-lg">Liste status</Button>
+          <Button variant="outline" className="shadow hover:shadow-lg">
+            Liste status
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogDescription>
               <div className="m-auto flex flex-col items-center justify-center rounded-lg border p-4">
                 <ul className="list-disc">
-                  {eventStatusArray.map((value, index) => (
+                  {attendeeStatusArray.map((value, index) => (
                     <li key={value.enum + index} className="ml-4 text-sm">
                       {value.enum} - {value.name}
                     </li>
