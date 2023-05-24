@@ -23,8 +23,8 @@ type Attendee {
   registration: Registration
   registrationId: UUID
   signCode: String
-  status: EventStatus!
-  ticketNumber: String
+  status: AttendeeStatus!
+  ticketNumber: String!
   updatedAt: Datetime!
   zipCode: String
 }
@@ -52,8 +52,20 @@ input AttendeeCondition {
   """Checks for equality with the object’s `isInscriptor` field."""
   isInscriptor: Boolean
 
+  """Checks for equality with the object’s `isNewsEventEmail` field."""
+  isNewsEventEmail: Boolean
+
+  """Checks for equality with the object’s `isNewsFondationEmail` field."""
+  isNewsFondationEmail: Boolean
+
+  """Checks for equality with the object’s `isVip` field."""
+  isVip: Boolean
+
   """Checks for equality with the object’s `lastname` field."""
   lastname: String
+
+  """Checks for equality with the object’s `panelNumber` field."""
+  panelNumber: Int
 
   """Checks for equality with the object’s `phoneNumber` field."""
   phoneNumber: String
@@ -65,7 +77,10 @@ input AttendeeCondition {
   signCode: String
 
   """Checks for equality with the object’s `status` field."""
-  status: EventStatus
+  status: AttendeeStatus
+
+  """Checks for equality with the object’s `ticketNumber` field."""
+  ticketNumber: String
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
@@ -99,6 +114,15 @@ input AttendeeFilter {
   """Filter by the object’s `isInscriptor` field."""
   isInscriptor: BooleanFilter
 
+  """Filter by the object’s `isNewsEventEmail` field."""
+  isNewsEventEmail: BooleanFilter
+
+  """Filter by the object’s `isNewsFondationEmail` field."""
+  isNewsFondationEmail: BooleanFilter
+
+  """Filter by the object’s `isVip` field."""
+  isVip: BooleanFilter
+
   """Filter by the object’s `lastname` field."""
   lastname: StringFilter
 
@@ -107,6 +131,9 @@ input AttendeeFilter {
 
   """Checks for any expressions in this list."""
   or: [AttendeeFilter!]
+
+  """Filter by the object’s `panelNumber` field."""
+  panelNumber: IntFilter
 
   """Filter by the object’s `phoneNumber` field."""
   phoneNumber: StringFilter
@@ -118,7 +145,10 @@ input AttendeeFilter {
   signCode: StringFilter
 
   """Filter by the object’s `status` field."""
-  status: EventStatusFilter
+  status: AttendeeStatusFilter
+
+  """Filter by the object’s `ticketNumber` field."""
+  ticketNumber: StringFilter
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
@@ -156,7 +186,7 @@ input AttendeeInput {
   qrCodeUrl: String
   registrationId: UUID
   signCode: String
-  status: EventStatus
+  status: AttendeeStatus
   ticketNumber: String
   updatedAt: Datetime
   zipCode: String
@@ -186,10 +216,69 @@ input AttendeePatch {
   qrCodeUrl: String
   registrationId: UUID
   signCode: String
-  status: EventStatus
+  status: AttendeeStatus
   ticketNumber: String
   updatedAt: Datetime
   zipCode: String
+}
+
+enum AttendeeStatus {
+  """Inscription annulée"""
+  CANCELLED
+
+  """Présence confirmée à l'évenement"""
+  CONFIRMED
+
+  """En attente"""
+  IDLE
+
+  """Panneau scanné"""
+  PANEL_SCAN
+
+  """Ticket scanné"""
+  TICKET_SCAN
+}
+
+"""
+A filter to be used against AttendeeStatus fields. All fields are combined with a logical ‘and.’
+"""
+input AttendeeStatusFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: AttendeeStatus
+
+  """Equal to the specified value."""
+  equalTo: AttendeeStatus
+
+  """Greater than the specified value."""
+  greaterThan: AttendeeStatus
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: AttendeeStatus
+
+  """Included in the specified list."""
+  in: [AttendeeStatus!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: AttendeeStatus
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: AttendeeStatus
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: AttendeeStatus
+
+  """Not equal to the specified value."""
+  notEqualTo: AttendeeStatus
+
+  """Not included in the specified list."""
+  notIn: [AttendeeStatus!]
 }
 
 """A connection to a list of `Attendee` values."""
@@ -232,9 +321,17 @@ enum AttendeesOrderBy {
   ID_DESC
   IS_INSCRIPTOR_ASC
   IS_INSCRIPTOR_DESC
+  IS_NEWS_EVENT_EMAIL_ASC
+  IS_NEWS_EVENT_EMAIL_DESC
+  IS_NEWS_FONDATION_EMAIL_ASC
+  IS_NEWS_FONDATION_EMAIL_DESC
+  IS_VIP_ASC
+  IS_VIP_DESC
   LASTNAME_ASC
   LASTNAME_DESC
   NATURAL
+  PANEL_NUMBER_ASC
+  PANEL_NUMBER_DESC
   PHONE_NUMBER_ASC
   PHONE_NUMBER_DESC
   PRIMARY_KEY_ASC
@@ -245,6 +342,8 @@ enum AttendeesOrderBy {
   SIGN_CODE_DESC
   STATUS_ASC
   STATUS_DESC
+  TICKET_NUMBER_ASC
+  TICKET_NUMBER_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
   ZIP_CODE_ASC
@@ -1210,8 +1309,8 @@ type Event {
     orderBy: [EventBrandingsOrderBy!] = [PRIMARY_KEY_ASC]
   ): EventBrandingsConnection! @deprecated(reason: "Please use eventBranding instead")
   id: UUID!
+  isCancelled: Boolean!
   isDraft: Boolean!
-  isVip: Boolean
   lat: Float
 
   """Reads and enables pagination through a set of `Log`."""
@@ -1312,6 +1411,8 @@ type Event {
   ): RegistrationsConnection!
   slug: String
   startsAt: Datetime
+  state: String
+  status: EventStatus @deprecated(reason: "use state instead")
   totalConfirmedRegistrations: Int
   totalRegistrations: Int
   updatedAt: Datetime!
@@ -1490,11 +1591,11 @@ input EventCondition {
   """Checks for equality with the object’s `id` field."""
   id: UUID
 
+  """Checks for equality with the object’s `isCancelled` field."""
+  isCancelled: Boolean
+
   """Checks for equality with the object’s `isDraft` field."""
   isDraft: Boolean
-
-  """Checks for equality with the object’s `isVip` field."""
-  isVip: Boolean
 
   """Checks for equality with the object’s `name` field."""
   name: String
@@ -1540,11 +1641,11 @@ input EventFilter {
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
+  """Filter by the object’s `isCancelled` field."""
+  isCancelled: BooleanFilter
+
   """Filter by the object’s `isDraft` field."""
   isDraft: BooleanFilter
-
-  """Filter by the object’s `isVip` field."""
-  isVip: BooleanFilter
 
   """Filter by the object’s `name` field."""
   name: StringFilter
@@ -1563,6 +1664,9 @@ input EventFilter {
 
   """Filter by the object’s `startsAt` field."""
   startsAt: DatetimeFilter
+
+  """Filter by the object’s `state` field."""
+  state: StringFilter
 
   """Filter by the object’s `totalConfirmedRegistrations` field."""
   totalConfirmedRegistrations: IntFilter
@@ -1588,8 +1692,8 @@ input EventInput {
   details: String
   endsAt: Datetime
   id: UUID
+  isCancelled: Boolean
   isDraft: Boolean
-  isVip: Boolean
   lat: Float
   lon: Float
   name: String!
@@ -1597,6 +1701,7 @@ input EventInput {
   placeName: String
   slug: String
   startsAt: Datetime
+  status: EventStatus
   updatedAt: Datetime
   webhooks: [String]
   zipCode: String
@@ -1618,8 +1723,8 @@ input EventPatch {
   details: String
   endsAt: Datetime
   id: UUID
+  isCancelled: Boolean
   isDraft: Boolean
-  isVip: Boolean
   lat: Float
   lon: Float
   name: String
@@ -1627,68 +1732,27 @@ input EventPatch {
   placeName: String
   slug: String
   startsAt: Datetime
+  status: EventStatus
   updatedAt: Datetime
   webhooks: [String]
   zipCode: String
 }
 
 enum EventStatus {
-  """Inscription annulée"""
+  """Annulé"""
   CANCELLED
 
-  """Présence confirmée à l'évenement"""
-  CONFIRMED
+  """Brouillon"""
+  DRAFT
 
-  """En attente"""
-  IDLE
+  """Terminé"""
+  FINISHED
 
-  """Panneau scanné"""
-  PANEL_SCAN
+  """En cours"""
+  ONGOING
 
-  """Ticket scanné"""
-  TICKET_SCAN
-}
-
-"""
-A filter to be used against EventStatus fields. All fields are combined with a logical ‘and.’
-"""
-input EventStatusFilter {
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: EventStatus
-
-  """Equal to the specified value."""
-  equalTo: EventStatus
-
-  """Greater than the specified value."""
-  greaterThan: EventStatus
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: EventStatus
-
-  """Included in the specified list."""
-  in: [EventStatus!]
-
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Less than the specified value."""
-  lessThan: EventStatus
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: EventStatus
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: EventStatus
-
-  """Not equal to the specified value."""
-  notEqualTo: EventStatus
-
-  """Not included in the specified list."""
-  notIn: [EventStatus!]
+  """A venir"""
+  PENDING
 }
 
 """A connection to a list of `Event` values."""
@@ -1733,10 +1797,10 @@ enum EventsOrderBy {
   ENDS_AT_DESC
   ID_ASC
   ID_DESC
+  IS_CANCELLED_ASC
+  IS_CANCELLED_DESC
   IS_DRAFT_ASC
   IS_DRAFT_DESC
-  IS_VIP_ASC
-  IS_VIP_DESC
   NAME_ASC
   NAME_DESC
   NATURAL
@@ -2861,6 +2925,7 @@ type PageInfo {
 """The root query type which gives access points into the data universe."""
 type Query {
   attendee(id: UUID!): Attendee
+  attendeeByTicketNumber(ticketNumber: String!): Attendee
 
   """Reads and enables pagination through a set of `Attendee`."""
   attendees(

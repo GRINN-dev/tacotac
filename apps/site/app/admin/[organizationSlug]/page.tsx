@@ -16,7 +16,7 @@ export default async function Page({ params: { organizationSlug } }: { params: {
   const { currentUser } = await serverSdk().GetCurrentUser();
 
   return (
-    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+    <h1 className="bg-background text-foreground h-full scroll-m-20 rounded-tl-3xl text-4xl font-extrabold tracking-tight lg:text-5xl">
       Dashboard Administrateur
       {organizationBySlug.name}
     </h1>

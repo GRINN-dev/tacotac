@@ -28,7 +28,7 @@ const EventsPage = async ({
   return (
     <div className="grid h-full grid-cols-[300px_1fr]">
       <AllEventsSidebar organizationSlug={organizationSlug} />
-      <ScrollArea className="h-full">
+      <ScrollArea className="bg-background text-foreground h-full rounded-tl-3xl">
         <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
           <div className="mx-auto  w-full max-w-3xl gap-2">
             <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">

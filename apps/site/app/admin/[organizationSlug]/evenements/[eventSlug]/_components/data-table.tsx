@@ -8,8 +8,25 @@ import {
 } from "@/../../@tacotacIO/codegen/dist";
 
 import { DataTable } from "@/components/data-table/data-table";
-import { columns, filters } from "../../columns";
+import { columns, filters } from "../columns";
 
-export function MyDataTable({ data }: { data: GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"] }) {
-  return <DataTable columns={columns} data={data} filters={filters} />;
+export function MyDataTable({
+  data,
+  organizationSlug,
+  eventSlug,
+}: {
+  data: GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"];
+  organizationSlug: string;
+  eventSlug: string;
+}) {
+  return (
+    <DataTable
+      columns={columns({
+        organizationSlug,
+        eventSlug,
+      })}
+      data={data}
+      filters={filters}
+    />
+  );
 }

@@ -21,4 +21,6 @@ fragment MyEvent on Event {
   totalRegistrations
   isDraft
   totalConfirmedRegistrations
+  isCancelled
+  state
 }

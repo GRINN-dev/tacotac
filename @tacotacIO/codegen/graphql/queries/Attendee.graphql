@@ -22,3 +22,13 @@ query GetAttendeesWithoutMailByRegistrationId($registrationId: UUID!) {
     }
   }
 }
+
+query GetAttendeeByTicketNumber($ticketNumber: String!) {
+  attendeeByTicketNumber(ticketNumber: $ticketNumber) {
+    ...MyAttendee
+    registration {
+      id
+      eventId
+    }
+  }
+}

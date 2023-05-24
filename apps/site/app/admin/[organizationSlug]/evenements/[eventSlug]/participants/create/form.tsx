@@ -2,11 +2,14 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CivilityStatus, EventStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import {
+  AttendeeStatus,
+  CivilityStatus,
+  GetEventBySlugQuery,
+  RegisterAttendeesInput,
+} from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -14,7 +17,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
 
 interface iCreateAttendeeForm extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -68,11 +70,11 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value={EventStatus.Idle}>En attente</SelectItem>
-                    <SelectItem value={EventStatus.Confirmed}>Confirmé</SelectItem>
-                    <SelectItem value={EventStatus.Cancelled}>Annulé</SelectItem>
-                    <SelectItem value={EventStatus.TicketScan}>Billet scanné</SelectItem>
-                    <SelectItem value={EventStatus.PanelScan}>Panneau scanné</SelectItem>
+                    <SelectItem value={AttendeeStatus.Idle}>En attente</SelectItem>
+                    <SelectItem value={AttendeeStatus.Confirmed}>Confirmé</SelectItem>
+                    <SelectItem value={AttendeeStatus.Cancelled}>Annulé</SelectItem>
+                    <SelectItem value={AttendeeStatus.TicketScan}>Billet scanné</SelectItem>
+                    <SelectItem value={AttendeeStatus.PanelScan}>Panneau scanné</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

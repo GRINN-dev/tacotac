@@ -70,3 +70,9 @@ const EventSlug = async ({ params: { eventId } }) => {
   );
 };
 export default EventSlug;
+
+/*
+if (/Android|iPhone/i.test(navigator.userAgent)) {
+  // This checks if the current device is in fact mobile
+}
+*/

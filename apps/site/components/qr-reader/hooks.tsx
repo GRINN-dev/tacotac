@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { BrowserQRCodeReader, IScannerControls } from "@zxing/browser";
 
 import { UseQrReaderHook } from "./types";
@@ -12,12 +12,14 @@ export const useQrReader: UseQrReaderHook = ({
   videoId,
 }) => {
   const controlsRef: MutableRefObject<IScannerControls> = useRef(null);
-
+  const codeReader = useMemo(
+    () =>
+      new BrowserQRCodeReader(null, {
+        delayBetweenScanAttempts,
+      }),
+    [delayBetweenScanAttempts]
+  );
   useEffect(() => {
-    const codeReader = new BrowserQRCodeReader(null, {
-      delayBetweenScanAttempts,
-    });
-
     if (!isMediaDevicesSupported() && isValidType(onResult, "onResult", "function")) {
       const message =
         'MediaDevices API has no support for your browser. You can fix this by running "npm i webrtc-adapter"';
@@ -43,5 +45,5 @@ export const useQrReader: UseQrReaderHook = ({
     return () => {
       controlsRef.current?.stop();
     };
-  }, [delayBetweenScanAttempts, onResult, video, videoId]);
+  }, [codeReader, onResult, video, videoId]);
 };

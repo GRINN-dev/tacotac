@@ -32,7 +32,7 @@ type EventInput = {
   details?: string;
   endsAt?: Date;
   isDraft?: boolean;
-  isVip?: boolean;
+  isCancelled?: boolean;
   lat?: number;
   lon?: number;
   name: string;
@@ -56,7 +56,7 @@ type AttendeeInput = {
   isInscriptor?: boolean;
   isNewsEventEmail?: boolean;
   isNewsFondationEmail?: boolean;
-  isVip?: boolean;
+  is_vip?: boolean;
   lastname: string;
   notes?: string;
   panelNumber?: number;
@@ -103,7 +103,7 @@ const createEvent: () => Promise<string> = async () => {
             details,
             ends_at,
             is_draft,
-            is_vip,
+            is_cancelled,
             lat,
             lon,
             name,
@@ -247,7 +247,7 @@ const main = async () => {
   console.log("Creating events...");
   // create 10 events. For each event create between 10 and 2000 registrations and for each registration create between 1 and 4 attendees. The first attendee is the inscriptor.
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 3; i++) {
     const eventId = await createEvent();
     console.log(`Event ${i + 1} created with id ${eventId}`);
     const numberOfRegistrations = faker.datatype.number({ min: 10, max: 2000 });

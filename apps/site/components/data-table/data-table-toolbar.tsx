@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
 
@@ -11,7 +12,7 @@ import { DataTableViewOptions } from "./data-table-view-options";
 
 export type Filter<TData> = {
   displayName: string;
-  columnId: keyof TData;
+  columnId: keyof TData | "global";
 } & (
   | {
       type: "text";
@@ -42,7 +43,7 @@ type DataTableToolbarProps<TData> = {
 
 export function DataTableToolbar<TData>({ table, filters }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getPreFilteredRowModel().rows.length > table.getFilteredRowModel().rows.length;
-
+  const [globalSearch, setGlobalSearch] = useState<string>("");
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -66,10 +67,17 @@ export function DataTableToolbar<TData>({ table, filters }: DataTableToolbarProp
                 <Input
                   key={filter.columnId as string}
                   placeholder={`Filter ${filter.displayName}...`}
-                  value={(table.getColumn(filter.columnId as string)?.getFilterValue() as string) ?? ""}
+                  value={
+                    (filter.columnId === "global"
+                      ? globalSearch
+                      : (table.getColumn(filter.columnId as string)?.getFilterValue() as string)) ?? ""
+                  }
                   onChange={(event) => {
-                    table.getColumn(filter.columnId as string)?.setFilterValue(event.target.value);
+                    filter.columnId === "global"
+                      ? table.setGlobalFilter(event.target.value)
+                      : table.getColumn(filter.columnId as string)?.setFilterValue(event.target.value);
                     filter.onChange?.(event.target.value);
+                    setGlobalSearch(event.target.value);
                   }}
                   className="h-8 w-[150px] lg:w-[250px]"
                 />

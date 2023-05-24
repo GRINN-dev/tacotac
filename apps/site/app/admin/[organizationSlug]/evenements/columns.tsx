@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { GetAllEventsQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { EventStatus, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, RefreshCcw } from "lucide-react";
 
@@ -86,6 +86,42 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
     },
   },
   {
+    accessorKey: "state",
+    header: "Statut",
+    cell: ({ row }) => {
+      const state = String(row.getValue("state")) as EventStatus;
+      return (
+        <Badge
+          className="text-xs"
+          variant={
+            state === EventStatus.Cancelled
+              ? "desctructive"
+              : state === EventStatus.Draft
+              ? "secondary"
+              : state === EventStatus.Ongoing
+              ? "default"
+              : state === EventStatus.Finished
+              ? "outline"
+              : "default"
+          }
+        >
+          {state === EventStatus.Cancelled
+            ? "Annulé"
+            : state === EventStatus.Draft
+            ? "Brouillon"
+            : state === EventStatus.Ongoing
+            ? "En cours"
+            : state === EventStatus.Finished
+            ? "Terminé"
+            : "Publié"}
+        </Badge>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  /* {
     accessorKey: "isDraft",
     header: "Brouillon",
     cell: ({ row }) => {
@@ -95,7 +131,7 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
         </Badge>
       );
     },
-  },
+  }, */
   {
     id: "actions",
     header: () => {
@@ -173,8 +209,15 @@ export const filters: Filter<GetOrganizationBySlugQuery["organizationBySlug"]["e
     displayName: "Début",
   },
   {
-    columnId: "isDraft",
-    type: "boolean",
-    displayName: "Brouillon",
+    columnId: "state",
+    type: "facet",
+    displayName: "Statut",
+    options: [
+      { value: String(EventStatus.Draft), label: "Brouillon" },
+      { value: String(EventStatus.Pending), label: "Publié" },
+      { value: String(EventStatus.Ongoing), label: "En cours" },
+      { value: String(EventStatus.Finished), label: "Terminé" },
+      { value: String(EventStatus.Cancelled), label: "Annulé" },
+    ],
   },
 ];

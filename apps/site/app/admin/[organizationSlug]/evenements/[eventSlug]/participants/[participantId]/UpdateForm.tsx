@@ -2,7 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { EventStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@/../../@tacotacIO/codegen/dist";
+import { AttendeeStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { Trash } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
@@ -96,9 +96,9 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
                 <SelectContent className="w-[180px]">
                   <SelectGroup>
                     <SelectLabel>Status</SelectLabel>
-                    <SelectItem value={EventStatus.Idle}>En attente</SelectItem>
-                    <SelectItem value={EventStatus.Cancelled}>Annulé</SelectItem>
-                    <SelectItem value={EventStatus.Confirmed}>Confirmé</SelectItem>
+                    <SelectItem value={AttendeeStatus.Idle}>En attente</SelectItem>
+                    <SelectItem value={AttendeeStatus.Cancelled}>Annulé</SelectItem>
+                    <SelectItem value={AttendeeStatus.Confirmed}>Confirmé</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

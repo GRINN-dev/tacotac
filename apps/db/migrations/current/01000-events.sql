@@ -1,4 +1,19 @@
 
+drop table if exists publ.event_status cascade;
+create table publ.event_status (
+  type text primary key,
+  description text
+);
+grant select on table publ.event_status to :DATABASE_AUTHENTICATOR;
+comment on table publ.event_status is E'@enum';
+
+insert into publ.event_status values
+  ('PENDING', 'A venir'),
+  ('DRAFT', 'Brouillon'),
+  ('ONGOING', 'En cours'),
+  ('FINISHED', 'Terminé'),
+  ('CANCELLED', 'Annulé');
+
 /*
     TABLE: publ.events
     DESCRIPTION:  A event is a group of epics that are related to each other. The event as a whole is a goal that the organization is trying to achieve.
@@ -22,8 +37,9 @@ create table publ.events (
     ends_at timestamptz,
     booking_starts_at timestamptz,
     booking_ends_at timestamptz,
+    status text references publ.event_status on delete restrict,
     capacity int,
-    is_vip boolean,
+    is_cancelled boolean not null default false,
     details text,
     webhooks text[],
     created_at timestamptz not null default now(),
@@ -32,6 +48,9 @@ create table publ.events (
     constraint events_organization_id_name_key unique (organization_id, name),
     constraint events_organization_id_slug_key unique (organization_id, slug)
 );
+
+-- comments
+  comment on column publ.events.status is E'@deprecated use state instead';
 
 -- indexes
     create index on publ.events(organization_id);
@@ -45,14 +64,14 @@ create table publ.events (
     create index on publ.events(booking_starts_at);
     create index on publ.events(booking_ends_at);
     create index on publ.events(capacity);
-    create index on publ.events(is_vip);
+    create index on publ.events(is_cancelled);
     create index on publ.events(is_draft);
 
 
 -- RBAC
     grant select on publ.events to :DATABASE_VISITOR;
-    grant insert(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity, webhooks) on publ.events to :DATABASE_VISITOR;
-    grant update(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity,webhooks) on publ.events to :DATABASE_VISITOR;
+    grant insert(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, is_cancelled, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity, webhooks) on publ.events to :DATABASE_VISITOR;
+    grant update(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, is_cancelled, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity,webhooks) on publ.events to :DATABASE_VISITOR;
     grant delete on publ.events to :DATABASE_VISITOR;
 -- triggers
     create trigger _100_timestamps
@@ -196,3 +215,16 @@ comment on function priv.event_branding__insert_with_event() is E'Ensures that e
 /*
   END TABLE: publ.event_brandings
 */
+
+
+drop function if exists publ.events_state cascade;
+create function publ.events_state(any_event publ.events) returns text as $$
+  select  case
+    when any_event.is_cancelled then 'CANCELLED'
+    when any_event.is_draft then 'DRAFT'
+    when any_event.starts_at > now() then 'PENDING'
+    when any_event.ends_at < now() then 'FINISHED'
+    else 'ONGOING'
+  end;
+$$ language sql stable;
+grant execute on function publ.events_state to :DATABASE_VISITOR;

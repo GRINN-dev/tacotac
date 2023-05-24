@@ -22,22 +22,6 @@ export type QrReaderProps = {
    * Property that represents the ID of the video element
    */
   videoId?: string;
-  /**
-   * Property that represents an optional className to modify styles
-   */
-  className?: string;
-  /**
-   * Property that represents a style for the container
-   */
-  containerStyle?: any;
-  /**
-   * Property that represents a style for the video container
-   */
-  videoContainerStyle?: any;
-  /**
-   * Property that represents a style for the video
-   */
-  videoStyle?: any;
 };
 
 export type OnResultFunction = (

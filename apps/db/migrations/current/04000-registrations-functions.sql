@@ -29,7 +29,7 @@ begin
   -- contrairement à certains autres langages de programmation où elle commence à 0.
 
     for v_iter in 1..array_length(attendees, 1) loop
-        insert into publ.attendees (civility, hear_about, zip_code, is_fundraising_generosity_ok, status, registration_id, firstname, lastname, email, phone_number, is_inscriptor, ticket_number, sign_code)
+        insert into publ.attendees (civility, hear_about, zip_code, is_fundraising_generosity_ok, status, registration_id, firstname, lastname, email, phone_number, is_inscriptor, sign_code)
         values (attendees[v_iter].civility, 
         attendees[v_iter].hear_about,
         attendees[v_iter].zip_code,
@@ -41,7 +41,6 @@ begin
         attendees[v_iter].email, 
         attendees[v_iter].phone_number, 
         v_iter = 1,
-        'TICKET_' || md5(random()::text || clock_timestamp()::text),
         substring(uuid_generate_v4()::text, 1, 6));
 
         perform graphile_worker.add_job('sendWebHook', json_build_object('attendeeId', attendees[v_iter].id, 'state','RESA_BILLET'));
