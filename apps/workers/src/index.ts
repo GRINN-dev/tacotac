@@ -4,6 +4,7 @@ import {
   sendEmail,
   sendWebHook,
   sendMissingEmailPdf,
+  organizationSendInvite,
 } from "./tasks";
 
 const main = async () => {
@@ -12,7 +13,13 @@ const main = async () => {
     concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
-    taskList: { qrCodeGenPdf, sendEmail, sendWebHook, sendMissingEmailPdf },
+    taskList: {
+      qrCodeGenPdf,
+      sendEmail,
+      sendWebHook,
+      sendMissingEmailPdf,
+      organizationSendInvite,
+    },
   });
   await runner.promise;
 };

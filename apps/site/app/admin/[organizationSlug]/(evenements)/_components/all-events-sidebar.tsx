@@ -23,12 +23,12 @@ export const AllEventsSidebar: FC<{
       name: "",
       pages: [
         {
-          name: "Calendrier",
+          name: "Vue calendrier",
           icon: Calendar,
           href: `/admin/${organizationSlug}/calendrier`,
         },
         {
-          name: "Tableau",
+          name: "Vue tableau",
           icon: Table,
           href: `/admin/${organizationSlug}`,
         },

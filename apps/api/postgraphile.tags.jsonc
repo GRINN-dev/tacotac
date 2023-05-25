@@ -14,15 +14,7 @@
       },
       "publ.organizations": {
         "description": "A company, organization, or institution.",
-        "tags": { "simpleCollections": "both" },
-        "attribute": {
-          "logo_url": {
-            "description": "The URL of the organization's logo."
-            /* "tags": {
-              "deprecated": true
-            } */
-          }
-        }
+        "tags": { "simpleCollections": "both", "omit": "create" }
       },
       "publ.attendees": {
         "description": "Event from organizations",

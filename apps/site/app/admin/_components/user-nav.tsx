@@ -1,4 +1,7 @@
+"use client";
+
 import { FC } from "react";
+import { useRouter } from "next/navigation";
 import { GetCurrentUserQuery } from "@/../../@tacotacIO/codegen/dist";
 import { CreditCard, LogOut, PlusCircle, Settings, User } from "lucide-react";
 
@@ -16,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export const UserNav: FC<{ currentUser: GetCurrentUserQuery["currentUser"] }> = ({ currentUser }) => {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,21 +35,21 @@ export const UserNav: FC<{ currentUser: GetCurrentUserQuery["currentUser"] }> = 
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">shadcn</p>
+            <p className="text-sm font-medium leading-none">{currentUser.firstname}</p>
             <p className="text-muted-foreground text-xs leading-none">{currentUser.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => router.push("/profile")}>
             <User className="mr-2 h-4 w-4" />
             <span>Profil</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <PlusCircle className="mr-2 h-4 w-4" />
             <span>Nouvelle organisation</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

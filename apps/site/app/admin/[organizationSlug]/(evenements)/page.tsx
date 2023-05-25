@@ -28,12 +28,9 @@ const EventsPage = async ({ params: { organizationSlug = "all" } }) => {
         </Link>
       </div>
       {events?.length > 0 ? (
-        <ScrollArea className="mt-8 ">
-          <div className="px-8">
-            <MyDataTable data={events} />
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        <div className="mt-8 px-8">
+          <MyDataTable data={events} />
+        </div>
       ) : (
         <div className="flex flex-col items-start gap-4">
           <p>

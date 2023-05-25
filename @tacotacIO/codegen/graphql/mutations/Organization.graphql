@@ -2,6 +2,7 @@ mutation CreateOrganization($input: CreateOrganizationInput!) {
   createOrganization(input: $input) {
     organization {
       id
+      slug
     }
   }
 }
@@ -11,5 +12,25 @@ mutation UpdateOrganization($input: UpdateOrganizationInput!) {
     organization {
       id
     }
+  }
+}
+
+mutation InviteUserToOrganization($input: InviteToOrganizationInput!) {
+  inviteToOrganization(input: $input) {
+    clientMutationId
+  }
+}
+
+mutation RemoveUserFromOrganization($input: RemoveFromOrganizationInput!) {
+  removeFromOrganization(input: $input) {
+    clientMutationId
+  }
+}
+
+mutation AcceptOrganizationInvitation(
+  $input: AcceptInvitationToOrganizationInput!
+) {
+  acceptInvitationToOrganization(input: $input) {
+    clientMutationId
   }
 }

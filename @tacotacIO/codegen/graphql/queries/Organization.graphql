@@ -42,6 +42,16 @@ query GetOrganizationById($id: UUID!) {
         ...MyEvent
       }
     }
+    organizationMemberships {
+      nodes {
+        id
+        role
+        createdAt
+        user {
+          ...MyUser
+        }
+      }
+    }
   }
 }
 
@@ -57,6 +67,16 @@ query GetOrganizationBySlug(
 ) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
+    organizationMemberships {
+      nodes {
+        id
+        role
+        user {
+          ...MyUser
+        }
+        createdAt
+      }
+    }
     events(
       filter: $filter
       first: $first

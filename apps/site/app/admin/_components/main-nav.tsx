@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 interface NavProps extends React.HTMLAttributes<HTMLElement> {
   organizationSlug?: string;
 }
-export function MainNav({ className, organizationSlug, ...props }: NavProps) {
+export function MainNav({ className, organizationSlug = "all", ...props }: NavProps) {
   const pathname = usePathname();
 
   return (
@@ -18,7 +18,7 @@ export function MainNav({ className, organizationSlug, ...props }: NavProps) {
         href={organizationSlug ? `/admin/${organizationSlug}` : "/admin/all"}
         className={cn(
           "hover:text-primary text-muted-foreground text-sm font-medium transition-colors",
-          pathname.includes("evenements") && "text-primary"
+          pathname === `/admin/${organizationSlug}` && "text-primary"
         )}
       >
         <span className="hidden sm:inline">Évènements</span>
@@ -26,18 +26,22 @@ export function MainNav({ className, organizationSlug, ...props }: NavProps) {
           <Calendar />{" "}
         </span>
       </Link>
-      <Link
-        href={organizationSlug ? `/admin/${organizationSlug}/infos` : "/admin/all/parametres"}
-        className={cn(
-          "hover:text-primary text-muted-foreground text-sm font-medium transition-colors",
-          pathname.includes("parametres") && "text-primary"
-        )}
-      >
-        <span className="hidden sm:inline">Paramètres</span>
-        <span className="sm:hidden">
-          <Cog />{" "}
-        </span>
-      </Link>
+      {organizationSlug !== "all" ? (
+        <Link
+          href={`/admin/${organizationSlug}/infos`}
+          className={cn(
+            "hover:text-primary text-muted-foreground text-sm font-medium transition-colors",
+            pathname.startsWith(`/admin/${organizationSlug}/infos`) && "text-primary"
+          )}
+        >
+          <span className="hidden sm:inline">Paramètres</span>
+          <span className="sm:hidden">
+            <Cog />
+          </span>
+        </Link>
+      ) : (
+        false
+      )}
     </nav>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload } from "@/../../@tacotacIO/codegen/dist";
-import { useToast } from "@/hooks/use-toast";
+import { useStickyState } from "@/hooks/use-sticky-state";
 import { useMachine } from "@xstate/react";
 import { ArrowLeft, Ticket } from "lucide-react";
 
@@ -15,10 +15,12 @@ import { Input, Label } from "@/components/ui";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
 import { scannerMachine } from "./scanner-machine";
 
 export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) => {
   const { toast } = useToast();
+  const [offlineData, setOfflineData] = useStickyState<ScanAttendeesAsyncInput["payloads"]>([], "offline-data");
 
   const memoizedScannerMachine = useMemo(() => scannerMachine({ eventId: event.id }), [event.id]);
 
@@ -26,7 +28,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
     actions: {
       saveOffline: (context) => {
         console.log("saved offline");
-        localStorage.setItem(
+        /* localStorage.setItem(
           "offlineData",
           JSON.stringify([
             ...JSON.parse(localStorage.getItem("offlineData") || "[]"),
@@ -37,7 +39,16 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               metadata: context,
             } as ScanAttendeesAsyncInput["payloads"][0],
           ])
-        );
+        ); */
+        setOfflineData([
+          ...offlineData,
+          {
+            email: context.email,
+            panelNumber: context.panel,
+            ticketNumber: context.ticket.number,
+            metadata: context,
+          } as ScanAttendeesAsyncInput["payloads"][0],
+        ]);
       },
       refresh: () => {
         console.log("refresh");
@@ -49,45 +60,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
   const [panelNumber, setPanelNumber] = useState("");
 
   // get the number of attendees to synchronize
-  const offlineData = JSON.parse(localStorage.getItem("offlineData") || "[]");
   const numberOfAttendeesToSynchronize = offlineData.length;
-
-  useQrReader({
-    constraints: {
-      facingMode: "environment",
-    },
-    scanDelay: 500,
-    onResult: (result, error) => {
-      if (state.matches("scanning-ticket")) {
-        if (!!result) {
-          const rawTicket = JSON.parse(result.getText());
-          send({
-            type: "SCAN_TICKET",
-            payload: {
-              fullName: rawTicket.name,
-              isMissingEmail: !rawTicket.email,
-              isVIP: rawTicket.vip,
-              number: rawTicket.t_num,
-              event: rawTicket.event,
-            },
-          });
-        }
-      } else if (state.matches("scanning-panel")) {
-        if (!!result) {
-          const rawPanel = result.getText();
-          typeof JSON.parse(rawPanel) !== "object" &&
-            send({
-              type: "SCAN_PANEL",
-              payload: rawPanel,
-            });
-        }
-        if (!!error) {
-          console.log(error);
-        }
-      }
-    },
-    videoId: "qr-reader",
-  });
 
   const scanAttendeesOffline = async () => {
     const offlineData = JSON.parse(localStorage.getItem("offlineData") || "[]");
@@ -112,17 +85,58 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
     }
   };
 
+  const VideoReader = memo(function Video() {
+    useQrReader({
+      constraints: {
+        facingMode: "environment",
+      },
+      scanDelay: 500,
+      onResult: (result, error) => {
+        if (state.matches("scanning-ticket")) {
+          if (!!result) {
+            const rawTicket = JSON.parse(result.getText());
+            send({
+              type: "SCAN_TICKET",
+              payload: {
+                fullName: rawTicket.name,
+                isMissingEmail: !rawTicket.email,
+                isVIP: rawTicket.vip,
+                number: rawTicket.t_num,
+                event: rawTicket.event,
+              },
+            });
+          }
+        } else if (state.matches("scanning-panel")) {
+          if (!!result) {
+            const rawPanel = result.getText();
+            typeof JSON.parse(rawPanel) !== "object" &&
+              send({
+                type: "SCAN_PANEL",
+                payload: rawPanel,
+              });
+          }
+          if (!!error) {
+            console.log(error);
+          }
+        }
+      },
+      videoId: "qr-reader",
+    });
+    return (
+      <video
+        className={cn(
+          "relative object-cover object-center transition-all",
+          state.matches("scanning-panel") || state.matches("scanning-ticket") ? "aspect-square" : "aspect-video"
+        )}
+        muted
+        id="qr-reader"
+      />
+    );
+  });
   return (
     <div className="bg-muted flex h-full w-full flex-col">
       <div className="bg-muted relative mx-auto flex w-full max-w-2xl justify-center">
-        <video
-          className={cn(
-            "relative object-cover object-center transition-all",
-            state.matches("scanning-panel") || state.matches("scanning-ticket") ? "aspect-square" : "aspect-video"
-          )}
-          muted
-          id="qr-reader"
-        />
+        <VideoReader />
         <div
           className={cn(
             state.matches("scanning-panel") || state.matches("scanning-ticket")

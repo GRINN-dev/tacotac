@@ -24,6 +24,29 @@ export type Scalars = {
   UUID: any;
 };
 
+/** All input for the `acceptInvitationToOrganization` mutation. */
+export type AcceptInvitationToOrganizationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  code?: InputMaybe<Scalars['String']>;
+  invitationId: Scalars['UUID'];
+};
+
+/** The output of our `acceptInvitationToOrganization` mutation. */
+export type AcceptInvitationToOrganizationPayload = {
+  __typename?: 'AcceptInvitationToOrganizationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** Event from organizations */
 export type Attendee = {
   __typename?: 'Attendee';
@@ -558,15 +581,51 @@ export type CreateLogPayloadLogEdgeArgs = {
   orderBy?: InputMaybe<Array<LogsOrderBy>>;
 };
 
-/** All input for the create `Organization` mutation. */
+/** All input for the `createOrganization` mutation. */
 export type CreateOrganizationInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The `Organization` to be created by this mutation. */
-  organization: OrganizationInput;
+  name: Scalars['String'];
+};
+
+/** All input for the create `OrganizationInvitation` mutation. */
+export type CreateOrganizationInvitationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `OrganizationInvitation` to be created by this mutation. */
+  organizationInvitation: OrganizationInvitationInput;
+};
+
+/** The output of our create `OrganizationInvitation` mutation. */
+export type CreateOrganizationInvitationPayload = {
+  __typename?: 'CreateOrganizationInvitationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Organization` that is related to this `OrganizationInvitation`. */
+  organization?: Maybe<Organization>;
+  /** The `OrganizationInvitation` that was created by this mutation. */
+  organizationInvitation?: Maybe<OrganizationInvitation>;
+  /** An edge for our `OrganizationInvitation`. May be used by Relay 1. */
+  organizationInvitationEdge?: Maybe<OrganizationInvitationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OrganizationInvitation`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our create `OrganizationInvitation` mutation. */
+export type CreateOrganizationInvitationPayloadOrganizationInvitationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OrganizationInvitationsOrderBy>>;
 };
 
 /** All input for the create `OrganizationMembership` mutation. */
@@ -606,7 +665,7 @@ export type CreateOrganizationMembershipPayloadOrganizationMembershipEdgeArgs = 
   orderBy?: InputMaybe<Array<OrganizationMembershipsOrderBy>>;
 };
 
-/** The output of our create `Organization` mutation. */
+/** The output of our `createOrganization` mutation. */
 export type CreateOrganizationPayload = {
   __typename?: 'CreateOrganizationPayload';
   /**
@@ -614,7 +673,6 @@ export type CreateOrganizationPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  /** The `Organization` that was created by this mutation. */
   organization?: Maybe<Organization>;
   /** An edge for our `Organization`. May be used by Relay 1. */
   organizationEdge?: Maybe<OrganizationsEdge>;
@@ -623,7 +681,7 @@ export type CreateOrganizationPayload = {
 };
 
 
-/** The output of our create `Organization` mutation. */
+/** The output of our `createOrganization` mutation. */
 export type CreateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
@@ -729,6 +787,46 @@ export type CreateUserPayload = {
 /** The output of our create `User` mutation. */
 export type CreateUserPayloadUserEdgeArgs = {
   orderBy?: InputMaybe<Array<UsersOrderBy>>;
+};
+
+/** A `UUID` edge in the connection. */
+export type CurrentUserInvitedOrganizationIdEdge = {
+  __typename?: 'CurrentUserInvitedOrganizationIdEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UUID` at the end of the edge. */
+  node?: Maybe<Scalars['UUID']>;
+};
+
+/** A connection to a list of `UUID` values. */
+export type CurrentUserInvitedOrganizationIdsConnection = {
+  __typename?: 'CurrentUserInvitedOrganizationIdsConnection';
+  /** A list of edges which contains the `UUID` and cursor to aid in pagination. */
+  edges: Array<CurrentUserInvitedOrganizationIdEdge>;
+  /** A list of `UUID` objects. */
+  nodes: Array<Maybe<Scalars['UUID']>>;
+  /** The count of *all* `UUID` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `UUID` edge in the connection. */
+export type CurrentUserMemberOrganizationIdEdge = {
+  __typename?: 'CurrentUserMemberOrganizationIdEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UUID` at the end of the edge. */
+  node?: Maybe<Scalars['UUID']>;
+};
+
+/** A connection to a list of `UUID` values. */
+export type CurrentUserMemberOrganizationIdsConnection = {
+  __typename?: 'CurrentUserMemberOrganizationIdsConnection';
+  /** A list of edges which contains the `UUID` and cursor to aid in pagination. */
+  edges: Array<CurrentUserMemberOrganizationIdEdge>;
+  /** A list of `UUID` objects. */
+  nodes: Array<Maybe<Scalars['UUID']>>;
+  /** The count of *all* `UUID` you could get from the connection. */
+  totalCount: Scalars['Int'];
 };
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
@@ -914,6 +1012,43 @@ export type DeleteOrganizationInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
+};
+
+/** All input for the `deleteOrganizationInvitation` mutation. */
+export type DeleteOrganizationInvitationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `OrganizationInvitation` mutation. */
+export type DeleteOrganizationInvitationPayload = {
+  __typename?: 'DeleteOrganizationInvitationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedOrganizationInvitationNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `Organization` that is related to this `OrganizationInvitation`. */
+  organization?: Maybe<Organization>;
+  /** The `OrganizationInvitation` that was deleted by this mutation. */
+  organizationInvitation?: Maybe<OrganizationInvitation>;
+  /** An edge for our `OrganizationInvitation`. May be used by Relay 1. */
+  organizationInvitationEdge?: Maybe<OrganizationInvitationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OrganizationInvitation`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our delete `OrganizationInvitation` mutation. */
+export type DeleteOrganizationInvitationPayloadOrganizationInvitationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OrganizationInvitationsOrderBy>>;
 };
 
 /** All input for the `deleteOrganizationMembership` mutation. */
@@ -1585,6 +1720,31 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
+/** All input for the `inviteToOrganization` mutation. */
+export type InviteToOrganizationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  organizationId: Scalars['UUID'];
+  role?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our `inviteToOrganization` mutation. */
+export type InviteToOrganizationPayload = {
+  __typename?: 'InviteToOrganizationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** Logs from events */
 export type Log = {
   __typename?: 'Log';
@@ -1752,6 +1912,7 @@ export type LogsStatusFilter = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptInvitationToOrganization?: Maybe<AcceptInvitationToOrganizationPayload>;
   /** Enter your old password and a new password to change your password. */
   changePassword?: Maybe<ChangePasswordPayload>;
   /** If you're certain you want to delete your account, use `requestAccountDeletion` to request an account deletion token, and then supply the token through this mutation to complete account deletion. */
@@ -1764,8 +1925,9 @@ export type Mutation = {
   createEventBranding?: Maybe<CreateEventBrandingPayload>;
   /** Creates a single `Log`. */
   createLog?: Maybe<CreateLogPayload>;
-  /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
+  /** Creates a single `OrganizationInvitation`. */
+  createOrganizationInvitation?: Maybe<CreateOrganizationInvitationPayload>;
   /** Creates a single `OrganizationMembership`. */
   createOrganizationMembership?: Maybe<CreateOrganizationMembershipPayload>;
   /** Creates a single `Registration`. */
@@ -1785,6 +1947,8 @@ export type Mutation = {
   deleteLog?: Maybe<DeleteLogPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
+  /** Deletes a single `OrganizationInvitation` using a unique key. */
+  deleteOrganizationInvitation?: Maybe<DeleteOrganizationInvitationPayload>;
   /** Deletes a single `OrganizationMembership` using a unique key. */
   deleteOrganizationMembership?: Maybe<DeleteOrganizationMembershipPayload>;
   /** Deletes a single `Registration` using a unique key. */
@@ -1796,6 +1960,7 @@ export type Mutation = {
   /** If you've forgotten your password, give us one of your email addresses and we'll send you a reset token. Note this only works if you have added an email address! */
   forgotPassword?: Maybe<ForgotPasswordPayload>;
   generatePresignedPost?: Maybe<GeneratePresignedPostPayload>;
+  inviteToOrganization?: Maybe<InviteToOrganizationPayload>;
   /** Use this mutation to log in to your account; this login uses sessions so you do not need to take further action. */
   login?: Maybe<LoginPayload>;
   /** Use this mutation to logout from your account. Don't forget to clear the client state! */
@@ -1804,6 +1969,7 @@ export type Mutation = {
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
   registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
+  removeFromOrganization?: Maybe<RemoveFromOrganizationPayload>;
   /** Begin the account deletion flow by requesting the confirmation email */
   requestAccountDeletion?: Maybe<RequestAccountDeletionPayload>;
   /** If you didn't receive the verification code for this email, we can resend it. We silently cap the rate of resends on the backend, so calls to this function may not result in another email being sent if it has been called recently. */
@@ -1816,6 +1982,7 @@ export type Mutation = {
   sendEmailAllAttendeeEvent?: Maybe<SendEmailAllAttendeeEventPayload>;
   /** Select event to retrieve all attendee and send email to all attendee and confirm donation */
   sendEmailConfirmDonationByEventId?: Maybe<SendEmailConfirmDonationByEventIdPayload>;
+  transferOrganizationOwnership?: Maybe<TransferOrganizationOwnershipPayload>;
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   updateAttendeeEmailAndSendEmail?: Maybe<UpdateAttendeeEmailAndSendEmailPayload>;
@@ -1827,6 +1994,8 @@ export type Mutation = {
   updateLog?: Maybe<UpdateLogPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
+  /** Updates a single `OrganizationInvitation` using a unique key and a patch. */
+  updateOrganizationInvitation?: Maybe<UpdateOrganizationInvitationPayload>;
   /** Updates a single `OrganizationMembership` using a unique key and a patch. */
   updateOrganizationMembership?: Maybe<UpdateOrganizationMembershipPayload>;
   /** Updates a single `Registration` using a unique key and a patch. */
@@ -1837,6 +2006,12 @@ export type Mutation = {
   updateUserAuthentication?: Maybe<UpdateUserAuthenticationPayload>;
   /** Once you have received a verification token for your email, you may call this mutation with that token to make your email verified. */
   verifyEmail?: Maybe<VerifyEmailPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationAcceptInvitationToOrganizationArgs = {
+  input: AcceptInvitationToOrganizationInput;
 };
 
 
@@ -1879,6 +2054,12 @@ export type MutationCreateLogArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateOrganizationArgs = {
   input: CreateOrganizationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateOrganizationInvitationArgs = {
+  input: CreateOrganizationInvitationInput;
 };
 
 
@@ -1943,6 +2124,12 @@ export type MutationDeleteOrganizationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteOrganizationInvitationArgs = {
+  input: DeleteOrganizationInvitationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteOrganizationMembershipArgs = {
   input: DeleteOrganizationMembershipInput;
 };
@@ -1979,6 +2166,12 @@ export type MutationGeneratePresignedPostArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationInviteToOrganizationArgs = {
+  input: InviteToOrganizationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationLoginArgs = {
   input: LoginInput;
 };
@@ -1999,6 +2192,12 @@ export type MutationRegisterAttendeesArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterAttendeesCsvArgs = {
   input: RegisterAttendeesCsvInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRemoveFromOrganizationArgs = {
+  input: RemoveFromOrganizationInput;
 };
 
 
@@ -2045,6 +2244,12 @@ export type MutationSendEmailConfirmDonationByEventIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationTransferOrganizationOwnershipArgs = {
+  input: TransferOrganizationOwnershipInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAttendeeArgs = {
   input: UpdateAttendeeInput;
 };
@@ -2081,6 +2286,12 @@ export type MutationUpdateOrganizationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateOrganizationInvitationArgs = {
+  input: UpdateOrganizationInvitationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateOrganizationMembershipArgs = {
   input: UpdateOrganizationMembershipInput;
 };
@@ -2113,13 +2324,15 @@ export type MutationVerifyEmailArgs = {
 export type Organization = {
   __typename?: 'Organization';
   createdAt: Scalars['Datetime'];
-  description: Scalars['String'];
+  currentUserIsOwner?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
   /** Reads and enables pagination through a set of `Event`. */
   events: EventsConnection;
   id: Scalars['UUID'];
-  /** The URL of the organization's logo. */
-  logoUrl: Scalars['String'];
+  logoUrl?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  /** Reads and enables pagination through a set of `OrganizationInvitation`. */
+  organizationInvitations: OrganizationInvitationsConnection;
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
   organizationMemberships: OrganizationMembershipsConnection;
   slug?: Maybe<Scalars['String']>;
@@ -2137,6 +2350,19 @@ export type OrganizationEventsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
+};
+
+
+/** A company, organization, or institution. */
+export type OrganizationOrganizationInvitationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OrganizationInvitationCondition>;
+  filter?: InputMaybe<OrganizationInvitationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OrganizationInvitationsOrderBy>>;
 };
 
 
@@ -2177,6 +2403,8 @@ export type OrganizationFilter = {
   and?: InputMaybe<Array<OrganizationFilter>>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `currentUserIsOwner` field. */
+  currentUserIsOwner?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `description` field. */
   description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
@@ -2193,17 +2421,103 @@ export type OrganizationFilter = {
   updatedAt?: InputMaybe<DatetimeFilter>;
 };
 
-/** An input for mutations affecting `Organization` */
-export type OrganizationInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  description: Scalars['String'];
-  id?: InputMaybe<Scalars['UUID']>;
-  /** The URL of the organization's logo. */
-  logoUrl: Scalars['String'];
-  name: Scalars['String'];
-  slug?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
+export type OrganizationInvitation = {
+  __typename?: 'OrganizationInvitation';
+  code?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** Reads a single `Organization` that is related to this `OrganizationInvitation`. */
+  organization?: Maybe<Organization>;
+  organizationId: Scalars['UUID'];
+  role: OrganizationMembershipsRolesEnum;
+  /** Reads a single `User` that is related to this `OrganizationInvitation`. */
+  user?: Maybe<User>;
+  userId?: Maybe<Scalars['UUID']>;
 };
+
+/**
+ * A condition to be used against `OrganizationInvitation` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type OrganizationInvitationCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `organizationId` field. */
+  organizationId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `OrganizationInvitation` object types. All fields are combined with a logical ‘and.’ */
+export type OrganizationInvitationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<OrganizationInvitationFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<OrganizationInvitationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<OrganizationInvitationFilter>>;
+  /** Filter by the object’s `organizationId` field. */
+  organizationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `OrganizationInvitation` */
+export type OrganizationInvitationInput = {
+  code?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  organizationId: Scalars['UUID'];
+  role?: InputMaybe<OrganizationMembershipsRolesEnum>;
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** Represents an update to a `OrganizationInvitation`. Fields that are set will be updated. */
+export type OrganizationInvitationPatch = {
+  code?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  organizationId?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<OrganizationMembershipsRolesEnum>;
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A connection to a list of `OrganizationInvitation` values. */
+export type OrganizationInvitationsConnection = {
+  __typename?: 'OrganizationInvitationsConnection';
+  /** A list of edges which contains the `OrganizationInvitation` and cursor to aid in pagination. */
+  edges: Array<OrganizationInvitationsEdge>;
+  /** A list of `OrganizationInvitation` objects. */
+  nodes: Array<OrganizationInvitation>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `OrganizationInvitation` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `OrganizationInvitation` edge in the connection. */
+export type OrganizationInvitationsEdge = {
+  __typename?: 'OrganizationInvitationsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `OrganizationInvitation` at the end of the edge. */
+  node: OrganizationInvitation;
+};
+
+/** Methods to use when ordering `OrganizationInvitation`. */
+export enum OrganizationInvitationsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  OrganizationIdAsc = 'ORGANIZATION_ID_ASC',
+  OrganizationIdDesc = 'ORGANIZATION_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 export type OrganizationMembership = {
   __typename?: 'OrganizationMembership';
@@ -2326,14 +2640,10 @@ export enum OrganizationMembershipsOrderBy {
 export enum OrganizationMembershipsRolesEnum {
   /** Admin of the organization */
   Admin = 'ADMIN',
-  /** Client of the organization */
-  Client = 'CLIENT',
-  /** Member of the organization */
-  Developer = 'DEVELOPER',
   /** Guest of the organization */
   Guest = 'GUEST',
-  /** Manager of the organization */
-  Manager = 'MANAGER',
+  /** Host of the organization's events */
+  Host = 'HOST',
   /** Owner of the organization */
   Owner = 'OWNER'
 }
@@ -2369,7 +2679,6 @@ export type OrganizationPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
-  /** The URL of the organization's logo. */
   logoUrl?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
@@ -2445,6 +2754,8 @@ export type Query = {
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead. */
   currentUserId?: Maybe<Scalars['UUID']>;
+  currentUserInvitedOrganizationIds?: Maybe<CurrentUserInvitedOrganizationIdsConnection>;
+  currentUserMemberOrganizationIds?: Maybe<CurrentUserMemberOrganizationIdsConnection>;
   dateTruncFunc?: Maybe<Scalars['Datetime']>;
   event?: Maybe<Event>;
   eventBranding?: Maybe<EventBranding>;
@@ -2464,6 +2775,12 @@ export type Query = {
   organization?: Maybe<Organization>;
   organizationByName?: Maybe<Organization>;
   organizationBySlug?: Maybe<Organization>;
+  organizationForInvitation?: Maybe<Organization>;
+  organizationInvitation?: Maybe<OrganizationInvitation>;
+  organizationInvitationByOrganizationIdAndEmail?: Maybe<OrganizationInvitation>;
+  organizationInvitationByOrganizationIdAndUserId?: Maybe<OrganizationInvitation>;
+  /** Reads and enables pagination through a set of `OrganizationInvitation`. */
+  organizationInvitations?: Maybe<OrganizationInvitationsConnection>;
   organizationMembership?: Maybe<OrganizationMembership>;
   organizationMembershipByOrganizationIdAndUserId?: Maybe<OrganizationMembership>;
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
@@ -2518,6 +2835,28 @@ export type QueryAttendeesListArgs = {
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AttendeesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCurrentUserInvitedOrganizationIdsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UuidFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryCurrentUserMemberOrganizationIdsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UuidFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -2637,6 +2976,46 @@ export type QueryOrganizationByNameArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryOrganizationBySlugArgs = {
   slug: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOrganizationForInvitationArgs = {
+  code?: InputMaybe<Scalars['String']>;
+  invitationId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOrganizationInvitationArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOrganizationInvitationByOrganizationIdAndEmailArgs = {
+  email: Scalars['String'];
+  organizationId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOrganizationInvitationByOrganizationIdAndUserIdArgs = {
+  organizationId: Scalars['UUID'];
+  userId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryOrganizationInvitationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OrganizationInvitationCondition>;
+  filter?: InputMaybe<OrganizationInvitationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OrganizationInvitationsOrderBy>>;
 };
 
 
@@ -2957,6 +3336,29 @@ export enum RegistrationsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
+/** All input for the `removeFromOrganization` mutation. */
+export type RemoveFromOrganizationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  organizationId: Scalars['UUID'];
+  userId: Scalars['UUID'];
+};
+
+/** The output of our `removeFromOrganization` mutation. */
+export type RemoveFromOrganizationPayload = {
+  __typename?: 'RemoveFromOrganizationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
 /** All input for the `requestAccountDeletion` mutation. */
 export type RequestAccountDeletionInput = {
   /**
@@ -3244,6 +3646,38 @@ export type TicketPayloadInput = {
   ticketNumber?: InputMaybe<Scalars['String']>;
 };
 
+/** All input for the `transferOrganizationOwnership` mutation. */
+export type TransferOrganizationOwnershipInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  organizationId: Scalars['UUID'];
+  userId: Scalars['UUID'];
+};
+
+/** The output of our `transferOrganizationOwnership` mutation. */
+export type TransferOrganizationOwnershipPayload = {
+  __typename?: 'TransferOrganizationOwnershipPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  organization?: Maybe<Organization>;
+  /** An edge for our `Organization`. May be used by Relay 1. */
+  organizationEdge?: Maybe<OrganizationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our `transferOrganizationOwnership` mutation. */
+export type TransferOrganizationOwnershipPayloadOrganizationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
+};
+
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
 export type UuidFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -3449,6 +3883,44 @@ export type UpdateOrganizationInput = {
   patch: OrganizationPatch;
 };
 
+/** All input for the `updateOrganizationInvitation` mutation. */
+export type UpdateOrganizationInvitationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `OrganizationInvitation` being updated. */
+  patch: OrganizationInvitationPatch;
+};
+
+/** The output of our update `OrganizationInvitation` mutation. */
+export type UpdateOrganizationInvitationPayload = {
+  __typename?: 'UpdateOrganizationInvitationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Organization` that is related to this `OrganizationInvitation`. */
+  organization?: Maybe<Organization>;
+  /** The `OrganizationInvitation` that was updated by this mutation. */
+  organizationInvitation?: Maybe<OrganizationInvitation>;
+  /** An edge for our `OrganizationInvitation`. May be used by Relay 1. */
+  organizationInvitationEdge?: Maybe<OrganizationInvitationsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OrganizationInvitation`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our update `OrganizationInvitation` mutation. */
+export type UpdateOrganizationInvitationPayloadOrganizationInvitationEdgeArgs = {
+  orderBy?: InputMaybe<Array<OrganizationInvitationsOrderBy>>;
+};
+
 /** All input for the `updateOrganizationMembership` mutation. */
 export type UpdateOrganizationMembershipInput = {
   /**
@@ -3633,6 +4105,8 @@ export type User = {
   isVerified: Scalars['Boolean'];
   isVolunteer: Scalars['Boolean'];
   lastname: Scalars['String'];
+  /** Reads and enables pagination through a set of `OrganizationInvitation`. */
+  organizationInvitations: OrganizationInvitationsConnection;
   /** Reads and enables pagination through a set of `OrganizationMembership`. */
   organizationMemberships: OrganizationMembershipsConnection;
   organizations: UsersOrganizationsConnection;
@@ -3642,6 +4116,19 @@ export type User = {
   userAuthentications: UserAuthenticationsConnection;
   /** Public-facing username (or 'handle') of the user. */
   username: Scalars['String'];
+};
+
+
+/** A user who can log in to the application. */
+export type UserOrganizationInvitationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<OrganizationInvitationCondition>;
+  filter?: InputMaybe<OrganizationInvitationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<OrganizationInvitationsOrderBy>>;
 };
 
 
@@ -3994,7 +4481,7 @@ export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', awar
 
 export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null };
 
-export type OrganizationFragmentFragment = { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any };
+export type OrganizationFragmentFragment = { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any };
 
 export type RegistrationFragmentFragment = { __typename?: 'Registration', eventId?: any | null, createdAt: any, hearAboutList?: Array<string | null> | null, id: any, updatedAt: any };
 
@@ -4117,7 +4604,7 @@ export type CreateOrganizationMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'CreateOrganizationPayload', organization?: { __typename?: 'Organization', id: any } | null } | null };
+export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'CreateOrganizationPayload', organization?: { __typename?: 'Organization', id: any, slug?: string | null } | null } | null };
 
 export type UpdateOrganizationMutationVariables = Exact<{
   input: UpdateOrganizationInput;
@@ -4125,6 +4612,27 @@ export type UpdateOrganizationMutationVariables = Exact<{
 
 
 export type UpdateOrganizationMutation = { __typename?: 'Mutation', updateOrganization?: { __typename?: 'UpdateOrganizationPayload', organization?: { __typename?: 'Organization', id: any } | null } | null };
+
+export type InviteUserToOrganizationMutationVariables = Exact<{
+  input: InviteToOrganizationInput;
+}>;
+
+
+export type InviteUserToOrganizationMutation = { __typename?: 'Mutation', inviteToOrganization?: { __typename?: 'InviteToOrganizationPayload', clientMutationId?: string | null } | null };
+
+export type RemoveUserFromOrganizationMutationVariables = Exact<{
+  input: RemoveFromOrganizationInput;
+}>;
+
+
+export type RemoveUserFromOrganizationMutation = { __typename?: 'Mutation', removeFromOrganization?: { __typename?: 'RemoveFromOrganizationPayload', clientMutationId?: string | null } | null };
+
+export type AcceptOrganizationInvitationMutationVariables = Exact<{
+  input: AcceptInvitationToOrganizationInput;
+}>;
+
+
+export type AcceptOrganizationInvitationMutation = { __typename?: 'Mutation', acceptInvitationToOrganization?: { __typename?: 'AcceptInvitationToOrganizationPayload', clientMutationId?: string | null } | null };
 
 export type CreateRegistrationMutationVariables = Exact<{
   registration: RegistrationInput;
@@ -4199,7 +4707,7 @@ export type GetAttendeeByTicketNumberQuery = { __typename?: 'Query', attendeeByT
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, organization?: { __typename?: 'Organization', id: any, name: string } | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetAllEventsByOrganizationIdQueryVariables = Exact<{
   organizationId: Scalars['UUID'];
@@ -4276,14 +4784,14 @@ export type GetAllOrganizationQueryVariables = Exact<{
 }>;
 
 
-export type GetAllOrganizationQuery = { __typename?: 'Query', organizations?: { __typename?: 'OrganizationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllOrganizationQuery = { __typename?: 'Query', organizations?: { __typename?: 'OrganizationsConnection', totalCount: number, nodes: Array<{ __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetOrganizationByIdQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null }> } } | null };
+export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null }> }, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null }> } } | null };
 
 export type GetOrganizationBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -4297,7 +4805,7 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description: string, logoUrl: string, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number }, organization?: { __typename?: 'Organization', slug?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null }> }, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number }, organization?: { __typename?: 'Organization', slug?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type GetAllUsersQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -4318,7 +4826,7 @@ export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'Us
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl: string } | null }> } } | null };
+export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl?: string | null } | null }> } } | null };
 
 export const MyAttendeeFragmentDoc = `
     fragment MyAttendee on Attendee {
@@ -4577,6 +5085,7 @@ export const CreateOrganizationDocument = `
   createOrganization(input: $input) {
     organization {
       id
+      slug
     }
   }
 }
@@ -4587,6 +5096,27 @@ export const UpdateOrganizationDocument = `
     organization {
       id
     }
+  }
+}
+    `;
+export const InviteUserToOrganizationDocument = `
+    mutation InviteUserToOrganization($input: InviteToOrganizationInput!) {
+  inviteToOrganization(input: $input) {
+    clientMutationId
+  }
+}
+    `;
+export const RemoveUserFromOrganizationDocument = `
+    mutation RemoveUserFromOrganization($input: RemoveFromOrganizationInput!) {
+  removeFromOrganization(input: $input) {
+    clientMutationId
+  }
+}
+    `;
+export const AcceptOrganizationInvitationDocument = `
+    mutation AcceptOrganizationInvitation($input: AcceptInvitationToOrganizationInput!) {
+  acceptInvitationToOrganization(input: $input) {
+    clientMutationId
   }
 }
     `;
@@ -4702,6 +5232,7 @@ export const GetAllEventsDocument = `
       organization {
         id
         name
+        slug
       }
       eventBranding {
         ...EventBrandingFragment
@@ -4895,14 +5426,35 @@ export const GetOrganizationByIdDocument = `
         ...MyEvent
       }
     }
+    organizationMemberships {
+      nodes {
+        id
+        role
+        createdAt
+        user {
+          ...MyUser
+        }
+      }
+    }
   }
 }
     ${OrganizationFragmentFragmentDoc}
-${MyEventFragmentDoc}`;
+${MyEventFragmentDoc}
+${MyUserFragmentDoc}`;
 export const GetOrganizationBySlugDocument = `
     query GetOrganizationBySlug($slug: String!, $after: Cursor, $first: Int, $before: Cursor, $last: Int, $orderBy: [EventsOrderBy!] = CREATED_AT_ASC, $filter: EventFilter, $offset: Int) {
   organizationBySlug(slug: $slug) {
     ...OrganizationFragment
+    organizationMemberships {
+      nodes {
+        id
+        role
+        user {
+          ...MyUser
+        }
+        createdAt
+      }
+    }
     events(
       filter: $filter
       first: $first
@@ -4932,6 +5484,7 @@ export const GetOrganizationBySlugDocument = `
   }
 }
     ${OrganizationFragmentFragmentDoc}
+${MyUserFragmentDoc}
 ${MyEventFragmentDoc}`;
 export const GetAllUsersDocument = `
     query GetAllUsers($first: Int, $offset: Int, $filter: UserFilter) {
@@ -5026,6 +5579,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     UpdateOrganization(variables: UpdateOrganizationMutationVariables, options?: C): Promise<UpdateOrganizationMutation> {
       return requester<UpdateOrganizationMutation, UpdateOrganizationMutationVariables>(UpdateOrganizationDocument, variables, options) as Promise<UpdateOrganizationMutation>;
+    },
+    InviteUserToOrganization(variables: InviteUserToOrganizationMutationVariables, options?: C): Promise<InviteUserToOrganizationMutation> {
+      return requester<InviteUserToOrganizationMutation, InviteUserToOrganizationMutationVariables>(InviteUserToOrganizationDocument, variables, options) as Promise<InviteUserToOrganizationMutation>;
+    },
+    RemoveUserFromOrganization(variables: RemoveUserFromOrganizationMutationVariables, options?: C): Promise<RemoveUserFromOrganizationMutation> {
+      return requester<RemoveUserFromOrganizationMutation, RemoveUserFromOrganizationMutationVariables>(RemoveUserFromOrganizationDocument, variables, options) as Promise<RemoveUserFromOrganizationMutation>;
+    },
+    AcceptOrganizationInvitation(variables: AcceptOrganizationInvitationMutationVariables, options?: C): Promise<AcceptOrganizationInvitationMutation> {
+      return requester<AcceptOrganizationInvitationMutation, AcceptOrganizationInvitationMutationVariables>(AcceptOrganizationInvitationDocument, variables, options) as Promise<AcceptOrganizationInvitationMutation>;
     },
     CreateRegistration(variables: CreateRegistrationMutationVariables, options?: C): Promise<CreateRegistrationMutation> {
       return requester<CreateRegistrationMutation, CreateRegistrationMutationVariables>(CreateRegistrationDocument, variables, options) as Promise<CreateRegistrationMutation>;

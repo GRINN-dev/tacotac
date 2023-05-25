@@ -8,9 +8,7 @@ comment on table publ.organization_memberships_roles_enum is E'@enum';
 insert into publ.organization_memberships_roles_enum values
     ('OWNER', 'Owner of the organization'),
     ('ADMIN', 'Admin of the organization'),
-    ('DEVELOPER', 'Member of the organization'),
-    ('MANAGER', 'Manager of the organization'),
-    ('CLIENT', 'Client of the organization'),
+    ('HOST', 'Host of the organization''s events'),
     ('GUEST', 'Guest of the organization');
 
 GRANT all ON "publ"."organization_memberships_roles_enum" TO :DATABASE_VISITOR;
@@ -92,3 +90,6 @@ create function publ.users_organizations(any_user publ.users) returns table(orga
   end;
 $$ language plpgsql stable security definer;
 grant execute on function publ.users_organizations to :DATABASE_VISITOR;
+
+
+

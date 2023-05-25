@@ -5,6 +5,7 @@ query GetAllEvents {
       organization {
         id
         name
+        slug
       }
       eventBranding {
         ...EventBrandingFragment

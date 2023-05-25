@@ -7,8 +7,8 @@ create table publ.organizations (
     id uuid not null default uuid_generate_v4() primary key unique, 
     name text unique not null,
     slug text unique,
-    description text not null,
-    logo_url text not null,
+    description text,
+    logo_url text,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );

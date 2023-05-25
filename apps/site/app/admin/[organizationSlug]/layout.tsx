@@ -37,7 +37,7 @@ export default async function AdminLayout({
   }
   return (
     <div className="bg-muted text-muted-foreground h-full max-h-full w-full">
-      <div className="border-b">
+      <div className="">
         <div className="flex h-16 items-center px-4">
           <img alt="logo Kaypi" className="h-10 object-contain" src="/logo/Kaypi_Logo_RVB_Icone_Positif.jpg.svg" />
           <TeamSwitcher
