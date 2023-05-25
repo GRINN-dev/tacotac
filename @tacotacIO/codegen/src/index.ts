@@ -361,6 +361,64 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+/** All input for the `cancelInvitation` mutation. */
+export type CancelInvitationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  invitationId: Scalars['UUID'];
+};
+
+/** The output of our `cancelInvitation` mutation. */
+export type CancelInvitationPayload = {
+  __typename?: 'CancelInvitationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+/** All input for the `changeMembershipRole` mutation. */
+export type ChangeMembershipRoleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  membershipId: Scalars['UUID'];
+  role: Scalars['String'];
+};
+
+/** The output of our `changeMembershipRole` mutation. */
+export type ChangeMembershipRolePayload = {
+  __typename?: 'ChangeMembershipRolePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Organization` that is related to this `OrganizationMembership`. */
+  organization?: Maybe<Organization>;
+  organizationMembership?: Maybe<OrganizationMembership>;
+  /** An edge for our `OrganizationMembership`. May be used by Relay 1. */
+  organizationMembershipEdge?: Maybe<OrganizationMembershipsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `OrganizationMembership`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our `changeMembershipRole` mutation. */
+export type ChangeMembershipRolePayloadOrganizationMembershipEdgeArgs = {
+  orderBy?: InputMaybe<Array<OrganizationMembershipsOrderBy>>;
+};
+
 /** All input for the `changePassword` mutation. */
 export type ChangePasswordInput = {
   /**
@@ -1913,6 +1971,8 @@ export type LogsStatusFilter = {
 export type Mutation = {
   __typename?: 'Mutation';
   acceptInvitationToOrganization?: Maybe<AcceptInvitationToOrganizationPayload>;
+  cancelInvitation?: Maybe<CancelInvitationPayload>;
+  changeMembershipRole?: Maybe<ChangeMembershipRolePayload>;
   /** Enter your old password and a new password to change your password. */
   changePassword?: Maybe<ChangePasswordPayload>;
   /** If you're certain you want to delete your account, use `requestAccountDeletion` to request an account deletion token, and then supply the token through this mutation to complete account deletion. */
@@ -2012,6 +2072,18 @@ export type Mutation = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationAcceptInvitationToOrganizationArgs = {
   input: AcceptInvitationToOrganizationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCancelInvitationArgs = {
+  input: CancelInvitationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationChangeMembershipRoleArgs = {
+  input: ChangeMembershipRoleInput;
 };
 
 
@@ -4634,6 +4706,20 @@ export type AcceptOrganizationInvitationMutationVariables = Exact<{
 
 export type AcceptOrganizationInvitationMutation = { __typename?: 'Mutation', acceptInvitationToOrganization?: { __typename?: 'AcceptInvitationToOrganizationPayload', clientMutationId?: string | null } | null };
 
+export type CancelInvitationMutationVariables = Exact<{
+  input: CancelInvitationInput;
+}>;
+
+
+export type CancelInvitationMutation = { __typename?: 'Mutation', cancelInvitation?: { __typename?: 'CancelInvitationPayload', clientMutationId?: string | null } | null };
+
+export type ChangeMembershipRoleMutationVariables = Exact<{
+  input: ChangeMembershipRoleInput;
+}>;
+
+
+export type ChangeMembershipRoleMutation = { __typename?: 'Mutation', changeMembershipRole?: { __typename?: 'ChangeMembershipRolePayload', clientMutationId?: string | null } | null };
+
 export type CreateRegistrationMutationVariables = Exact<{
   registration: RegistrationInput;
 }>;
@@ -4805,7 +4891,15 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null }> }, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number }, organization?: { __typename?: 'Organization', slug?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null }> }, organizationInvitations: { __typename?: 'OrganizationInvitationsConnection', nodes: Array<{ __typename?: 'OrganizationInvitation', id: any, email?: string | null, role: OrganizationMembershipsRolesEnum, code?: string | null }> }, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number }, organization?: { __typename?: 'Organization', slug?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+
+export type OrganizationForInvitationQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  code: Scalars['String'];
+}>;
+
+
+export type OrganizationForInvitationQuery = { __typename?: 'Query', organizationForInvitation?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null };
 
 export type GetAllUsersQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
@@ -5116,6 +5210,20 @@ export const RemoveUserFromOrganizationDocument = `
 export const AcceptOrganizationInvitationDocument = `
     mutation AcceptOrganizationInvitation($input: AcceptInvitationToOrganizationInput!) {
   acceptInvitationToOrganization(input: $input) {
+    clientMutationId
+  }
+}
+    `;
+export const CancelInvitationDocument = `
+    mutation CancelInvitation($input: CancelInvitationInput!) {
+  cancelInvitation(input: $input) {
+    clientMutationId
+  }
+}
+    `;
+export const ChangeMembershipRoleDocument = `
+    mutation ChangeMembershipRole($input: ChangeMembershipRoleInput!) {
+  changeMembershipRole(input: $input) {
     clientMutationId
   }
 }
@@ -5455,6 +5563,14 @@ export const GetOrganizationBySlugDocument = `
         createdAt
       }
     }
+    organizationInvitations {
+      nodes {
+        id
+        email
+        role
+        code
+      }
+    }
     events(
       filter: $filter
       first: $first
@@ -5486,6 +5602,15 @@ export const GetOrganizationBySlugDocument = `
     ${OrganizationFragmentFragmentDoc}
 ${MyUserFragmentDoc}
 ${MyEventFragmentDoc}`;
+export const OrganizationForInvitationDocument = `
+    query OrganizationForInvitation($id: UUID!, $code: String!) {
+  organizationForInvitation(invitationId: $id, code: $code) {
+    id
+    name
+    slug
+  }
+}
+    `;
 export const GetAllUsersDocument = `
     query GetAllUsers($first: Int, $offset: Int, $filter: UserFilter) {
   users(first: $first, offset: $offset, filter: $filter) {
@@ -5589,6 +5714,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     AcceptOrganizationInvitation(variables: AcceptOrganizationInvitationMutationVariables, options?: C): Promise<AcceptOrganizationInvitationMutation> {
       return requester<AcceptOrganizationInvitationMutation, AcceptOrganizationInvitationMutationVariables>(AcceptOrganizationInvitationDocument, variables, options) as Promise<AcceptOrganizationInvitationMutation>;
     },
+    CancelInvitation(variables: CancelInvitationMutationVariables, options?: C): Promise<CancelInvitationMutation> {
+      return requester<CancelInvitationMutation, CancelInvitationMutationVariables>(CancelInvitationDocument, variables, options) as Promise<CancelInvitationMutation>;
+    },
+    ChangeMembershipRole(variables: ChangeMembershipRoleMutationVariables, options?: C): Promise<ChangeMembershipRoleMutation> {
+      return requester<ChangeMembershipRoleMutation, ChangeMembershipRoleMutationVariables>(ChangeMembershipRoleDocument, variables, options) as Promise<ChangeMembershipRoleMutation>;
+    },
     CreateRegistration(variables: CreateRegistrationMutationVariables, options?: C): Promise<CreateRegistrationMutation> {
       return requester<CreateRegistrationMutation, CreateRegistrationMutationVariables>(CreateRegistrationDocument, variables, options) as Promise<CreateRegistrationMutation>;
     },
@@ -5651,6 +5782,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizationBySlug(variables: GetOrganizationBySlugQueryVariables, options?: C): Promise<GetOrganizationBySlugQuery> {
       return requester<GetOrganizationBySlugQuery, GetOrganizationBySlugQueryVariables>(GetOrganizationBySlugDocument, variables, options) as Promise<GetOrganizationBySlugQuery>;
+    },
+    OrganizationForInvitation(variables: OrganizationForInvitationQueryVariables, options?: C): Promise<OrganizationForInvitationQuery> {
+      return requester<OrganizationForInvitationQuery, OrganizationForInvitationQueryVariables>(OrganizationForInvitationDocument, variables, options) as Promise<OrganizationForInvitationQuery>;
     },
     GetAllUsers(variables?: GetAllUsersQueryVariables, options?: C): Promise<GetAllUsersQuery> {
       return requester<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, variables, options) as Promise<GetAllUsersQuery>;

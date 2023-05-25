@@ -93,3 +93,23 @@ grant execute on function publ.users_organizations to :DATABASE_VISITOR;
 
 
 
+drop function if exists publ.change_membership_role cascade;
+create function publ.change_membership_role(membership_id uuid, role text) returns publ.organization_memberships as $$
+declare
+  membership publ.organization_memberships;
+begin
+  -- check permission: current user must be either admin or owner of the given org
+  if not exists (select 1 from publ.organization_memberships om join publ.organizations o on o.id = om.organization_id where om.user_id = publ.current_user_id() and (om.role in ('OWNER', 'ADMIN'))) then
+    raise exception 'Not authorized' using errcode='DNIED';
+  end if;
+  
+
+  select * into membership from publ.organization_memberships where id = membership_id;
+  if membership.role = 'OWNER' and role != 'OWNER' then
+    raise exception 'Cannot change owner role';
+  end if;
+  update publ.organization_memberships set role = change_membership_role.role where id = membership_id;
+  return membership;
+end;
+$$ language plpgsql volatile security definer;
+grant execute on function publ.change_membership_role to :DATABASE_VISITOR;

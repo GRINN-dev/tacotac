@@ -55,3 +55,29 @@ begin
     values (invite_to_organization.organization_id, v_user.id, email, v_code, role);
 end;
 $$ language plpgsql volatile security definer set search_path = pg_catalog, public, pg_temp;
+
+
+drop function if exists publ.cancel_invitation cascade;
+create function publ.cancel_invitation(invitation_id uuid) returns void as $$
+
+begin
+  -- Are we allowed to cancel this invitation
+  -- Are we logged in
+  if publ.current_user_id() is null then
+    raise exception 'You must log in to cancel an invitation' using errcode = 'LOGIN';
+  end if;
+
+  -- Are we the owner of this organization
+  if not exists(
+    select 1 from publ.organization_invitations
+      where organization_invitations.id = cancel_invitation.invitation_id
+      and organization_invitations.user_id = publ.current_user_id()
+  ) then
+    raise exception 'You''re not allowed to cancel this invitation' using errcode = 'DNIED';
+  end if;
+
+  delete from publ.organization_invitations where organization_invitations.id = cancel_invitation.invitation_id;
+end;
+
+$$ language plpgsql volatile security definer set search_path = pg_catalog, public, pg_temp;
+grant execute on function publ.cancel_invitation to :DATABASE_VISITOR;

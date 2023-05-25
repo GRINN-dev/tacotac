@@ -77,6 +77,14 @@ query GetOrganizationBySlug(
         createdAt
       }
     }
+    organizationInvitations {
+      nodes {
+        id
+        email
+        role
+        code
+      }
+    }
     events(
       filter: $filter
       first: $first
@@ -103,5 +111,13 @@ query GetOrganizationBySlug(
       }
       totalCount
     }
+  }
+}
+
+query OrganizationForInvitation($id: UUID!, $code: String!) {
+  organizationForInvitation(invitationId: $id, code: $code) {
+    id
+    name
+    slug
   }
 }

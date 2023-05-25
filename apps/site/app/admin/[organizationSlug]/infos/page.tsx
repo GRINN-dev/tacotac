@@ -2,12 +2,13 @@ import Link from "next/link";
 import { ArrowBigLeft } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { Separator } from "@/components/ui/separator";
 import { Members } from "./_components/members";
 import { UpdateOrganizationForm } from "./_components/update-form";
 
 const InfosOrganizationPage = async ({ params: { organizationSlug } }) => {
-  const data = await sdk().GetOrganizationBySlug({ slug: organizationSlug });
+  const data = await serverSdk().GetOrganizationBySlug({ slug: organizationSlug });
   const { organizationBySlug: organization } = data;
 
   return (

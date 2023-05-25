@@ -187,15 +187,15 @@ export const CreateAttendeeForm: FC<iUpdateEvent> = ({ id, eventBranding, city, 
           <CheckCircle2 className="mb-8 h-16 w-16" />
           <h2>Votre inscription est terminée !</h2>
           <p className="pt-8 text-sm">
-            Un email de confirmation pour votre inscription a été envoyé. Vérifiez vos courriers indésirables si vous ne
-            le recevez pas.
+            Un email de confirmation pour votre inscription a été envoyé avec votre billet. Vérifiez vos courriers
+            indésirables si vous ne le recevez pas.
           </p>
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <Button className={buttonVariants({ size: "lg", className: "mt-12" })}>
               <Download className="mr-2" />
               <p>Télécharger vos billets</p>
             </Button>
-          </div>
+          </div> */}
         </div>
       ) : null}
     </div>

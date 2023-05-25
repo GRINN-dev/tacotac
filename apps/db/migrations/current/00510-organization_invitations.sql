@@ -18,9 +18,21 @@ create table publ.organization_invitations (
 alter table publ.organization_invitations enable row level security;
 
 create index on publ.organization_invitations(user_id);
+create index on publ.organization_invitations(organization_id);
+
 
 -- We're not granting any privileges here since we don't need any currently.
--- grant select on publ.organization_invitations to :DATABASE_VISITOR;
+grant select on publ.organization_invitations to :DATABASE_VISITOR;
+
+drop policy if exists members_can_select_invites on publ.organization_invitations;
+create policy members_can_select_invites on publ.organization_invitations for select using (
+  exists(
+    select 1 from publ.organization_memberships
+      where organization_memberships.organization_id = organization_id
+      and organization_memberships.user_id = publ.current_user_id()
+      and organization_memberships.role in ('OWNER','ADMIN')
+  )
+);
 
 -- Send the user an invitation email to join the organization
 create trigger _500_send_email after insert on publ.organization_invitations
