@@ -8,7 +8,7 @@
     "init:db": "./scripts/with-env.sh node ./scripts/init-db.js",
     "ruru": "./scripts/with-env.sh npx -p http-proxy -p ruru ruru -SPe 'http://localhost:8000/graphql'",
     "gm": "./scripts/with-env.sh  pnpm --filter db gm ",
-    "build": "./scripts/with-env.sh turbo build",
+    "build": "./scripts/with-env.sh pnpm turbo build",
     "server:start": "./scripts/with-env.sh pnpm --filter api start",
     "workers:start": "./scripts/with-env.sh pnpm --filter workers start",
     "generate:fixtures": "./scripts/with-env.sh pnpm ts-node ./apps/api/src/scripts/fixtures.ts"
