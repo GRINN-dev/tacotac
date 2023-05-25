@@ -182,3 +182,32 @@ query GetEventLogsBySlug(
     }
   }
 }
+
+query GetCurrentUserEvents {
+  userEvents {
+    nodes {
+      ...MyEvent
+      organization {
+        id
+        name
+        slug
+      }
+      attendees {
+        totalCount
+      }
+      eventBranding {
+        ...EventBrandingFragment
+      }
+      registrations {
+        totalCount
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -10,9 +11,9 @@ import { MyDataTable } from "./_components/data-table";
 const EventsPage = async ({ params: { organizationSlug = "all" } }) => {
   const events =
     organizationSlug === "all"
-      ? (await sdk().GetAllEvents()).events?.nodes
+      ? (await serverSdk().GetCurrentUserEvents()).userEvents?.nodes
       : (
-          await sdk().GetOrganizationBySlug({
+          await serverSdk().GetOrganizationBySlug({
             slug: organizationSlug,
           })
         ).organizationBySlug?.events?.nodes;

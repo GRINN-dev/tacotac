@@ -2870,6 +2870,8 @@ export type Query = {
   /** Reads and enables pagination through a set of `UserAuthentication`. */
   userAuthentications?: Maybe<UserAuthenticationsConnection>;
   userByUsername?: Maybe<User>;
+  /** Reads and enables pagination through a set of `Event`. */
+  userEvents?: Maybe<EventsConnection>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UsersConnection>;
 };
@@ -3194,6 +3196,17 @@ export type QueryUserAuthenticationsArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryUserByUsernameArgs = {
   username: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserEventsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<EventFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -4848,6 +4861,11 @@ export type GetEventLogsBySlugQueryVariables = Exact<{
 
 export type GetEventLogsBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
+export type GetCurrentUserEventsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserEventsQuery = { __typename?: 'Query', userEvents?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number }, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+
 export type GetEventBrandingByIdQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -5475,6 +5493,37 @@ export const GetEventLogsBySlugDocument = `
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
+export const GetCurrentUserEventsDocument = `
+    query GetCurrentUserEvents {
+  userEvents {
+    nodes {
+      ...MyEvent
+      organization {
+        id
+        name
+        slug
+      }
+      attendees {
+        totalCount
+      }
+      eventBranding {
+        ...EventBrandingFragment
+      }
+      registrations {
+        totalCount
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    totalCount
+  }
+}
+    ${MyEventFragmentDoc}
+${EventBrandingFragmentFragmentDoc}`;
 export const GetEventBrandingByIdDocument = `
     query GetEventBrandingById($id: UUID!) {
   eventBranding(id: $id) {
@@ -5755,6 +5804,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventLogsBySlug(variables: GetEventLogsBySlugQueryVariables, options?: C): Promise<GetEventLogsBySlugQuery> {
       return requester<GetEventLogsBySlugQuery, GetEventLogsBySlugQueryVariables>(GetEventLogsBySlugDocument, variables, options) as Promise<GetEventLogsBySlugQuery>;
+    },
+    GetCurrentUserEvents(variables?: GetCurrentUserEventsQueryVariables, options?: C): Promise<GetCurrentUserEventsQuery> {
+      return requester<GetCurrentUserEventsQuery, GetCurrentUserEventsQueryVariables>(GetCurrentUserEventsDocument, variables, options) as Promise<GetCurrentUserEventsQuery>;
     },
     GetEventBrandingById(variables: GetEventBrandingByIdQueryVariables, options?: C): Promise<GetEventBrandingByIdQuery> {
       return requester<GetEventBrandingByIdQuery, GetEventBrandingByIdQueryVariables>(GetEventBrandingByIdDocument, variables, options) as Promise<GetEventBrandingByIdQuery>;
