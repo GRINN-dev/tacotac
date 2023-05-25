@@ -193,7 +193,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               <p>{event.city}</p>
             </div>
             <p className="mt-4">
-              {event?.totalConfirmedRegistrations} présents / {event?.totalRegistrations} inscrits
+              {event?.totalConfirmedRegistrations} présents / {event?.attendees.totalCount} inscrits
             </p>
             <p className="text-xs">
               <b>capicité :</b> {event?.capacity} places

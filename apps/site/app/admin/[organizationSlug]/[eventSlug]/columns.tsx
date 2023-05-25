@@ -29,7 +29,7 @@ import {
 export const columns: (input: {
   organizationSlug: string;
   eventSlug: string;
-}) => ColumnDef<GetEventBySlugQuery["eventBySlug"]["registrations"]["nodes"][number]["attendeesList"][number]>[] = ({
+}) => ColumnDef<GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"][number]>[] = ({
   organizationSlug,
   eventSlug,
 }) => [
@@ -172,9 +172,7 @@ const Refresher: FC = () => {
   );
 };
 
-export const filters: Filter<
-  GetEventBySlugQuery["eventBySlug"]["registrations"]["nodes"][number]["attendeesList"][number]
->[] = [
+export const filters: Filter<GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"][number]>[] = [
   {
     columnId: "global",
     displayName: "Recherche globale",

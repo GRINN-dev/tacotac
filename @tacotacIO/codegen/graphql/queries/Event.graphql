@@ -7,6 +7,9 @@ query GetAllEvents {
         name
         slug
       }
+      attendees {
+        totalCount
+      }
       eventBranding {
         ...EventBrandingFragment
       }
@@ -51,7 +54,7 @@ query GetAllEventsByOrganizationSlug($organizationSlug: String!) {
 query GetEventById(
   $eventId: UUID!
   $orderBy: [LogsOrderBy!] = UPDATED_AT_DESC
-  $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC
+  # $attendeesOrderBy: [AttendeesOrderBy!] = LASTNAME_DESC
   $first: Int
   $offset: Int
   $filter: LogFilter
@@ -62,11 +65,17 @@ query GetEventById(
       ...EventBrandingFragment
     }
     capacity
-    registrations {
+    # registrations {
+    #   nodes {
+    #     attendeesList(orderBy: $attendeesOrderBy) {
+    #       ...MyAttendee
+    #     }
+    #   }
+    # }
+    attendees {
+      totalCount
       nodes {
-        attendeesList(orderBy: $attendeesOrderBy) {
-          ...MyAttendee
-        }
+        ...MyAttendee
       }
     }
     logsList(
@@ -85,10 +94,7 @@ query GetEventById(
 
 query GetEventBySlug(
   $eventSlug: String!
-  $organizationSlug: String!
-  $filter: AttendeeFilter
-  $first: Int
-  $offset: Int
+  $organizationSlug: String! # $filter: AttendeeFilter # $first: Int # $offset: Int
 ) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
     ...MyEvent
@@ -96,24 +102,25 @@ query GetEventBySlug(
       ...EventBrandingFragment
     }
     attendees {
+      totalCount
       nodes {
         ...MyAttendee
       }
     }
-    registrations(first: $first, offset: $offset) {
-      nodes {
-        attendeesList(filter: $filter) {
-          ...MyAttendee
-        }
-      }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-      }
-      totalCount
-    }
+    # registrations(first: $first, offset: $offset) {
+    #   nodes {
+    #     attendeesList(filter: $filter) {
+    #       ...MyAttendee
+    #     }
+    #   }
+    #   pageInfo {
+    #     hasNextPage
+    #     hasPreviousPage
+    #     startCursor
+    #     endCursor
+    #   }
+    #   totalCount
+    # }
   }
 }
 

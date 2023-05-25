@@ -96,7 +96,7 @@ query GetOrganizationBySlug(
     ) {
       nodes {
         ...MyEvent
-        registrations {
+        attendees {
           totalCount
         }
         organization {

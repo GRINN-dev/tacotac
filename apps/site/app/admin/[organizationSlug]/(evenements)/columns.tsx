@@ -20,24 +20,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export interface Event {
-  id?: string;
-  // status?: string;
-  bookingStartsAt?: string;
-  bookingEndsAt?: string;
-  startsAt?: string;
-  endsAt?: string;
-  name?: string;
-  placeName?: string;
-  city?: string;
-  capacity?: number;
-  totalRegistrations?: number;
-  totalConfirmedRegistrations?: number;
-}
-
 export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]["events"]["nodes"][number]>[] = [
   {
-    accessorKey: "totalRegistrations",
+    accessorKey: "attendees",
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -49,7 +34,7 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
     cell: ({ row }) => {
       return (
         <div className="">
-          <div className="text-accent text-3xl">{row.original.totalRegistrations}</div>
+          <div className="text-accent text-3xl">{row.original.attendees.totalCount}</div>
           <div className="text-accent">participants</div>
         </div>
       );
@@ -197,7 +182,7 @@ export const filters: Filter<GetOrganizationBySlugQuery["organizationBySlug"]["e
     displayName: "Nom",
   },
   {
-    columnId: "registrations",
+    columnId: "attendees",
     type: "number-range",
     displayName: "Inscriptions",
   },
