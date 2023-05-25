@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "app_id": "app_f52eadcd-c02c-408b-ba05-7d825bdf7683",
+      "org_id": "orga_13afce40-9815-4b10-924f-200b797c1cd3",
+      "deploy_url": "https://push-n2-par-clevercloud-customers.services.clever-cloud.com/app_f52eadcd-c02c-408b-ba05-7d825bdf7683.git",
+      "name": "kaypi-dev",
+      "alias": "kaypi-dev"
+    },
+    {
+      "app_id": "app_2ead578f-d6c1-4a37-a13e-ed47cf3022bc",
+      "org_id": "orga_13afce40-9815-4b10-924f-200b797c1cd3",
+      "deploy_url": "https://push-n2-par-clevercloud-customers.services.clever-cloud.com/app_2ead578f-d6c1-4a37-a13e-ed47cf3022bc.git",
+      "name": "kaypi-dev",
+      "alias": "kaypi-dev"
+    }
+  ]
+}

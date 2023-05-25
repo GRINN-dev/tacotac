@@ -85,7 +85,7 @@ const rootPgPool = new Pool({
 
 faker.setLocale("fr");
 
-const createEvent: () => Promise<string> = async () => {
+const createEvent: (eventName: string) => Promise<string> = async eventName => {
   const {
     rows: [row],
   } = await rootPgPool.query(
@@ -135,7 +135,7 @@ const createEvent: () => Promise<string> = async () => {
       faker.datatype.boolean(),
       faker.address.latitude(),
       faker.address.longitude(),
-      faker.commerce.productName(),
+      eventName,
       "881a4dc1-b74f-4e21-9d37-87b83970642f",
       faker.lorem.words(),
       faker.lorem.slug(),
@@ -246,9 +246,13 @@ const createAttendee: (
 const main = async () => {
   console.log("Creating events...");
   // create 10 events. For each event create between 10 and 2000 registrations and for each registration create between 1 and 4 attendees. The first attendee is the inscriptor.
-
-  for (let i = 0; i < 3; i++) {
-    const eventId = await createEvent();
+  const myEvents = [
+    "Le Test du Bien Commun",
+    "Changer par la Kaypi",
+    "Les pépites de Jean-Pierre",
+  ];
+  for (let i = 0; i < myEvents.length; i++) {
+    const eventId = await createEvent(myEvents[i]);
     console.log(`Event ${i + 1} created with id ${eventId}`);
     const numberOfRegistrations = faker.datatype.number({ min: 10, max: 2000 });
     for (let j = 0; j < numberOfRegistrations; j++) {
