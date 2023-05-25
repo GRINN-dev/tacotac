@@ -75,6 +75,12 @@ if [ -z "${DATABASE_AUTHENTICATOR_URL:-}" ]; then
   export DATABASE_AUTHENTICATOR_URL
 fi
 
+
+if [ -z "${NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID:-}" ]; then
+  NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID="${GOOGLE_OAUTH_CLIENT_ID}"
+  export NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID
+fi
+
 # check if -s or --show-env flag is passed as an argument
 if [[ "$@" == *"--show-env"* ]] || [[ "$@" == *"-s"* ]]; then
   echo "Environment variables:"

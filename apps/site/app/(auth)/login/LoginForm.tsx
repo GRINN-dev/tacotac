@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { GenericForm } from "@/components/form/generic-form";
+import { GoogleAuth } from "@/components/google-auth";
 import { Button, Input, Label, buttonVariants } from "@/components/ui";
 import { Separator } from "@/components/ui/separator";
 import { getLoginFormProps } from "./loginFormProps";
@@ -71,6 +72,23 @@ export const LoginForm = () => {
       </form>
 
       <Separator className="mt-4" />
+      <div className="mt-4 flex justify-center">
+        <GoogleAuth
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID}
+          handleCredentialResponse={async (response) => {
+            setLoading(true);
+            const res = await fetch(
+              `${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth/google/authenticate?token=${response.credential}`,
+              {
+                method: "POST",
+                credentials: "include",
+              }
+            ).then((res) => res.json());
+            setLoading(false);
+            res?.ok && router.push("/");
+          }}
+        />
+      </div>
     </div>
   );
 };
