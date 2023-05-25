@@ -62,5 +62,5 @@ export const organizationSendInvite: Task = async (
       },
     },
   };
-  await addJob("sendEmail", sendEmailPayload);
+  await addJob("sendEmail", { sendEmailPayload });
 };

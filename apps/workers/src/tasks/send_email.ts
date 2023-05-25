@@ -11,13 +11,9 @@ export interface SendEmailPayload {
 
 export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
   const { sendEmailPayload, attendeeId } = payload as {
-    attendeeId: string;
+    attendeeId?: string;
     sendEmailPayload: SendEmailPayload;
   };
-  console.log(
-    "🚀 ~ file: send_email.ts:17 ~ constsendEmail:Task= ~ attendeeId:",
-    attendeeId
-  );
 
   console.log("isDev: ", isDev);
   await sgMail
@@ -27,14 +23,15 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     })
     .then(async (response: any) => {
       console.log("sendgrid response status code", response[0].statusCode);
-      const { rows } = await withPgClient(pgClient =>
-        pgClient.query(
-          `update publ.attendees atts
+      attendeeId &&
+        (await withPgClient(pgClient =>
+          pgClient.query(
+            `update publ.attendees atts
           set is_email_sent = true
           where atts.id = $1;`,
-          [attendeeId]
-        )
-      );
+            [attendeeId]
+          )
+        ));
     })
     .catch((error: any) => {
       console.error(error);
