@@ -53,9 +53,9 @@ export const organizationSendInvite: Task = async (
       dynamicTemplateData: {
         organizationName: organization.name,
         link:
-          `${process.env.ROOT_URL}/invitation?id=${encodeURIComponent(
-            invitation.id
-          )}` +
+          `${
+            process.env.NEXT_PUBLIC_SITE_ENDPOINT
+          }/invitation?id=${encodeURIComponent(invitation.id)}` +
           (invitation.code
             ? `&code=${encodeURIComponent(invitation.code)}`
             : ""),
