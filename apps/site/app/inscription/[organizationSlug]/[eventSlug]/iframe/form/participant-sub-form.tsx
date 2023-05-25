@@ -54,25 +54,6 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
       </div>
 
       <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
-        <Label htmlFor="lastname">
-          Nom<span className="text-red-500"> *</span>
-        </Label>
-        <Input
-          type="text"
-          id="lastname"
-          placeholder={nom}
-          {...register(`attendees.${i}.lastname`, {
-            required: "Un nom pour le participant est requis",
-          })}
-          className="col-span-2"
-        />
-        {formState.errors?.attendees?.[i]?.lastname && (
-          <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.attendees?.[i].lastname?.message}
-          </p>
-        )}
-      </div>
-      <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
         <Label htmlFor="firstname">
           Prénom <span className="text-red-500"> *</span>
         </Label>
@@ -92,6 +73,25 @@ export const ParticipantSubForm: FC<ParticipantSubFormProps> = ({ branding, meth
             </p>
           )}
         </div>
+      </div>
+      <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
+        <Label htmlFor="lastname">
+          Nom<span className="text-red-500"> *</span>
+        </Label>
+        <Input
+          type="text"
+          id="lastname"
+          placeholder={nom}
+          {...register(`attendees.${i}.lastname`, {
+            required: "Un nom pour le participant est requis",
+          })}
+          className="col-span-2"
+        />
+        {formState.errors?.attendees?.[i]?.lastname && (
+          <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
+            {formState.errors?.attendees?.[i].lastname?.message}
+          </p>
+        )}
       </div>
       <div className="mt-4 grid grid-cols-3 items-center gap-1.5">
         <Label htmlFor="email">
