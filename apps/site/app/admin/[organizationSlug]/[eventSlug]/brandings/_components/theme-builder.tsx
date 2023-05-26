@@ -9,7 +9,7 @@ import {
   Label,
 } from "@/components/ui";
 import { defaultTheme } from "./theme";
-import { CreateAttendeeForm } from "@/app/inscription/[organizationSlug]/[eventSlug]/iframe/form";
+import { CreateAttendeeForm2 } from "@/app/inscription/[organizationSlug]/[eventSlug]/iframe/form/create-attendee-form";
 import { sdk } from "@/lib/sdk";
 
 export const ThemeBuilder: FC<{
@@ -45,7 +45,7 @@ export const ThemeBuilder: FC<{
         }
       >
         <div className="p-4 border-4 rounded-3xl border-dashed">
-          <CreateAttendeeForm {...eventBySlug} />
+          <CreateAttendeeForm2 event={eventBySlug}  />
         </div>
       </section>
       <form
