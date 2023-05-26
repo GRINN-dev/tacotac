@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui";
 import { Card } from "@/components/ui/card";
 import { MainNav } from "../_components/main-nav";
@@ -51,6 +52,7 @@ export default async function AdminLayout({
 
           <MainNav className="mx-6" organizationSlug={organizationSlug} />
           <div className="ml-auto flex items-center space-x-4">
+            <ThemeToggle />
             {/* <Search /> */}
             <UserNav currentUser={currentUser} />
           </div>
