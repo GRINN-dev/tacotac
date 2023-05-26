@@ -15,7 +15,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
 
-interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
+interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {
+  eventSlug: string;
+  organizationSlug: string;
+}
 
 interface ICsv {
   civility: string;
@@ -29,10 +32,14 @@ interface ICsv {
   isVip: string;
 }
 
-export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, description }) => {
+export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({
+  id,
+  name,
+  description,
+  eventSlug,
+  organizationSlug,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isTransitionning, startTransition] = useTransition();
-  const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
   const [parsedData, setParsedData] = useState([]);
   const router = useRouter();
@@ -106,6 +113,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
           });
           isForcingImport = false;
         } else {
+          router.push(`/admin/${organizationSlug}/${eventSlug}`);
           toast({
             title: "Import terminé",
             action: (
@@ -133,7 +141,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
   };
 
   return (
-    <div className={cn("mt-4", isSubmitting && "animate-pulse")}>
+    <div className={cn("mt-4", isLoading && "animate-pulse")}>
       <div className="mt-4 grid items-center gap-1.5">
         <div className="my-4 rounded-lg border p-4">
           <div className="flex">
