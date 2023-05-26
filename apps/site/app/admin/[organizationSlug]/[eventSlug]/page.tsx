@@ -21,39 +21,23 @@ const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
 
   return (
     <ScrollArea className="h-full">
-      <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-        <div className="mx-auto  max-w-3xl gap-2">
-          <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
-            Tous les Participants
-          </h2>
+      <section className="container pb-8 pt-6 md:py-10">
+        <h1 className="admin-h1">Tous les Participants</h1>
+
+        <div className="flex max-w-3xl flex-row items-center gap-2">
           <Link className={cn(buttonVariants())} href={`/admin/${organizationSlug}/${eventSlug}/participants/create`}>
             Inviter un participant
-          </Link>
-        </div>
-        <div className="mx-auto flex max-w-3xl flex-row items-center justify-between gap-2">
+          </Link>{" "}
           <ModalStatus />
-
           <SendAllEmailConfirmDonation eventId={data?.eventBySlug?.id} />
           <SendAllEmail eventId={data?.eventBySlug?.id} />
         </div>
-        {data?.eventBySlug?.attendees?.nodes?.length > 0 ? (
-          <ScrollArea className="mt-8 ">
-            <div className="px-8">
-              <MyDataTable
-                data={data?.eventBySlug?.attendees?.nodes}
-                organizationSlug={organizationSlug}
-                eventSlug={eventSlug}
-              />
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        ) : (
-          <div className="flex flex-col items-start gap-4">
-            <p>
-              Aucun utilisateur n&apos;est inscrit pour le moment <u>ou</u> aucun ne correspondant a votre recherche.
-            </p>
-          </div>
-        )}
+        <div className="h-8" />
+        <MyDataTable
+          data={data?.eventBySlug?.attendees?.nodes}
+          organizationSlug={organizationSlug}
+          eventSlug={eventSlug}
+        />
       </section>
     </ScrollArea>
   );
