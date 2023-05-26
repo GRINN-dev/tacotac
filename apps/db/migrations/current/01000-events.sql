@@ -70,8 +70,8 @@ create table publ.events (
 
 -- RBAC
     grant select on publ.events to :DATABASE_VISITOR;
-    grant insert(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, is_cancelled, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity, webhooks) on publ.events to :DATABASE_VISITOR;
-    grant update(name, description, organization_id, place_name,  address_line_1, address_line_2, zip_code, is_cancelled, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity,webhooks) on publ.events to :DATABASE_VISITOR;
+    grant insert(name, description, organization_id, place_name, is_draft,  address_line_1, address_line_2, zip_code, is_cancelled, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity, webhooks) on publ.events to :DATABASE_VISITOR;
+    grant update(name, description, organization_id, place_name, is_draft,  address_line_1, address_line_2, zip_code, is_cancelled, city, country, lat, lon, starts_at,ends_at, booking_starts_at, booking_ends_at, capacity,webhooks) on publ.events to :DATABASE_VISITOR;
     grant delete on publ.events to :DATABASE_VISITOR;
 -- triggers
     create trigger _100_timestamps

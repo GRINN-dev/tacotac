@@ -68,22 +68,22 @@ const LogsPage = async ({
             </div>
             <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
               <dl className="sm:divide-y sm:divide-gray-200">
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                   <dt className="text-sm font-medium ">Email</dt>
                   <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.email || "manquant"}</dd>
                 </div>
 
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                   <dt className="text-sm font-medium ">Numéro de panneau</dt>
                   <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
                     {payload?.ticket_payload?.panel_number || "manquant"}
                   </dd>
                 </div>
-                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                   <dt className="text-sm font-medium ">N° de ticket</dt>
                   <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">{payload?.ticket_payload?.ticket_number}</dd>
                 </div>
-                <div className="flex items-center py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6">
+                <div className="flex items-center py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                   <dt className="text-sm font-medium ">Problème de réseau sur cette inscription</dt>
                   <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
                     {payload?.is_coming_from_offline_mode ? "oui" : "non"}
@@ -98,9 +98,9 @@ const LogsPage = async ({
   };
 
   return (
-    <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-        Logs de {eventLogsBySlug.name}
+    <section className="container pb-8 pt-6 md:py-10">
+      <h1 className="admin-h1">
+        Journal pour l&apos;événement <span className="text-accent">{eventLogsBySlug.name}</span>
       </h1>
 
       <div className="mx-auto flex max-w-3xl items-baseline gap-2">
@@ -110,7 +110,7 @@ const LogsPage = async ({
               <li key={log.id}>
                 <div className="relative pb-8">
                   {logId !== eventLogsBySlug?.logsList.length - 1 ? (
-                    <span className="absolute top-10 left-4 -ml-px h-4 w-0.5 bg-gray-200" aria-hidden="true" />
+                    <span className="absolute left-4 top-10 -ml-px h-4 w-0.5 bg-gray-200" aria-hidden="true" />
                   ) : null}
                   <div className="relative flex items-center justify-center space-x-3 ">
                     <div>
