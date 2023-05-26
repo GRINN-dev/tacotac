@@ -3,7 +3,6 @@
 import { FC, Key, useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { GetEventBySlugQuery, RegisterAttendeesCsvInput } from "@/../../@tacotacIO/codegen/dist";
-import { toast } from "@/hooks/use-toast";
 import { AlertTriangle } from "lucide-react";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
@@ -14,6 +13,7 @@ import { FileDragNDrop } from "@/components/FileDragNDrop";
 import SimpleCollection from "@/components/table/SimpleCollection";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ToastAction } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 interface iImportAttendeesProps extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 
@@ -36,7 +36,6 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
   const [error, setError] = useState<Error | null>(null);
   const [parsedData, setParsedData] = useState([]);
   const router = useRouter();
-  const { handleSubmit, reset } = useForm<RegisterAttendeesCsvInput>();
   const pathname = usePathname();
   const [csvUploadrender, setCsvUploadRender] = useState([]);
   let isForcingImport: boolean = false;
@@ -69,7 +68,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
     });
   };
 
-  const onSubmit = handleSubmit(() => {
+  const onSubmit = () => {
     sdk()
       .RegisterAttendeesCsv({
         input: { eventId: id, attendeesCsv: parsedData, isForcing: isForcingImport },
@@ -131,10 +130,10 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         throw error;
       });
     setIsLoading(false);
-  });
+  };
 
   return (
-    <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
+    <div className={cn("mt-4", isSubmitting && "animate-pulse")}>
       <div className="mt-4 grid items-center gap-1.5">
         <div className="my-4 rounded-lg border p-4">
           <div className="flex">
@@ -149,7 +148,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
                 </p>
               </div>
               <Button
-                className={buttonVariants({ size: "lg" })}
+                variant="outline"
                 onClick={() => {
                   window.open(
                     "https://docs.google.com/spreadsheets/d/131AXHOhQKZKA_OWVTJ6aMC65rV-ugrTbaSNkpCOwTzM/edit?usp=sharing",
@@ -173,11 +172,16 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({ id, name, descr
         />
         <div className="mt-10">{csvUploadrender?.length > 0 && <SimpleCollection arrayList={csvUploadrender} />}</div>
       </div>
-      <div className="mt-8 flex gap-2">
-        <button type="submit" className={buttonVariants({ size: "lg" })}>
+      <div className={cn("mt-8 flex gap-2", !parsedData.length && "hidden")}>
+        <Button
+          onClick={() => {
+            setIsLoading(true);
+            onSubmit();
+          }}
+        >
           Importer
-        </button>
+        </Button>
       </div>
-    </form>
+    </div>
   );
 };
