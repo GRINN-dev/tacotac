@@ -37,6 +37,7 @@ export interface Typegen0 {
   };
   eventsCausingActions: {
     assignAttendee: "done.invoke.Scanner.fetching-attendee:invocation[0]";
+    assignAttendeeAndTicket: "SELECT_ATTENDEE";
     assignEmail: "ENTER_EMAIL";
     assignError: "done.invoke.Scanner.verifying-tiket:invocation[0]";
     assignPanelNumber: "ENTER_PANEL_NUMBER" | "SCAN_PANEL";

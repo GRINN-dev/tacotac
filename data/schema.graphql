@@ -28,6 +28,7 @@ type Attendee {
   civility: CivilityStatus!
   createdAt: Datetime!
   email: String
+  eventId: UUID
   firstname: String!
   hearAbout: String
   id: UUID!
@@ -129,6 +130,9 @@ input AttendeeFilter {
 
   """Filter by the object’s `email` field."""
   email: StringFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: UUIDFilter
 
   """Filter by the object’s `firstname` field."""
   firstname: StringFilter

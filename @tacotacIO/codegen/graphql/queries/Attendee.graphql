@@ -26,9 +26,34 @@ query GetAttendeesWithoutMailByRegistrationId($registrationId: UUID!) {
 query GetAttendeeByTicketNumber($ticketNumber: String!) {
   attendeeByTicketNumber(ticketNumber: $ticketNumber) {
     ...MyAttendee
+    eventId
     registration {
       id
       eventId
+    }
+  }
+}
+
+query SearchAttendee($search: String!, $eventId: UUID!) {
+  attendees(
+    filter: {
+      eventId: { equalTo: $eventId }
+      or: [
+        { firstname: { includesInsensitive: $search } }
+        { lastname: { includesInsensitive: $search } }
+        { email: { includesInsensitive: $search } }
+        { phoneNumber: { includesInsensitive: $search } }
+        { ticketNumber: { includesInsensitive: $search } }
+      ]
+    }
+  ) {
+    nodes {
+      registration {
+        id
+        eventId
+      }
+      eventId
+      ...MyAttendee
     }
   }
 }

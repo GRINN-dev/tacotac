@@ -53,6 +53,7 @@ export type Attendee = {
   civility: CivilityStatus;
   createdAt: Scalars['Datetime'];
   email?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['UUID']>;
   firstname: Scalars['String'];
   hearAbout?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
@@ -131,6 +132,8 @@ export type AttendeeFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `email` field. */
   email?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `eventId` field. */
+  eventId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `firstname` field. */
   firstname?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
@@ -4813,7 +4816,15 @@ export type GetAttendeeByTicketNumberQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByTicketNumberQuery = { __typename?: 'Query', attendeeByTicketNumber?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null } | null };
+export type GetAttendeeByTicketNumberQuery = { __typename?: 'Query', attendeeByTicketNumber?: { __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null } | null };
+
+export type SearchAttendeeQueryVariables = Exact<{
+  search: Scalars['String'];
+  eventId: Scalars['UUID'];
+}>;
+
+
+export type SearchAttendeeQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null }> } | null };
 
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5367,9 +5378,26 @@ export const GetAttendeeByTicketNumberDocument = `
     query GetAttendeeByTicketNumber($ticketNumber: String!) {
   attendeeByTicketNumber(ticketNumber: $ticketNumber) {
     ...MyAttendee
+    eventId
     registration {
       id
       eventId
+    }
+  }
+}
+    ${MyAttendeeFragmentDoc}`;
+export const SearchAttendeeDocument = `
+    query SearchAttendee($search: String!, $eventId: UUID!) {
+  attendees(
+    filter: {eventId: {equalTo: $eventId}, or: [{firstname: {includesInsensitive: $search}}, {lastname: {includesInsensitive: $search}}, {email: {includesInsensitive: $search}}, {phoneNumber: {includesInsensitive: $search}}, {ticketNumber: {includesInsensitive: $search}}]}
+  ) {
+    nodes {
+      registration {
+        id
+        eventId
+      }
+      eventId
+      ...MyAttendee
     }
   }
 }
@@ -5817,6 +5845,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetAttendeeByTicketNumber(variables: GetAttendeeByTicketNumberQueryVariables, options?: C): Promise<GetAttendeeByTicketNumberQuery> {
       return requester<GetAttendeeByTicketNumberQuery, GetAttendeeByTicketNumberQueryVariables>(GetAttendeeByTicketNumberDocument, variables, options) as Promise<GetAttendeeByTicketNumberQuery>;
+    },
+    SearchAttendee(variables: SearchAttendeeQueryVariables, options?: C): Promise<SearchAttendeeQuery> {
+      return requester<SearchAttendeeQuery, SearchAttendeeQueryVariables>(SearchAttendeeDocument, variables, options) as Promise<SearchAttendeeQuery>;
     },
     GetAllEvents(variables?: GetAllEventsQueryVariables, options?: C): Promise<GetAllEventsQuery> {
       return requester<GetAllEventsQuery, GetAllEventsQueryVariables>(GetAllEventsDocument, variables, options) as Promise<GetAllEventsQuery>;

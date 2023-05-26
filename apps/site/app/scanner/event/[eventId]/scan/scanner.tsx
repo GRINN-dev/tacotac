@@ -16,6 +16,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
+import { FindAttendee } from "./find-attendee";
 import { scannerMachine } from "./scanner-machine";
 
 export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) => {
@@ -156,7 +157,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
           numberOfAttendeesToSynchronize > 0 && (
             <div
               className={cn(
-                "bg-background absolute top-0 right-0 m-4 grid place-content-center rounded-full shadow-xl",
+                "bg-background absolute right-0 top-0 m-4 grid place-content-center rounded-full shadow-xl",
                 state.matches("scanning-panel") || state.matches("scanning-ticket") ? "hidden" : "grid"
               )}
             >
@@ -199,9 +200,16 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               <b>capicité :</b> {event?.capacity} places
             </p>
             <div className="mt-4 grid gap-2">
-              <Button size="sm" variant="secondary">
-                Trouver un inscrit
-              </Button>
+              <FindAttendee
+                eventId={event.id}
+                onSelect={(attendee) => {
+                  console.log("attendee", attendee);
+                  send({
+                    type: "SELECT_ATTENDEE",
+                    payload: attendee,
+                  });
+                }}
+              />
               <Button size="sm" variant="outline">
                 Inscire
               </Button>
@@ -209,7 +217,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
                 <ArrowLeft className="mr-2 h-4 w-4 " /> retour aux événements
               </Link>
             </div>
-            <div className="fixed top-4 right-4">
+            <div className="fixed right-4 top-4">
               <ThemeToggle />
             </div>
           </>

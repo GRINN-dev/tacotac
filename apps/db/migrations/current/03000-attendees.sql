@@ -142,3 +142,13 @@ create function publ.events_attendees(any_event publ.events) returns setof publ.
   where r.event_id = any_event.id;
 $$ language sql stable;
 grant execute on function publ.events_attendees to :DATABASE_VISITOR;
+
+
+drop function if exists publ.attendees_event_id cascade;
+create function publ.attendees_event_id(any_attendee publ.attendees) returns uuid as $$
+  -- join via publ.registration
+  select r.event_id 
+  from publ.registrations r
+  where r.id = any_attendee.registration_id;
+$$ language sql stable;
+grant execute on function publ.attendees_event_id to :DATABASE_VISITOR;

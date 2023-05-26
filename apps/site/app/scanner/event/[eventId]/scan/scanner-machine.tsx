@@ -1,4 +1,8 @@
-import { GetAttendeeByTicketNumberQuery, ScanAttendeeMutation } from "@/../../@tacotacIO/codegen/dist";
+import {
+  GetAttendeeByTicketNumberQuery,
+  ScanAttendeeMutation,
+  SearchAttendeeQuery,
+} from "@/../../@tacotacIO/codegen/dist";
 import { actions, assign, createMachine } from "xstate";
 
 import { sdk } from "@/lib/sdk";
@@ -6,7 +10,7 @@ import { sdk } from "@/lib/sdk";
 export const scannerMachine = ({ eventId }: { eventId: string }) =>
   createMachine(
     {
-      /** @xstate-layout N4IgpgJg5mDOIC5QGUDGBDAdpsAnAdAJYQA2YAxMgCoCCASlQPrIDCNAcuwJLsDiA2gAYAuolAAHAPaxCAF0KTMYkAA9EAWgBMmgIz5NAdgMAOAJw7T50wFYALDoA0IAJ6IAbIL2GzOwaYPWOjp2AL4hTmhYOASwGNiEmFDq8qgA1mCy5ACi7FRZdIxUXCwA0llM7ACqALIAQvlCokggUjLyispqCJoAzPg9PW5Gmp4Ggm62A7ZOrgj2BvimgtY21m7GHsa2YRFx0fixUQlJKemZbOwsWQAyjcqtcgpKzV06tsb4Om7Wg9aCmpYLLZTDNEGNTPh-msDN4DMFTDsQJFsHgDntjslCGkMpQLoVimUqHdmg92s9QK9jNZ8LY-r1rAYeiYBstQQhAn1NLZdLpjEy+f5Ecj9od4ol1OIsGASOQLldbiJ7tJHh0XohNBNPnCNgY3F8gj01mzjHpgZZAbTLB4DEK9qjRZgMZKcDKcnkCgAFDg3RhVOoNRUk5Vkzpg4yCT7GTRUgZbWzrRwudV+fDGALfQbDTQrYy2qL29Hi53S7K5fKML3sH1++p0fg6JoSYNPUPs0y2fRwnoA3y9NzaNk9HQfWnGMyCRm2ezWPl5lExQtJYsy1gcCvehWNlrN1UUsE6TSLd7vMyMw0DNnfBZjqPAmeTCduOcixcSqUrvGVm71rekltqhAgh0PpdT8fwelMPkAkvDZ9EBbR+1pSYbXCJE7QIPBcEkXByDoLJqHoIlAybNp-z3BB1B6WDjwnZC4X8EEkwQDY+j5FYRgmYJBFzVDhVRCBCFgcQSHQZx1AAMwyVAAAtIHUdBZFkMBMAgMAwHklS3xdShKlqaouCI38d3JVREDeWl9G+L47F6cYuTZBk3EsgIuVMHl4x6Z9+ME4TRIkqTZIgeTFOU1T1KwILl1lDh5WJEiVRM14BkPIYEzpYcpzZds+mWXLrBnA9DR0LyCAEoSRLEyTZBkuSFKUlS1I0yL31Ld1GCyaoaC4TclVI3dTMArkFly5ZIMgplrAczxLPeA9gJ6QQ7083j0PwKqZIxOrQrU8gIEUMAiEwAA3SR0nwPiCHW6TNpChqwAQBITowMlGji7c+sSxA+Sc8YDEsbiqNvRNZksBZ8vMRluLPHjdnzS6Apu+qwvITDsPwXzZHE7CAFtztWq7Ee2+7HskZ6nle4j3oS1tIZpPVII8IcoyjNkgL0E143sXwxjcQUVrh-Ayt8sSHTk04MiarSSzdcsOq6nqgw+1sgjc-A9QmfKmQ1WlJqYq1IRWHRIbTWMSsFnyKvUUWgvF2RJai5AaAANSyRgAHkADEPeuHgsjev9+teCxqQBaNgS2f5s00VmBghWlDBWOENS+BF+fnc3yr863MWxO2IqlmU5W-SmA8+wDxj6Hpw7+wINSrgxWZGPoLCMQRDRNNytjN2AAFcACNsbkeREl2-bDpOs6LoOfvB8U44HuO0mFPJkR-eM5W3G+fAfj+cwtjPfLjWsQ9JipUwq7MXpdG7meh+OUecHH06Dqn3uB7vxIF6e5fFFehteupgBQQbJBA33fnPEeqMCAYyxrgXGr9b4QKgF-JeL1V4l3XgBI2tgFgGGQpHCC2ZphMV8Jqf4mxdQ2BsNfNO+wjp4EIOJZwGJ5BnAfgdEmk9Vr0NwIw5h4pWEZBQWTX+6CjJKwAsfDshpj4jHyjCEwDcmJ6kPBaNYnhuwMlTrDdOPC+EsMIGwvaj9OEv24QwphBizjCJ-pgP+4jAHkVrp8Ic8ZoRTk3sQ2YRgPhwn7K5YC3JuRmz0ZYgRhicRQPRiJTGOM8YC1Cfwk4ETZA2LQcINeEjyLdmbhBNybl9TdmMDHRkqYAh4NsOMI2gxtiIkwJIVS8BmgXQASGAC6hJgdhongpk9E-psnUGmbeZtiBkFaWRAalFuLb3BsOS+Ng8GXgZGrDYGpTBuHbsebur5bbjMDhoN4kI3gmk8OfaMRgeiXmmt4cwfgAhBFCLQgsRwizvj2WXM+-QxhbAmGmGEE4rkdmzIIf4vhPDBBhGbKB7zWzqAPNSSCnhxiLVpIyTejdII0neOsiFHi4RmyFpbK6tVbphXtm8xWjiBq+FViaIIIKBjdmWJc5RQQaTmFmpxewZgzYE3FFtO6MKAJ-Ryv2XUVI27diCGyIwTkpywnsFXLkmgCUWyznaG2WIzjkpdEK8iQQRj4F1MeLkRtGS6lZvS-obwVjcUWsBNyYDZ7DygHq6lYwOx-D5Dg7WAQWWzBnAsNRHhgLZj+iEixSTMRnDdV0HBTlwz-FBbK9WbJ3gLA2doKiuhgi9OsGEMIQA */
+      /** @xstate-layout N4IgpgJg5mDOIC5QGUDGBDAdpsAnAdAJYQA2YAxMgCoCCASlQPrIDCNAcuwJLsDiA2gAYAuolAAHAPaxCAF0KTMYkAA9EAWgBMmgIz5NAdgMAOAJw7T50wFYALDoA0IAJ6IAbIL2GzOwaYPWOjp2AL4hTmhYOASwGNiEmFDq8qgA1mCy5ACi7FRZdIxUXCwA0llM7ACqALIAQvlCokggUjLyispqCJoAzPg9PW5Gmp4Ggm62A7ZOrgj2BvimgtY21m7GHsa2YRFx0fixUQlJKemZbOwsWQAyjcqtcgpKzV06tsb4Om7Wg9aCmpYLLZTDNEGNTPh-msDN4DMFTDsQJFsHgDntjslCGkMpQLoVimUqHdmg92s9QK9jNZ8LY-r1rAYeiYBstQQhAn1NLZdLpjEy+f5Ecj9od4ol1OIsGASOQLldbiJ7tJHh0XohNBNPnCNgY3F8gj01mzjHpgZZAbTLB4DEK9qjRZgMZKcDKcnkCgAFDg3RhVOoNRUk5Vkzpg4yCT7GTRUgZbWzrRwudV+fDGALfQbDTQrYy2qL29Hi53S7K5fKML3sH1++p0fg6JoSYNPUPs0y2fRwnoA3y9NzaNk9HQfWnGMyCRm2ezWPl5lExQtJYsy1gcCvehWNlrN1UUsE6TSLd7vMyMw0DNnfBZjqPAmeTCduOcixcSqUrvGVm71rekltqhAgh0PpdT8fwelMPkAkvDZ9EBbR+1pSYbXCJE7QIPBcEkXByDoLJqHoIlAybNp-z3BB1B6WDjwnZC4X8EEkwQDY+j5FYRgmYJBFzVDhVRCBCFgcQSHQZx1AAMwyVAAAtIHUdBZFkMBMAgMAwHklS3xdShKlqaouCI38d3JVREDeWl9G+L47F6cYuTZBk3EsgIuVMHl4x6Z9+ME4TRIkqTZIgeTFOU1T1KwILl1lDh5WJEiVRM14BkPIYEzpYcpzZds+mWXLrBnA9DR0LyCAEoSRLEyTZBkuSFKUlS1I0yL31Ld1GCyaoaC4TclVI3dTMArkFly5ZIMgplrAczxLPeA9gJ6QQ7083j0PwKqZIxOrQrU8gIEUMAiEwAA3SR0nwPiCHW6TNpChqwAQBITowMlGji7c+sSxA+Sc8YDEsbiqNvRNZksBZ8vMRluLPHjdnzS6Apu+qwvITDsPwXzZHE7CAFtztWq7Ee2+7HskZ6nle4j3oS1tIZpPVII8IcoyjNkgL0E143sXwxjcQUVrh-Ayt8sSHTk04MiarSSzdcsOq6nqgw+1sgjc-A9QmfKmQ1WlJqYq1IRWHRIbTWMSsFnyKvUUWgvF2RJai5AaAANSyRgAHkADEPeuHgsjev9+teCxqQBaNgS2f5s00VmBghWlDBWOENS+BF+fnc3yr863MWxO2IqlmU5W-SmA8+wDxj6Hpw7+wINSrgxWZGPoLCMQRDRNNytjN2AAFcACNsbkeREl2-bDpOs6LoOfvB8U44HuO0mFPJkR-eM5W3G+fAfj+cwtjPfLjWsQ9JipUwq7MXpdG7meh+OUecHH06Dqn3uB7vxIF6e5fFFehteupgBQQbJBA33fnPEeqMCAYyxrgXGr9b4QKgF-JeL1V4l3XgBI2tgFgGGQpHCC2ZphMV8Jqf4mxdQ2BsNfNO+wjp4EIOJZwGJ5BnAfgdEmk9Vr0NwIw5h4pWEZBQWTX+6CjJKwAsfDshpj4jHyjCEwDcmJ6kPBaNYnhuwMlTrDdOPC+EsMIGwvaj9OEv24QwphBizjCJ-pgP+4jAHkVrp8Ic8ZoRTk3sQ2YRgPhwn7K5YC3JuRmz0ZYgRhicRQPRiJTGOM8YC1Cfwk4ETZA2LQcINeEjyLdmbhBNybl9TdmMDHRkqYAh4NsOMI2gxti0NRMQMglAbhZBYEwGgVA8jsAACJZD9hgrJA0-g0jboaYYZ53i61mIYCEIxdRRjhH8QYE4wioUwJIVS8BmgXQASGAC6hJgdhongpk9E-psnUGmGkf0vg4Pyr4YCmgzYNLADssiA1KLcW3uDYcl8bB4MvAyNWGwNSmDcO3Y83dXy21eYHDQbxIRvBNJ4c+0YjA9EvNNbw5g-ABCCKEOpC4jhFnfDCsuZ9+hjC2BMNMMIJwYo7NmQQ-xfCeGCDCM2UDSWtnUAeakkFPDjEWrSRkm9G6QRpO8UFbKPFwjNkLS2V1aq3TCvbElitHEDV8KrE0QQmUDG7MsdFyigg0nMLNTi9gzBmwJuKLad0uUAT+jlfsczFndiCGyIwTkpywnsFXLkjyCUZ2FlbO0NssRnFVS6B15EggjHwLqY8XIjaMl1KzXV-Q3grG4otYCbkwGz2HlAGNmqxgdj+HyHB2sAhGtmDOBYaiPAPK0SEixSTMRnBLV0HBTlwz-GZV69WbJ3gLDBdoKiuhggnOsCskIQA */
       id: "Scanner",
       initial: "idle",
       tsTypes: {} as import("./scanner-machine.typegen").Typegen0,
@@ -15,6 +19,11 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
           on: {
             START_SCANNING: {
               target: "scanning-ticket",
+            },
+
+            SELECT_ATTENDEE: {
+              target: "scanning-panel",
+              actions: "assignAttendeeAndTicket",
             },
           },
         },
@@ -199,7 +208,9 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
                 event: string;
               };
             }
-          | { type: "SCAN_PANEL"; payload: string },
+          | { type: "SCAN_PANEL"; payload: string }
+          | { type: "START_SEARCHING" }
+          | { type: "SELECT_ATTENDEE"; payload: SearchAttendeeQuery["attendees"]["nodes"][number] },
         services: {} as {
           fetchAttendee: { data: GetAttendeeByTicketNumberQuery; error: any };
           submitScanPayload: { data: ScanAttendeeMutation; error: any };
@@ -267,6 +278,16 @@ export const scannerMachine = ({ eventId }: { eventId: string }) =>
         assignError: assign({
           error: (_, event) =>
             event.type === "done.invoke.Scanner.verifying-tiket:invocation[0]" ? "ticket non valide" : "erreur",
+        }),
+        assignAttendeeAndTicket: assign({
+          attendee: (_, event) => event.payload,
+          ticket: (_, event) => ({
+            number: event.payload.ticketNumber,
+            isMissingEmail: !event.payload.email,
+            isVIP: event.payload.isVip,
+            fullName: event.payload.firstname + " " + event.payload.lastname,
+            event: event.payload.eventId,
+          }),
         }),
       },
       services: {
