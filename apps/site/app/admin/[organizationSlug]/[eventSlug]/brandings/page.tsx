@@ -13,14 +13,11 @@ const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug 
   });
 
   return (
-    <>
-      {" "}
-      <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-        Modifier la charte graphique
-      </h1>
+    <main className="container  pb-8 pt-6 md:py-10">
+      <h1 className="admin-h1">Modifier la charte graphique</h1>
       <ThemeBuilder eventBySlug={eventBySlug} />
       <UpdateEventBrandingForm {...eventBySlug?.eventBranding} />
-    </>
+    </main>
   );
 };
 

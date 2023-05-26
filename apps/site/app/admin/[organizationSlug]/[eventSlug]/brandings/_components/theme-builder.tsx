@@ -34,11 +34,11 @@ export const ThemeBuilder: FC<{
   });
 
   return (
-    <div className="grid-cols-2 h-full xl:grid mt-12">
+    <div className="mt-12">
 
       <section
         ref={previewRef}
-        className="text-foreground bg-background p-4"
+        className="text-foreground bg-background"
         id="preview text-foreground bg-background"
         style={
           ...watch('branding') as any
