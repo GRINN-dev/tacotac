@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { GetCurrentUserQuery } from "@/../../@tacotacIO/codegen/dist";
 import { CreditCard, LogOut, PlusCircle, Settings, User } from "lucide-react";
 
+import { sdk } from "@/lib/sdk";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,15 +47,21 @@ export const UserNav: FC<{ currentUser: GetCurrentUserQuery["currentUser"] }> = 
             <span>Profil</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          {/* <DropdownMenuItem>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            <span>Nouvelle organisation</span>
-          </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => {
+            sdk()
+              .Logout()
+              .then(({ logout: { success } }) => {
+                if (success) {
+                  router.push("/login");
+                }
+              });
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>Déconnexion</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

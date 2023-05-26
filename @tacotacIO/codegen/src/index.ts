@@ -231,45 +231,6 @@ export type AttendeePatch = {
   zipCode?: InputMaybe<Scalars['String']>;
 };
 
-export enum AttendeeStatus {
-  /** Inscription annulée */
-  Cancelled = 'CANCELLED',
-  /** Présence confirmée à l'évenement */
-  Confirmed = 'CONFIRMED',
-  /** En attente */
-  Idle = 'IDLE',
-  /** Panneau scanné */
-  PanelScan = 'PANEL_SCAN',
-  /** Ticket scanné */
-  TicketScan = 'TICKET_SCAN'
-}
-
-/** A filter to be used against AttendeeStatus fields. All fields are combined with a logical ‘and.’ */
-export type AttendeeStatusFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<AttendeeStatus>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<AttendeeStatus>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<AttendeeStatus>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<AttendeeStatus>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<AttendeeStatus>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<AttendeeStatus>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<AttendeeStatus>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<AttendeeStatus>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<AttendeeStatus>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<AttendeeStatus>>;
-};
-
 /** A connection to a list of `Attendee` values. */
 export type AttendeesConnection = {
   __typename?: 'AttendeesConnection';
@@ -334,6 +295,45 @@ export enum AttendeesOrderBy {
   ZipCodeAsc = 'ZIP_CODE_ASC',
   ZipCodeDesc = 'ZIP_CODE_DESC'
 }
+
+export enum AttendeeStatus {
+  /** Inscription annulée */
+  Cancelled = 'CANCELLED',
+  /** Présence confirmée à l'évenement */
+  Confirmed = 'CONFIRMED',
+  /** En attente */
+  Idle = 'IDLE',
+  /** Panneau scanné */
+  PanelScan = 'PANEL_SCAN',
+  /** Ticket scanné */
+  TicketScan = 'TICKET_SCAN'
+}
+
+/** A filter to be used against AttendeeStatus fields. All fields are combined with a logical ‘and.’ */
+export type AttendeeStatusFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<AttendeeStatus>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<AttendeeStatus>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<AttendeeStatus>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<AttendeeStatus>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<AttendeeStatus>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<AttendeeStatus>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<AttendeeStatus>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<AttendeeStatus>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<AttendeeStatus>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<AttendeeStatus>>;
+};
 
 /** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
 export type BooleanFilter = {
@@ -1641,19 +1641,6 @@ export type EventPatch = {
   zipCode?: InputMaybe<Scalars['String']>;
 };
 
-export enum EventStatus {
-  /** Annulé */
-  Cancelled = 'CANCELLED',
-  /** Brouillon */
-  Draft = 'DRAFT',
-  /** Terminé */
-  Finished = 'FINISHED',
-  /** En cours */
-  Ongoing = 'ONGOING',
-  /** A venir */
-  Pending = 'PENDING'
-}
-
 /** A connection to a list of `Event` values. */
 export type EventsConnection = {
   __typename?: 'EventsConnection';
@@ -1709,6 +1696,19 @@ export enum EventsOrderBy {
   StartsAtDesc = 'STARTS_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+export enum EventStatus {
+  /** Annulé */
+  Cancelled = 'CANCELLED',
+  /** Brouillon */
+  Draft = 'DRAFT',
+  /** Terminé */
+  Finished = 'FINISHED',
+  /** En cours */
+  Ongoing = 'ONGOING',
+  /** A venir */
+  Pending = 'PENDING'
 }
 
 export enum Fonts {
@@ -1850,26 +1850,6 @@ export type LogFilter = {
   updatedAt?: InputMaybe<DatetimeFilter>;
 };
 
-/** An input for mutations affecting `Log` */
-export type LogInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  payload?: InputMaybe<Scalars['JSON']>;
-  status: LogsStatus;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
-/** Represents an update to a `Log`. Fields that are set will be updated. */
-export type LogPatch = {
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  payload?: InputMaybe<Scalars['JSON']>;
-  status?: InputMaybe<LogsStatus>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
 export type LoginInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -1882,9 +1862,29 @@ export type LoginPayload = {
   user: User;
 };
 
+/** An input for mutations affecting `Log` */
+export type LogInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  status: LogsStatus;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
 export type LogoutPayload = {
   __typename?: 'LogoutPayload';
   success?: Maybe<Scalars['Boolean']>;
+};
+
+/** Represents an update to a `Log`. Fields that are set will be updated. */
+export type LogPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  status?: InputMaybe<LogsStatus>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
 /** A connection to a list of `Log` values. */
@@ -3662,12 +3662,12 @@ export type StringFilter = {
   greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
-  /** Included in the specified list (case-insensitive). */
-  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Contains the specified string (case-sensitive). */
   includes?: InputMaybe<Scalars['String']>;
   /** Contains the specified string (case-insensitive). */
   includesInsensitive?: InputMaybe<Scalars['String']>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
@@ -3696,12 +3696,12 @@ export type StringFilter = {
   notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
-  /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Does not contain the specified string (case-sensitive). */
   notIncludes?: InputMaybe<Scalars['String']>;
   /** Does not contain the specified string (case-insensitive). */
   notIncludesInsensitive?: InputMaybe<Scalars['String']>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
   notLike?: InputMaybe<Scalars['String']>;
   /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
@@ -3761,32 +3761,6 @@ export type TransferOrganizationOwnershipPayload = {
 /** The output of our `transferOrganizationOwnership` mutation. */
 export type TransferOrganizationOwnershipPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
-};
-
-/** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
-export type UuidFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<Scalars['UUID']>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<Scalars['UUID']>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<Scalars['UUID']>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<Scalars['UUID']>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<Scalars['UUID']>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<Scalars['UUID']>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<Scalars['UUID']>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<Scalars['UUID']>>;
 };
 
 /** All input for the `updateAttendeeEmailAndSendEmail` mutation. */
@@ -4448,12 +4422,6 @@ export type UserPatch = {
   username?: InputMaybe<Scalars['String']>;
 };
 
-export type UserSubscriptionPayload = {
-  __typename?: 'UserSubscriptionPayload';
-  event?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
-};
-
 /** A connection to a list of `User` values. */
 export type UsersConnection = {
   __typename?: 'UsersConnection';
@@ -4534,6 +4502,38 @@ export type UsersOrganizationsRecordFilter = {
   or?: InputMaybe<Array<UsersOrganizationsRecordFilter>>;
   /** Filter by the object’s `role` field. */
   role?: InputMaybe<StringFilter>;
+};
+
+export type UserSubscriptionPayload = {
+  __typename?: 'UserSubscriptionPayload';
+  event?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
+
+/** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
+export type UuidFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['UUID']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['UUID']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['UUID']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['UUID']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['UUID']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['UUID']>>;
 };
 
 /** All input for the `verifyEmail` mutation. */
@@ -4767,6 +4767,11 @@ export type LoginMutationVariables = Exact<{
 
 
 export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginPayload', accessToken: string, refreshToken: string, user: { __typename?: 'User', id: any } } | null };
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout?: { __typename?: 'LogoutPayload', success?: boolean | null } | null };
 
 export type RegisterUserMutationVariables = Exact<{
   input: RegisterInput;
@@ -5294,6 +5299,13 @@ export const LoginDocument = `
   }
 }
     `;
+export const LogoutDocument = `
+    mutation Logout {
+  logout {
+    success
+  }
+}
+    `;
 export const RegisterUserDocument = `
     mutation RegisterUser($input: RegisterInput!) {
   register(input: $input) {
@@ -5768,6 +5780,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     Login(variables: LoginMutationVariables, options?: C): Promise<LoginMutation> {
       return requester<LoginMutation, LoginMutationVariables>(LoginDocument, variables, options) as Promise<LoginMutation>;
+    },
+    Logout(variables?: LogoutMutationVariables, options?: C): Promise<LogoutMutation> {
+      return requester<LogoutMutation, LogoutMutationVariables>(LogoutDocument, variables, options) as Promise<LogoutMutation>;
     },
     RegisterUser(variables: RegisterUserMutationVariables, options?: C): Promise<RegisterUserMutation> {
       return requester<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, variables, options) as Promise<RegisterUserMutation>;

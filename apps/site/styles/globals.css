@@ -104,7 +104,7 @@
     --secondary: hsl(222.2 47.4% 11.2%);
     --secondary-foreground: hsl(210 40% 98%);
 
-    --accent: #ed3461;
+    --accent: hsl(345, 84%, 80%);
     --accent-foreground: hsl(210 40% 98%);
 
     --destructive: hsl(0 63% 31%);

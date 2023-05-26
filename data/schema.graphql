@@ -247,65 +247,6 @@ input AttendeePatch {
   zipCode: String
 }
 
-enum AttendeeStatus {
-  """Inscription annulée"""
-  CANCELLED
-
-  """Présence confirmée à l'évenement"""
-  CONFIRMED
-
-  """En attente"""
-  IDLE
-
-  """Panneau scanné"""
-  PANEL_SCAN
-
-  """Ticket scanné"""
-  TICKET_SCAN
-}
-
-"""
-A filter to be used against AttendeeStatus fields. All fields are combined with a logical ‘and.’
-"""
-input AttendeeStatusFilter {
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: AttendeeStatus
-
-  """Equal to the specified value."""
-  equalTo: AttendeeStatus
-
-  """Greater than the specified value."""
-  greaterThan: AttendeeStatus
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: AttendeeStatus
-
-  """Included in the specified list."""
-  in: [AttendeeStatus!]
-
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Less than the specified value."""
-  lessThan: AttendeeStatus
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: AttendeeStatus
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: AttendeeStatus
-
-  """Not equal to the specified value."""
-  notEqualTo: AttendeeStatus
-
-  """Not included in the specified list."""
-  notIn: [AttendeeStatus!]
-}
-
 """A connection to a list of `Attendee` values."""
 type AttendeesConnection {
   """
@@ -373,6 +314,65 @@ enum AttendeesOrderBy {
   UPDATED_AT_DESC
   ZIP_CODE_ASC
   ZIP_CODE_DESC
+}
+
+enum AttendeeStatus {
+  """Inscription annulée"""
+  CANCELLED
+
+  """Présence confirmée à l'évenement"""
+  CONFIRMED
+
+  """En attente"""
+  IDLE
+
+  """Panneau scanné"""
+  PANEL_SCAN
+
+  """Ticket scanné"""
+  TICKET_SCAN
+}
+
+"""
+A filter to be used against AttendeeStatus fields. All fields are combined with a logical ‘and.’
+"""
+input AttendeeStatusFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: AttendeeStatus
+
+  """Equal to the specified value."""
+  equalTo: AttendeeStatus
+
+  """Greater than the specified value."""
+  greaterThan: AttendeeStatus
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: AttendeeStatus
+
+  """Included in the specified list."""
+  in: [AttendeeStatus!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: AttendeeStatus
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: AttendeeStatus
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: AttendeeStatus
+
+  """Not equal to the specified value."""
+  notEqualTo: AttendeeStatus
+
+  """Not included in the specified list."""
+  notIn: [AttendeeStatus!]
 }
 
 """
@@ -1960,23 +1960,6 @@ input EventPatch {
   zipCode: String
 }
 
-enum EventStatus {
-  """Annulé"""
-  CANCELLED
-
-  """Brouillon"""
-  DRAFT
-
-  """Terminé"""
-  FINISHED
-
-  """En cours"""
-  ONGOING
-
-  """A venir"""
-  PENDING
-}
-
 """A connection to a list of `Event` values."""
 type EventsConnection {
   """
@@ -2036,6 +2019,23 @@ enum EventsOrderBy {
   STARTS_AT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
+}
+
+enum EventStatus {
+  """Annulé"""
+  CANCELLED
+
+  """Brouillon"""
+  DRAFT
+
+  """Terminé"""
+  FINISHED
+
+  """En cours"""
+  ONGOING
+
+  """A venir"""
+  PENDING
 }
 
 enum Fonts {
@@ -2218,26 +2218,6 @@ input LogFilter {
   updatedAt: DatetimeFilter
 }
 
-"""An input for mutations affecting `Log`"""
-input LogInput {
-  createdAt: Datetime
-  eventId: UUID
-  id: UUID
-  payload: JSON
-  status: LogsStatus!
-  updatedAt: Datetime
-}
-
-"""Represents an update to a `Log`. Fields that are set will be updated."""
-input LogPatch {
-  createdAt: Datetime
-  eventId: UUID
-  id: UUID
-  payload: JSON
-  status: LogsStatus
-  updatedAt: Datetime
-}
-
 input LoginInput {
   password: String!
   username: String!
@@ -2249,8 +2229,28 @@ type LoginPayload {
   user: User!
 }
 
+"""An input for mutations affecting `Log`"""
+input LogInput {
+  createdAt: Datetime
+  eventId: UUID
+  id: UUID
+  payload: JSON
+  status: LogsStatus!
+  updatedAt: Datetime
+}
+
 type LogoutPayload {
   success: Boolean
+}
+
+"""Represents an update to a `Log`. Fields that are set will be updated."""
+input LogPatch {
+  createdAt: Datetime
+  eventId: UUID
+  id: UUID
+  payload: JSON
+  status: LogsStatus
+  updatedAt: Datetime
 }
 
 """A connection to a list of `Log` values."""
@@ -4415,14 +4415,14 @@ input StringFilter {
   """Included in the specified list."""
   in: [String!]
 
-  """Included in the specified list (case-insensitive)."""
-  inInsensitive: [String!]
-
   """Contains the specified string (case-sensitive)."""
   includes: String
 
   """Contains the specified string (case-insensitive)."""
   includesInsensitive: String
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
 
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
@@ -4474,14 +4474,14 @@ input StringFilter {
   """Not included in the specified list."""
   notIn: [String!]
 
-  """Not included in the specified list (case-insensitive)."""
-  notInInsensitive: [String!]
-
   """Does not contain the specified string (case-sensitive)."""
   notIncludes: String
 
   """Does not contain the specified string (case-insensitive)."""
   notIncludesInsensitive: String
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
 
   """
   Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
@@ -4552,53 +4552,6 @@ type TransferOrganizationOwnershipPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-}
-
-"""
-A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
-"""
-scalar UUID
-
-"""
-A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
-"""
-input UUIDFilter {
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: UUID
-
-  """Equal to the specified value."""
-  equalTo: UUID
-
-  """Greater than the specified value."""
-  greaterThan: UUID
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: UUID
-
-  """Included in the specified list."""
-  in: [UUID!]
-
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Less than the specified value."""
-  lessThan: UUID
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: UUID
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: UUID
-
-  """Not equal to the specified value."""
-  notEqualTo: UUID
-
-  """Not included in the specified list."""
-  notIn: [UUID!]
 }
 
 """All input for the `updateAttendeeEmailAndSendEmail` mutation."""
@@ -5452,11 +5405,6 @@ input UserPatch {
   username: String
 }
 
-type UserSubscriptionPayload {
-  event: String
-  user: User
-}
-
 """A connection to a list of `User` values."""
 type UsersConnection {
   """
@@ -5550,6 +5498,58 @@ input UsersOrganizationsRecordFilter {
 
   """Filter by the object’s `role` field."""
   role: StringFilter
+}
+
+type UserSubscriptionPayload {
+  event: String
+  user: User
+}
+
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
+"""
+A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
+"""
+input UUIDFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: UUID
+
+  """Equal to the specified value."""
+  equalTo: UUID
+
+  """Greater than the specified value."""
+  greaterThan: UUID
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: UUID
+
+  """Included in the specified list."""
+  in: [UUID!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: UUID
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: UUID
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: UUID
+
+  """Not equal to the specified value."""
+  notEqualTo: UUID
+
+  """Not included in the specified list."""
+  notIn: [UUID!]
 }
 
 """All input for the `verifyEmail` mutation."""
