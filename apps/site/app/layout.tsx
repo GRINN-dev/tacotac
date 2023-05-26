@@ -32,7 +32,7 @@ const RootLayout = ({ children }) => {
         <meta property="og:url" content="https://kaypi.fr" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Napol.io" />
+        <meta name="twitter:title" content="kaypi" />
         <meta name="twitter:description" content="La billeterie de vos évènements de collecte" />
         <meta name="twitter:image" content="/og-image.png" />
         <meta name="twitter:site" content="@LecsLouis" />

@@ -9,21 +9,19 @@ export default async function Page({
   params: { organizationSlug },
   searchParams: { offset = "0", filter = undefined, first = "10", orderBy = undefined },
 }) {
-  const data = await serverSdk().GetOrganizationBySlug({
-    slug: organizationSlug,
-    first: Number(first),
-    offset: Number(offset),
-    ...(filter ? { filter: JSON.parse(filter) } : {}),
-    orderBy: (orderBy as EventsOrderBy) || EventsOrderBy.CreatedAtDesc,
-  });
+  const events =
+    organizationSlug === "all"
+      ? (await serverSdk().GetCurrentUserEvents()).userEvents?.nodes
+      : (
+          await serverSdk().GetOrganizationBySlug({
+            slug: organizationSlug,
+          })
+        ).organizationBySlug?.events?.nodes;
+
   return (
     <section>
       <h1>Calendrier</h1>
-      <EventsCalendar
-        events={data.organizationBySlug.events.nodes}
-        currentUserId={""}
-        organizationSlug={organizationSlug}
-      />
+      <EventsCalendar events={events} currentUserId={""} organizationSlug={organizationSlug} />
     </section>
   );
 }
