@@ -66,7 +66,7 @@ export function DataTableToolbar<TData>({ table, filters }: DataTableToolbarProp
               return (
                 <Input
                   key={filter.columnId as string}
-                  placeholder={`Filter ${filter.displayName}...`}
+                  placeholder={`Filtrer ${filter.displayName}...`}
                   value={
                     (filter.columnId === "global"
                       ? globalSearch
