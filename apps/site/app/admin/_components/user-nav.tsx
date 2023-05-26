@@ -42,7 +42,7 @@ export const UserNav: FC<{ currentUser: GetCurrentUserQuery["currentUser"] }> = 
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onSelect={() => router.push("/profile")}>
+          <DropdownMenuItem onSelect={() => router.push("/compte")}>
             <User className="mr-2 h-4 w-4" />
             <span>Profil</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

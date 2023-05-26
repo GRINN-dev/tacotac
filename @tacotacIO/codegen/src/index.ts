@@ -4754,6 +4754,13 @@ export type DeleteRegistrationMutationVariables = Exact<{
 
 export type DeleteRegistrationMutation = { __typename?: 'Mutation', deleteRegistration?: { __typename?: 'DeleteRegistrationPayload', clientMutationId?: string | null } | null };
 
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null } | null };
+
 export type ForgotPasswordMutationVariables = Exact<{
   input: ForgotPasswordInput;
 }>;
@@ -5281,6 +5288,15 @@ export const DeleteRegistrationDocument = `
   }
 }
     `;
+export const UpdateUserDocument = `
+    mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    user {
+      ...MyUser
+    }
+  }
+}
+    ${MyUserFragmentDoc}`;
 export const ForgotPasswordDocument = `
     mutation ForgotPassword($input: ForgotPasswordInput!) {
   forgotPassword(input: $input) {
@@ -5774,6 +5790,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteRegistration(variables: DeleteRegistrationMutationVariables, options?: C): Promise<DeleteRegistrationMutation> {
       return requester<DeleteRegistrationMutation, DeleteRegistrationMutationVariables>(DeleteRegistrationDocument, variables, options) as Promise<DeleteRegistrationMutation>;
+    },
+    UpdateUser(variables: UpdateUserMutationVariables, options?: C): Promise<UpdateUserMutation> {
+      return requester<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, variables, options) as Promise<UpdateUserMutation>;
     },
     ForgotPassword(variables: ForgotPasswordMutationVariables, options?: C): Promise<ForgotPasswordMutation> {
       return requester<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument, variables, options) as Promise<ForgotPasswordMutation>;
