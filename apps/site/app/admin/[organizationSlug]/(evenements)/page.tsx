@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 
-import { sdk } from "@/lib/sdk";
 import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { MyDataTable } from "./_components/data-table";
 
 const EventsPage = async ({ params: { organizationSlug = "all" } }) => {
@@ -26,11 +24,11 @@ const EventsPage = async ({ params: { organizationSlug = "all" } }) => {
       </Link>
 
       {events?.length > 0 ? (
-        <div className="mt-8 px-8">
+        <div className="mt-8 ">
           <MyDataTable data={events} />
         </div>
       ) : (
-        <div className="mt-8 flex flex-col items-start gap-4 px-8">
+        <div className="mt-8 flex flex-col items-start gap-4 ">
           <p>
             Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
           </p>
