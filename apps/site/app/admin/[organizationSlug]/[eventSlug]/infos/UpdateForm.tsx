@@ -3,7 +3,6 @@
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
-import { toast } from "@/hooks/use-toast";
 import dayjs from "dayjs";
 import { AlertTriangle, MinusCircle, PlusCircle, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -28,6 +27,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 
 interface iUpdateEvent extends ExtractType<GetEventBySlugQuery, "eventBySlug"> {}
 export const UpdateEventForm: FC<iUpdateEvent> = ({
