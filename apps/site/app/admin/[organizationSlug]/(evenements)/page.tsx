@@ -19,21 +19,18 @@ const EventsPage = async ({ params: { organizationSlug = "all" } }) => {
         ).organizationBySlug?.events?.nodes;
 
   return (
-    <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-      <div className="mx-auto  max-w-3xl gap-2">
-        <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 ">
-          Tous les évènements
-        </h2>
-        <Link className={cn(buttonVariants())} href={`/admin/${organizationSlug}/create`}>
-          Créer un évènement
-        </Link>
-      </div>
+    <section className="container pb-8 pt-6 md:py-10">
+      <h1 className="admin-h1">Tous les évènements</h1>
+      <Link className={cn(buttonVariants())} href={`/admin/${organizationSlug}/create`}>
+        Créer un évènement
+      </Link>
+
       {events?.length > 0 ? (
         <div className="mt-8 px-8">
           <MyDataTable data={events} />
         </div>
       ) : (
-        <div className="flex flex-col items-start gap-4">
+        <div className="mt-8 flex flex-col items-start gap-4 px-8">
           <p>
             Vous n&apos;avez pas encore créé d&apos;évènements <u>ou</u> aucun ne correspondant a votre recherche.
           </p>
