@@ -60,11 +60,11 @@ export const GenericForm: FC<GenericFormProps<any>> = ({
           Cancel
         </Button> */}
         <Button type="submit" className="capitalize">
-          {action}
+          {action === "create" ? "Créer" : "Modifier"}
         </Button>
         {onDelete && (
           <Button type="button" onClick={onDelete}>
-            Delete
+            Supprimer
           </Button>
         )}
       </div>

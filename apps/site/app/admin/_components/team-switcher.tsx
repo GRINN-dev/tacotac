@@ -61,7 +61,7 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
     },
   ];
 
-  type Team = (typeof groups)[number]["teams"][number];
+  type Team = typeof groups[number]["teams"][number];
 
   const [selectedTeam, setSelectedTeam] = React.useState<Team>(
     groups.flatMap(({ teams }) => teams).find(({ isCurrent }) => isCurrent) || groups[0].teams[0]
@@ -189,12 +189,6 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
             }}
           />
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setShowNewTeamDialog(false)}>
-            Annuler
-          </Button>
-          <Button type="submit">Continuer</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
