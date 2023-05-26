@@ -3,6 +3,7 @@
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload } from "@/../../@tacotacIO/codegen/dist";
+import { CreateAttendeeForm } from "@/app/admin/[organizationSlug]/[eventSlug]/participants/create/form";
 import { useStickyState } from "@/hooks/use-sticky-state";
 import { useMachine } from "@xstate/react";
 import { ArrowLeft, Ticket } from "lucide-react";
@@ -13,6 +14,7 @@ import { useQrReader } from "@/components/qr-reader";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Input, Label } from "@/components/ui";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
@@ -210,9 +212,16 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
                   });
                 }}
               />
-              <Button size="sm" variant="outline">
-                Inscire
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="sm" variant="outline">
+                    Inscire
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <CreateAttendeeForm {...event} />
+                </DialogContent>
+              </Dialog>
               <Link href={"/scanner"} className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
                 <ArrowLeft className="mr-2 h-4 w-4 " /> retour aux événements
               </Link>
