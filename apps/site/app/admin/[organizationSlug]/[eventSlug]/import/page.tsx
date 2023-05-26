@@ -1,8 +1,11 @@
-import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { ImportAttendeesForm } from "./form";
 
 const ImportAttendeesPage = async ({ params: { organizationSlug, eventSlug } }) => {
-  const { eventBySlug } = await sdk().GetEventBySlug({ eventSlug: eventSlug, organizationSlug: organizationSlug });
+  const { eventBySlug } = await serverSdk().GetEventBySlug({
+    eventSlug: eventSlug,
+    organizationSlug: organizationSlug,
+  });
   return (
     <>
       <section className="container pb-8 pt-6 md:py-10">

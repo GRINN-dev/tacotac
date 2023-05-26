@@ -3,15 +3,6 @@
   "version": 1,
   "config": {
     "class": {
-      "publ.user_emails": {
-        "description": "A user's email address.",
-        "tags": { "simpleCollections": "only" },
-        "attribute": {
-          "email": {
-            "description": "The user's email address."
-          }
-        }
-      },
       "publ.organizations": {
         "description": "A company, organization, or institution.",
         "tags": { "simpleCollections": "both", "omit": "create" }
@@ -26,7 +17,6 @@
       }
     },
     "attribute": {},
-    "constraint": {},
-    "procedure": {}
+    "constraint": {}
   }
 }

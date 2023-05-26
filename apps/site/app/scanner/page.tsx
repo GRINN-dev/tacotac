@@ -3,12 +3,12 @@ import dayjs from "dayjs";
 import { PartyPopper } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import EventCard from "./eventCard";
 
 const ScanPage = async () => {
-  const { events } = await sdk().GetAllEvents();
+  const { events } = await serverSdk().GetAllEvents();
   return (
     <ScrollArea className="container grid h-full items-center gap-6 ">
       <h1 className="text-primary mt-10 text-3xl font-bold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">

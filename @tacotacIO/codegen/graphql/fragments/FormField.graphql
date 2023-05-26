@@ -1,0 +1,13 @@
+fragment MyFormField on FormField {
+  id
+  type
+  label
+  name
+  placeholder
+  options
+  appliesToAllAttendees
+  isDeletable
+  isRequiredForAttendee
+  isRequiredForInscriptor
+  position
+}

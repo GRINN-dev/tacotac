@@ -1,5 +1,14 @@
 query GetAttendeeById($attendeeId: UUID!) {
   attendee(id: $attendeeId) {
+    attendeeFormFields {
+      nodes {
+        value
+        field {
+          name
+          id
+        }
+      }
+    }
     ...MyAttendee
   }
 }
@@ -42,7 +51,6 @@ query SearchAttendee($search: String!, $eventId: UUID!) {
         { firstname: { includesInsensitive: $search } }
         { lastname: { includesInsensitive: $search } }
         { email: { includesInsensitive: $search } }
-        { phoneNumber: { includesInsensitive: $search } }
         { ticketNumber: { includesInsensitive: $search } }
       ]
     }

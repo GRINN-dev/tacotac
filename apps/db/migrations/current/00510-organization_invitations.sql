@@ -16,7 +16,7 @@ create table publ.organization_invitations (
   unique (organization_id, email)
 );
 alter table publ.organization_invitations enable row level security;
-
+ CREATE INDEX ON "publ"."organization_invitations"("role");
 create index on publ.organization_invitations(user_id);
 create index on publ.organization_invitations(organization_id);
 

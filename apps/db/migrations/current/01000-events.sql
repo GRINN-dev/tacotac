@@ -137,15 +137,11 @@ drop table if exists publ.event_brandings cascade;
 create table publ.event_brandings (
   id uuid not null default uuid_generate_v4() primary key unique, 
   event_id uuid not null unique references publ.events(id) on delete cascade,
-  color_1 text,
-  color_2 text,
   font text  references publ.fonts on delete cascade,
   logo text,
-  placeholder json, 
   css_variables json,
   rich_text text,
   short_text varchar(32),
-  award_winning_asso_list text[],
   header_mail_name text default 'L''association',
   header_mail_contact text default 'contact@obole.eu',
   created_at timestamptz not null default now(),
@@ -157,12 +153,12 @@ create table publ.event_brandings (
   create index on publ.event_brandings(event_id);
   create index on publ.event_brandings(created_at);
   create index on publ.event_brandings(updated_at);
-
+CREATE INDEX ON "publ"."event_brandings"("font");
 
 -- RBAC
     grant select on publ.event_brandings to :DATABASE_VISITOR;
-    grant insert( color_1, css_variables, color_2, font, logo, placeholder, rich_text, short_text, header_mail_name, header_mail_contact,award_winning_asso_list) on publ.event_brandings to :DATABASE_VISITOR;
-    grant update( color_1, css_variables, color_2, font, logo, rich_text, placeholder, short_text,award_winning_asso_list, header_mail_name, header_mail_contact) on publ.event_brandings to :DATABASE_VISITOR;
+    grant insert( css_variables, font, logo, rich_text, short_text, header_mail_name, header_mail_contact) on publ.event_brandings to :DATABASE_VISITOR;
+    grant update( css_variables, font, logo, rich_text, short_text, header_mail_name, header_mail_contact) on publ.event_brandings to :DATABASE_VISITOR;
     --grant ALL  on table publ.event_brandings to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
@@ -175,7 +171,8 @@ create table publ.event_brandings (
 
 create function priv.event_branding__insert_with_event() returns trigger as $$
 begin
-  insert into publ.event_brandings(event_id, color_1, color_2,font, logo, placeholder, rich_text, short_text) values(NEW.id,'023047','e63946','roboto','https://lille.lanuitdubiencommun.com/lib_YZQWsZJIBnpPHhyU/9co78sidc8k6jjf1.png?w=140','{"placeholder":"civilité","placeholder":"nom","placeholder":"prenom","placeholder":"email"}','rich text goes  here','short text') 
+  insert into publ.event_brandings(event_id, font, logo, rich_text, short_text) values(NEW.id,'roboto','https://lille.lanuitdubiencommun.com/lib_YZQWsZJIBnpPHhyU/9co78sidc8k6jjf1.png?w=140','##rich text
+   goes  here','short text') 
   on conflict do nothing;
   return NEW;
 end;
@@ -201,8 +198,6 @@ comment on function priv.event_branding__insert_with_event() is E'Ensures that e
 
 -- fixtures
   -- fixtures go here
-    insert into publ.events (id, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('b9b4b51f-e5e1-4068-a593-4c7212da4e2d','Nantes', 'Apéro Chez Daddy', 'Des cafés conviviaux et intergénrationnels pour recréer du lien dans les quartiers', (select id from publ.organizations where name = 'The Organisation'),(select timestamp '2023-05-10 20:00:00' + random() * (timestamp '2023-05-20 20:00:00' - timestamp '2023-05-10 10:00:00')),(select timestamp '2023-05-10 20:00:00' + random() * (timestamp '2023-05-20 20:00:00' - timestamp '2023-05-10 10:00:00')),(select timestamp '2023-05-10 20:00:00' + random() * (timestamp '2023-05-20 20:00:00' - timestamp '2023-05-10 10:00:00')),(select timestamp '2023-05-10 20:00:00' + random() * (timestamp '2023-05-20 20:00:00' - timestamp '2023-05-10 10:00:00')));
-    insert into publ.events (id, is_draft, city, name, description, organization_id, starts_at,ends_at, booking_starts_at ,booking_ends_at) values ('347687ee-e455-4041-a3e0-ccf484149785', false, 'Paris','La nuit des devs', 'second test', (select id from publ.organizations where name = 'Grinn'),(select timestamp '2023-05-10 20:00:00' + random() * (timestamp '2023-05-20 20:00:00' - timestamp '2023-05-10 10:00:00')),(select timestamp '2023-05-10 20:00:00' + random() * (timestamp '2023-05-20 20:00:00' - timestamp '2023-05-10 10:00:00')),'2023-02-20 20:00:00','2023-12-20 20:00:00');
 /*
   END TABLE: publ.event_brandings
 */
@@ -230,3 +225,5 @@ create function publ.user_events() returns setof publ.events as $$
 
 $$ language sql stable;
 grant execute on function publ.user_events to :DATABASE_VISITOR;
+
+

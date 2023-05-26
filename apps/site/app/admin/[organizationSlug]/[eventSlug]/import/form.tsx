@@ -25,8 +25,6 @@ interface ICsv {
   firstname: string;
   lastname: string;
   email: string;
-  phoneNumber: string;
-  zipCode: string;
   status: string;
   isInscriptor: string;
   isVip: string;

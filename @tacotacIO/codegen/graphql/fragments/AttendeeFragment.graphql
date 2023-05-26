@@ -8,13 +8,9 @@ fragment MyAttendee on Attendee {
   status
   panelNumber
   ticketNumber
-  signCode
   registrationId
   qrCodeUrl
   pdfUrl
   isInscriptor
-  zipCode
   isVip
-  hearAbout
-  phoneNumber
 }

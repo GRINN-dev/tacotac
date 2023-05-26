@@ -1,13 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-import { sdk } from "@/lib/sdk";
-import { CreateAttendeeForm } from "./form";
+import { CreateAttendeeForm2 } from "./form/create-attendee-form";
+import { serverSdk } from "@/lib/server-sdk";
 
 const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) => {
-  const { eventBySlug } = await sdk().GetEventBySlug({
+  const data = await serverSdk().GetEventBySlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
-  const currentDate = new Date();
+console.log(data)
+  const { eventBySlug } = data;
 
   return (
     <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10 text-foreground bg-background"
@@ -19,7 +20,7 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
           <img src={eventBySlug?.eventBranding?.logo} alt="logo" className="w-32 ml-4 rounded-md h-14" />
         </div>
         {/* {currentDate < eventBySlug.bookingStartsAt ? ( */}
-        <CreateAttendeeForm {...eventBySlug} />
+        <CreateAttendeeForm2 event={eventBySlug} />
         {/* ) : (
           <p className="text-red-500">Les inscriptions ne sont pas encore ouvertes pour cet événement.</p>
         )} */}

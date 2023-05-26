@@ -1,10 +1,5 @@
-import Link from "next/link";
-import { ArrowBigLeft } from "lucide-react";
-
-import { sdk } from "@/lib/sdk";
 import { serverSdk } from "@/lib/server-sdk";
-import { UpdateEventBrandingForm } from "./UpdateForm";
-import { ThemeBuilder } from "./_components/theme-builder";
+import { Form } from "./form";
 
 const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug } }) => {
   const { eventBySlug } = await serverSdk().GetEventBySlug({
@@ -14,9 +9,9 @@ const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug 
 
   return (
     <main className="container  pb-8 pt-6 md:py-10">
-      <h1 className="admin-h1">Modifier la charte graphique</h1>
-      <ThemeBuilder eventBySlug={eventBySlug} />
-      <UpdateEventBrandingForm {...eventBySlug?.eventBranding} />
+      <h1 className="admin-h1">Peronnaliser l&apos;événement</h1>
+
+      <Form eventBySlug={eventBySlug} />
     </main>
   );
 };

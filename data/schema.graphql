@@ -25,12 +25,44 @@ type AcceptInvitationToOrganizationPayload {
 
 """Event from organizations"""
 type Attendee {
-  civility: CivilityStatus!
+  """Reads and enables pagination through a set of `AttendeeFormField`."""
+  attendeeFormFields(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttendeeFormFieldCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttendeeFormFieldFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AttendeeFormField`."""
+    orderBy: [AttendeeFormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeeFormFieldsConnection!
+  civility: String!
   createdAt: Datetime!
   email: String
   eventId: UUID
   firstname: String!
-  hearAbout: String
   id: UUID!
   isEmailSent: Boolean
   isFundraisingGenerosityOk: Boolean
@@ -42,17 +74,14 @@ type Attendee {
   notes: String
   panelNumber: Int
   pdfUrl: String
-  phoneNumber: String
   qrCodeUrl: String
 
   """Reads a single `Registration` that is related to this `Attendee`."""
   registration: Registration
   registrationId: UUID
-  signCode: String
   status: AttendeeStatus!
   ticketNumber: String!
   updatedAt: Datetime!
-  zipCode: String
 }
 
 """
@@ -61,7 +90,7 @@ for equality and combined with a logical ‘and.’
 """
 input AttendeeCondition {
   """Checks for equality with the object’s `civility` field."""
-  civility: CivilityStatus
+  civility: String
 
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
@@ -93,14 +122,8 @@ input AttendeeCondition {
   """Checks for equality with the object’s `panelNumber` field."""
   panelNumber: Int
 
-  """Checks for equality with the object’s `phoneNumber` field."""
-  phoneNumber: String
-
   """Checks for equality with the object’s `registrationId` field."""
   registrationId: UUID
-
-  """Checks for equality with the object’s `signCode` field."""
-  signCode: String
 
   """Checks for equality with the object’s `status` field."""
   status: AttendeeStatus
@@ -110,9 +133,6 @@ input AttendeeCondition {
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
-
-  """Checks for equality with the object’s `zipCode` field."""
-  zipCode: String
 }
 
 """
@@ -123,7 +143,7 @@ input AttendeeFilter {
   and: [AttendeeFilter!]
 
   """Filter by the object’s `civility` field."""
-  civility: CivilityStatusFilter
+  civility: StringFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
@@ -164,14 +184,8 @@ input AttendeeFilter {
   """Filter by the object’s `panelNumber` field."""
   panelNumber: IntFilter
 
-  """Filter by the object’s `phoneNumber` field."""
-  phoneNumber: StringFilter
-
   """Filter by the object’s `registrationId` field."""
   registrationId: UUIDFilter
-
-  """Filter by the object’s `signCode` field."""
-  signCode: StringFilter
 
   """Filter by the object’s `status` field."""
   status: AttendeeStatusFilter
@@ -181,9 +195,139 @@ input AttendeeFilter {
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
+}
 
-  """Filter by the object’s `zipCode` field."""
-  zipCode: StringFilter
+type AttendeeFormField {
+  """Reads a single `Attendee` that is related to this `AttendeeFormField`."""
+  attendee: Attendee
+  attendeeId: UUID!
+  createdAt: Datetime!
+
+  """
+  Reads a single `FormField` that is related to this `AttendeeFormField`.
+  """
+  field: FormField
+  fieldId: UUID!
+  id: UUID!
+  updatedAt: Datetime!
+  value: String
+}
+
+"""
+A condition to be used against `AttendeeFormField` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input AttendeeFormFieldCondition {
+  """Checks for equality with the object’s `attendeeId` field."""
+  attendeeId: UUID
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `fieldId` field."""
+  fieldId: UUID
+
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `AttendeeFormField` object types. All fields are combined with a logical ‘and.’
+"""
+input AttendeeFormFieldFilter {
+  """Checks for all expressions in this list."""
+  and: [AttendeeFormFieldFilter!]
+
+  """Filter by the object’s `attendeeId` field."""
+  attendeeId: UUIDFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `fieldId` field."""
+  fieldId: UUIDFilter
+
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Negates the expression."""
+  not: AttendeeFormFieldFilter
+
+  """Checks for any expressions in this list."""
+  or: [AttendeeFormFieldFilter!]
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+}
+
+"""An input for mutations affecting `AttendeeFormField`"""
+input AttendeeFormFieldInput {
+  attendeeId: UUID!
+  createdAt: Datetime
+  fieldId: UUID!
+  id: UUID
+  updatedAt: Datetime
+  value: String
+}
+
+"""
+Represents an update to a `AttendeeFormField`. Fields that are set will be updated.
+"""
+input AttendeeFormFieldPatch {
+  attendeeId: UUID
+  createdAt: Datetime
+  fieldId: UUID
+  id: UUID
+  updatedAt: Datetime
+  value: String
+}
+
+"""A connection to a list of `AttendeeFormField` values."""
+type AttendeeFormFieldsConnection {
+  """
+  A list of edges which contains the `AttendeeFormField` and cursor to aid in pagination.
+  """
+  edges: [AttendeeFormFieldsEdge!]!
+
+  """A list of `AttendeeFormField` objects."""
+  nodes: [AttendeeFormField!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AttendeeFormField` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `AttendeeFormField` edge in the connection."""
+type AttendeeFormFieldsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AttendeeFormField` at the end of the edge."""
+  node: AttendeeFormField!
+}
+
+"""Methods to use when ordering `AttendeeFormField`."""
+enum AttendeeFormFieldsOrderBy {
+  ATTENDEE_ID_ASC
+  ATTENDEE_ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  FIELD_ID_ASC
+  FIELD_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
 }
 
 type AttendeeImport {
@@ -195,11 +339,10 @@ type AttendeeImport {
 
 """An input for mutations affecting `Attendee`"""
 input AttendeeInput {
-  civility: CivilityStatus!
+  civility: String!
   createdAt: Datetime
   email: String
   firstname: String!
-  hearAbout: String
   id: UUID
   isEmailSent: Boolean
   isFundraisingGenerosityOk: Boolean
@@ -211,25 +354,21 @@ input AttendeeInput {
   notes: String
   panelNumber: Int
   pdfUrl: String
-  phoneNumber: String
   qrCodeUrl: String
   registrationId: UUID
-  signCode: String
   status: AttendeeStatus
   ticketNumber: String
   updatedAt: Datetime
-  zipCode: String
 }
 
 """
 Represents an update to a `Attendee`. Fields that are set will be updated.
 """
 input AttendeePatch {
-  civility: CivilityStatus
+  civility: String
   createdAt: Datetime
   email: String
   firstname: String
-  hearAbout: String
   id: UUID
   isEmailSent: Boolean
   isFundraisingGenerosityOk: Boolean
@@ -241,83 +380,11 @@ input AttendeePatch {
   notes: String
   panelNumber: Int
   pdfUrl: String
-  phoneNumber: String
   qrCodeUrl: String
   registrationId: UUID
-  signCode: String
   status: AttendeeStatus
   ticketNumber: String
   updatedAt: Datetime
-  zipCode: String
-}
-
-"""A connection to a list of `Attendee` values."""
-type AttendeesConnection {
-  """
-  A list of edges which contains the `Attendee` and cursor to aid in pagination.
-  """
-  edges: [AttendeesEdge!]!
-
-  """A list of `Attendee` objects."""
-  nodes: [Attendee!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Attendee` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Attendee` edge in the connection."""
-type AttendeesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Attendee` at the end of the edge."""
-  node: Attendee!
-}
-
-"""Methods to use when ordering `Attendee`."""
-enum AttendeesOrderBy {
-  CIVILITY_ASC
-  CIVILITY_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  EMAIL_ASC
-  EMAIL_DESC
-  FIRSTNAME_ASC
-  FIRSTNAME_DESC
-  ID_ASC
-  ID_DESC
-  IS_INSCRIPTOR_ASC
-  IS_INSCRIPTOR_DESC
-  IS_NEWS_EVENT_EMAIL_ASC
-  IS_NEWS_EVENT_EMAIL_DESC
-  IS_NEWS_FONDATION_EMAIL_ASC
-  IS_NEWS_FONDATION_EMAIL_DESC
-  IS_VIP_ASC
-  IS_VIP_DESC
-  LASTNAME_ASC
-  LASTNAME_DESC
-  NATURAL
-  PANEL_NUMBER_ASC
-  PANEL_NUMBER_DESC
-  PHONE_NUMBER_ASC
-  PHONE_NUMBER_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  REGISTRATION_ID_ASC
-  REGISTRATION_ID_DESC
-  SIGN_CODE_ASC
-  SIGN_CODE_DESC
-  STATUS_ASC
-  STATUS_DESC
-  TICKET_NUMBER_ASC
-  TICKET_NUMBER_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  ZIP_CODE_ASC
-  ZIP_CODE_DESC
 }
 
 enum AttendeeStatus {
@@ -377,6 +444,69 @@ input AttendeeStatusFilter {
 
   """Not included in the specified list."""
   notIn: [AttendeeStatus!]
+}
+
+"""A connection to a list of `Attendee` values."""
+type AttendeesConnection {
+  """
+  A list of edges which contains the `Attendee` and cursor to aid in pagination.
+  """
+  edges: [AttendeesEdge!]!
+
+  """A list of `Attendee` objects."""
+  nodes: [Attendee!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Attendee` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Attendee` edge in the connection."""
+type AttendeesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Attendee` at the end of the edge."""
+  node: Attendee!
+}
+
+"""Methods to use when ordering `Attendee`."""
+enum AttendeesOrderBy {
+  CIVILITY_ASC
+  CIVILITY_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  FIRSTNAME_ASC
+  FIRSTNAME_DESC
+  ID_ASC
+  ID_DESC
+  IS_INSCRIPTOR_ASC
+  IS_INSCRIPTOR_DESC
+  IS_NEWS_EVENT_EMAIL_ASC
+  IS_NEWS_EVENT_EMAIL_DESC
+  IS_NEWS_FONDATION_EMAIL_ASC
+  IS_NEWS_FONDATION_EMAIL_DESC
+  IS_VIP_ASC
+  IS_VIP_DESC
+  LASTNAME_ASC
+  LASTNAME_DESC
+  NATURAL
+  PANEL_NUMBER_ASC
+  PANEL_NUMBER_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  REGISTRATION_ID_ASC
+  REGISTRATION_ID_DESC
+  STATUS_ASC
+  STATUS_DESC
+  TICKET_NUMBER_ASC
+  TICKET_NUMBER_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
 }
 
 """
@@ -514,54 +644,10 @@ type ChangePasswordPayload {
   query: Query
 }
 
-enum CivilityStatus {
-  """Madame"""
-  MME
-
-  """Monsieur"""
-  MR
-}
-
-"""
-A filter to be used against CivilityStatus fields. All fields are combined with a logical ‘and.’
-"""
-input CivilityStatusFilter {
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: CivilityStatus
-
-  """Equal to the specified value."""
-  equalTo: CivilityStatus
-
-  """Greater than the specified value."""
-  greaterThan: CivilityStatus
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: CivilityStatus
-
-  """Included in the specified list."""
-  in: [CivilityStatus!]
-
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Less than the specified value."""
-  lessThan: CivilityStatus
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: CivilityStatus
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: CivilityStatus
-
-  """Not equal to the specified value."""
-  notEqualTo: CivilityStatus
-
-  """Not included in the specified list."""
-  notIn: [CivilityStatus!]
+"""An input for mutations affecting `CompleteAttendee`"""
+input CompleteAttendeeInput {
+  attendee: AttendeeInput
+  attendeeFormFields: [AttendeeFormFieldInput]
 }
 
 """All input for the `confirmAccountDeletion` mutation."""
@@ -583,6 +669,49 @@ type ConfirmAccountDeletionPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `AttendeeFormField` mutation."""
+input CreateAttendeeFormFieldInput {
+  """The `AttendeeFormField` to be created by this mutation."""
+  attendeeFormField: AttendeeFormFieldInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `AttendeeFormField` mutation."""
+type CreateAttendeeFormFieldPayload {
+  """Reads a single `Attendee` that is related to this `AttendeeFormField`."""
+  attendee: Attendee
+
+  """The `AttendeeFormField` that was created by this mutation."""
+  attendeeFormField: AttendeeFormField
+
+  """An edge for our `AttendeeFormField`. May be used by Relay 1."""
+  attendeeFormFieldEdge(
+    """The method to use when ordering `AttendeeFormField`."""
+    orderBy: [AttendeeFormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeeFormFieldsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `FormField` that is related to this `AttendeeFormField`.
+  """
+  field: FormField
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -697,6 +826,44 @@ type CreateEventPayload {
 
   """Reads a single `Organization` that is related to this `Event`."""
   organization: Organization
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `FormField` mutation."""
+input CreateFormFieldInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FormField` to be created by this mutation."""
+  formField: FormFieldInput!
+}
+
+"""The output of our create `FormField` mutation."""
+type CreateFormFieldPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Event` that is related to this `FormField`."""
+  event: Event
+
+  """The `FormField` that was created by this mutation."""
+  formField: FormField
+
+  """An edge for our `FormField`. May be used by Relay 1."""
+  formFieldEdge(
+    """The method to use when ordering `FormField`."""
+    orderBy: [FormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormFieldsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -1071,6 +1238,48 @@ input DatetimeFilter {
   notIn: [Datetime!]
 }
 
+"""All input for the `deleteAttendeeFormField` mutation."""
+input DeleteAttendeeFormFieldInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
+"""The output of our delete `AttendeeFormField` mutation."""
+type DeleteAttendeeFormFieldPayload {
+  """Reads a single `Attendee` that is related to this `AttendeeFormField`."""
+  attendee: Attendee
+
+  """The `AttendeeFormField` that was deleted by this mutation."""
+  attendeeFormField: AttendeeFormField
+
+  """An edge for our `AttendeeFormField`. May be used by Relay 1."""
+  attendeeFormFieldEdge(
+    """The method to use when ordering `AttendeeFormField`."""
+    orderBy: [AttendeeFormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeeFormFieldsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedAttendeeFormFieldNodeId: ID
+
+  """
+  Reads a single `FormField` that is related to this `AttendeeFormField`.
+  """
+  field: FormField
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `deleteAttendee` mutation."""
 input DeleteAttendeeInput {
   """
@@ -1188,6 +1397,43 @@ input DeleteFileInput {
 
 type DeleteFilePayload {
   success: Boolean
+}
+
+"""All input for the `deleteFormField` mutation."""
+input DeleteFormFieldInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
+"""The output of our delete `FormField` mutation."""
+type DeleteFormFieldPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedFormFieldNodeId: ID
+
+  """Reads a single `Event` that is related to this `FormField`."""
+  event: Event
+
+  """The `FormField` that was deleted by this mutation."""
+  formField: FormField
+
+  """An edge for our `FormField`. May be used by Relay 1."""
+  formFieldEdge(
+    """The method to use when ordering `FormField`."""
+    orderBy: [FormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormFieldsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `deleteLog` mutation."""
@@ -1534,6 +1780,40 @@ type Event {
     """The method to use when ordering `EventBranding`."""
     orderBy: [EventBrandingsOrderBy!] = [PRIMARY_KEY_ASC]
   ): EventBrandingsConnection! @deprecated(reason: "Please use eventBranding instead")
+
+  """Reads and enables pagination through a set of `FormField`."""
+  formFields(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormFieldCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFieldFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FormField`."""
+    orderBy: [FormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormFieldsConnection!
   id: UUID!
   isCancelled: Boolean!
   isDraft: Boolean!
@@ -1647,9 +1927,6 @@ type Event {
 }
 
 type EventBranding {
-  awardWinningAssoList: [String]
-  color1: String
-  color2: String
   createdAt: Datetime!
   cssVariables: JSON
 
@@ -1661,7 +1938,6 @@ type EventBranding {
   headerMailName: String
   id: UUID!
   logo: String
-  placeholder: JSON
   richText: String
   shortText: String
   updatedAt: Datetime!
@@ -1677,6 +1953,9 @@ input EventBrandingCondition {
 
   """Checks for equality with the object’s `eventId` field."""
   eventId: UUID
+
+  """Checks for equality with the object’s `font` field."""
+  font: Fonts
 
   """Checks for equality with the object’s `id` field."""
   id: UUID
@@ -1698,6 +1977,9 @@ input EventBrandingFilter {
   """Filter by the object’s `eventId` field."""
   eventId: UUIDFilter
 
+  """Filter by the object’s `font` field."""
+  font: FontsFilter
+
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
@@ -1713,9 +1995,6 @@ input EventBrandingFilter {
 
 """An input for mutations affecting `EventBranding`"""
 input EventBrandingInput {
-  awardWinningAssoList: [String]
-  color1: String
-  color2: String
   createdAt: Datetime
   cssVariables: JSON
   eventId: UUID!
@@ -1724,7 +2003,6 @@ input EventBrandingInput {
   headerMailName: String
   id: UUID
   logo: String
-  placeholder: JSON
   richText: String
   shortText: String
   updatedAt: Datetime
@@ -1734,9 +2012,6 @@ input EventBrandingInput {
 Represents an update to a `EventBranding`. Fields that are set will be updated.
 """
 input EventBrandingPatch {
-  awardWinningAssoList: [String]
-  color1: String
-  color2: String
   createdAt: Datetime
   cssVariables: JSON
   eventId: UUID
@@ -1745,7 +2020,6 @@ input EventBrandingPatch {
   headerMailName: String
   id: UUID
   logo: String
-  placeholder: JSON
   richText: String
   shortText: String
   updatedAt: Datetime
@@ -1783,6 +2057,8 @@ enum EventBrandingsOrderBy {
   CREATED_AT_DESC
   EVENT_ID_ASC
   EVENT_ID_DESC
+  FONT_ASC
+  FONT_DESC
   ID_ASC
   ID_DESC
   NATURAL
@@ -1964,6 +2240,23 @@ input EventPatch {
   zipCode: String
 }
 
+enum EventStatus {
+  """Annulé"""
+  CANCELLED
+
+  """Brouillon"""
+  DRAFT
+
+  """Terminé"""
+  FINISHED
+
+  """En cours"""
+  ONGOING
+
+  """A venir"""
+  PENDING
+}
+
 """A connection to a list of `Event` values."""
 type EventsConnection {
   """
@@ -2025,21 +2318,75 @@ enum EventsOrderBy {
   UPDATED_AT_DESC
 }
 
-enum EventStatus {
-  """Annulé"""
-  CANCELLED
+enum FieldTypes {
+  """Un input de type `checkbox`"""
+  CHECKBOX
 
-  """Brouillon"""
-  DRAFT
+  """Un input de type `date`"""
+  DATE
 
-  """Terminé"""
-  FINISHED
+  """Un input de type `email`"""
+  EMAIL
 
-  """En cours"""
-  ONGOING
+  """Un input de type `number`"""
+  NUMBER
 
-  """A venir"""
-  PENDING
+  """Un input de type `radio`"""
+  RADIO
+
+  """Un input de type `select`"""
+  SELECT
+
+  """Un input de type `tel`"""
+  TEL
+
+  """Un input de type `text`"""
+  TEXT
+
+  """Un input de type `textarea`"""
+  TEXTAREA
+}
+
+"""
+A filter to be used against FieldTypes fields. All fields are combined with a logical ‘and.’
+"""
+input FieldTypesFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: FieldTypes
+
+  """Equal to the specified value."""
+  equalTo: FieldTypes
+
+  """Greater than the specified value."""
+  greaterThan: FieldTypes
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: FieldTypes
+
+  """Included in the specified list."""
+  in: [FieldTypes!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: FieldTypes
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: FieldTypes
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: FieldTypes
+
+  """Not equal to the specified value."""
+  notEqualTo: FieldTypes
+
+  """Not included in the specified list."""
+  notIn: [FieldTypes!]
 }
 
 enum Fonts {
@@ -2051,6 +2398,48 @@ enum Fonts {
 
   """Roboto"""
   ROBOTO
+}
+
+"""
+A filter to be used against Fonts fields. All fields are combined with a logical ‘and.’
+"""
+input FontsFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Fonts
+
+  """Equal to the specified value."""
+  equalTo: Fonts
+
+  """Greater than the specified value."""
+  greaterThan: Fonts
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Fonts
+
+  """Included in the specified list."""
+  in: [Fonts!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Fonts
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Fonts
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Fonts
+
+  """Not equal to the specified value."""
+  notEqualTo: Fonts
+
+  """Not included in the specified list."""
+  notIn: [Fonts!]
 }
 
 """All input for the `forgotPassword` mutation."""
@@ -2075,6 +2464,199 @@ type ForgotPasswordPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+type FormField {
+  appliesToAllAttendees: Boolean!
+
+  """Reads and enables pagination through a set of `AttendeeFormField`."""
+  attendeeFormFieldsByFieldId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttendeeFormFieldCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttendeeFormFieldFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AttendeeFormField`."""
+    orderBy: [AttendeeFormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeeFormFieldsConnection!
+  createdAt: Datetime!
+
+  """Reads a single `Event` that is related to this `FormField`."""
+  event: Event
+  eventId: UUID!
+  id: UUID!
+  isDeletable: Boolean!
+  isRequiredForAttendee: Boolean!
+  isRequiredForInscriptor: Boolean!
+  label: String!
+  name: String
+  options: [String]
+  placeholder: String
+  position: Int!
+  type: FieldTypes!
+  updatedAt: Datetime!
+}
+
+"""
+A condition to be used against `FormField` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input FormFieldCondition {
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `eventId` field."""
+  eventId: UUID
+
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `position` field."""
+  position: Int
+
+  """Checks for equality with the object’s `type` field."""
+  type: FieldTypes
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `FormField` object types. All fields are combined with a logical ‘and.’
+"""
+input FormFieldFilter {
+  """Checks for all expressions in this list."""
+  and: [FormFieldFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `eventId` field."""
+  eventId: UUIDFilter
+
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Negates the expression."""
+  not: FormFieldFilter
+
+  """Checks for any expressions in this list."""
+  or: [FormFieldFilter!]
+
+  """Filter by the object’s `position` field."""
+  position: IntFilter
+
+  """Filter by the object’s `type` field."""
+  type: FieldTypesFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+}
+
+"""An input for mutations affecting `FormField`"""
+input FormFieldInput {
+  appliesToAllAttendees: Boolean
+  createdAt: Datetime
+  eventId: UUID!
+  id: UUID
+  isDeletable: Boolean
+  isRequiredForAttendee: Boolean
+  isRequiredForInscriptor: Boolean
+  label: String!
+  name: String
+  options: [String]
+  placeholder: String
+  position: Int
+  type: FieldTypes!
+  updatedAt: Datetime
+}
+
+"""
+Represents an update to a `FormField`. Fields that are set will be updated.
+"""
+input FormFieldPatch {
+  appliesToAllAttendees: Boolean
+  createdAt: Datetime
+  eventId: UUID
+  id: UUID
+  isDeletable: Boolean
+  isRequiredForAttendee: Boolean
+  isRequiredForInscriptor: Boolean
+  label: String
+  name: String
+  options: [String]
+  placeholder: String
+  position: Int
+  type: FieldTypes
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `FormField` values."""
+type FormFieldsConnection {
+  """
+  A list of edges which contains the `FormField` and cursor to aid in pagination.
+  """
+  edges: [FormFieldsEdge!]!
+
+  """A list of `FormField` objects."""
+  nodes: [FormField!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `FormField` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `FormField` edge in the connection."""
+type FormFieldsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FormField` at the end of the edge."""
+  node: FormField!
+}
+
+"""Methods to use when ordering `FormField`."""
+enum FormFieldsOrderBy {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  EVENT_ID_ASC
+  EVENT_ID_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  POSITION_ASC
+  POSITION_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  TYPE_ASC
+  TYPE_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
 }
 
 input GeneratePresignedPostInput {
@@ -2222,6 +2804,26 @@ input LogFilter {
   updatedAt: DatetimeFilter
 }
 
+"""An input for mutations affecting `Log`"""
+input LogInput {
+  createdAt: Datetime
+  eventId: UUID
+  id: UUID
+  payload: JSON
+  status: LogsStatus!
+  updatedAt: Datetime
+}
+
+"""Represents an update to a `Log`. Fields that are set will be updated."""
+input LogPatch {
+  createdAt: Datetime
+  eventId: UUID
+  id: UUID
+  payload: JSON
+  status: LogsStatus
+  updatedAt: Datetime
+}
+
 input LoginInput {
   password: String!
   username: String!
@@ -2233,28 +2835,8 @@ type LoginPayload {
   user: User!
 }
 
-"""An input for mutations affecting `Log`"""
-input LogInput {
-  createdAt: Datetime
-  eventId: UUID
-  id: UUID
-  payload: JSON
-  status: LogsStatus!
-  updatedAt: Datetime
-}
-
 type LogoutPayload {
   success: Boolean
-}
-
-"""Represents an update to a `Log`. Fields that are set will be updated."""
-input LogPatch {
-  createdAt: Datetime
-  eventId: UUID
-  id: UUID
-  payload: JSON
-  status: LogsStatus
-  updatedAt: Datetime
 }
 
 """A connection to a list of `Log` values."""
@@ -2411,6 +2993,14 @@ type Mutation {
     input: CreateAttendeeInput!
   ): CreateAttendeePayload
 
+  """Creates a single `AttendeeFormField`."""
+  createAttendeeFormField(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateAttendeeFormFieldInput!
+  ): CreateAttendeeFormFieldPayload
+
   """Creates a single `Event`."""
   createEvent(
     """
@@ -2426,6 +3016,14 @@ type Mutation {
     """
     input: CreateEventBrandingInput!
   ): CreateEventBrandingPayload
+
+  """Creates a single `FormField`."""
+  createFormField(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFormFieldInput!
+  ): CreateFormFieldPayload
 
   """Creates a single `Log`."""
   createLog(
@@ -2489,6 +3087,14 @@ type Mutation {
     input: DeleteAttendeeInput!
   ): DeleteAttendeePayload
 
+  """Deletes a single `AttendeeFormField` using a unique key."""
+  deleteAttendeeFormField(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAttendeeFormFieldInput!
+  ): DeleteAttendeeFormFieldPayload
+
   """Deletes a single `Event` using a unique key."""
   deleteEvent(
     """
@@ -2510,6 +3116,14 @@ type Mutation {
     """
     input: DeleteFileInput!
   ): DeleteFilePayload
+
+  """Deletes a single `FormField` using a unique key."""
+  deleteFormField(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFormFieldInput!
+  ): DeleteFormFieldPayload
 
   """Deletes a single `Log` using a unique key."""
   deleteLog(
@@ -2625,6 +3239,12 @@ type Mutation {
     """
     input: RegisterAttendeesCsvInput!
   ): RegisterAttendeesCsvPayload
+  registerCompleteAttendees(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: RegisterCompleteAttendeesInput!
+  ): RegisterCompleteAttendeesPayload
   removeFromOrganization(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2710,6 +3330,14 @@ type Mutation {
     input: UpdateAttendeeEmailAndSendEmailInput!
   ): UpdateAttendeeEmailAndSendEmailPayload
 
+  """Updates a single `AttendeeFormField` using a unique key and a patch."""
+  updateAttendeeFormField(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAttendeeFormFieldInput!
+  ): UpdateAttendeeFormFieldPayload
+
   """Updates a single `Event` using a unique key and a patch."""
   updateEvent(
     """
@@ -2725,6 +3353,14 @@ type Mutation {
     """
     input: UpdateEventBrandingInput!
   ): UpdateEventBrandingPayload
+
+  """Updates a single `FormField` using a unique key and a patch."""
+  updateFormField(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFormFieldInput!
+  ): UpdateFormFieldPayload
 
   """Updates a single `Log` using a unique key and a patch."""
   updateLog(
@@ -3004,6 +3640,9 @@ input OrganizationInvitationCondition {
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: UUID
 
+  """Checks for equality with the object’s `role` field."""
+  role: OrganizationMembershipsRolesEnum
+
   """Checks for equality with the object’s `userId` field."""
   userId: UUID
 }
@@ -3026,6 +3665,9 @@ input OrganizationInvitationFilter {
 
   """Filter by the object’s `organizationId` field."""
   organizationId: UUIDFilter
+
+  """Filter by the object’s `role` field."""
+  role: OrganizationMembershipsRolesEnumFilter
 
   """Filter by the object’s `userId` field."""
   userId: UUIDFilter
@@ -3090,6 +3732,8 @@ enum OrganizationInvitationsOrderBy {
   ORGANIZATION_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  ROLE_ASC
+  ROLE_DESC
   USER_ID_ASC
   USER_ID_DESC
 }
@@ -3373,6 +4017,41 @@ type PageInfo {
 type Query {
   attendee(id: UUID!): Attendee
   attendeeByTicketNumber(ticketNumber: String!): Attendee
+  attendeeFormField(id: UUID!): AttendeeFormField
+
+  """Reads and enables pagination through a set of `AttendeeFormField`."""
+  attendeeFormFields(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AttendeeFormFieldCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AttendeeFormFieldFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `AttendeeFormField`."""
+    orderBy: [AttendeeFormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeeFormFieldsConnection
 
   """Reads and enables pagination through a set of `Attendee`."""
   attendees(
@@ -3563,6 +4242,41 @@ type Query {
     """The method to use when ordering `Event`."""
     orderBy: [EventsOrderBy!] = [PRIMARY_KEY_ASC]
   ): EventsConnection
+  formField(id: UUID!): FormField
+
+  """Reads and enables pagination through a set of `FormField`."""
+  formFields(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FormFieldCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FormFieldFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FormField`."""
+    orderBy: [FormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormFieldsConnection
   log(id: UUID!): Log
 
   """Reads and enables pagination through a set of `Log`."""
@@ -3935,6 +4649,41 @@ input RegisterAttendeesInput {
 
 """The output of our `registerAttendees` mutation."""
 type RegisterAttendeesPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Event` that is related to this `Registration`."""
+  event: Event
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+  registration: Registration
+
+  """An edge for our `Registration`. May be used by Relay 1."""
+  registrationEdge(
+    """The method to use when ordering `Registration`."""
+    orderBy: [RegistrationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): RegistrationsEdge
+}
+
+"""All input for the `registerCompleteAttendees` mutation."""
+input RegisterCompleteAttendeesInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  completeAttendees: [CompleteAttendeeInput]!
+  eventId: UUID!
+}
+
+"""The output of our `registerCompleteAttendees` mutation."""
+type RegisterCompleteAttendeesPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
   unchanged and unused. May be used by a client to track mutations.
@@ -4419,14 +5168,14 @@ input StringFilter {
   """Included in the specified list."""
   in: [String!]
 
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
   """Contains the specified string (case-sensitive)."""
   includes: String
 
   """Contains the specified string (case-insensitive)."""
   includesInsensitive: String
-
-  """Included in the specified list (case-insensitive)."""
-  inInsensitive: [String!]
 
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
@@ -4478,14 +5227,14 @@ input StringFilter {
   """Not included in the specified list."""
   notIn: [String!]
 
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
   """Does not contain the specified string (case-sensitive)."""
   notIncludes: String
 
   """Does not contain the specified string (case-insensitive)."""
   notIncludesInsensitive: String
-
-  """Not included in the specified list (case-insensitive)."""
-  notInInsensitive: [String!]
 
   """
   Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
@@ -4558,6 +5307,53 @@ type TransferOrganizationOwnershipPayload {
   query: Query
 }
 
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
+"""
+A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
+"""
+input UUIDFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: UUID
+
+  """Equal to the specified value."""
+  equalTo: UUID
+
+  """Greater than the specified value."""
+  greaterThan: UUID
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: UUID
+
+  """Included in the specified list."""
+  in: [UUID!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: UUID
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: UUID
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: UUID
+
+  """Not equal to the specified value."""
+  notEqualTo: UUID
+
+  """Not included in the specified list."""
+  notIn: [UUID!]
+}
+
 """All input for the `updateAttendeeEmailAndSendEmail` mutation."""
 input UpdateAttendeeEmailAndSendEmailInput {
   attendees: [AttendeePatch]!
@@ -4578,6 +5374,52 @@ type UpdateAttendeeEmailAndSendEmailPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateAttendeeFormField` mutation."""
+input UpdateAttendeeFormFieldInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+
+  """
+  An object where the defined keys will be set on the `AttendeeFormField` being updated.
+  """
+  patch: AttendeeFormFieldPatch!
+}
+
+"""The output of our update `AttendeeFormField` mutation."""
+type UpdateAttendeeFormFieldPayload {
+  """Reads a single `Attendee` that is related to this `AttendeeFormField`."""
+  attendee: Attendee
+
+  """The `AttendeeFormField` that was updated by this mutation."""
+  attendeeFormField: AttendeeFormField
+
+  """An edge for our `AttendeeFormField`. May be used by Relay 1."""
+  attendeeFormFieldEdge(
+    """The method to use when ordering `AttendeeFormField`."""
+    orderBy: [AttendeeFormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AttendeeFormFieldsEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `FormField` that is related to this `AttendeeFormField`.
+  """
+  field: FormField
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -4701,6 +5543,47 @@ type UpdateEventPayload {
 
   """Reads a single `Organization` that is related to this `Event`."""
   organization: Organization
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateFormField` mutation."""
+input UpdateFormFieldInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+
+  """
+  An object where the defined keys will be set on the `FormField` being updated.
+  """
+  patch: FormFieldPatch!
+}
+
+"""The output of our update `FormField` mutation."""
+type UpdateFormFieldPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Event` that is related to this `FormField`."""
+  event: Event
+
+  """The `FormField` that was updated by this mutation."""
+  formField: FormField
+
+  """An edge for our `FormField`. May be used by Relay 1."""
+  formFieldEdge(
+    """The method to use when ordering `FormField`."""
+    orderBy: [FormFieldsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FormFieldsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -5409,6 +6292,11 @@ input UserPatch {
   username: String
 }
 
+type UserSubscriptionPayload {
+  event: String
+  user: User
+}
+
 """A connection to a list of `User` values."""
 type UsersConnection {
   """
@@ -5502,58 +6390,6 @@ input UsersOrganizationsRecordFilter {
 
   """Filter by the object’s `role` field."""
   role: StringFilter
-}
-
-type UserSubscriptionPayload {
-  event: String
-  user: User
-}
-
-"""
-A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
-"""
-scalar UUID
-
-"""
-A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
-"""
-input UUIDFilter {
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: UUID
-
-  """Equal to the specified value."""
-  equalTo: UUID
-
-  """Greater than the specified value."""
-  greaterThan: UUID
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: UUID
-
-  """Included in the specified list."""
-  in: [UUID!]
-
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Less than the specified value."""
-  lessThan: UUID
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: UUID
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: UUID
-
-  """Not equal to the specified value."""
-  notEqualTo: UUID
-
-  """Not included in the specified list."""
-  notIn: [UUID!]
 }
 
 """All input for the `verifyEmail` mutation."""

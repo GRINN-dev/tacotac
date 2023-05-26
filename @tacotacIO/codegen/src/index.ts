@@ -50,12 +50,13 @@ export type AcceptInvitationToOrganizationPayload = {
 /** Event from organizations */
 export type Attendee = {
   __typename?: 'Attendee';
-  civility: CivilityStatus;
+  /** Reads and enables pagination through a set of `AttendeeFormField`. */
+  attendeeFormFields: AttendeeFormFieldsConnection;
+  civility: Scalars['String'];
   createdAt: Scalars['Datetime'];
   email?: Maybe<Scalars['String']>;
   eventId?: Maybe<Scalars['UUID']>;
   firstname: Scalars['String'];
-  hearAbout?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   isEmailSent?: Maybe<Scalars['Boolean']>;
   isFundraisingGenerosityOk?: Maybe<Scalars['Boolean']>;
@@ -67,16 +68,26 @@ export type Attendee = {
   notes?: Maybe<Scalars['String']>;
   panelNumber?: Maybe<Scalars['Int']>;
   pdfUrl?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
   qrCodeUrl?: Maybe<Scalars['String']>;
   /** Reads a single `Registration` that is related to this `Attendee`. */
   registration?: Maybe<Registration>;
   registrationId?: Maybe<Scalars['UUID']>;
-  signCode?: Maybe<Scalars['String']>;
   status: AttendeeStatus;
   ticketNumber: Scalars['String'];
   updatedAt: Scalars['Datetime'];
-  zipCode?: Maybe<Scalars['String']>;
+};
+
+
+/** Event from organizations */
+export type AttendeeAttendeeFormFieldsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AttendeeFormFieldCondition>;
+  filter?: InputMaybe<AttendeeFormFieldFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeeFormFieldsOrderBy>>;
 };
 
 /**
@@ -85,7 +96,7 @@ export type Attendee = {
  */
 export type AttendeeCondition = {
   /** Checks for equality with the object’s `civility` field. */
-  civility?: InputMaybe<CivilityStatus>;
+  civility?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `email` field. */
@@ -106,20 +117,14 @@ export type AttendeeCondition = {
   lastname?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `panelNumber` field. */
   panelNumber?: InputMaybe<Scalars['Int']>;
-  /** Checks for equality with the object’s `phoneNumber` field. */
-  phoneNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `registrationId` field. */
   registrationId?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `signCode` field. */
-  signCode?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `status` field. */
   status?: InputMaybe<AttendeeStatus>;
   /** Checks for equality with the object’s `ticketNumber` field. */
   ticketNumber?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `zipCode` field. */
-  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Attendee` object types. All fields are combined with a logical ‘and.’ */
@@ -127,7 +132,7 @@ export type AttendeeFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<AttendeeFilter>>;
   /** Filter by the object’s `civility` field. */
-  civility?: InputMaybe<CivilityStatusFilter>;
+  civility?: InputMaybe<StringFilter>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `email` field. */
@@ -154,21 +159,125 @@ export type AttendeeFilter = {
   or?: InputMaybe<Array<AttendeeFilter>>;
   /** Filter by the object’s `panelNumber` field. */
   panelNumber?: InputMaybe<IntFilter>;
-  /** Filter by the object’s `phoneNumber` field. */
-  phoneNumber?: InputMaybe<StringFilter>;
   /** Filter by the object’s `registrationId` field. */
   registrationId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `signCode` field. */
-  signCode?: InputMaybe<StringFilter>;
   /** Filter by the object’s `status` field. */
   status?: InputMaybe<AttendeeStatusFilter>;
   /** Filter by the object’s `ticketNumber` field. */
   ticketNumber?: InputMaybe<StringFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `zipCode` field. */
-  zipCode?: InputMaybe<StringFilter>;
 };
+
+export type AttendeeFormField = {
+  __typename?: 'AttendeeFormField';
+  /** Reads a single `Attendee` that is related to this `AttendeeFormField`. */
+  attendee?: Maybe<Attendee>;
+  attendeeId: Scalars['UUID'];
+  createdAt: Scalars['Datetime'];
+  /** Reads a single `FormField` that is related to this `AttendeeFormField`. */
+  field?: Maybe<FormField>;
+  fieldId: Scalars['UUID'];
+  id: Scalars['UUID'];
+  updatedAt: Scalars['Datetime'];
+  value?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `AttendeeFormField` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type AttendeeFormFieldCondition = {
+  /** Checks for equality with the object’s `attendeeId` field. */
+  attendeeId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `fieldId` field. */
+  fieldId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `AttendeeFormField` object types. All fields are combined with a logical ‘and.’ */
+export type AttendeeFormFieldFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<AttendeeFormFieldFilter>>;
+  /** Filter by the object’s `attendeeId` field. */
+  attendeeId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `fieldId` field. */
+  fieldId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<AttendeeFormFieldFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<AttendeeFormFieldFilter>>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `AttendeeFormField` */
+export type AttendeeFormFieldInput = {
+  attendeeId: Scalars['UUID'];
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  fieldId: Scalars['UUID'];
+  id?: InputMaybe<Scalars['UUID']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Represents an update to a `AttendeeFormField`. Fields that are set will be updated. */
+export type AttendeeFormFieldPatch = {
+  attendeeId?: InputMaybe<Scalars['UUID']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  fieldId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `AttendeeFormField` values. */
+export type AttendeeFormFieldsConnection = {
+  __typename?: 'AttendeeFormFieldsConnection';
+  /** A list of edges which contains the `AttendeeFormField` and cursor to aid in pagination. */
+  edges: Array<AttendeeFormFieldsEdge>;
+  /** A list of `AttendeeFormField` objects. */
+  nodes: Array<AttendeeFormField>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `AttendeeFormField` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `AttendeeFormField` edge in the connection. */
+export type AttendeeFormFieldsEdge = {
+  __typename?: 'AttendeeFormFieldsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `AttendeeFormField` at the end of the edge. */
+  node: AttendeeFormField;
+};
+
+/** Methods to use when ordering `AttendeeFormField`. */
+export enum AttendeeFormFieldsOrderBy {
+  AttendeeIdAsc = 'ATTENDEE_ID_ASC',
+  AttendeeIdDesc = 'ATTENDEE_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  FieldIdAsc = 'FIELD_ID_ASC',
+  FieldIdDesc = 'FIELD_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
 
 export type AttendeeImport = {
   __typename?: 'AttendeeImport';
@@ -180,11 +289,10 @@ export type AttendeeImport = {
 
 /** An input for mutations affecting `Attendee` */
 export type AttendeeInput = {
-  civility: CivilityStatus;
+  civility: Scalars['String'];
   createdAt?: InputMaybe<Scalars['Datetime']>;
   email?: InputMaybe<Scalars['String']>;
   firstname: Scalars['String'];
-  hearAbout?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   isEmailSent?: InputMaybe<Scalars['Boolean']>;
   isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
@@ -196,23 +304,19 @@ export type AttendeeInput = {
   notes?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
   pdfUrl?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
   qrCodeUrl?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
-  signCode?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<AttendeeStatus>;
   ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  zipCode?: InputMaybe<Scalars['String']>;
 };
 
 /** Represents an update to a `Attendee`. Fields that are set will be updated. */
 export type AttendeePatch = {
-  civility?: InputMaybe<CivilityStatus>;
+  civility?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   email?: InputMaybe<Scalars['String']>;
   firstname?: InputMaybe<Scalars['String']>;
-  hearAbout?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   isEmailSent?: InputMaybe<Scalars['Boolean']>;
   isFundraisingGenerosityOk?: InputMaybe<Scalars['Boolean']>;
@@ -224,14 +328,50 @@ export type AttendeePatch = {
   notes?: InputMaybe<Scalars['String']>;
   panelNumber?: InputMaybe<Scalars['Int']>;
   pdfUrl?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
   qrCodeUrl?: InputMaybe<Scalars['String']>;
   registrationId?: InputMaybe<Scalars['UUID']>;
-  signCode?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<AttendeeStatus>;
   ticketNumber?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
-  zipCode?: InputMaybe<Scalars['String']>;
+};
+
+export enum AttendeeStatus {
+  /** Inscription annulée */
+  Cancelled = 'CANCELLED',
+  /** Présence confirmée à l'évenement */
+  Confirmed = 'CONFIRMED',
+  /** En attente */
+  Idle = 'IDLE',
+  /** Panneau scanné */
+  PanelScan = 'PANEL_SCAN',
+  /** Ticket scanné */
+  TicketScan = 'TICKET_SCAN'
+}
+
+/** A filter to be used against AttendeeStatus fields. All fields are combined with a logical ‘and.’ */
+export type AttendeeStatusFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<AttendeeStatus>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<AttendeeStatus>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<AttendeeStatus>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<AttendeeStatus>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<AttendeeStatus>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<AttendeeStatus>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<AttendeeStatus>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<AttendeeStatus>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<AttendeeStatus>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<AttendeeStatus>>;
 };
 
 /** A connection to a list of `Attendee` values. */
@@ -281,62 +421,17 @@ export enum AttendeesOrderBy {
   Natural = 'NATURAL',
   PanelNumberAsc = 'PANEL_NUMBER_ASC',
   PanelNumberDesc = 'PANEL_NUMBER_DESC',
-  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
-  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RegistrationIdAsc = 'REGISTRATION_ID_ASC',
   RegistrationIdDesc = 'REGISTRATION_ID_DESC',
-  SignCodeAsc = 'SIGN_CODE_ASC',
-  SignCodeDesc = 'SIGN_CODE_DESC',
   StatusAsc = 'STATUS_ASC',
   StatusDesc = 'STATUS_DESC',
   TicketNumberAsc = 'TICKET_NUMBER_ASC',
   TicketNumberDesc = 'TICKET_NUMBER_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
-  UpdatedAtDesc = 'UPDATED_AT_DESC',
-  ZipCodeAsc = 'ZIP_CODE_ASC',
-  ZipCodeDesc = 'ZIP_CODE_DESC'
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
-
-export enum AttendeeStatus {
-  /** Inscription annulée */
-  Cancelled = 'CANCELLED',
-  /** Présence confirmée à l'évenement */
-  Confirmed = 'CONFIRMED',
-  /** En attente */
-  Idle = 'IDLE',
-  /** Panneau scanné */
-  PanelScan = 'PANEL_SCAN',
-  /** Ticket scanné */
-  TicketScan = 'TICKET_SCAN'
-}
-
-/** A filter to be used against AttendeeStatus fields. All fields are combined with a logical ‘and.’ */
-export type AttendeeStatusFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<AttendeeStatus>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<AttendeeStatus>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<AttendeeStatus>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<AttendeeStatus>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<AttendeeStatus>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<AttendeeStatus>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<AttendeeStatus>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<AttendeeStatus>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<AttendeeStatus>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<AttendeeStatus>>;
-};
 
 /** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
 export type BooleanFilter = {
@@ -446,37 +541,10 @@ export type ChangePasswordPayload = {
   query?: Maybe<Query>;
 };
 
-export enum CivilityStatus {
-  /** Madame */
-  Mme = 'MME',
-  /** Monsieur */
-  Mr = 'MR'
-}
-
-/** A filter to be used against CivilityStatus fields. All fields are combined with a logical ‘and.’ */
-export type CivilityStatusFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<CivilityStatus>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<CivilityStatus>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<CivilityStatus>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<CivilityStatus>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<CivilityStatus>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<CivilityStatus>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<CivilityStatus>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<CivilityStatus>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<CivilityStatus>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<CivilityStatus>>;
+/** An input for mutations affecting `CompleteAttendee` */
+export type CompleteAttendeeInput = {
+  attendee?: InputMaybe<AttendeeInput>;
+  attendeeFormFields?: InputMaybe<Array<InputMaybe<AttendeeFormFieldInput>>>;
 };
 
 /** All input for the `confirmAccountDeletion` mutation. */
@@ -500,6 +568,43 @@ export type ConfirmAccountDeletionPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+};
+
+/** All input for the create `AttendeeFormField` mutation. */
+export type CreateAttendeeFormFieldInput = {
+  /** The `AttendeeFormField` to be created by this mutation. */
+  attendeeFormField: AttendeeFormFieldInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our create `AttendeeFormField` mutation. */
+export type CreateAttendeeFormFieldPayload = {
+  __typename?: 'CreateAttendeeFormFieldPayload';
+  /** Reads a single `Attendee` that is related to this `AttendeeFormField`. */
+  attendee?: Maybe<Attendee>;
+  /** The `AttendeeFormField` that was created by this mutation. */
+  attendeeFormField?: Maybe<AttendeeFormField>;
+  /** An edge for our `AttendeeFormField`. May be used by Relay 1. */
+  attendeeFormFieldEdge?: Maybe<AttendeeFormFieldsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `FormField` that is related to this `AttendeeFormField`. */
+  field?: Maybe<FormField>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `AttendeeFormField` mutation. */
+export type CreateAttendeeFormFieldPayloadAttendeeFormFieldEdgeArgs = {
+  orderBy?: InputMaybe<Array<AttendeeFormFieldsOrderBy>>;
 };
 
 /** All input for the create `Attendee` mutation. */
@@ -605,6 +710,41 @@ export type CreateEventPayload = {
 /** The output of our create `Event` mutation. */
 export type CreateEventPayloadEventEdgeArgs = {
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
+};
+
+/** All input for the create `FormField` mutation. */
+export type CreateFormFieldInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `FormField` to be created by this mutation. */
+  formField: FormFieldInput;
+};
+
+/** The output of our create `FormField` mutation. */
+export type CreateFormFieldPayload = {
+  __typename?: 'CreateFormFieldPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `FormField`. */
+  event?: Maybe<Event>;
+  /** The `FormField` that was created by this mutation. */
+  formField?: Maybe<FormField>;
+  /** An edge for our `FormField`. May be used by Relay 1. */
+  formFieldEdge?: Maybe<FormFieldsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `FormField` mutation. */
+export type CreateFormFieldPayloadFormFieldEdgeArgs = {
+  orderBy?: InputMaybe<Array<FormFieldsOrderBy>>;
 };
 
 /** All input for the create `Log` mutation. */
@@ -916,6 +1056,43 @@ export type DatetimeFilter = {
   notIn?: InputMaybe<Array<Scalars['Datetime']>>;
 };
 
+/** All input for the `deleteAttendeeFormField` mutation. */
+export type DeleteAttendeeFormFieldInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `AttendeeFormField` mutation. */
+export type DeleteAttendeeFormFieldPayload = {
+  __typename?: 'DeleteAttendeeFormFieldPayload';
+  /** Reads a single `Attendee` that is related to this `AttendeeFormField`. */
+  attendee?: Maybe<Attendee>;
+  /** The `AttendeeFormField` that was deleted by this mutation. */
+  attendeeFormField?: Maybe<AttendeeFormField>;
+  /** An edge for our `AttendeeFormField`. May be used by Relay 1. */
+  attendeeFormFieldEdge?: Maybe<AttendeeFormFieldsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedAttendeeFormFieldNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `FormField` that is related to this `AttendeeFormField`. */
+  field?: Maybe<FormField>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `AttendeeFormField` mutation. */
+export type DeleteAttendeeFormFieldPayloadAttendeeFormFieldEdgeArgs = {
+  orderBy?: InputMaybe<Array<AttendeeFormFieldsOrderBy>>;
+};
+
 /** All input for the `deleteAttendee` mutation. */
 export type DeleteAttendeeInput = {
   /**
@@ -1028,6 +1205,41 @@ export type DeleteFileInput = {
 export type DeleteFilePayload = {
   __typename?: 'DeleteFilePayload';
   success?: Maybe<Scalars['Boolean']>;
+};
+
+/** All input for the `deleteFormField` mutation. */
+export type DeleteFormFieldInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `FormField` mutation. */
+export type DeleteFormFieldPayload = {
+  __typename?: 'DeleteFormFieldPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedFormFieldNodeId?: Maybe<Scalars['ID']>;
+  /** Reads a single `Event` that is related to this `FormField`. */
+  event?: Maybe<Event>;
+  /** The `FormField` that was deleted by this mutation. */
+  formField?: Maybe<FormField>;
+  /** An edge for our `FormField`. May be used by Relay 1. */
+  formFieldEdge?: Maybe<FormFieldsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `FormField` mutation. */
+export type DeleteFormFieldPayloadFormFieldEdgeArgs = {
+  orderBy?: InputMaybe<Array<FormFieldsOrderBy>>;
 };
 
 /** All input for the `deleteLog` mutation. */
@@ -1298,6 +1510,8 @@ export type Event = {
    * @deprecated Please use eventBranding instead
    */
   eventBrandings: EventBrandingsConnection;
+  /** Reads and enables pagination through a set of `FormField`. */
+  formFields: FormFieldsConnection;
   id: Scalars['UUID'];
   isCancelled: Scalars['Boolean'];
   isDraft: Scalars['Boolean'];
@@ -1349,6 +1563,18 @@ export type EventEventBrandingsArgs = {
 };
 
 
+export type EventFormFieldsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<FormFieldCondition>;
+  filter?: InputMaybe<FormFieldFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<FormFieldsOrderBy>>;
+};
+
+
 export type EventLogsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -1383,9 +1609,6 @@ export type EventRegistrationsArgs = {
 
 export type EventBranding = {
   __typename?: 'EventBranding';
-  awardWinningAssoList?: Maybe<Array<Maybe<Scalars['String']>>>;
-  color1?: Maybe<Scalars['String']>;
-  color2?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
   cssVariables?: Maybe<Scalars['JSON']>;
   /** Reads a single `Event` that is related to this `EventBranding`. */
@@ -1396,7 +1619,6 @@ export type EventBranding = {
   headerMailName?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   logo?: Maybe<Scalars['String']>;
-  placeholder?: Maybe<Scalars['JSON']>;
   richText?: Maybe<Scalars['String']>;
   shortText?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Datetime'];
@@ -1411,6 +1633,8 @@ export type EventBrandingCondition = {
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `eventId` field. */
   eventId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `font` field. */
+  font?: InputMaybe<Fonts>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -1425,6 +1649,8 @@ export type EventBrandingFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `eventId` field. */
   eventId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `font` field. */
+  font?: InputMaybe<FontsFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
@@ -1437,9 +1663,6 @@ export type EventBrandingFilter = {
 
 /** An input for mutations affecting `EventBranding` */
 export type EventBrandingInput = {
-  awardWinningAssoList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  color1?: InputMaybe<Scalars['String']>;
-  color2?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   cssVariables?: InputMaybe<Scalars['JSON']>;
   eventId: Scalars['UUID'];
@@ -1448,7 +1671,6 @@ export type EventBrandingInput = {
   headerMailName?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   logo?: InputMaybe<Scalars['String']>;
-  placeholder?: InputMaybe<Scalars['JSON']>;
   richText?: InputMaybe<Scalars['String']>;
   shortText?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
@@ -1456,9 +1678,6 @@ export type EventBrandingInput = {
 
 /** Represents an update to a `EventBranding`. Fields that are set will be updated. */
 export type EventBrandingPatch = {
-  awardWinningAssoList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  color1?: InputMaybe<Scalars['String']>;
-  color2?: InputMaybe<Scalars['String']>;
   createdAt?: InputMaybe<Scalars['Datetime']>;
   cssVariables?: InputMaybe<Scalars['JSON']>;
   eventId?: InputMaybe<Scalars['UUID']>;
@@ -1467,7 +1686,6 @@ export type EventBrandingPatch = {
   headerMailName?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
   logo?: InputMaybe<Scalars['String']>;
-  placeholder?: InputMaybe<Scalars['JSON']>;
   richText?: InputMaybe<Scalars['String']>;
   shortText?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
@@ -1501,6 +1719,8 @@ export enum EventBrandingsOrderBy {
   CreatedAtDesc = 'CREATED_AT_DESC',
   EventIdAsc = 'EVENT_ID_ASC',
   EventIdDesc = 'EVENT_ID_DESC',
+  FontAsc = 'FONT_ASC',
+  FontDesc = 'FONT_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   Natural = 'NATURAL',
@@ -1644,6 +1864,19 @@ export type EventPatch = {
   zipCode?: InputMaybe<Scalars['String']>;
 };
 
+export enum EventStatus {
+  /** Annulé */
+  Cancelled = 'CANCELLED',
+  /** Brouillon */
+  Draft = 'DRAFT',
+  /** Terminé */
+  Finished = 'FINISHED',
+  /** En cours */
+  Ongoing = 'ONGOING',
+  /** A venir */
+  Pending = 'PENDING'
+}
+
 /** A connection to a list of `Event` values. */
 export type EventsConnection = {
   __typename?: 'EventsConnection';
@@ -1701,18 +1934,52 @@ export enum EventsOrderBy {
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
 
-export enum EventStatus {
-  /** Annulé */
-  Cancelled = 'CANCELLED',
-  /** Brouillon */
-  Draft = 'DRAFT',
-  /** Terminé */
-  Finished = 'FINISHED',
-  /** En cours */
-  Ongoing = 'ONGOING',
-  /** A venir */
-  Pending = 'PENDING'
+export enum FieldTypes {
+  /** Un input de type `checkbox` */
+  Checkbox = 'CHECKBOX',
+  /** Un input de type `date` */
+  Date = 'DATE',
+  /** Un input de type `email` */
+  Email = 'EMAIL',
+  /** Un input de type `number` */
+  Number = 'NUMBER',
+  /** Un input de type `radio` */
+  Radio = 'RADIO',
+  /** Un input de type `select` */
+  Select = 'SELECT',
+  /** Un input de type `tel` */
+  Tel = 'TEL',
+  /** Un input de type `text` */
+  Text = 'TEXT',
+  /** Un input de type `textarea` */
+  Textarea = 'TEXTAREA'
 }
+
+/** A filter to be used against FieldTypes fields. All fields are combined with a logical ‘and.’ */
+export type FieldTypesFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<FieldTypes>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<FieldTypes>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<FieldTypes>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<FieldTypes>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<FieldTypes>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<FieldTypes>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<FieldTypes>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<FieldTypes>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<FieldTypes>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<FieldTypes>>;
+};
 
 export enum Fonts {
   /** Montserrat */
@@ -1722,6 +1989,32 @@ export enum Fonts {
   /** Roboto */
   Roboto = 'ROBOTO'
 }
+
+/** A filter to be used against Fonts fields. All fields are combined with a logical ‘and.’ */
+export type FontsFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Fonts>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Fonts>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Fonts>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Fonts>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Fonts>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Fonts>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Fonts>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Fonts>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Fonts>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Fonts>>;
+};
 
 /** All input for the `forgotPassword` mutation. */
 export type ForgotPasswordInput = {
@@ -1744,6 +2037,158 @@ export type ForgotPasswordPayload = {
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
 };
+
+export type FormField = {
+  __typename?: 'FormField';
+  appliesToAllAttendees: Scalars['Boolean'];
+  /** Reads and enables pagination through a set of `AttendeeFormField`. */
+  attendeeFormFieldsByFieldId: AttendeeFormFieldsConnection;
+  createdAt: Scalars['Datetime'];
+  /** Reads a single `Event` that is related to this `FormField`. */
+  event?: Maybe<Event>;
+  eventId: Scalars['UUID'];
+  id: Scalars['UUID'];
+  isDeletable: Scalars['Boolean'];
+  isRequiredForAttendee: Scalars['Boolean'];
+  isRequiredForInscriptor: Scalars['Boolean'];
+  label: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  options?: Maybe<Array<Maybe<Scalars['String']>>>;
+  placeholder?: Maybe<Scalars['String']>;
+  position: Scalars['Int'];
+  type: FieldTypes;
+  updatedAt: Scalars['Datetime'];
+};
+
+
+export type FormFieldAttendeeFormFieldsByFieldIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AttendeeFormFieldCondition>;
+  filter?: InputMaybe<AttendeeFormFieldFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeeFormFieldsOrderBy>>;
+};
+
+/**
+ * A condition to be used against `FormField` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type FormFieldCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `eventId` field. */
+  eventId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `position` field. */
+  position?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `type` field. */
+  type?: InputMaybe<FieldTypes>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against `FormField` object types. All fields are combined with a logical ‘and.’ */
+export type FormFieldFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<FormFieldFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `eventId` field. */
+  eventId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<FormFieldFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<FormFieldFilter>>;
+  /** Filter by the object’s `position` field. */
+  position?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `type` field. */
+  type?: InputMaybe<FieldTypesFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** An input for mutations affecting `FormField` */
+export type FormFieldInput = {
+  appliesToAllAttendees?: InputMaybe<Scalars['Boolean']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId: Scalars['UUID'];
+  id?: InputMaybe<Scalars['UUID']>;
+  isDeletable?: InputMaybe<Scalars['Boolean']>;
+  isRequiredForAttendee?: InputMaybe<Scalars['Boolean']>;
+  isRequiredForInscriptor?: InputMaybe<Scalars['Boolean']>;
+  label: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
+  options?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  placeholder?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
+  type: FieldTypes;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `FormField`. Fields that are set will be updated. */
+export type FormFieldPatch = {
+  appliesToAllAttendees?: InputMaybe<Scalars['Boolean']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isDeletable?: InputMaybe<Scalars['Boolean']>;
+  isRequiredForAttendee?: InputMaybe<Scalars['Boolean']>;
+  isRequiredForInscriptor?: InputMaybe<Scalars['Boolean']>;
+  label?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  options?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  placeholder?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<FieldTypes>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A connection to a list of `FormField` values. */
+export type FormFieldsConnection = {
+  __typename?: 'FormFieldsConnection';
+  /** A list of edges which contains the `FormField` and cursor to aid in pagination. */
+  edges: Array<FormFieldsEdge>;
+  /** A list of `FormField` objects. */
+  nodes: Array<FormField>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `FormField` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `FormField` edge in the connection. */
+export type FormFieldsEdge = {
+  __typename?: 'FormFieldsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `FormField` at the end of the edge. */
+  node: FormField;
+};
+
+/** Methods to use when ordering `FormField`. */
+export enum FormFieldsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EventIdAsc = 'EVENT_ID_ASC',
+  EventIdDesc = 'EVENT_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PositionAsc = 'POSITION_ASC',
+  PositionDesc = 'POSITION_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
 
 export type GeneratePresignedPostInput = {
   key: Scalars['String'];
@@ -1853,6 +2298,26 @@ export type LogFilter = {
   updatedAt?: InputMaybe<DatetimeFilter>;
 };
 
+/** An input for mutations affecting `Log` */
+export type LogInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  status: LogsStatus;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** Represents an update to a `Log`. Fields that are set will be updated. */
+export type LogPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  eventId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  payload?: InputMaybe<Scalars['JSON']>;
+  status?: InputMaybe<LogsStatus>;
+  updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
 export type LoginInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -1865,29 +2330,9 @@ export type LoginPayload = {
   user: User;
 };
 
-/** An input for mutations affecting `Log` */
-export type LogInput = {
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  payload?: InputMaybe<Scalars['JSON']>;
-  status: LogsStatus;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
-};
-
 export type LogoutPayload = {
   __typename?: 'LogoutPayload';
   success?: Maybe<Scalars['Boolean']>;
-};
-
-/** Represents an update to a `Log`. Fields that are set will be updated. */
-export type LogPatch = {
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  eventId?: InputMaybe<Scalars['UUID']>;
-  id?: InputMaybe<Scalars['UUID']>;
-  payload?: InputMaybe<Scalars['JSON']>;
-  status?: InputMaybe<LogsStatus>;
-  updatedAt?: InputMaybe<Scalars['Datetime']>;
 };
 
 /** A connection to a list of `Log` values. */
@@ -1982,10 +2427,14 @@ export type Mutation = {
   confirmAccountDeletion?: Maybe<ConfirmAccountDeletionPayload>;
   /** Creates a single `Attendee`. */
   createAttendee?: Maybe<CreateAttendeePayload>;
+  /** Creates a single `AttendeeFormField`. */
+  createAttendeeFormField?: Maybe<CreateAttendeeFormFieldPayload>;
   /** Creates a single `Event`. */
   createEvent?: Maybe<CreateEventPayload>;
   /** Creates a single `EventBranding`. */
   createEventBranding?: Maybe<CreateEventBrandingPayload>;
+  /** Creates a single `FormField`. */
+  createFormField?: Maybe<CreateFormFieldPayload>;
   /** Creates a single `Log`. */
   createLog?: Maybe<CreateLogPayload>;
   createOrganization?: Maybe<CreateOrganizationPayload>;
@@ -2001,11 +2450,15 @@ export type Mutation = {
   createUserAuthentication?: Maybe<CreateUserAuthenticationPayload>;
   /** Deletes a single `Attendee` using a unique key. */
   deleteAttendee?: Maybe<DeleteAttendeePayload>;
+  /** Deletes a single `AttendeeFormField` using a unique key. */
+  deleteAttendeeFormField?: Maybe<DeleteAttendeeFormFieldPayload>;
   /** Deletes a single `Event` using a unique key. */
   deleteEvent?: Maybe<DeleteEventPayload>;
   /** Deletes a single `EventBranding` using a unique key. */
   deleteEventBranding?: Maybe<DeleteEventBrandingPayload>;
   deleteFile?: Maybe<DeleteFilePayload>;
+  /** Deletes a single `FormField` using a unique key. */
+  deleteFormField?: Maybe<DeleteFormFieldPayload>;
   /** Deletes a single `Log` using a unique key. */
   deleteLog?: Maybe<DeleteLogPayload>;
   /** Deletes a single `Organization` using a unique key. */
@@ -2032,6 +2485,7 @@ export type Mutation = {
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
   registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
+  registerCompleteAttendees?: Maybe<RegisterCompleteAttendeesPayload>;
   removeFromOrganization?: Maybe<RemoveFromOrganizationPayload>;
   /** Begin the account deletion flow by requesting the confirmation email */
   requestAccountDeletion?: Maybe<RequestAccountDeletionPayload>;
@@ -2049,10 +2503,14 @@ export type Mutation = {
   /** Updates a single `Attendee` using a unique key and a patch. */
   updateAttendee?: Maybe<UpdateAttendeePayload>;
   updateAttendeeEmailAndSendEmail?: Maybe<UpdateAttendeeEmailAndSendEmailPayload>;
+  /** Updates a single `AttendeeFormField` using a unique key and a patch. */
+  updateAttendeeFormField?: Maybe<UpdateAttendeeFormFieldPayload>;
   /** Updates a single `Event` using a unique key and a patch. */
   updateEvent?: Maybe<UpdateEventPayload>;
   /** Updates a single `EventBranding` using a unique key and a patch. */
   updateEventBranding?: Maybe<UpdateEventBrandingPayload>;
+  /** Updates a single `FormField` using a unique key and a patch. */
+  updateFormField?: Maybe<UpdateFormFieldPayload>;
   /** Updates a single `Log` using a unique key and a patch. */
   updateLog?: Maybe<UpdateLogPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
@@ -2109,6 +2567,12 @@ export type MutationCreateAttendeeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateAttendeeFormFieldArgs = {
+  input: CreateAttendeeFormFieldInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateEventArgs = {
   input: CreateEventInput;
 };
@@ -2117,6 +2581,12 @@ export type MutationCreateEventArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateEventBrandingArgs = {
   input: CreateEventBrandingInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateFormFieldArgs = {
+  input: CreateFormFieldInput;
 };
 
 
@@ -2169,6 +2639,12 @@ export type MutationDeleteAttendeeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteAttendeeFormFieldArgs = {
+  input: DeleteAttendeeFormFieldInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteEventArgs = {
   input: DeleteEventInput;
 };
@@ -2183,6 +2659,12 @@ export type MutationDeleteEventBrandingArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteFileArgs = {
   input: DeleteFileInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteFormFieldArgs = {
+  input: DeleteFormFieldInput;
 };
 
 
@@ -2271,6 +2753,12 @@ export type MutationRegisterAttendeesCsvArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationRegisterCompleteAttendeesArgs = {
+  input: RegisterCompleteAttendeesInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationRemoveFromOrganizationArgs = {
   input: RemoveFromOrganizationInput;
 };
@@ -2337,6 +2825,12 @@ export type MutationUpdateAttendeeEmailAndSendEmailArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateAttendeeFormFieldArgs = {
+  input: UpdateAttendeeFormFieldInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateEventArgs = {
   input: UpdateEventInput;
 };
@@ -2345,6 +2839,12 @@ export type MutationUpdateEventArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateEventBrandingArgs = {
   input: UpdateEventBrandingInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateFormFieldArgs = {
+  input: UpdateFormFieldInput;
 };
 
 
@@ -2519,6 +3019,8 @@ export type OrganizationInvitationCondition = {
   id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `organizationId` field. */
   organizationId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `role` field. */
+  role?: InputMaybe<OrganizationMembershipsRolesEnum>;
   /** Checks for equality with the object’s `userId` field. */
   userId?: InputMaybe<Scalars['UUID']>;
 };
@@ -2535,6 +3037,8 @@ export type OrganizationInvitationFilter = {
   or?: InputMaybe<Array<OrganizationInvitationFilter>>;
   /** Filter by the object’s `organizationId` field. */
   organizationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `role` field. */
+  role?: InputMaybe<OrganizationMembershipsRolesEnumFilter>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<UuidFilter>;
 };
@@ -2590,6 +3094,8 @@ export enum OrganizationInvitationsOrderBy {
   OrganizationIdDesc = 'ORGANIZATION_ID_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RoleAsc = 'ROLE_ASC',
+  RoleDesc = 'ROLE_DESC',
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
@@ -2819,6 +3325,9 @@ export type Query = {
   __typename?: 'Query';
   attendee?: Maybe<Attendee>;
   attendeeByTicketNumber?: Maybe<Attendee>;
+  attendeeFormField?: Maybe<AttendeeFormField>;
+  /** Reads and enables pagination through a set of `AttendeeFormField`. */
+  attendeeFormFields?: Maybe<AttendeeFormFieldsConnection>;
   /** Reads and enables pagination through a set of `Attendee`. */
   attendees?: Maybe<AttendeesConnection>;
   /** Reads a set of `Attendee`. */
@@ -2842,6 +3351,9 @@ export type Query = {
   eventBySlug?: Maybe<Event>;
   /** Reads and enables pagination through a set of `Event`. */
   events?: Maybe<EventsConnection>;
+  formField?: Maybe<FormField>;
+  /** Reads and enables pagination through a set of `FormField`. */
+  formFields?: Maybe<FormFieldsConnection>;
   log?: Maybe<Log>;
   /** Reads and enables pagination through a set of `Log`. */
   logs?: Maybe<LogsConnection>;
@@ -2889,6 +3401,25 @@ export type QueryAttendeeArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryAttendeeByTicketNumberArgs = {
   ticketNumber: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAttendeeFormFieldArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAttendeeFormFieldsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AttendeeFormFieldCondition>;
+  filter?: InputMaybe<AttendeeFormFieldFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AttendeeFormFieldsOrderBy>>;
 };
 
 
@@ -3006,6 +3537,25 @@ export type QueryEventsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryFormFieldArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryFormFieldsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<FormFieldCondition>;
+  filter?: InputMaybe<FormFieldFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<FormFieldsOrderBy>>;
 };
 
 
@@ -3281,6 +3831,40 @@ export type RegisterAttendeesPayload = {
 
 /** The output of our `registerAttendees` mutation. */
 export type RegisterAttendeesPayloadRegistrationEdgeArgs = {
+  orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the `registerCompleteAttendees` mutation. */
+export type RegisterCompleteAttendeesInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  completeAttendees: Array<InputMaybe<CompleteAttendeeInput>>;
+  eventId: Scalars['UUID'];
+};
+
+/** The output of our `registerCompleteAttendees` mutation. */
+export type RegisterCompleteAttendeesPayload = {
+  __typename?: 'RegisterCompleteAttendeesPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `Registration`. */
+  event?: Maybe<Event>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  registration?: Maybe<Registration>;
+  /** An edge for our `Registration`. May be used by Relay 1. */
+  registrationEdge?: Maybe<RegistrationsEdge>;
+};
+
+
+/** The output of our `registerCompleteAttendees` mutation. */
+export type RegisterCompleteAttendeesPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
 };
 
@@ -3665,12 +4249,12 @@ export type StringFilter = {
   greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Contains the specified string (case-sensitive). */
   includes?: InputMaybe<Scalars['String']>;
   /** Contains the specified string (case-insensitive). */
   includesInsensitive?: InputMaybe<Scalars['String']>;
-  /** Included in the specified list (case-insensitive). */
-  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
@@ -3699,12 +4283,12 @@ export type StringFilter = {
   notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['String']>>;
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Does not contain the specified string (case-sensitive). */
   notIncludes?: InputMaybe<Scalars['String']>;
   /** Does not contain the specified string (case-insensitive). */
   notIncludesInsensitive?: InputMaybe<Scalars['String']>;
-  /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
   notLike?: InputMaybe<Scalars['String']>;
   /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
@@ -3766,6 +4350,32 @@ export type TransferOrganizationOwnershipPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
+/** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
+export type UuidFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['UUID']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['UUID']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['UUID']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['UUID']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['UUID']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['UUID']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['UUID']>>;
+};
+
 /** All input for the `updateAttendeeEmailAndSendEmail` mutation. */
 export type UpdateAttendeeEmailAndSendEmailInput = {
   attendees: Array<InputMaybe<AttendeePatch>>;
@@ -3787,6 +4397,44 @@ export type UpdateAttendeeEmailAndSendEmailPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+};
+
+/** All input for the `updateAttendeeFormField` mutation. */
+export type UpdateAttendeeFormFieldInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `AttendeeFormField` being updated. */
+  patch: AttendeeFormFieldPatch;
+};
+
+/** The output of our update `AttendeeFormField` mutation. */
+export type UpdateAttendeeFormFieldPayload = {
+  __typename?: 'UpdateAttendeeFormFieldPayload';
+  /** Reads a single `Attendee` that is related to this `AttendeeFormField`. */
+  attendee?: Maybe<Attendee>;
+  /** The `AttendeeFormField` that was updated by this mutation. */
+  attendeeFormField?: Maybe<AttendeeFormField>;
+  /** An edge for our `AttendeeFormField`. May be used by Relay 1. */
+  attendeeFormFieldEdge?: Maybe<AttendeeFormFieldsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `FormField` that is related to this `AttendeeFormField`. */
+  field?: Maybe<FormField>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `AttendeeFormField` mutation. */
+export type UpdateAttendeeFormFieldPayloadAttendeeFormFieldEdgeArgs = {
+  orderBy?: InputMaybe<Array<AttendeeFormFieldsOrderBy>>;
 };
 
 /** All input for the `updateAttendee` mutation. */
@@ -3895,6 +4543,42 @@ export type UpdateEventPayload = {
 /** The output of our update `Event` mutation. */
 export type UpdateEventPayloadEventEdgeArgs = {
   orderBy?: InputMaybe<Array<EventsOrderBy>>;
+};
+
+/** All input for the `updateFormField` mutation. */
+export type UpdateFormFieldInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `FormField` being updated. */
+  patch: FormFieldPatch;
+};
+
+/** The output of our update `FormField` mutation. */
+export type UpdateFormFieldPayload = {
+  __typename?: 'UpdateFormFieldPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Event` that is related to this `FormField`. */
+  event?: Maybe<Event>;
+  /** The `FormField` that was updated by this mutation. */
+  formField?: Maybe<FormField>;
+  /** An edge for our `FormField`. May be used by Relay 1. */
+  formFieldEdge?: Maybe<FormFieldsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `FormField` mutation. */
+export type UpdateFormFieldPayloadFormFieldEdgeArgs = {
+  orderBy?: InputMaybe<Array<FormFieldsOrderBy>>;
 };
 
 /** All input for the `updateLog` mutation. */
@@ -4425,6 +5109,12 @@ export type UserPatch = {
   username?: InputMaybe<Scalars['String']>;
 };
 
+export type UserSubscriptionPayload = {
+  __typename?: 'UserSubscriptionPayload';
+  event?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
+
 /** A connection to a list of `User` values. */
 export type UsersConnection = {
   __typename?: 'UsersConnection';
@@ -4507,38 +5197,6 @@ export type UsersOrganizationsRecordFilter = {
   role?: InputMaybe<StringFilter>;
 };
 
-export type UserSubscriptionPayload = {
-  __typename?: 'UserSubscriptionPayload';
-  event?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
-};
-
-/** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
-export type UuidFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<Scalars['UUID']>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<Scalars['UUID']>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<Scalars['UUID']>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<Scalars['UUID']>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<Scalars['UUID']>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<Scalars['UUID']>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<Scalars['UUID']>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<Scalars['UUID']>>;
-};
-
 /** All input for the `verifyEmail` mutation. */
 export type VerifyEmailInput = {
   /**
@@ -4563,11 +5221,13 @@ export type VerifyEmailPayload = {
   query?: Maybe<Query>;
 };
 
-export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null };
+export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null };
 
-export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null };
+export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null };
 
 export type MyEventFragment = { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null };
+
+export type MyFormFieldFragment = { __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number };
 
 export type OrganizationFragmentFragment = { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any };
 
@@ -4580,21 +5240,21 @@ export type CreateAttendeeMutationVariables = Exact<{
 }>;
 
 
-export type CreateAttendeeMutation = { __typename?: 'Mutation', createAttendee?: { __typename?: 'CreateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null } | null } | null };
+export type CreateAttendeeMutation = { __typename?: 'Mutation', createAttendee?: { __typename?: 'CreateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null } | null } | null };
 
 export type UpdateAttendeeMutationVariables = Exact<{
   input: UpdateAttendeeInput;
 }>;
 
 
-export type UpdateAttendeeMutation = { __typename?: 'Mutation', updateAttendee?: { __typename?: 'UpdateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null } | null } | null };
+export type UpdateAttendeeMutation = { __typename?: 'Mutation', updateAttendee?: { __typename?: 'UpdateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null } | null } | null };
 
 export type DeleteAttendeeMutationVariables = Exact<{
   input: DeleteAttendeeInput;
 }>;
 
 
-export type DeleteAttendeeMutation = { __typename?: 'Mutation', deleteAttendee?: { __typename?: 'DeleteAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null } | null } | null };
+export type DeleteAttendeeMutation = { __typename?: 'Mutation', deleteAttendee?: { __typename?: 'DeleteAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null } | null } | null };
 
 export type RegisterAttendeesMutationVariables = Exact<{
   input: RegisterAttendeesInput;
@@ -4631,6 +5291,13 @@ export type ScanAttendeesOfflineMutationVariables = Exact<{
 
 export type ScanAttendeesOfflineMutation = { __typename?: 'Mutation', scanAttendeesAsync?: { __typename?: 'ScanAttendeesAsyncPayload', boolean?: boolean | null, clientMutationId?: string | null } | null };
 
+export type RegisterCompleteAttendeesMutationVariables = Exact<{
+  input: RegisterCompleteAttendeesInput;
+}>;
+
+
+export type RegisterCompleteAttendeesMutation = { __typename?: 'Mutation', registerCompleteAttendees?: { __typename?: 'RegisterCompleteAttendeesPayload', registration?: { __typename?: 'Registration', id: any, attendeesList: Array<{ __typename?: 'Attendee', id: any, qrCodeUrl?: string | null, pdfUrl?: string | null }> } | null } | null };
+
 export type CreateEventMutationVariables = Exact<{
   input: CreateEventInput;
 }>;
@@ -4664,21 +5331,42 @@ export type CreateEventBrandingMutationVariables = Exact<{
 }>;
 
 
-export type CreateEventBrandingMutation = { __typename?: 'Mutation', createEventBranding?: { __typename?: 'CreateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
+export type CreateEventBrandingMutation = { __typename?: 'Mutation', createEventBranding?: { __typename?: 'CreateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
 
 export type UpdateEventBrandingMutationVariables = Exact<{
   input: UpdateEventBrandingInput;
 }>;
 
 
-export type UpdateEventBrandingMutation = { __typename?: 'Mutation', updateEventBranding?: { __typename?: 'UpdateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
+export type UpdateEventBrandingMutation = { __typename?: 'Mutation', updateEventBranding?: { __typename?: 'UpdateEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
 
 export type DeleteEventBrandingMutationVariables = Exact<{
   input: DeleteEventBrandingInput;
 }>;
 
 
-export type DeleteEventBrandingMutation = { __typename?: 'Mutation', deleteEventBranding?: { __typename?: 'DeleteEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
+export type DeleteEventBrandingMutation = { __typename?: 'Mutation', deleteEventBranding?: { __typename?: 'DeleteEventBrandingPayload', clientMutationId?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null } | null };
+
+export type CreateFormFieldMutationVariables = Exact<{
+  input: CreateFormFieldInput;
+}>;
+
+
+export type CreateFormFieldMutation = { __typename?: 'Mutation', createFormField?: { __typename?: 'CreateFormFieldPayload', formField?: { __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number } | null } | null };
+
+export type UpdateFormFieldMutationVariables = Exact<{
+  input: UpdateFormFieldInput;
+}>;
+
+
+export type UpdateFormFieldMutation = { __typename?: 'Mutation', updateFormField?: { __typename?: 'UpdateFormFieldPayload', formField?: { __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number } | null } | null };
+
+export type DeleteFormFieldMutationVariables = Exact<{
+  input: DeleteFormFieldInput;
+}>;
+
+
+export type DeleteFormFieldMutation = { __typename?: 'Mutation', deleteFormField?: { __typename?: 'DeleteFormFieldPayload', formField?: { __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number } | null } | null };
 
 export type GeneratePresignedPostMutationVariables = Exact<{
   key: Scalars['String'];
@@ -4802,21 +5490,21 @@ export type GetAttendeeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null } | null };
+export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, attendeeFormFields: { __typename?: 'AttendeeFormFieldsConnection', nodes: Array<{ __typename?: 'AttendeeFormField', value?: string | null, field?: { __typename?: 'FormField', name?: string | null, id: any } | null }> } } | null };
 
 export type GetAttendeesWithoutMailByRegistrationIdQueryVariables = Exact<{
   registrationId: Scalars['UUID'];
 }>;
 
 
-export type GetAttendeesWithoutMailByRegistrationIdQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', civility: CivilityStatus, email?: string | null, firstname: string, id: any, lastname: string, isInscriptor?: boolean | null }> } | null };
+export type GetAttendeesWithoutMailByRegistrationIdQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', civility: string, email?: string | null, firstname: string, id: any, lastname: string, isInscriptor?: boolean | null }> } | null };
 
 export type GetAttendeeByTicketNumberQueryVariables = Exact<{
   ticketNumber: Scalars['String'];
 }>;
 
 
-export type GetAttendeeByTicketNumberQuery = { __typename?: 'Query', attendeeByTicketNumber?: { __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null } | null };
+export type GetAttendeeByTicketNumberQuery = { __typename?: 'Query', attendeeByTicketNumber?: { __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null } | null };
 
 export type SearchAttendeeQueryVariables = Exact<{
   search: Scalars['String'];
@@ -4824,12 +5512,12 @@ export type SearchAttendeeQueryVariables = Exact<{
 }>;
 
 
-export type SearchAttendeeQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null }> } | null };
+export type SearchAttendeeQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null }> } | null };
 
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number }, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetAllEventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number }, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetAllEventsByOrganizationIdQueryVariables = Exact<{
   organizationId: Scalars['UUID'];
@@ -4854,7 +5542,7 @@ export type GetEventByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
+export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, formFields: { __typename?: 'FormFieldsConnection', nodes: Array<{ __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number }> }, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -4862,7 +5550,7 @@ export type GetEventBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, formFields: { __typename?: 'FormFieldsConnection', nodes: Array<{ __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number }> }, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null }> } } | null };
 
 export type GetEventByEventSlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -4882,19 +5570,19 @@ export type GetEventLogsBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventLogsBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, signCode?: string | null, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, zipCode?: string | null, isVip?: boolean | null, hearAbout?: string | null, phoneNumber?: string | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
+export type GetEventLogsBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
 export type GetCurrentUserEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserEventsQuery = { __typename?: 'Query', userEvents?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number }, eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
+export type GetCurrentUserEventsQuery = { __typename?: 'Query', userEvents?: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description: string, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number }, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null, registrations: { __typename?: 'RegistrationsConnection', totalCount: number } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } | null };
 
 export type GetEventBrandingByIdQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetEventBrandingByIdQuery = { __typename?: 'Query', eventBranding?: { __typename?: 'EventBranding', awardWinningAssoList?: Array<string | null> | null, color1?: string | null, color2?: string | null, createdAt: any, font?: Fonts | null, id: any, logo?: string | null, placeholder?: any | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null };
+export type GetEventBrandingByIdQuery = { __typename?: 'Query', eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null } | null };
 
 export type GetAllOrganizationQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
@@ -4970,27 +5658,19 @@ export const MyAttendeeFragmentDoc = `
   status
   panelNumber
   ticketNumber
-  signCode
   registrationId
   qrCodeUrl
   pdfUrl
   isInscriptor
-  zipCode
   isVip
-  hearAbout
-  phoneNumber
 }
     `;
 export const EventBrandingFragmentFragmentDoc = `
     fragment EventBrandingFragment on EventBranding {
-  awardWinningAssoList
-  color1
-  color2
   createdAt
   font
   id
   logo
-  placeholder
   shortText
   richText
   updatedAt
@@ -5025,6 +5705,21 @@ export const MyEventFragmentDoc = `
   totalConfirmedRegistrations
   isCancelled
   state
+}
+    `;
+export const MyFormFieldFragmentDoc = `
+    fragment MyFormField on FormField {
+  id
+  type
+  label
+  name
+  placeholder
+  options
+  appliesToAllAttendees
+  isDeletable
+  isRequiredForAttendee
+  isRequiredForInscriptor
+  position
 }
     `;
 export const OrganizationFragmentFragmentDoc = `
@@ -5136,6 +5831,20 @@ export const ScanAttendeesOfflineDocument = `
   }
 }
     `;
+export const RegisterCompleteAttendeesDocument = `
+    mutation RegisterCompleteAttendees($input: RegisterCompleteAttendeesInput!) {
+  registerCompleteAttendees(input: $input) {
+    registration {
+      id
+      attendeesList {
+        id
+        qrCodeUrl
+        pdfUrl
+      }
+    }
+  }
+}
+    `;
 export const CreateEventDocument = `
     mutation CreateEvent($input: CreateEventInput!) {
   createEvent(input: $input) {
@@ -5203,6 +5912,33 @@ export const DeleteEventBrandingDocument = `
   }
 }
     ${EventBrandingFragmentFragmentDoc}`;
+export const CreateFormFieldDocument = `
+    mutation CreateFormField($input: CreateFormFieldInput!) {
+  createFormField(input: $input) {
+    formField {
+      ...MyFormField
+    }
+  }
+}
+    ${MyFormFieldFragmentDoc}`;
+export const UpdateFormFieldDocument = `
+    mutation UpdateFormField($input: UpdateFormFieldInput!) {
+  updateFormField(input: $input) {
+    formField {
+      ...MyFormField
+    }
+  }
+}
+    ${MyFormFieldFragmentDoc}`;
+export const DeleteFormFieldDocument = `
+    mutation DeleteFormField($input: DeleteFormFieldInput!) {
+  deleteFormField(input: $input) {
+    formField {
+      ...MyFormField
+    }
+  }
+}
+    ${MyFormFieldFragmentDoc}`;
 export const GeneratePresignedPostDocument = `
     mutation GeneratePresignedPost($key: String!) {
   generatePresignedPost(input: {key: $key}) {
@@ -5354,6 +6090,15 @@ export const ResetPasswordDocument = `
 export const GetAttendeeByIdDocument = `
     query GetAttendeeById($attendeeId: UUID!) {
   attendee(id: $attendeeId) {
+    attendeeFormFields {
+      nodes {
+        value
+        field {
+          name
+          id
+        }
+      }
+    }
     ...MyAttendee
   }
 }
@@ -5389,7 +6134,7 @@ export const GetAttendeeByTicketNumberDocument = `
 export const SearchAttendeeDocument = `
     query SearchAttendee($search: String!, $eventId: UUID!) {
   attendees(
-    filter: {eventId: {equalTo: $eventId}, or: [{firstname: {includesInsensitive: $search}}, {lastname: {includesInsensitive: $search}}, {email: {includesInsensitive: $search}}, {phoneNumber: {includesInsensitive: $search}}, {ticketNumber: {includesInsensitive: $search}}]}
+    filter: {eventId: {equalTo: $eventId}, or: [{firstname: {includesInsensitive: $search}}, {lastname: {includesInsensitive: $search}}, {email: {includesInsensitive: $search}}, {ticketNumber: {includesInsensitive: $search}}]}
   ) {
     nodes {
       registration {
@@ -5465,6 +6210,11 @@ export const GetEventByIdDocument = `
     eventBranding {
       ...EventBrandingFragment
     }
+    formFields(orderBy: POSITION_ASC) {
+      nodes {
+        ...MyFormField
+      }
+    }
     capacity
     attendees {
       totalCount
@@ -5482,10 +6232,16 @@ export const GetEventByIdDocument = `
 }
     ${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}
+${MyFormFieldFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
 export const GetEventBySlugDocument = `
     query GetEventBySlug($eventSlug: String!, $organizationSlug: String!) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
+    formFields(orderBy: POSITION_ASC) {
+      nodes {
+        ...MyFormField
+      }
+    }
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
@@ -5498,7 +6254,8 @@ export const GetEventBySlugDocument = `
     }
   }
 }
-    ${MyEventFragmentDoc}
+    ${MyFormFieldFragmentDoc}
+${MyEventFragmentDoc}
 ${EventBrandingFragmentFragmentDoc}
 ${MyAttendeeFragmentDoc}`;
 export const GetEventByEventSlugDocument = `
@@ -5765,6 +6522,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     ScanAttendeesOffline(variables: ScanAttendeesOfflineMutationVariables, options?: C): Promise<ScanAttendeesOfflineMutation> {
       return requester<ScanAttendeesOfflineMutation, ScanAttendeesOfflineMutationVariables>(ScanAttendeesOfflineDocument, variables, options) as Promise<ScanAttendeesOfflineMutation>;
     },
+    RegisterCompleteAttendees(variables: RegisterCompleteAttendeesMutationVariables, options?: C): Promise<RegisterCompleteAttendeesMutation> {
+      return requester<RegisterCompleteAttendeesMutation, RegisterCompleteAttendeesMutationVariables>(RegisterCompleteAttendeesDocument, variables, options) as Promise<RegisterCompleteAttendeesMutation>;
+    },
     CreateEvent(variables: CreateEventMutationVariables, options?: C): Promise<CreateEventMutation> {
       return requester<CreateEventMutation, CreateEventMutationVariables>(CreateEventDocument, variables, options) as Promise<CreateEventMutation>;
     },
@@ -5785,6 +6545,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteEventBranding(variables: DeleteEventBrandingMutationVariables, options?: C): Promise<DeleteEventBrandingMutation> {
       return requester<DeleteEventBrandingMutation, DeleteEventBrandingMutationVariables>(DeleteEventBrandingDocument, variables, options) as Promise<DeleteEventBrandingMutation>;
+    },
+    CreateFormField(variables: CreateFormFieldMutationVariables, options?: C): Promise<CreateFormFieldMutation> {
+      return requester<CreateFormFieldMutation, CreateFormFieldMutationVariables>(CreateFormFieldDocument, variables, options) as Promise<CreateFormFieldMutation>;
+    },
+    UpdateFormField(variables: UpdateFormFieldMutationVariables, options?: C): Promise<UpdateFormFieldMutation> {
+      return requester<UpdateFormFieldMutation, UpdateFormFieldMutationVariables>(UpdateFormFieldDocument, variables, options) as Promise<UpdateFormFieldMutation>;
+    },
+    DeleteFormField(variables: DeleteFormFieldMutationVariables, options?: C): Promise<DeleteFormFieldMutation> {
+      return requester<DeleteFormFieldMutation, DeleteFormFieldMutationVariables>(DeleteFormFieldDocument, variables, options) as Promise<DeleteFormFieldMutation>;
     },
     GeneratePresignedPost(variables: GeneratePresignedPostMutationVariables, options?: C): Promise<GeneratePresignedPostMutation> {
       return requester<GeneratePresignedPostMutation, GeneratePresignedPostMutationVariables>(GeneratePresignedPostDocument, variables, options) as Promise<GeneratePresignedPostMutation>;

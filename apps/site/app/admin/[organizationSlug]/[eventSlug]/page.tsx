@@ -4,6 +4,7 @@ import { PlusSquare } from "lucide-react";
 
 import { initLimit } from "@/types/filter";
 import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -14,7 +15,7 @@ import { MyDataTable } from "./_components/data-table";
 import { columns } from "./columns";
 
 const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
-  const data = await sdk().GetEventBySlug({
+  const data = await serverSdk().GetEventBySlug({
     eventSlug,
     organizationSlug,
   });

@@ -42,9 +42,6 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
   email,
   status,
   panelNumber,
-  phoneNumber,
-  zipCode,
-  hearAbout,
   isVip,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -153,49 +150,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.email?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid items-center gap-1.5">
-        <Label htmlFor="phoneNumber">Téléphone</Label>
-        <Input
-          type="number"
-          id="phoneNumber"
-          defaultValue={phoneNumber}
-          placeholder="Obole"
-          {...register("patch.phoneNumber")}
-        />
-        {formState.errors?.patch?.phoneNumber && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.phoneNumber?.message}</p>
-        )}
-      </div>
-      <div className="mt-4 grid items-center gap-1.5">
-        <Label htmlFor="zipCode">Code postale</Label>
-        <Input type="number" id="zipCode" defaultValue={zipCode} placeholder="44000" {...register("patch.zipCode")} />
-        {formState.errors?.patch?.zipCode && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.zipCode?.message}</p>
-        )}
-      </div>
-      <div className="mt-4 grid items-center gap-1.5">
-        <Controller
-          name={"patch.hearAbout"}
-          control={control}
-          defaultValue={hearAbout}
-          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
-            <>
-              <Select onValueChange={onChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Comment avez-vous entendu parler de Lille pour le Bien Commun ?" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
-                    <SelectItem value={"autre"}>Autre</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
-            </>
-          )}
-        />
-      </div>
+
       <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="isVip">{"Vip"}</Label>
         <Input
@@ -252,7 +207,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
         </AlertDialog>
       </div>
       {error && (
-        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
+        <p className="mt-2 line-clamp-3 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {

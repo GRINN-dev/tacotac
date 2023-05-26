@@ -1,0 +1,23 @@
+mutation CreateFormField($input: CreateFormFieldInput!) {
+  createFormField(input: $input) {
+    formField {
+      ...MyFormField
+    }
+  }
+}
+
+mutation UpdateFormField($input: UpdateFormFieldInput!) {
+  updateFormField(input: $input) {
+    formField {
+      ...MyFormField
+    }
+  }
+}
+
+mutation DeleteFormField($input: DeleteFormFieldInput!) {
+  deleteFormField(input: $input) {
+    formField {
+      ...MyFormField
+    }
+  }
+}

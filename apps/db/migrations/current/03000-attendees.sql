@@ -14,16 +14,6 @@ insert into publ.attendee_status values
 
 GRANT all on  publ.attendee_status TO :DATABASE_VISITOR;
 
-drop table if exists publ.civility_status cascade;
-create table publ.civility_status (
-    type text primary key,
-    description text
-);
-comment on table publ.civility_status is E'@enum';
-
-insert into publ.civility_status values
-    ('MR', 'Monsieur'),
-    ('MME', 'Madame');
 /*
   TABLE: publ.attendees
   DESCRIPTION: Participants à l'évenement
@@ -31,14 +21,11 @@ insert into publ.civility_status values
 drop table if exists publ.attendees cascade;
 create table publ.attendees (
     id uuid not null default uuid_generate_v4() primary key unique, 
-    civility text not null references publ.civility_status on delete cascade,
+    civility text not null,
     firstname text not null,
     lastname text not null,
     email citext ,
-    phone_number text,
     registration_id uuid references publ.registrations(id) on delete cascade,
-    zip_code text ,
-    hear_about text default 'autre',
     is_fundraising_generosity_ok boolean default false,
     status text not null default 'IDLE' references publ.attendee_status on delete cascade,
     notes text,
@@ -51,7 +38,6 @@ create table publ.attendees (
     is_email_sent boolean default false,
     qr_code_url text,
     pdf_url text,
-    sign_code text,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now()
 );
@@ -64,9 +50,6 @@ create table publ.attendees (
   create index on publ.attendees(lastname);
   create index on publ.attendees(civility);
   create index on publ.attendees(registration_id);
-  create index on publ.attendees(phone_number);
-  create index on publ.attendees(zip_code);
-  create index on publ.attendees(sign_code);
   create index on publ.attendees(is_inscriptor);
   create index on publ.attendees(firstname);
   create index on publ.attendees(lastname);
@@ -79,8 +62,8 @@ create table publ.attendees (
 
 -- RBAC
   grant select on publ.attendees to :DATABASE_VISITOR;
-  grant insert(registration_id, civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status, is_inscriptor, is_vip) on publ.attendees to :DATABASE_VISITOR;
-  grant update(civility, firstname, lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status,panel_number, is_vip) on publ.attendees to :DATABASE_VISITOR;
+  grant insert(registration_id, civility, firstname, lastname, email, is_fundraising_generosity_ok, status, is_inscriptor, is_vip) on publ.attendees to :DATABASE_VISITOR;
+  grant update(civility, firstname, lastname, email, is_fundraising_generosity_ok, status,panel_number, is_vip) on publ.attendees to :DATABASE_VISITOR;
   grant delete on publ.attendees to :DATABASE_VISITOR;
 -- triggers
   create trigger _100_timestamps
@@ -117,17 +100,6 @@ create table publ.attendees (
 
 -- fixtures
   -- fixtures go here
- insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, is_inscriptor ,status) values ('MR','1', 'blip','1@blip.com','0102030405','44000','par un mécène',true, true,'IDLE');
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MME','2', 'blip','2@blip.com','0102030405','44000','par un mécène',true, 'IDLE');
-
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MR', '11', 'blip','11@blip.com','0102030405','44000','par un mécène',true, 'IDLE');
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MR', '111', 'blip','111@blip.com','0102030405','44000','par un mécène',true, 'IDLE');
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MR', '12', 'blip','12@blip.com','0102030405','44000','par un mécène',true, 'IDLE');
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MR', '13', 'blip','13@blip.com','0102030405','44000','par un mécène',true, 'IDLE');
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MR', '14', 'blip','14@blip.com','0102030405','44000','par un mécène',true, 'IDLE');
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MR', '15', 'blip','15@blip.com','0102030405','44000','par un mécène',true, 'IDLE');
-    insert into publ.attendees ( civility, firstname,lastname, email, phone_number, zip_code, hear_about, is_fundraising_generosity_ok, status) values ('MR', 'tst', 'testeuh','tst@testeuh.com','0102030405','44000','par un mécène',true,'IDLE');
-
     
 /*
   END TABLE: publ.attendees

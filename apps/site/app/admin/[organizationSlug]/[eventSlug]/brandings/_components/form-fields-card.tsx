@@ -1,0 +1,289 @@
+"use client";
+
+import { FC, useState } from "react";
+import { useRouter } from "next/navigation";
+import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+
+import { sdk } from "@/lib/sdk";
+import { cn } from "@/lib/utils";
+import {
+  Button,
+  Checkbox,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { toast } from "@/components/ui/use-toast";
+
+export const FormFieldCard: FC<{
+  onSuccess?: any;
+  eventID?: string;
+  formField?: GetEventBySlugQuery["eventBySlug"]["formFields"]["nodes"][number];
+  isLast?: boolean;
+}> = ({ formField, isLast, eventID, onSuccess }) => {
+  const { register, handleSubmit, watch, control, formState } = useForm<CreateFormFieldInput>({
+    defaultValues: {
+      formField: {
+        ...formField,
+        options: formField?.options?.join("|") as any,
+      },
+    },
+  });
+
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSubmit = async (data: CreateFormFieldInput) => {
+    setIsLoading(true);
+    formField
+      ? sdk()
+          .UpdateFormField({
+            input: {
+              patch: {
+                ...data.formField,
+                options: (data.formField.options as any)?.split("|"),
+              },
+              id: formField.id,
+            },
+          })
+          .then(() => {
+            toast({ title: "Champ mis à jour" });
+            setIsLoading(false);
+            router.refresh();
+          })
+      : sdk()
+          .CreateFormField({
+            input: {
+              formField: {
+                ...data.formField,
+                options: (data.formField.options as any)?.split("|"),
+                eventId: eventID,
+              },
+            },
+          })
+          .then(() => {
+            toast({ title: "Champ créé" });
+            setIsLoading(false);
+            router.refresh();
+          });
+    onSuccess();
+  };
+
+  return (
+    <form
+      className={cn("mt-4 grid items-center gap-1.5", isLoading && "animate-pulse")}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <Controller
+        name={"formField.type"}
+        control={control}
+        render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
+          <>
+            <Select onValueChange={onChange} value={value}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value={FieldTypes.Text}>Texte</SelectItem>
+                  <SelectItem value={FieldTypes.Textarea}>Paragraphe</SelectItem>
+                  <SelectItem value={FieldTypes.Select}>Selecteur</SelectItem>
+                  <SelectItem value={FieldTypes.Checkbox}>Checkbox</SelectItem>
+                  <SelectItem value={FieldTypes.Radio}>Un parmis ...</SelectItem>
+                  <SelectItem value={FieldTypes.Date}>Date</SelectItem>
+                  <SelectItem value={FieldTypes.Email}>Email</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
+          </>
+        )}
+      />
+      <div className="mt-4 grid items-center gap-1.5">
+        <Label htmlFor="label">Label</Label>
+        <Input
+          type="text"
+          id="label"
+          defaultValue={formField?.label}
+          {...register("formField.label", {
+            required: "Un label est requis",
+          })}
+        />
+        {formState.errors?.formField?.label && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 grid items-center gap-1.5">
+        <Label htmlFor="placeholder">Placeholder</Label>
+        <Input type="text" id="placeholder" {...register("formField.placeholder", {})} />
+        {formState.errors?.formField?.label && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
+        )}
+      </div>
+      <div className="flex items-center space-x-2">
+        <Controller
+          control={control}
+          name={"formField.isRequiredForInscriptor"}
+          render={({ field: { onChange, onBlur, value, ref, name } }) => (
+            <Checkbox
+              checked={value}
+              onCheckedChange={(e) => {
+                console.log(e);
+                onChange(e);
+              }}
+              defaultChecked={formField?.isRequiredForInscriptor}
+            />
+          )}
+        />
+        <label
+          htmlFor="is-required-for-inscriptor"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Le champ est requi pour la personne qui fait l&apos;inscription
+        </label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Controller
+          control={control}
+          name={"formField.isRequiredForAttendee"}
+          render={({ field: { onChange, onBlur, value, ref, name } }) => (
+            <Checkbox
+              checked={value}
+              onCheckedChange={(e) => onChange(e)}
+              defaultChecked={formField?.isRequiredForAttendee}
+            />
+          )}
+        />
+        <label
+          htmlFor="is-required-for-attendee"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Le champ est requi pour la personne qui participe à l&apos;évènement
+        </label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Controller
+          control={control}
+          name={"formField.appliesToAllAttendees"}
+          render={({ field: { onChange, onBlur, value, ref, name } }) => (
+            <Checkbox
+              checked={value}
+              onCheckedChange={(e) => onChange(e)}
+              defaultChecked={formField?.appliesToAllAttendees}
+            />
+          )}
+        />
+        <label
+          htmlFor="is-available-for-attendee"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Le champ s&apos;applique aussi aux accompagnants
+        </label>
+      </div>
+
+      {/* now for the options: if type is select or radio, I want an array of strings */}
+
+      <div className="mt-4 grid items-center gap-1.5">
+        <Label htmlFor="options">
+          Options proposées au participant. Sur une ligne séparé par le symbole &apos;|&apos;
+        </Label>
+        <Input type="text" id="options" {...register("formField.options", {})} />
+        {formState.errors?.formField?.label && (
+          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
+        )}
+      </div>
+      <div className="mt-4 flex justify-between">
+        <div className="flex gap-2">
+          <Button type="submit">Enregistrer</Button>
+          {formField?.isDeletable ? (
+            <Button type="button" variant="secondary">
+              Supprimer
+            </Button>
+          ) : (
+            false
+          )}
+        </div>
+        <div className="flex gap-2">
+          <button
+            disabled={formField?.position === 0}
+            className={cn(formField?.position === 0 && "cursor-not-allowed opacity-50")}
+            onClick={async () => {
+              setIsLoading(true);
+              await sdk().UpdateFormField({
+                input: {
+                  id: formField?.id,
+                  patch: {
+                    position: formField?.position - 1,
+                  },
+                },
+              });
+
+              setIsLoading(false);
+              toast({
+                title: "Champ déplacé",
+              });
+              router.refresh();
+            }}
+          >
+            <ChevronUp />
+          </button>
+          <button
+            disabled={isLast}
+            className={cn(isLast && "cursor-not-allowed opacity-50")}
+            onClick={async () => {
+              setIsLoading(true);
+              await sdk().UpdateFormField({
+                input: {
+                  id: formField?.id,
+                  patch: {
+                    position: formField?.position + 1,
+                  },
+                },
+              });
+
+              setIsLoading(false);
+              toast({
+                title: "Champ déplacé",
+              });
+              router.refresh();
+            }}
+          >
+            <ChevronDown />
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+};
+
+export const CreationDialog: FC<{ eventID: string }> = ({ eventID }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <Dialog
+      open={isOpen}
+      onOpenChange={(e) => {
+        setIsOpen(e);
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button>Ajouter un champ</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <FormFieldCard
+          onSuccess={() => {
+            setIsOpen(false);
+          }}
+          eventID={eventID}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+};

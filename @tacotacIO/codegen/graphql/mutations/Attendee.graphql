@@ -67,3 +67,16 @@ mutation ScanAttendeesOffline($input: ScanAttendeesAsyncInput!) {
     clientMutationId
   }
 }
+
+mutation RegisterCompleteAttendees($input: RegisterCompleteAttendeesInput!) {
+  registerCompleteAttendees(input: $input) {
+    registration {
+      id
+      attendeesList {
+        id
+        qrCodeUrl
+        pdfUrl
+      }
+    }
+  }
+}

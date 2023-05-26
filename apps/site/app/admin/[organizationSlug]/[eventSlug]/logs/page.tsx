@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
@@ -11,7 +12,7 @@ const LogsPage = async ({
 }: {
   params: { eventSlug: string; organizationSlug: string };
 }) => {
-  const { eventBySlug: eventLogsBySlug } = await sdk().GetEventLogsBySlug({
+  const { eventBySlug: eventLogsBySlug } = await serverSdk().GetEventLogsBySlug({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });

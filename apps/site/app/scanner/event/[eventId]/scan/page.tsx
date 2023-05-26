@@ -1,8 +1,9 @@
 import { sdk } from "@/lib/sdk";
+import { serverSdk } from "@/lib/server-sdk";
 import { Scanner } from "./scanner";
 
 const EventSlug = async ({ params: { eventId } }) => {
-  const { event } = await sdk().GetEventById({
+  const { event } = await serverSdk().GetEventById({
     eventId: eventId,
   });
   return <Scanner event={event} />;

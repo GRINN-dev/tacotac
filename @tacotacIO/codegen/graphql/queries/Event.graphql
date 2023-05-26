@@ -64,6 +64,11 @@ query GetEventById(
     eventBranding {
       ...EventBrandingFragment
     }
+    formFields(orderBy: POSITION_ASC) {
+      nodes {
+        ...MyFormField
+      }
+    }
     capacity
     # registrations {
     #   nodes {
@@ -97,6 +102,11 @@ query GetEventBySlug(
   $organizationSlug: String! # $filter: AttendeeFilter # $first: Int # $offset: Int
 ) {
   eventBySlug(eventSlug: $eventSlug, organizationSlug: $organizationSlug) {
+    formFields(orderBy: POSITION_ASC) {
+      nodes {
+        ...MyFormField
+      }
+    }
     ...MyEvent
     eventBranding {
       ...EventBrandingFragment
@@ -107,20 +117,6 @@ query GetEventBySlug(
         ...MyAttendee
       }
     }
-    # registrations(first: $first, offset: $offset) {
-    #   nodes {
-    #     attendeesList(filter: $filter) {
-    #       ...MyAttendee
-    #     }
-    #   }
-    #   pageInfo {
-    #     hasNextPage
-    #     hasPreviousPage
-    #     startCursor
-    #     endCursor
-    #   }
-    #   totalCount
-    # }
   }
 }
 

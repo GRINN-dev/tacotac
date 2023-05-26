@@ -1,11 +1,5 @@
 import { Pool } from "pg";
 import { faker } from "@faker-js/faker";
-enum CivilityStatus {
-  /** Madame */
-  Mme = "MME",
-  /** Monsieur */
-  Mr = "MR",
-}
 
 enum EventStatus {
   /** Inscription annulée */
@@ -45,7 +39,7 @@ type EventInput = {
 };
 
 type AttendeeInput = {
-  civility: CivilityStatus;
+  civility: string;
   createdAt?: Date;
   email?: string;
   firstname: string;
@@ -214,7 +208,12 @@ const createAttendee: (
         ) returning id;
         `,
     [
-      faker.helpers.arrayElement(Object.values(CivilityStatus)),
+      faker.helpers.arrayElement(
+        Object.values({
+          Monsieur: "Monsieur",
+          Madame: "Madame",
+        })
+      ),
       faker.date.past(),
       faker.internet.email(),
       faker.name.firstName(),

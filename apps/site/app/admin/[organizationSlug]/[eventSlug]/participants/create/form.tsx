@@ -2,12 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  AttendeeStatus,
-  CivilityStatus,
-  GetEventBySlugQuery,
-  RegisterAttendeesInput,
-} from "@/../../@tacotacIO/codegen/dist";
+import { AttendeeStatus, GetEventBySlugQuery, RegisterAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
 import { Controller, useForm } from "react-hook-form";
 
@@ -95,8 +90,8 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value={CivilityStatus.Mr}>Monsieur</SelectItem>
-                    <SelectItem value={CivilityStatus.Mme}>Madame</SelectItem>
+                    <SelectItem value={"MR"}>Monsieur</SelectItem>
+                    <SelectItem value={"MME"}>Madame</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -157,60 +152,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.attendees?.at(0)?.email?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid items-center gap-1.5">
-        <Label htmlFor="phoneNumber">Téléphone</Label>
-        <Input
-          type="number"
-          id="phoneNumber"
-          placeholder="Obole"
-          {...register("attendees.0.phoneNumber", {
-            required: "Un téléphone pour le participant est requis",
-          })}
-        />
-        {formState.errors?.attendees?.at(0)?.phoneNumber && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.attendees?.at(0)?.phoneNumber?.message}
-          </p>
-        )}
-      </div>
-      <div className="mt-4 grid items-center gap-1.5">
-        <Label htmlFor="zipCode">Code postale</Label>
-        <Input
-          type="number"
-          id="zipCode"
-          placeholder="Obole"
-          {...register("attendees.0.zipCode", {
-            required: "Un code postal pour le participant est requis",
-          })}
-        />
-        {formState.errors?.attendees?.at(0)?.zipCode && (
-          <p className="text-sm text-red-800 dark:text-red-300">
-            {formState.errors?.attendees?.at(0)?.zipCode?.message}
-          </p>
-        )}
-      </div>
-      <div className="mt-4 grid items-center gap-1.5">
-        <Controller
-          name={"attendees.0.hearAbout"}
-          control={control}
-          render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
-            <>
-              <Select onValueChange={onChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Comment avez-vous entendu parler de Lille pour le Bien Commun ?" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value={"par un mécéne"}>Par un mécéne</SelectItem>
-                    <SelectItem value={"autre"}>Autre</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {error?.message && <p className="text-sm text-red-800 dark:text-red-300">{error?.message}</p>}
-            </>
-          )}
-        />
-      </div>
+
       <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="isFundraisingGenerosityOk">
           {
@@ -240,7 +182,7 @@ export const CreateAttendeeForm: FC<iCreateAttendeeForm> = ({ id }) => {
         </button>
       </div>
       {error && (
-        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
+        <p className="mt-2 line-clamp-3 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {
