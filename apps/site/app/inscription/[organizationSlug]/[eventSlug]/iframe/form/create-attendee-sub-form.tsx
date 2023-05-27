@@ -32,7 +32,7 @@ export const CreateAttendeeSubForm: FC<{
       {formFields.map((formField, i) => {
         const required =
           (isInscriptor && !!formField.isRequiredForInscriptor) || (!isInscriptor && !!formField.isRequiredForAttendee);
-        const shouldBeDisplayed = isInscriptor || !!formField.appliesToAllAttendees;
+        const shouldBeDisplayed = isInscriptor || formField.appliesToAllAttendees;
         if (!shouldBeDisplayed) return;
         return (
           <div className="mt-4 grid w-full items-center gap-1.5 sm:grid-cols-3" key={formField.id}>
@@ -84,7 +84,7 @@ export const CreateAttendeeSubForm: FC<{
                 control={control}
                 rules={{ required: { message: "Ce champ est requis", value: required } }}
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                  <Checkbox className="w-full sm:col-span-2" value={value} onCheckedChange={(e) => onChange(e)}>
+                  <Checkbox className="" value={value} onCheckedChange={(e) => onChange(e)}>
                     {formField.label}
                   </Checkbox>
                 )}

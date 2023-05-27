@@ -81,6 +81,11 @@ export const CreateAttendeeForm2: FC<{
                 if (data.completeAttendees[i].attendeeFormFields[j].fieldId === civilityFormFieldId) {
                   data.completeAttendees[i].attendee.civility = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
+
+                data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value =
+                  String(
+                    (data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value)
+                  );
               }
             }
 
