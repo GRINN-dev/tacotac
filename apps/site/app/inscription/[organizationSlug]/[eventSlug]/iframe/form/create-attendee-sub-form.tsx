@@ -68,7 +68,7 @@ export const CreateAttendeeSubForm: FC<{
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {!!formField.isRequiredForAttendee ? <SelectItem value={null}>-</SelectItem> : null}
+                      {required ? null : <SelectItem value={null}>-</SelectItem>}
                       {formField.options?.map((option) => (
                         <SelectItem key={option} value={option}>
                           {option}
