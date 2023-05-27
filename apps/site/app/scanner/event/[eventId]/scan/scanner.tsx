@@ -66,8 +66,6 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
   const numberOfAttendeesToSynchronize = offlineData.length;
 
   const scanAttendeesOffline = async () => {
-    const offlineData = JSON.parse(localStorage.getItem("offlineData") || "[]");
-    console.log("offline", offlineData);
     try {
       const response = await sdk().ScanAttendeesOffline({
         input: {
