@@ -59,16 +59,13 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({
           });
           throw error;
         }
-        setCsvUploadRender(
-          results.data.map((result: any) => {
-            delete result.phoneNumber;
-            delete result.zipCode;
-          })
-        );
 
         const resultsRewrite = results.data.map((result: ICsv) => {
           return {
-            ...result,
+            civility: result.civility,
+            firstname: result.firstname,
+            lastname: result.lastname,
+            email: result.email,
             isVip: result.isVip === "false" ? false : true,
             isInscriptor: result.isInscriptor === "false" ? false : true,
           };
