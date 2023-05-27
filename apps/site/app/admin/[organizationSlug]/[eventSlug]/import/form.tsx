@@ -59,6 +59,7 @@ export const ImportAttendeesForm: FC<iImportAttendeesProps> = ({
           });
           throw error;
         }
+        setCsvUploadRender(results.data);
 
         const resultsRewrite = results.data.map((result: ICsv) => {
           return {
