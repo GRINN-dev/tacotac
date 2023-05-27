@@ -5490,7 +5490,7 @@ export type GetAttendeeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, attendeeFormFields: { __typename?: 'AttendeeFormFieldsConnection', nodes: Array<{ __typename?: 'AttendeeFormField', value?: string | null, field?: { __typename?: 'FormField', name?: string | null, id: any } | null }> } } | null };
+export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, attendeeFormFields: { __typename?: 'AttendeeFormFieldsConnection', nodes: Array<{ __typename?: 'AttendeeFormField', value?: string | null, field?: { __typename?: 'FormField', name?: string | null, id: any, label: string } | null }> } } | null };
 
 export type GetAttendeesWithoutMailByRegistrationIdQueryVariables = Exact<{
   registrationId: Scalars['UUID'];
@@ -6096,6 +6096,7 @@ export const GetAttendeeByIdDocument = `
         field {
           name
           id
+          label
         }
       }
     }

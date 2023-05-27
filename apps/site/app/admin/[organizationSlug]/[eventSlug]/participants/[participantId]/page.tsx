@@ -34,7 +34,7 @@ const InfosAttendeePage = async ({ params: { organizationSlug, eventSlug, partic
             <TableBody>
               {attendee.attendeeFormFields?.nodes?.map((field) => (
                 <TableRow key={field.value}>
-                  <td>{field.field.name}</td>
+                  <td>{field.field.label}</td>
                   <td>{field.value}</td>
                 </TableRow>
               ))}

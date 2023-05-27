@@ -6,6 +6,7 @@ query GetAttendeeById($attendeeId: UUID!) {
         field {
           name
           id
+          label
         }
       }
     }
