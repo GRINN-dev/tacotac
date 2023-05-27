@@ -6,7 +6,7 @@ import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload }
 import { CreateAttendeeForm } from "@/app/admin/[organizationSlug]/[eventSlug]/participants/create/form";
 import { useStickyState } from "@/hooks/use-sticky-state";
 import { useMachine } from "@xstate/react";
-import { ArrowLeft, Ticket } from "lucide-react";
+import { ArrowLeft, QrCode, Ticket } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -147,7 +147,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
         >
           {state.matches("idle") && (
             <Button className="" onClick={() => send({ type: "START_SCANNING" })}>
-              start scanning
+              <QrCode className="h-4 w-4" /> Scanner
             </Button>
           )}
         </div>
@@ -157,7 +157,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
           numberOfAttendeesToSynchronize > 0 && (
             <div
               className={cn(
-                "bg-background absolute right-0 top-0 m-4 grid place-content-center rounded-full shadow-xl",
+                "bg-background absolute left-0 top-0 m-4 grid place-content-center rounded-full shadow-xl",
                 state.matches("scanning-panel") || state.matches("scanning-ticket") ? "hidden" : "grid"
               )}
             >
