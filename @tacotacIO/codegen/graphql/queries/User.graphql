@@ -18,6 +18,18 @@ query GetUserById($id: UUID!) {
 query GetCurrentUser {
   currentUser {
     ...MyUser
+    events(filter: { state: { in: ["PENDING", "ONGOING"] } }) {
+      nodes {
+        id
+        name
+        startsAt
+        city
+        organization {
+          id
+          name
+        }
+      }
+    }
     organizations {
       nodes {
         role

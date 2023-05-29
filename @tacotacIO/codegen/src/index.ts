@@ -4841,6 +4841,8 @@ export type User = {
   avatarUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['Datetime'];
   email: Scalars['String'];
+  /** Reads and enables pagination through a set of `Event`. */
+  events: EventsConnection;
   firstname: Scalars['String'];
   hasPassword?: Maybe<Scalars['Boolean']>;
   /** Unique identifier for the user. */
@@ -4862,6 +4864,17 @@ export type User = {
   userAuthentications: UserAuthenticationsConnection;
   /** Public-facing username (or 'handle') of the user. */
   username: Scalars['String'];
+};
+
+
+/** A user who can log in to the application. */
+export type UserEventsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<EventFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -5645,7 +5658,7 @@ export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'Us
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl?: string | null } | null }> } } | null };
+export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, events: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, startsAt?: any | null, city?: string | null, organization?: { __typename?: 'Organization', id: any, name: string } | null }> }, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl?: string | null } | null }> } } | null };
 
 export const MyAttendeeFragmentDoc = `
     fragment MyAttendee on Attendee {
@@ -6482,6 +6495,18 @@ export const GetCurrentUserDocument = `
     query GetCurrentUser {
   currentUser {
     ...MyUser
+    events(filter: {state: {in: ["PENDING", "ONGOING"]}}) {
+      nodes {
+        id
+        name
+        startsAt
+        city
+        organization {
+          id
+          name
+        }
+      }
+    }
     organizations {
       nodes {
         role

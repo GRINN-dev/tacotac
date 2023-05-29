@@ -227,3 +227,8 @@ $$ language sql stable;
 grant execute on function publ.user_events to :DATABASE_VISITOR;
 
 
+drop function if exists publ.users_events cascade;
+create function publ.users_events(any_user publ.users) returns setof publ.events as $$
+  select * from publ.events where organization_id in (select organization_id from publ.organization_memberships where user_id = any_user.id);
+$$ language sql stable;
+grant execute on function publ.users_events to :DATABASE_VISITOR;
