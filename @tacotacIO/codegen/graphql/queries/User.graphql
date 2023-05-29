@@ -30,7 +30,7 @@ query GetCurrentUser {
         }
       }
     }
-    organizations {
+    organizations(filter: { role: { in: ["ADMIN"] } }) {
       nodes {
         role
         organization {
