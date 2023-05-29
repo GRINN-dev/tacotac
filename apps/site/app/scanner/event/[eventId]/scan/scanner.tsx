@@ -66,23 +66,22 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
   const numberOfAttendeesToSynchronize = offlineData.length;
 
   const scanAttendeesOffline = async () => {
-    try {
-      const response = await sdk().ScanAttendeesOffline({
-        input: {
-          payloads: offlineData,
-        },
-      });
-      localStorage.removeItem("offlineData");
+    const response = await sdk().ScanAttendeesOffline({
+      input: {
+        payloads: offlineData,
+      },
+    });
+    localStorage.removeItem("offlineData");
+    if (response.scanAttendeesAsync?.boolean) {
       toast({
         title: "✅ Synchronisation réussie",
       });
+      setOfflineData([]);
       return response;
-    } catch (error) {
-      console.log(error);
+    } else {
       toast({
         title: "⛔️ Echec synchronisation, réessayez plus tard",
       });
-      return error;
     }
   };
 
