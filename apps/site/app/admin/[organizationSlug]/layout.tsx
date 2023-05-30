@@ -8,7 +8,6 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui";
 import { Card } from "@/components/ui/card";
 import { MainNav } from "../_components/main-nav";
-import { Search } from "../_components/search";
 import { TeamSwitcher } from "../_components/team-switcher";
 import { UserNav } from "../_components/user-nav";
 
@@ -19,7 +18,9 @@ export default async function AdminLayout({
   children: ReactNode;
   params: { organizationSlug: string };
 }) {
-  const { currentUser } = await serverSdk().GetCurrentUser();
+  const { currentUser } = await serverSdk({
+    cache: "no-store",
+  }).GetCurrentUser();
 
   if (!currentUser) {
     return (

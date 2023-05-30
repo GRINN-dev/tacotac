@@ -8,11 +8,9 @@ import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { GenericForm } from "@/components/form/generic-form";
 import { GoogleAuth } from "@/components/google-auth";
 import { Button, Input, Label, buttonVariants } from "@/components/ui";
 import { Separator } from "@/components/ui/separator";
-import { getLoginFormProps } from "./loginFormProps";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -33,7 +31,7 @@ export const LoginForm = () => {
       })
       .catch((e) => setError(e));
     setLoading(false);
-    router.push("/admin");
+    window.location.replace("/admin");
   };
   return (
     <div
@@ -85,7 +83,7 @@ export const LoginForm = () => {
               }
             ).then((res) => res.json());
             setLoading(false);
-            res?.ok && router.push("/");
+            res?.ok && window.location.replace("/admin");
           }}
         />
       </div>
