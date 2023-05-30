@@ -3239,6 +3239,12 @@ type Mutation {
     """
     input: RegisterAttendeesCsvInput!
   ): RegisterAttendeesCsvPayload
+  registerCompleteAttendeeCsv(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: RegisterCompleteAttendeeCsvInput!
+  ): RegisterCompleteAttendeeCsvPayload
   registerCompleteAttendees(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -4669,6 +4675,34 @@ type RegisterAttendeesPayload {
     """The method to use when ordering `Registration`."""
     orderBy: [RegistrationsOrderBy!] = [PRIMARY_KEY_ASC]
   ): RegistrationsEdge
+}
+
+"""All input for the `registerCompleteAttendeeCsv` mutation."""
+input RegisterCompleteAttendeeCsvInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  completeAttendees: [CompleteAttendeeInput]!
+  eventId: UUID!
+  isForcing: Boolean
+}
+
+"""The output of our `registerCompleteAttendeeCsv` mutation."""
+type RegisterCompleteAttendeeCsvPayload {
+  attendeeImports: [AttendeeImport]
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `registerCompleteAttendees` mutation."""

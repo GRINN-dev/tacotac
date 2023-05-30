@@ -22,6 +22,24 @@ mutation RegisterAttendeesCsv($input: RegisterAttendeesCsvInput!) {
   }
 }
 
+mutation RegisterCompleteAttendeesCsv(
+  $input: RegisterCompleteAttendeeCsvInput!
+) {
+  registerCompleteAttendeeCsv(input: $input) {
+    clientMutationId
+    attendeeImports {
+      data {
+        email
+        id
+        status
+      }
+      errorCode
+      errorMessage
+      errorValue
+    }
+  }
+}
+
 mutation DeleteRegistration($input: DeleteRegistrationInput!) {
   deleteRegistration(input: $input) {
     clientMutationId

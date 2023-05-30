@@ -2485,6 +2485,7 @@ export type Mutation = {
   register?: Maybe<RegisterPayload>;
   registerAttendees?: Maybe<RegisterAttendeesPayload>;
   registerAttendeesCsv?: Maybe<RegisterAttendeesCsvPayload>;
+  registerCompleteAttendeeCsv?: Maybe<RegisterCompleteAttendeeCsvPayload>;
   registerCompleteAttendees?: Maybe<RegisterCompleteAttendeesPayload>;
   removeFromOrganization?: Maybe<RemoveFromOrganizationPayload>;
   /** Begin the account deletion flow by requesting the confirmation email */
@@ -2749,6 +2750,12 @@ export type MutationRegisterAttendeesArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRegisterAttendeesCsvArgs = {
   input: RegisterAttendeesCsvInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationRegisterCompleteAttendeeCsvArgs = {
+  input: RegisterCompleteAttendeeCsvInput;
 };
 
 
@@ -3832,6 +3839,31 @@ export type RegisterAttendeesPayload = {
 /** The output of our `registerAttendees` mutation. */
 export type RegisterAttendeesPayloadRegistrationEdgeArgs = {
   orderBy?: InputMaybe<Array<RegistrationsOrderBy>>;
+};
+
+/** All input for the `registerCompleteAttendeeCsv` mutation. */
+export type RegisterCompleteAttendeeCsvInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  completeAttendees: Array<InputMaybe<CompleteAttendeeInput>>;
+  eventId: Scalars['UUID'];
+  isForcing?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** The output of our `registerCompleteAttendeeCsv` mutation. */
+export type RegisterCompleteAttendeeCsvPayload = {
+  __typename?: 'RegisterCompleteAttendeeCsvPayload';
+  attendeeImports?: Maybe<Array<Maybe<AttendeeImport>>>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
 };
 
 /** All input for the `registerCompleteAttendees` mutation. */
@@ -5451,6 +5483,13 @@ export type RegisterAttendeesCsvMutationVariables = Exact<{
 
 export type RegisterAttendeesCsvMutation = { __typename?: 'Mutation', registerAttendeesCsv?: { __typename?: 'RegisterAttendeesCsvPayload', clientMutationId?: string | null, attendeeImports?: Array<{ __typename?: 'AttendeeImport', errorCode?: string | null, errorMessage?: string | null, errorValue?: string | null, data?: { __typename?: 'Attendee', email?: string | null, id: any, status: AttendeeStatus } | null } | null> | null } | null };
 
+export type RegisterCompleteAttendeesCsvMutationVariables = Exact<{
+  input: RegisterCompleteAttendeeCsvInput;
+}>;
+
+
+export type RegisterCompleteAttendeesCsvMutation = { __typename?: 'Mutation', registerCompleteAttendeeCsv?: { __typename?: 'RegisterCompleteAttendeeCsvPayload', clientMutationId?: string | null, attendeeImports?: Array<{ __typename?: 'AttendeeImport', errorCode?: string | null, errorMessage?: string | null, errorValue?: string | null, data?: { __typename?: 'Attendee', email?: string | null, id: any, status: AttendeeStatus } | null } | null> | null } | null };
+
 export type DeleteRegistrationMutationVariables = Exact<{
   input: DeleteRegistrationInput;
 }>;
@@ -6041,6 +6080,23 @@ export const RegisterAttendeesCsvDocument = `
   }
 }
     `;
+export const RegisterCompleteAttendeesCsvDocument = `
+    mutation RegisterCompleteAttendeesCsv($input: RegisterCompleteAttendeeCsvInput!) {
+  registerCompleteAttendeeCsv(input: $input) {
+    clientMutationId
+    attendeeImports {
+      data {
+        email
+        id
+        status
+      }
+      errorCode
+      errorMessage
+      errorValue
+    }
+  }
+}
+    `;
 export const DeleteRegistrationDocument = `
     mutation DeleteRegistration($input: DeleteRegistrationInput!) {
   deleteRegistration(input: $input) {
@@ -6610,6 +6666,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     RegisterAttendeesCsv(variables: RegisterAttendeesCsvMutationVariables, options?: C): Promise<RegisterAttendeesCsvMutation> {
       return requester<RegisterAttendeesCsvMutation, RegisterAttendeesCsvMutationVariables>(RegisterAttendeesCsvDocument, variables, options) as Promise<RegisterAttendeesCsvMutation>;
+    },
+    RegisterCompleteAttendeesCsv(variables: RegisterCompleteAttendeesCsvMutationVariables, options?: C): Promise<RegisterCompleteAttendeesCsvMutation> {
+      return requester<RegisterCompleteAttendeesCsvMutation, RegisterCompleteAttendeesCsvMutationVariables>(RegisterCompleteAttendeesCsvDocument, variables, options) as Promise<RegisterCompleteAttendeesCsvMutation>;
     },
     DeleteRegistration(variables: DeleteRegistrationMutationVariables, options?: C): Promise<DeleteRegistrationMutation> {
       return requester<DeleteRegistrationMutation, DeleteRegistrationMutationVariables>(DeleteRegistrationDocument, variables, options) as Promise<DeleteRegistrationMutation>;

@@ -146,7 +146,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
         >
           {state.matches("idle") && (
             <Button className="" onClick={() => send({ type: "START_SCANNING" })}>
-              <QrCode className="h-4 w-4" /> Scanner
+              <QrCode className="mr-2 h-4 w-4" /> Scanner
             </Button>
           )}
         </div>
