@@ -2,7 +2,13 @@
 
 import { FC, Key, useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { FieldTypes, GetEventBySlugQuery, RegisterAttendeesCsvInput } from "@/../../@tacotacIO/codegen/dist";
+import {
+  CompleteAttendeeInput,
+  FieldTypes,
+  GetEventBySlugQuery,
+  RegisterAttendeesCsvInput,
+  RegisterCompleteAttendeeCsvInput,
+} from "@/../../@tacotacIO/codegen/dist";
 import { AlertTriangle } from "lucide-react";
 import Papa, { parse } from "papaparse";
 
@@ -21,7 +27,7 @@ export const ImportAttendeesForm: FC<{
 }> = ({ event, eventSlug, organizationSlug }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [parsedData, setParsedData] = useState([]);
+  const [parsedData, setParsedData] = useState<any[]>([]);
   const router = useRouter();
   const pathname = usePathname();
   const [csvUploadrender, setCsvUploadRender] = useState([]);
@@ -96,64 +102,55 @@ export const ImportAttendeesForm: FC<{
             }, {}),
             isVip: result["VIP true | false"] === "true" ? true : false,
           };
-          /* return {
-            civility: result.civility,
-            firstname: result.firstname,
-            lastname: result.lastname,
-            email: result.email,
-            isVip: result.isVip === "false" ? false : true,
-            isInscriptor: result.isInscriptor === "false" ? false : true,
-          }; */
         });
         setParsedData(resultsRewrite);
       },
     });
   };
 
-  const onSubmit = () => {
-    for (let i = 0; i < data.completeAttendees.length; i++) {
-      data.completeAttendees[i].attendee = {
-        email: "",
-        firstname: "",
-        lastname: "",
-        civility: "",
-        isInscriptor: false,
+  const onSubmit = ({ isForcing }: { isForcing: boolean }) => {
+    let data: RegisterCompleteAttendeeCsvInput = {
+      completeAttendees: [],
+      isForcing: isForcing,
+      eventId: event.id,
+    };
+
+    for (let i = 0; i < parsedData.length; i++) {
+      data.completeAttendees[i] = {
+        attendee: { email: "", firstname: "", lastname: "", civility: "", isInscriptor: false, isVip: false },
+        attendeeFormFields: [],
       };
-      if (i === 0) {
-        data.completeAttendees[i].attendee.isInscriptor = true;
+
+      for (let j = 0; j < event.formFields.nodes.length; j++) {
+        data.completeAttendees[i].attendeeFormFields[j] = {
+          fieldId: event.formFields.nodes[j].id,
+          value: parsedData[i][event.formFields.nodes[j].label],
+          attendeeId: "2e143d93-afa0-4b99-b90b-44a1428228e2", // any uuid, we fake it to make the API happy
+        };
+
+        if (event.formFields.nodes[j].name === "email") {
+          data.completeAttendees[i].attendee.email = parsedData[i][event.formFields.nodes[j].label];
+        }
+        if (event.formFields.nodes[j].name === "firstname") {
+          data.completeAttendees[i].attendee.firstname = parsedData[i][event.formFields.nodes[j].label];
+        }
+        if (event.formFields.nodes[j].name === "lastname") {
+          data.completeAttendees[i].attendee.lastname = parsedData[i][event.formFields.nodes[j].label];
+        }
+        if (event.formFields.nodes[j].name === "civility") {
+          data.completeAttendees[i].attendee.civility = parsedData[i][event.formFields.nodes[j].label];
+        }
       }
 
-      for (let j = 0; j < data.completeAttendees[i].attendeeFormFields.length; j++) {
-        if (data.completeAttendees[i].attendeeFormFields[j].fieldId === emailFormFieldId) {
-          data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value;
-        }
-        if (data.completeAttendees[i].attendeeFormFields[j].fieldId === firstnameFormFieldId) {
-          data.completeAttendees[i].attendee.firstname = data.completeAttendees[i].attendeeFormFields[j].value;
-        }
-        if (data.completeAttendees[i].attendeeFormFields[j].fieldId === lastnameFormFieldId) {
-          data.completeAttendees[i].attendee.lastname = data.completeAttendees[i].attendeeFormFields[j].value;
-        }
-        if (data.completeAttendees[i].attendeeFormFields[j].fieldId === civilityFormFieldId) {
-          data.completeAttendees[i].attendee.civility = data.completeAttendees[i].attendeeFormFields[j].value;
-        }
-
-        data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value = String(
-          (data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value)
-        );
-      }
+      data.completeAttendees[i].attendee.isVip = parsedData[i]["VIP true | false"];
     }
-
-    /*     const res = await sdk().RegisterCompleteAttendees({ input: data });
-
-            res.registerCompleteAttendees?.registration?.id ? setSuccess(true) : setError("Une erreur est survenue");
-            setLoading(false); */
 
     sdk()
       .RegisterCompleteAttendeesCsv({
-        input: { eventId: event.id, completeAttendees: parsedData, isForcing: isForcingImport },
+        input: data,
       })
       .then((response) => {
-        if (response.registerCompleteAttendeeCsv.attendeeImports.find(({ errorCode }) => errorCode === "RGNST")) {
+        if (response.registerCompleteAttendeeCsv.attendeeImports.find((res) => res?.errorCode === "ALEXT")) {
           toast({
             variant: "destructive",
             action: (
@@ -162,8 +159,7 @@ export const ImportAttendeesForm: FC<{
                   <button
                     className={buttonVariants({ size: "lg" })}
                     onClick={() => {
-                      setIsForcingImport(true);
-                      onSubmit();
+                      onSubmit({ isForcing: true });
                     }}
                   >
                     Forcer import
@@ -171,13 +167,13 @@ export const ImportAttendeesForm: FC<{
                   <p>
                     {
                       response.registerCompleteAttendeeCsv.attendeeImports.find(
-                        ({ errorCode }) => errorCode === "RGNST"
-                      ).errorMessage
+                        ({ errorCode }) => errorCode === "ALEXT"
+                      )?.errorMessage
                     }
                   </p>
                   <p>
-                    {response.registerCompleteAttendeeCsv.attendeeImports.reduce((acc, { errorValue, errorCode }) => {
-                      return acc.concat(errorCode === "RGNST" ? errorValue + " , " : "  ");
+                    {response.registerCompleteAttendeeCsv.attendeeImports.reduce((acc, res) => {
+                      return acc.concat(res?.errorCode === "ALEXT" ? res?.errorValue + " , " : "  ");
                     }, "")}
                   </p>
                 </div>
@@ -258,7 +254,7 @@ export const ImportAttendeesForm: FC<{
         <Button
           onClick={() => {
             setIsLoading(true);
-            onSubmit();
+            onSubmit({ isForcing: false });
           }}
         >
           Importer
