@@ -34,6 +34,94 @@ export const CreateAttendeeSubForm: FC<{
           (isInscriptor && !!formField.isRequiredForInscriptor) || (!isInscriptor && !!formField.isRequiredForAttendee);
         const shouldBeDisplayed = isInscriptor || formField.appliesToAllAttendees;
         if (!shouldBeDisplayed) return;
+        // si le champ est radio ou checkbox on le renvoie dans un RadioGroup ou un Checkbox, différemment
+
+        if (formField.type === FieldTypes.Checkbox)
+          return (
+            <div className="mt-4  w-full" key={formField.id}>
+              <Label htmlFor={formField.id} className="flex gap-4">
+                <Controller
+                  name={`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const}
+                  control={control}
+                  rules={{ required: { message: "Ce champ est requis", value: required } }}
+                  render={({ field: { onChange, onBlur, value, name } }) => (
+                    <Checkbox className="" value={value} onCheckedChange={(e) => onChange(e)} />
+                  )}
+                />
+                {formField.label}
+                <span className={`text-red-500 ${required ? "" : "hidden"}`}>*</span>
+              </Label>
+              <input
+                {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.fieldId` as any)}
+                defaultValue={formField.id}
+                hidden
+                type="hidden"
+              />
+              <input
+                {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.attendeeId` as any)}
+                defaultValue={
+                  // fake value, juste to please graphql
+                  "fc8bf1ed-d663-4169-a2b4-66e20fb1411f"
+                }
+                hidden
+                type="hidden"
+              />
+              {formState.errors?.completeAttendees?.[attendeeIndex]?.attendeeFormFields?.[i]?.value && (
+                <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
+                  {formState.errors?.completeAttendees?.[i]?.attendeeFormFields?.[i]?.value?.message ||
+                    "Ce champ est requis"}
+                </p>
+              )}
+            </div>
+          );
+
+        if (formField.type === FieldTypes.Radio)
+          return (
+            <div className="mt-4 grid w-full items-center gap-1.5 sm:grid-cols-3" key={formField.id}>
+              <Label htmlFor={formField.id} className="flex gap-4">
+                {formField.label}
+                <span className={`text-red-500 ${required ? "" : "hidden"}`}>*</span>
+              </Label>
+              <Controller
+                name={`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const}
+                control={control}
+                rules={{ required: { message: "Ce champ est requis", value: required } }}
+                render={({ field: { onChange, onBlur, value, name } }) => (
+                  <RadioGroup className="mt-2 w-full sm:col-span-2" value={value} onValueChange={(e) => onChange(e)}>
+                    {formField.options?.map((option) => (
+                      <div key={option} className="flex items-center space-x-2">
+                        {" "}
+                        <RadioGroupItem value={option} id={option} />
+                        <Label htmlFor={option}>{option}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+              />
+              <input
+                {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.fieldId` as any)}
+                defaultValue={formField.id}
+                hidden
+                type="hidden"
+              />
+              <input
+                {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.attendeeId` as any)}
+                defaultValue={
+                  // fake value, juste to please graphql
+                  "fc8bf1ed-d663-4169-a2b4-66e20fb1411f"
+                }
+                hidden
+                type="hidden"
+              />
+              {formState.errors?.completeAttendees?.[attendeeIndex]?.attendeeFormFields?.[i]?.value && (
+                <p className="whitespace-nowrap text-sm text-red-800 dark:text-red-300">
+                  {formState.errors?.completeAttendees?.[i]?.attendeeFormFields?.[i]?.value?.message ||
+                    "Ce champ est requis"}
+                </p>
+              )}
+            </div>
+          );
+
         return (
           <div className="mt-4 grid w-full items-center gap-1.5 sm:grid-cols-3" key={formField.id}>
             <Label htmlFor={formField.id}>
@@ -43,6 +131,7 @@ export const CreateAttendeeSubForm: FC<{
 
             {formField.type === "TEXT" ? (
               <Input
+                placeholder={formField.placeholder}
                 className="w-full sm:col-span-2"
                 id={formField.id}
                 {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const, {
@@ -51,6 +140,7 @@ export const CreateAttendeeSubForm: FC<{
               />
             ) : formField.type === "TEXTAREA" ? (
               <Textarea
+                placeholder={formField.placeholder}
                 className="w-full sm:col-span-2"
                 id={formField.id}
                 {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const, {
@@ -65,7 +155,7 @@ export const CreateAttendeeSubForm: FC<{
                 render={({ field: { onChange, onBlur, value, name } }) => (
                   <Select value={value} onValueChange={(e) => onChange(e)}>
                     <SelectTrigger className="w-full sm:col-span-2">
-                      <SelectValue />
+                      <SelectValue placeholder={formField.placeholder} />
                     </SelectTrigger>
                     <SelectContent>
                       {required ? null : <SelectItem value={null}>-</SelectItem>}
@@ -78,19 +168,9 @@ export const CreateAttendeeSubForm: FC<{
                   </Select>
                 )}
               />
-            ) : formField.type === "CHECKBOX" ? (
-              <Controller
-                name={`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const}
-                control={control}
-                rules={{ required: { message: "Ce champ est requis", value: required } }}
-                render={({ field: { onChange, onBlur, value, name } }) => (
-                  <Checkbox className="" value={value} onCheckedChange={(e) => onChange(e)}>
-                    {formField.label}
-                  </Checkbox>
-                )}
-              />
             ) : formField.type === FieldTypes.Email ? (
               <Input
+                placeholder={formField.placeholder}
                 className="w-full sm:col-span-2"
                 type="email"
                 id={formField.id}
@@ -100,6 +180,7 @@ export const CreateAttendeeSubForm: FC<{
               />
             ) : formField.type === FieldTypes.Tel ? (
               <Input
+                placeholder={formField.placeholder}
                 className="w-full sm:col-span-2"
                 type="tel"
                 id={formField.id}
@@ -109,36 +190,13 @@ export const CreateAttendeeSubForm: FC<{
               />
             ) : formField.type === FieldTypes.Date ? (
               <Input
+                placeholder={formField.placeholder}
                 className="w-full sm:col-span-2"
                 type="date"
                 id={formField.id}
                 {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const, {
                   required: { message: "Ce champ est requis", value: required },
                 })}
-              />
-            ) : formField.type === FieldTypes.Number ? (
-              <Input
-                className="w-full sm:col-span-2"
-                type="number"
-                id={formField.id}
-                {...register(`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const, {
-                  required: { message: "Ce champ est requis", value: required },
-                })}
-              />
-            ) : formField.type === FieldTypes.Radio ? (
-              <Controller
-                name={`completeAttendees.${attendeeIndex}.attendeeFormFields.${i}.value` as const}
-                control={control}
-                rules={{ required: { message: "Ce champ est requis", value: required } }}
-                render={({ field: { onChange, onBlur, value, name } }) => (
-                  <RadioGroup className="w-full sm:col-span-2" value={value} onValueChange={(e) => onChange(e)}>
-                    {formField.options?.map((option) => (
-                      <RadioGroupItem key={option} value={option}>
-                        {option}
-                      </RadioGroupItem>
-                    ))}
-                  </RadioGroup>
-                )}
               />
             ) : formField.type === FieldTypes.Number ? (
               <Input

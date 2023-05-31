@@ -55,7 +55,7 @@ export const FormFieldCard: FC<{
             },
           })
           .then(() => {
-            toast({ title: "Champ mis à jour" });
+            toast({ title: "Champ mis à jour", duration: 2000 });
             setIsLoading(false);
             router.refresh();
           })
@@ -70,7 +70,7 @@ export const FormFieldCard: FC<{
             },
           })
           .then(() => {
-            toast({ title: "Champ créé" });
+            toast({ title: "Champ créé", duration: 2000 });
             setIsLoading(false);
             router.refresh();
           });
