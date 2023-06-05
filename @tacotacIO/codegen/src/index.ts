@@ -6572,7 +6572,7 @@ export const GetCurrentUserDocument = `
         }
       }
     }
-    organizations(filter: {role: {in: ["ADMIN"]}}) {
+    organizations(filter: {role: {in: ["ADMIN", "OWNER"]}}) {
       nodes {
         role
         organization {

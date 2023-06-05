@@ -21,7 +21,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -61,7 +60,7 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
     },
   ];
 
-  type Team = typeof groups[number]["teams"][number];
+  type Team = (typeof groups)[number]["teams"][number];
 
   const [selectedTeam, setSelectedTeam] = React.useState<Team>(
     groups.flatMap(({ teams }) => teams).find(({ isCurrent }) => isCurrent) || groups[0].teams[0]
