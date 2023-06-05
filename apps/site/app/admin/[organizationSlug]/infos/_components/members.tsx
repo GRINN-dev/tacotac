@@ -222,13 +222,21 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      process.env.NEXT_PUBLIC_SITE_URL + "/invitation?id=" + invitation.id + "&code=" + invitation.code
+                      process.env.NEXT_PUBLIC_SITE_ENDPOINT +
+                        "/invitation?id=" +
+                        invitation.id +
+                        "&code=" +
+                        invitation.code
                     );
                   }}
                   className="flex items-center gap-2"
                 >
                   <span className="line-clamp-2">
-                    {process.env.NEXT_PUBLIC_SITE_URL + "/invitation?id=" + invitation.id + "&code=" + invitation.code}
+                    {process.env.NEXT_PUBLIC_SITE_ENDPOINT +
+                      "/invitation?id=" +
+                      invitation.id +
+                      "&code=" +
+                      invitation.code}
                   </span>
                   <Copy className="h-4 w-4 flex-none" />
                 </button>

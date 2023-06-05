@@ -3,7 +3,7 @@
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload } from "@/../../@tacotacIO/codegen/dist";
-import { CreateAttendeeForm } from "@/app/admin/[organizationSlug]/[eventSlug]/participants/create/form";
+import { CreateAttendeeForm2 } from "@/app/inscription/[organizationSlug]/[eventSlug]/iframe/form/create-attendee-form";
 import { useStickyState } from "@/hooks/use-sticky-state";
 import { useMachine } from "@xstate/react";
 import { ArrowLeft, QrCode, Ticket } from "lucide-react";
@@ -25,9 +25,22 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
   const { toast } = useToast();
   const [offlineData, setOfflineData] = useStickyState<ScanAttendeesAsyncInput["payloads"]>([], "offline-data");
 
-  const memoizedScannerMachine = useMemo(() => scannerMachine({ eventId: event.id }), [event.id]);
+  const [state, send] = useMachine(scannerMachine, {
+    context: {
+      ticket: {
+        number: "",
+        isMissingEmail: false,
+        isVIP: false,
+        fullName: "",
+        event: "",
+      },
+      panel: null,
+      attendee: null,
+      email: "",
+      error: "null",
+      eventId: event.id,
+    },
 
-  const [state, send] = useMachine(memoizedScannerMachine, {
     actions: {
       saveOffline: (context) => {
         console.log("saved offline");
@@ -216,7 +229,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
-                  <CreateAttendeeForm {...event} />
+                  <CreateAttendeeForm2 event={event} />
                 </DialogContent>
               </Dialog>
               <Link href={"/scanner"} className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>

@@ -13,13 +13,12 @@ export interface Typegen0 {
       data: unknown;
       __tip: "See the XState TS docs to learn how to strongly type this.";
     };
-    "done.invoke.Scanner.verifying-tiket:invocation[0]": {
-      type: "done.invoke.Scanner.verifying-tiket:invocation[0]";
-      data: unknown;
-      __tip: "See the XState TS docs to learn how to strongly type this.";
-    };
     "error.platform.Scanner.submitting:invocation[0]": {
       type: "error.platform.Scanner.submitting:invocation[0]";
+      data: unknown;
+    };
+    "error.platform.Scanner.verifying-tiket:invocation[0]": {
+      type: "error.platform.Scanner.verifying-tiket:invocation[0]";
       data: unknown;
     };
     "xstate.init": { type: "xstate.init" };
@@ -39,7 +38,7 @@ export interface Typegen0 {
     assignAttendee: "done.invoke.Scanner.fetching-attendee:invocation[0]";
     assignAttendeeAndTicket: "SELECT_ATTENDEE";
     assignEmail: "ENTER_EMAIL";
-    assignError: "done.invoke.Scanner.verifying-tiket:invocation[0]";
+    assignError: "error.platform.Scanner.verifying-tiket:invocation[0]";
     assignPanelNumber: "ENTER_PANEL_NUMBER" | "SCAN_PANEL";
     assignTicket: "SCAN_TICKET";
     assignTicketNumber: "ENTER_TICKET_NUMBER";
@@ -51,7 +50,6 @@ export interface Typegen0 {
     attendeeIsFetched: "ENTER_PANEL_NUMBER" | "SCAN_PANEL";
     qrCodeDetected: "SCAN_TICKET";
     submissionIsSuccessful: "done.invoke.Scanner.submitting:invocation[0]";
-    ticketIsValid: "done.invoke.Scanner.verifying-tiket:invocation[0]";
   };
   eventsCausingServices: {
     fetchAttendee: "ENTER_PANEL_NUMBER" | "SCAN_PANEL";

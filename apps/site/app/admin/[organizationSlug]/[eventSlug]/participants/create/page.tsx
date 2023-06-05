@@ -1,9 +1,8 @@
 import Link from "next/link";
+import { CreateAttendeeForm2 } from "@/app/inscription/[organizationSlug]/[eventSlug]/iframe/form/create-attendee-form";
 import { ArrowBigLeft } from "lucide-react";
 
-import { sdk } from "@/lib/sdk";
 import { serverSdk } from "@/lib/server-sdk";
-import { CreateAttendeeForm } from "./form";
 
 const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) => {
   const { eventBySlug } = await serverSdk().GetEventBySlug({
@@ -20,8 +19,11 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
           Créer un nouveau participant
         </h1>
       </div>
-      <div className="mx-auto flex max-w-3xl items-baseline gap-2">
+      {/*   <div className="mx-auto flex max-w-3xl items-baseline gap-2">
         <CreateAttendeeForm {...eventBySlug} />
+      </div> */}
+      <div className="rounded-3xl border-4 border-dashed p-4">
+        <CreateAttendeeForm2 event={eventBySlug} />
       </div>
     </section>
   );
