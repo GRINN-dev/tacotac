@@ -258,6 +258,14 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               <Input id="ticket" required value={ticketNumber} onChange={(e) => setTicketNumber(e.target.value)} />
               <Button disabled={!ticketNumber} type="submit" className="mt-4">
                 Entrée manuelle
+              </Button>{" "}
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  send({ type: "CANCEL" });
+                }}
+              >
+                Annuler
               </Button>
             </form>
           </>
@@ -279,6 +287,14 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               <Input id="panel" required value={panelNumber} onChange={(e) => setPanelNumber(e.target.value)} />
               <Button disabled={!panelNumber} type="submit" className="mt-4">
                 Entrée manuelle
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  send({ type: "CANCEL" });
+                }}
+              >
+                Annuler
               </Button>
             </form>
           </>

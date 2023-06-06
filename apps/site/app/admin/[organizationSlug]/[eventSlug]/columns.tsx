@@ -38,6 +38,16 @@ export const columns: (input: {
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/admin/${organizationSlug}/${eventSlug}/participants/${row.original.id}`}
+          className={buttonVariants({ variant: "link" })}
+        >
+          {row.original.lastname}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "firstname",

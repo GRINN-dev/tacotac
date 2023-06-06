@@ -10,7 +10,7 @@ import { ArrowUpDown, MoreHorizontal, RefreshCcw } from "lucide-react";
 import { sdk } from "@/lib/sdk";
 import { Filter } from "@/components/data-table/data-table-toolbar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,6 +47,16 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
           Nom
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/admin/${row.original.organization.slug}/${row.original.slug}`}
+          className={buttonVariants({ variant: "link" })}
+        >
+          {row.original.name}
+        </Link>
       );
     },
   },
