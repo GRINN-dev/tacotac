@@ -51,6 +51,7 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
         title: "Invitation envoyée",
         description: "L'utilisateur a été invité à rejoindre l'organisation",
       });
+      router.refresh();
     });
   });
 
