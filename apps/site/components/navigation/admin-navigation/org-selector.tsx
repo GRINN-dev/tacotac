@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { GetAllOrganizationQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllOrganizationQuery } from "@tacotacIO/codegen";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui";
 

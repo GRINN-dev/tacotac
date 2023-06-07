@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventBySlugQuery } from "@tacotacIO/codegen";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EventFormFieldsForm } from "./UpdateForm";

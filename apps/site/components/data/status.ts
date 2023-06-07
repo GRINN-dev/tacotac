@@ -1,4 +1,4 @@
-import { AttendeeStatus } from "@/../../@tacotacIO/codegen/dist";
+import { AttendeeStatus } from "@tacotacIO/codegen";
 
 export const attendeeStatusArray = [
   { name: "En attente", enum: AttendeeStatus.Idle },

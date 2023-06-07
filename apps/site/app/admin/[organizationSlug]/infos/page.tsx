@@ -11,8 +11,10 @@ const InfosOrganizationPage = async ({ params: { organizationSlug } }) => {
   const data = await serverSdk().GetOrganizationBySlug({ slug: organizationSlug });
   const { organizationBySlug: organization } = data;
 
+  if (!organization) return <h1 className="admin-h1">Oups</h1>;
+
   return (
-    <section className="bg-background text-foreground container h-full w-full rounded-t-3xl pt-6 pb-8 md:py-10">
+    <section className="bg-background text-foreground container h-full w-full rounded-t-3xl pb-8 pt-6 md:py-10">
       <h1 className="admin-h1">Mon organisation</h1>
       <h2 className="admin-h2">Modifier les infos principale</h2>
 

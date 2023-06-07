@@ -1,4 +1,4 @@
-import { EventsOrderBy } from "@/../../@tacotacIO/codegen/dist";
+import { EventsOrderBy } from "@tacotacIO/codegen";
 
 import { serverSdk } from "@/lib/server-sdk";
 import { ScrollArea } from "@/components/ui/scroll-area";

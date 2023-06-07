@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { CreateOrganizationMutation } from "@/../../@tacotacIO/codegen/dist";
+import { CreateOrganizationMutation } from "@tacotacIO/codegen";
 
 import { GenericForm } from "@/components/form/generic-form";
 import { getCreateOrganizationFormProps } from "./create-organization-form-props";

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventBySlugQuery } from "@tacotacIO/codegen";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { CreationDialog, FormFieldCard } from "./_components/form-fields-card";

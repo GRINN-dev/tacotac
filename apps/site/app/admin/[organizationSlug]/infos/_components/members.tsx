@@ -2,12 +2,12 @@
 
 import { FC, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 import {
   GetOrganizationBySlugQuery,
   InviteToOrganizationInput,
   OrganizationMembershipsRolesEnum,
-} from "@/../../@tacotacIO/codegen/dist";
-import { toast } from "@/hooks/use-toast";
+} from "@tacotacIO/codegen";
 import { Copy } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 

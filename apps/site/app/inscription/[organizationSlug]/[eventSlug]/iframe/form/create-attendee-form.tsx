@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import Script from "next/script";
-import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/codegen";
 import { CheckCircle2, MinusCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 

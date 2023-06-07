@@ -1,4 +1,4 @@
-import { ForgotPasswordInput } from "@/../../@tacotacIO/codegen/dist";
+import { ForgotPasswordInput } from "@tacotacIO/codegen";
 
 import { sdk } from "@/lib/sdk";
 import { Field, GenericFormProps } from "@/components/form/types";

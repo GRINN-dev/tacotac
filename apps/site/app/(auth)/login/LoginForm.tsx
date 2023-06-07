@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LoginInput } from "@/../../@tacotacIO/codegen/dist";
+import { LoginInput } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";

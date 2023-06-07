@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AttendeeStatus, GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { AttendeeStatus, GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, ExternalLink, MoreHorizontal, RefreshCcw } from "lucide-react";
 

@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 

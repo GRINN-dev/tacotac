@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/codegen";
 import { Check } from "lucide-react";
 import { Control, Controller, FieldArrayWithId, FormState, UseFormRegister, useFieldArray } from "react-hook-form";
 

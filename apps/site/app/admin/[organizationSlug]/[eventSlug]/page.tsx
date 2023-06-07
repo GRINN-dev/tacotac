@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EventsOrderBy } from "@/../../@tacotacIO/codegen/dist";
+import { EventsOrderBy } from "@tacotacIO/codegen";
 import { PlusSquare } from "lucide-react";
 
 import { initLimit } from "@/types/filter";

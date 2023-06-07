@@ -1,8 +1,4 @@
-import {
-  GetAttendeeByTicketNumberQuery,
-  ScanAttendeeMutation,
-  SearchAttendeeQuery,
-} from "@/../../@tacotacIO/codegen/dist";
+import { GetAttendeeByTicketNumberQuery, ScanAttendeeMutation, SearchAttendeeQuery } from "@tacotacIO/codegen";
 import { actions, assign, createMachine } from "xstate";
 
 import { sdk } from "@/lib/sdk";

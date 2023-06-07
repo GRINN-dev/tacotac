@@ -1,4 +1,4 @@
-import { CreateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
+import { CreateOrganizationInput } from "@tacotacIO/codegen";
 
 import { sdk } from "@/lib/sdk";
 import { Field, GenericFormProps } from "@/components/form/types";

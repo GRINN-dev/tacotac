@@ -2,9 +2,9 @@
 
 import { FC, memo, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload } from "@/../../@tacotacIO/codegen/dist";
 import { CreateAttendeeForm2 } from "@/app/inscription/[organizationSlug]/[eventSlug]/iframe/form/create-attendee-form";
 import { useStickyState } from "@/hooks/use-sticky-state";
+import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload } from "@tacotacIO/codegen";
 import { useMachine } from "@xstate/react";
 import { ArrowLeft, QrCode, Ticket } from "lucide-react";
 
