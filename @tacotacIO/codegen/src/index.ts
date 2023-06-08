@@ -131,6 +131,10 @@ export type AttendeeCondition = {
 export type AttendeeFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<AttendeeFilter>>;
+  /** Filter by the object’s `attendeeFormFields` relation. */
+  attendeeFormFields?: InputMaybe<AttendeeToManyAttendeeFormFieldFilter>;
+  /** Some related `attendeeFormFields` exist. */
+  attendeeFormFieldsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `civility` field. */
   civility?: InputMaybe<StringFilter>;
   /** Filter by the object’s `createdAt` field. */
@@ -159,6 +163,10 @@ export type AttendeeFilter = {
   or?: InputMaybe<Array<AttendeeFilter>>;
   /** Filter by the object’s `panelNumber` field. */
   panelNumber?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `registration` relation. */
+  registration?: InputMaybe<RegistrationFilter>;
+  /** A related `registration` exists. */
+  registrationExists?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `registrationId` field. */
   registrationId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `status` field. */
@@ -204,10 +212,14 @@ export type AttendeeFormFieldCondition = {
 export type AttendeeFormFieldFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<AttendeeFormFieldFilter>>;
+  /** Filter by the object’s `attendee` relation. */
+  attendee?: InputMaybe<AttendeeFilter>;
   /** Filter by the object’s `attendeeId` field. */
   attendeeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `field` relation. */
+  field?: InputMaybe<FormFieldFilter>;
   /** Filter by the object’s `fieldId` field. */
   fieldId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
@@ -372,6 +384,16 @@ export type AttendeeStatusFilter = {
   notEqualTo?: InputMaybe<AttendeeStatus>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<AttendeeStatus>>;
+};
+
+/** A filter to be used against many `AttendeeFormField` object types. All fields are combined with a logical ‘and.’ */
+export type AttendeeToManyAttendeeFormFieldFilter = {
+  /** Every related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<AttendeeFormFieldFilter>;
+  /** No related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<AttendeeFormFieldFilter>;
+  /** Some related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<AttendeeFormFieldFilter>;
 };
 
 /** A connection to a list of `Attendee` values. */
@@ -1647,6 +1669,8 @@ export type EventBrandingFilter = {
   and?: InputMaybe<Array<EventBrandingFilter>>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `event` relation. */
+  event?: InputMaybe<EventFilter>;
   /** Filter by the object’s `eventId` field. */
   eventId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `font` field. */
@@ -1778,20 +1802,38 @@ export type EventFilter = {
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `endsAt` field. */
   endsAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `eventBranding` relation. */
+  eventBranding?: InputMaybe<EventBrandingFilter>;
+  /** A related `eventBranding` exists. */
+  eventBrandingExists?: InputMaybe<Scalars['Boolean']>;
+  /** Filter by the object’s `formFields` relation. */
+  formFields?: InputMaybe<EventToManyFormFieldFilter>;
+  /** Some related `formFields` exist. */
+  formFieldsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `isCancelled` field. */
   isCancelled?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `isDraft` field. */
   isDraft?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `logs` relation. */
+  logs?: InputMaybe<EventToManyLogFilter>;
+  /** Some related `logs` exist. */
+  logsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<EventFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<EventFilter>>;
+  /** Filter by the object’s `organization` relation. */
+  organization?: InputMaybe<OrganizationFilter>;
   /** Filter by the object’s `organizationId` field. */
   organizationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `registrations` relation. */
+  registrations?: InputMaybe<EventToManyRegistrationFilter>;
+  /** Some related `registrations` exist. */
+  registrationsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `slug` field. */
   slug?: InputMaybe<StringFilter>;
   /** Filter by the object’s `startsAt` field. */
@@ -1876,6 +1918,36 @@ export enum EventStatus {
   /** A venir */
   Pending = 'PENDING'
 }
+
+/** A filter to be used against many `FormField` object types. All fields are combined with a logical ‘and.’ */
+export type EventToManyFormFieldFilter = {
+  /** Every related `FormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<FormFieldFilter>;
+  /** No related `FormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<FormFieldFilter>;
+  /** Some related `FormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<FormFieldFilter>;
+};
+
+/** A filter to be used against many `Log` object types. All fields are combined with a logical ‘and.’ */
+export type EventToManyLogFilter = {
+  /** Every related `Log` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<LogFilter>;
+  /** No related `Log` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<LogFilter>;
+  /** Some related `Log` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<LogFilter>;
+};
+
+/** A filter to be used against many `Registration` object types. All fields are combined with a logical ‘and.’ */
+export type EventToManyRegistrationFilter = {
+  /** Every related `Registration` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<RegistrationFilter>;
+  /** No related `Registration` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<RegistrationFilter>;
+  /** Some related `Registration` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<RegistrationFilter>;
+};
 
 /** A connection to a list of `Event` values. */
 export type EventsConnection = {
@@ -2095,8 +2167,14 @@ export type FormFieldCondition = {
 export type FormFieldFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<FormFieldFilter>>;
+  /** Filter by the object’s `attendeeFormFieldsByFieldId` relation. */
+  attendeeFormFieldsByFieldId?: InputMaybe<FormFieldToManyAttendeeFormFieldFilter>;
+  /** Some related `attendeeFormFieldsByFieldId` exist. */
+  attendeeFormFieldsByFieldIdExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `event` relation. */
+  event?: InputMaybe<EventFilter>;
   /** Filter by the object’s `eventId` field. */
   eventId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
@@ -2147,6 +2225,16 @@ export type FormFieldPatch = {
   position?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<FieldTypes>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against many `AttendeeFormField` object types. All fields are combined with a logical ‘and.’ */
+export type FormFieldToManyAttendeeFormFieldFilter = {
+  /** Every related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<AttendeeFormFieldFilter>;
+  /** No related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<AttendeeFormFieldFilter>;
+  /** Some related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<AttendeeFormFieldFilter>;
 };
 
 /** A connection to a list of `FormField` values. */
@@ -2284,6 +2372,10 @@ export type LogFilter = {
   and?: InputMaybe<Array<LogFilter>>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `event` relation. */
+  event?: InputMaybe<EventFilter>;
+  /** A related `event` exists. */
+  eventExists?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `eventId` field. */
   eventId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
@@ -2989,6 +3081,10 @@ export type OrganizationFilter = {
   currentUserIsOwner?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `description` field. */
   description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `events` relation. */
+  events?: InputMaybe<OrganizationToManyEventFilter>;
+  /** Some related `events` exist. */
+  eventsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
@@ -2997,6 +3093,14 @@ export type OrganizationFilter = {
   not?: InputMaybe<OrganizationFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<OrganizationFilter>>;
+  /** Filter by the object’s `organizationInvitations` relation. */
+  organizationInvitations?: InputMaybe<OrganizationToManyOrganizationInvitationFilter>;
+  /** Some related `organizationInvitations` exist. */
+  organizationInvitationsExist?: InputMaybe<Scalars['Boolean']>;
+  /** Filter by the object’s `organizationMemberships` relation. */
+  organizationMemberships?: InputMaybe<OrganizationToManyOrganizationMembershipFilter>;
+  /** Some related `organizationMemberships` exist. */
+  organizationMembershipsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `slug` field. */
   slug?: InputMaybe<StringFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -3042,10 +3146,16 @@ export type OrganizationInvitationFilter = {
   not?: InputMaybe<OrganizationInvitationFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<OrganizationInvitationFilter>>;
+  /** Filter by the object’s `organization` relation. */
+  organization?: InputMaybe<OrganizationFilter>;
   /** Filter by the object’s `organizationId` field. */
   organizationId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `role` field. */
   role?: InputMaybe<OrganizationMembershipsRolesEnumFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** A related `user` exists. */
+  userExists?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<UuidFilter>;
 };
@@ -3152,12 +3262,16 @@ export type OrganizationMembershipFilter = {
   not?: InputMaybe<OrganizationMembershipFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<OrganizationMembershipFilter>>;
+  /** Filter by the object’s `organization` relation. */
+  organization?: InputMaybe<OrganizationFilter>;
   /** Filter by the object’s `organizationId` field. */
   organizationId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `role` field. */
   role?: InputMaybe<OrganizationMembershipsRolesEnumFilter>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<UuidFilter>;
 };
@@ -3271,6 +3385,36 @@ export type OrganizationPatch = {
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’ */
+export type OrganizationToManyEventFilter = {
+  /** Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<EventFilter>;
+  /** No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<EventFilter>;
+  /** Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<EventFilter>;
+};
+
+/** A filter to be used against many `OrganizationInvitation` object types. All fields are combined with a logical ‘and.’ */
+export type OrganizationToManyOrganizationInvitationFilter = {
+  /** Every related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<OrganizationInvitationFilter>;
+  /** No related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<OrganizationInvitationFilter>;
+  /** Some related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<OrganizationInvitationFilter>;
+};
+
+/** A filter to be used against many `OrganizationMembership` object types. All fields are combined with a logical ‘and.’ */
+export type OrganizationToManyOrganizationMembershipFilter = {
+  /** Every related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<OrganizationMembershipFilter>;
+  /** No related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<OrganizationMembershipFilter>;
+  /** Some related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<OrganizationMembershipFilter>;
 };
 
 /** A connection to a list of `Organization` values. */
@@ -3971,8 +4115,16 @@ export type RegistrationCondition = {
 export type RegistrationFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<RegistrationFilter>>;
+  /** Filter by the object’s `attendees` relation. */
+  attendees?: InputMaybe<RegistrationToManyAttendeeFilter>;
+  /** Some related `attendees` exist. */
+  attendeesExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `event` relation. */
+  event?: InputMaybe<EventFilter>;
+  /** A related `event` exists. */
+  eventExists?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `eventId` field. */
   eventId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
@@ -4001,6 +4153,16 @@ export type RegistrationPatch = {
   hearAboutList?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   id?: InputMaybe<Scalars['UUID']>;
   updatedAt?: InputMaybe<Scalars['Datetime']>;
+};
+
+/** A filter to be used against many `Attendee` object types. All fields are combined with a logical ‘and.’ */
+export type RegistrationToManyAttendeeFilter = {
+  /** Every related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<AttendeeFilter>;
+  /** No related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<AttendeeFilter>;
+  /** Some related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<AttendeeFilter>;
 };
 
 /** A connection to a list of `Registration` values. */
@@ -5001,6 +5163,8 @@ export type UserAuthenticationFilter = {
   or?: InputMaybe<Array<UserAuthenticationFilter>>;
   /** Filter by the object’s `service` field. */
   service?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
   /** Filter by the object’s `userId` field. */
   userId?: InputMaybe<UuidFilter>;
 };
@@ -5106,8 +5270,20 @@ export type UserFilter = {
   not?: InputMaybe<UserFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<UserFilter>>;
+  /** Filter by the object’s `organizationInvitations` relation. */
+  organizationInvitations?: InputMaybe<UserToManyOrganizationInvitationFilter>;
+  /** Some related `organizationInvitations` exist. */
+  organizationInvitationsExist?: InputMaybe<Scalars['Boolean']>;
+  /** Filter by the object’s `organizationMemberships` relation. */
+  organizationMemberships?: InputMaybe<UserToManyOrganizationMembershipFilter>;
+  /** Some related `organizationMemberships` exist. */
+  organizationMembershipsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `userAuthentications` relation. */
+  userAuthentications?: InputMaybe<UserToManyUserAuthenticationFilter>;
+  /** Some related `userAuthentications` exist. */
+  userAuthenticationsExist?: InputMaybe<Scalars['Boolean']>;
   /** Filter by the object’s `username` field. */
   username?: InputMaybe<StringFilter>;
 };
@@ -5158,6 +5334,36 @@ export type UserSubscriptionPayload = {
   __typename?: 'UserSubscriptionPayload';
   event?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
+};
+
+/** A filter to be used against many `OrganizationInvitation` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyOrganizationInvitationFilter = {
+  /** Every related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<OrganizationInvitationFilter>;
+  /** No related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<OrganizationInvitationFilter>;
+  /** Some related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<OrganizationInvitationFilter>;
+};
+
+/** A filter to be used against many `OrganizationMembership` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyOrganizationMembershipFilter = {
+  /** Every related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<OrganizationMembershipFilter>;
+  /** No related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<OrganizationMembershipFilter>;
+  /** Some related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<OrganizationMembershipFilter>;
+};
+
+/** A filter to be used against many `UserAuthentication` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyUserAuthenticationFilter = {
+  /** Every related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<UserAuthenticationFilter>;
+  /** No related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<UserAuthenticationFilter>;
+  /** Some related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<UserAuthenticationFilter>;
 };
 
 /** A connection to a list of `User` values. */
