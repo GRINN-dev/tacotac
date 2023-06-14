@@ -34,16 +34,18 @@ export const ViewSwitcher: FC<{ organizationSlug: string }> = ({ organizationSlu
         <Table />
       </Link>
 
-      <Link
-        href={`/admin/${organizationSlug}/infos`}
-        className={cn(
-          buttonVariants({
-            variant: pathname === `/admin/${organizationSlug}/infos` ? "default" : "ghost",
-          })
-        )}
-      >
-        <Cog />
-      </Link>
+      {organizationSlug !== "all" && (
+        <Link
+          href={`/admin/${organizationSlug}/infos`}
+          className={cn(
+            buttonVariants({
+              variant: pathname === `/admin/${organizationSlug}/infos` ? "default" : "ghost",
+            })
+          )}
+        >
+          <Cog />
+        </Link>
+      )}
     </>
   );
 };

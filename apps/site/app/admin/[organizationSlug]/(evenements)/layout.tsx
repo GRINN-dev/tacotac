@@ -24,11 +24,13 @@ export default async function Layout({
     <>
       <ScrollArea className="container h-full space-y-6">
         <div className="mx-auto max-w-5xl space-y-0.5">
-          <h2 className="text-2xl font-bold tracking-tight">{organizationBySlug.name}</h2>
-          <p className="text-muted-foreground">
-            Bienvenue sur le dashboard administrateur de {organizationBySlug.name}. Vous pouvez créer des évènements et
-            gérer les participants. Pour créer un évènement, cliquez sur le bouton ci-dessous.
-          </p>
+          <h2 className="text-2xl font-bold tracking-tight">{organizationBySlug?.name || "Tous mes événements"}</h2>
+          {organizationSlug !== "all" && (
+            <p className="text-muted-foreground">
+              Bienvenue sur le dashboard administrateur de {organizationBySlug.name}. Vous pouvez créer des évènements
+              et gérer les participants. Pour créer un évènement, cliquez sur le bouton ci-dessous.
+            </p>
+          )}
           <div className="flex gap-2 pt-4">
             <Link href={`/admin/${organizationSlug}/create`} className={buttonVariants({ variant: "outline" })}>
               <PlusSquare className="mr-2 h-4 w-4" /> Créer un évènement
