@@ -23,7 +23,7 @@ export default async function Layout({
   return (
     <>
       <ScrollArea className="container h-full space-y-6">
-        <div className="space-y-0.5">
+        <div className="mx-auto max-w-5xl space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">{organizationBySlug.name}</h2>
           <p className="text-muted-foreground">
             Bienvenue sur le dashboard administrateur de {organizationBySlug.name}. Vous pouvez créer des évènements et
@@ -38,7 +38,7 @@ export default async function Layout({
         </div>
         <Separator className="my-6" />
 
-        <div className="max-w-5xl">{children}</div>
+        <div className="mx-auto max-w-5xl">{children}</div>
       </ScrollArea>
     </>
   );

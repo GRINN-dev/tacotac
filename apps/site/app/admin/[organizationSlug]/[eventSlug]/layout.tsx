@@ -67,7 +67,7 @@ export default async function Layout({
   return (
     <>
       <ScrollArea className="container h-full space-y-6">
-        <div className="flex w-full items-center justify-between  lg:justify-start">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between lg:justify-start">
           <div className="hidden w-1/5 lg:block" />
           <div className="space-y-0.5">
             <h1 className="text-2xl font-bold tracking-tight">{data?.eventBySlug?.name}</h1>
