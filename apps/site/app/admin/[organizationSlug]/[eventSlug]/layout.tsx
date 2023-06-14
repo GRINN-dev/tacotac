@@ -67,7 +67,7 @@ export default async function Layout({
   return (
     <>
       <ScrollArea className="container h-full space-y-6">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between lg:justify-start">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 lg:justify-start">
           <div className="hidden w-1/5 lg:block" />
           <div className="space-y-0.5">
             <h1 className="text-2xl font-bold tracking-tight">{data?.eventBySlug?.name}</h1>
@@ -81,8 +81,8 @@ export default async function Layout({
           </div>
         </div>
         <Separator className="my-6" />
-        <div className="flex">
-          <aside className="sticky top-0 -mx-4 hidden w-1/5 lg:block">
+        <div className="mx-auto flex max-w-5xl gap-4">
+          <aside className="sticky top-0 hidden w-1/5 lg:block">
             <SidebarNav items={sidebarNavItems} />
           </aside>
           <div className="flex-1 lg:max-w-3xl">{children}</div>
