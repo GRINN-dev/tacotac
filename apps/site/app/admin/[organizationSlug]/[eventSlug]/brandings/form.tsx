@@ -4,7 +4,7 @@ import { FC } from "react";
 import { GetEventBySlugQuery } from "@tacotacIO/codegen";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EventFormFieldsForm } from "./UpdateForm";
+import { EventFormFieldsForm } from "./_components/manage-form-fields";
 import { ThemeBuilder } from "./_components/theme-builder";
 
 export const Form: FC<{

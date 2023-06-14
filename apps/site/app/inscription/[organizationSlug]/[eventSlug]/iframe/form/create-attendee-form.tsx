@@ -150,7 +150,7 @@ export const CreateAttendeeForm2: FC<{
               }
             }}
           >
-            Ajouter un participant
+            Ajouter un billet
           </Button>
           <Button type="submit">Valider</Button>
         </div>
