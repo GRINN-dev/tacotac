@@ -1,4 +1,19 @@
-import { Laptop, LucideProps, Moon, PlusSquare, SunMedium, Twitter, type Icon as LucideIcon } from "lucide-react";
+import {
+  ClipboardCheck,
+  Cog,
+  Group,
+  Import,
+  Laptop,
+  LucideProps,
+  Moon,
+  Paintbrush,
+  PictureInPicture,
+  PlusSquare,
+  QrCode,
+  SunMedium,
+  Twitter,
+  type Icon as LucideIcon,
+} from "lucide-react";
 
 export type Icon = LucideIcon;
 
@@ -8,6 +23,14 @@ export const Icons = {
   laptop: Laptop,
   twitter: Twitter,
   plusSquare: PlusSquare,
+  clipboardCheck: ClipboardCheck,
+  paintbrush: Paintbrush,
+  import: Import,
+  group: Group,
+  pictureInPicture: PictureInPicture,
+  qrCode: QrCode,
+  cog: Cog,
+
   logo: (props: LucideProps) => (
     <svg viewBox="0 0 200 200" {...props}>
       <path

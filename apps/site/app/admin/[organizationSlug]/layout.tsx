@@ -24,7 +24,7 @@ export default async function AdminLayout({
 
   if (!currentUser) {
     return (
-      <div className="bg-muted text-muted-foreground flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <Card className="px-4 py-2">
           <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Dashboard Administrateur</h1>
           <p className="mt-4 leading-7">
@@ -38,9 +38,9 @@ export default async function AdminLayout({
     );
   }
   return (
-    <div className="bg-muted text-muted-foreground h-full max-h-full w-full">
-      <div className="">
-        <div className="flex h-16 items-center px-4">
+    <div className="h-full max-h-full w-full">
+      <div className="border-b">
+        <div className="mx-auto flex h-16 max-w-5xl items-center px-4">
           <img alt="logo Kaypi" className="h-10 object-contain" src="/logo/Kaypi_Logo_RVB_Icone_Positif.jpg.svg" />
           <TeamSwitcher
             teams={currentUser.organizations.nodes.map(({ organization }) => ({
@@ -51,7 +51,7 @@ export default async function AdminLayout({
             }))}
           />
 
-          <MainNav className="mx-6" organizationSlug={organizationSlug} />
+          {/* <MainNav className="mx-6 hidden sm:flex" organizationSlug={organizationSlug} /> */}
           <div className="ml-auto flex items-center space-x-4">
             <ThemeToggle />
             {/* <Search /> */}
