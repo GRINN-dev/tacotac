@@ -124,6 +124,8 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
               })
               .then(() => {
                 setIsLoading(false);
+                startTransition(() => router.refresh());
+
                 toast({
                   title: "Événement mis à jour",
                   action: (
@@ -132,8 +134,6 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
                     </ToastAction>
                   ),
                 });
-
-                router.refresh();
               })
               .catch((error) => {
                 toast({

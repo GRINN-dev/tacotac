@@ -34,7 +34,7 @@ export function MainNav({ className, organizationSlug = "all", ...props }: NavPr
             pathname.startsWith(`/admin/${organizationSlug}/infos`) && "text-primary"
           )}
         >
-          <span className="hidden sm:inline">Paramètres</span>
+          <span className="hidden sm:inline">Paramètres équipe</span>
           <span className="sm:hidden">
             <Cog />
           </span>

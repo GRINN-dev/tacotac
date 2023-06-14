@@ -1,10 +1,10 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { EventStatus, GetOrganizationBySlugQuery } from "@tacotacIO/codegen";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, RefreshCcw } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
@@ -32,10 +32,10 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
     },
     cell: ({ row }) => {
       return (
-        <div className="">
+        <Link href={`/admin/${row.original.organization.slug}/${row.original.slug}`}>
           <div className="text-accent text-3xl">{row.original.attendees.totalCount}</div>
           <div className="text-accent">participants</div>
-        </div>
+        </Link>
       );
     },
   },
@@ -63,7 +63,14 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
   { accessorKey: "city", header: "Ville" },
   {
     accessorKey: "startsAt",
-    header: "Début",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Début
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const startsAt = String(row.getValue("startsAt"));
       return (
@@ -131,40 +138,7 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
     header: () => {
       return <Refresher />;
     },
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            {/*   <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>
-              <Link href={`/admin/${row.original.organization.slug}/${row.original.slug}`}>Voir les détails</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                window.confirm("Voulez-vous supprimer cet evenements ?") &&
-                  sdk().DeleteEvent({
-                    input: {
-                      id: row.original.id,
-                    },
-                  });
-              }}
-            >
-              Supprimer
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <RowActions row={row} />,
   },
 ];
 
@@ -213,3 +187,48 @@ export const filters: Filter<GetOrganizationBySlugQuery["organizationBySlug"]["e
     ],
   },
 ];
+
+const RowActions: FC<{ row: Row<GetOrganizationBySlugQuery["organizationBySlug"]["events"]["nodes"][number]> }> = ({
+  row,
+}) => {
+  const router = useRouter();
+  const [isTransitionning, startTransition] = useTransition();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+        {/*   <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
+              Copy payment ID
+            </DropdownMenuItem>
+            <DropdownMenuSeparator /> */}
+        <DropdownMenuItem>
+          <Link href={`/admin/${row.original.organization.slug}/${row.original.slug}`}>Voir les détails</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            window.confirm("Voulez-vous supprimer cet evenements ?") &&
+              sdk()
+                .DeleteEvent({
+                  input: {
+                    id: row.original.id,
+                  },
+                })
+                .then(() => {
+                  startTransition(() => {
+                    router.refresh();
+                  });
+                });
+          }}
+        >
+          Supprimer
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};

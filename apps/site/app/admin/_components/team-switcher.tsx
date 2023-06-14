@@ -81,7 +81,15 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
-                src={selectedTeam.pictureUrl || `https://avatar.vercel.sh/${selectedTeam.value}.png`}
+                src={
+                  selectedTeam.pictureUrl ||
+                  `https://avatar.vercel.sh/${selectedTeam.value}.svg?text=${selectedTeam.label
+                    .split(" ")
+                    .filter((word) => word.length > 1)
+                    .slice(0, 2)
+                    .map((word) => word[0])
+                    .join("")}`
+                }
                 alt={selectedTeam.label}
               />
               <AvatarFallback>
@@ -121,7 +129,15 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
                     >
                       <Avatar className="mr-2 h-5 w-5">
                         <AvatarImage
-                          src={team.pictureUrl || `https://avatar.vercel.sh/${team.value}.png`}
+                          src={
+                            team.pictureUrl ||
+                            `https://avatar.vercel.sh/${team.value}.svg?text=${team.label
+                              .split(" ")
+                              .filter((word) => word.length > 1)
+                              .slice(0, 2)
+                              .map((word) => word[0])
+                              .join("")}`
+                          }
                           alt={team.label}
                         />
                         <AvatarFallback>
