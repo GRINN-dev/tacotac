@@ -35,7 +35,7 @@ export const ViewSwitcher: FC<{ organizationSlug: string }> = ({ organizationSlu
       </Link>
 
       <Link
-        href={`/admin/${organizationSlug}/info`}
+        href={`/admin/${organizationSlug}/infos`}
         className={cn(
           buttonVariants({
             variant: pathname === `/admin/${organizationSlug}/infos` ? "default" : "ghost",
