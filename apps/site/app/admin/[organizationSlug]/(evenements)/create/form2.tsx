@@ -181,7 +181,7 @@ export const CreateForm: FC<{ organizationId: string }> = ({ organizationId }) =
               control={form.control}
               name="bookingEndDate"
               label="Fermeture de la billeterie"
-              descrition="Si vou n'indiquez pas de jour de fin, la billeterie sera ouverte jusqu'à la fin de l'événement"
+              descrition="Si vous n'indiquez pas de jour de fin, la billeterie sera ouverte jusqu'à la fin de l'événement"
               placeholder="Choisissez un jour "
             />
           </div>

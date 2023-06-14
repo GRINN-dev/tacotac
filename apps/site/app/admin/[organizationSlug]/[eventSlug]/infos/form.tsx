@@ -56,11 +56,14 @@ const formSchema = z
       )
       .optional(),
   })
-  .refine(({ bookingEndDate, bookingStartDate }) => bookingEndDate < bookingStartDate, {
-    message: "La date de fin de la billeterie doit être après la date d'ouverture",
-    path: ["bookingEndDate"],
-  })
-  .refine(({ endDate, startDate }) => endDate < startDate, {
+  .refine(
+    ({ bookingEndDate, bookingStartDate }) => bookingEndDate > bookingStartDate || !bookingEndDate || !bookingStartDate,
+    {
+      message: "La date de fin de la billeterie doit être après la date d'ouverture",
+      path: ["bookingEndDate"],
+    }
+  )
+  .refine(({ endDate, startDate }) => (endDate && startDate && endDate > startDate) || !endDate, {
     message: "La date de fin de l'événement doit être après la date de début",
     path: ["endDate"],
   });
@@ -292,7 +295,7 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
               control={form.control}
               name="bookingEndDate"
               label="Fermeture de la billeterie"
-              descrition="Si vou n'indiquez pas de jour de fin, la billeterie sera ouverte jusqu'à la fin de l'événement"
+              descrition="Si vous n'indiquez pas de jour de fin, la billeterie sera ouverte jusqu'à la fin de l'événement"
               placeholder="Choisissez un jour "
             />
           </div>

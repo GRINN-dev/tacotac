@@ -2,6 +2,7 @@
 
 import { FC, ReactNode, useEffect, useState } from "react";
 import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { Controller, ControllerProps, ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
 
@@ -88,7 +89,7 @@ const Input: FC<{
               variant={"outline"}
               className={cn("w-[240px] pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
             >
-              {dateValue ? format(dateValue, "PPP") : <span>Pick a date</span>}
+              {dateValue ? format(dateValue, "PPP", { locale: fr }) : <span>Choisir une date</span>}
               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
           </FormControl>
