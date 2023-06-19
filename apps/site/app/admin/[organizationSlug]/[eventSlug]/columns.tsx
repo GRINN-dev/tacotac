@@ -134,6 +134,26 @@ export const columns: (input: {
     ),
   },
   {
+    accessorKey: "pdfUrl",
+    header: "Billet",
+    cell: ({ row }) => (
+      <>
+        {row.original.pdfUrl ? (
+          <Link
+            className={cn(buttonVariants({ variant: "link", size: "sm" }))}
+            href={row.original.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ExternalLink className="mr-2 h-4 w-4" /> Voir le billet
+          </Link>
+        ) : (
+          <span className="text-muted-foreground">Pas de billet</span>
+        )}
+      </>
+    ),
+  },
+  {
     id: "actions",
     header: () => {
       return <Refresher />;
