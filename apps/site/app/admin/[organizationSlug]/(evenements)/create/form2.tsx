@@ -24,7 +24,11 @@ const formSchema = z
   .object({
     name: z.string().nonempty({ message: "Le nom de l'événement est obligatoire" }),
     description: z.string().optional(),
-    capacity: z.coerce.number().positive({ message: "La capacité doit être un nombre positif" }).optional(),
+    capacity: z.coerce
+      .number()
+      .positive({ message: "La capacité doit être un nombre positif" })
+      .transform((val) => (!val ? undefined : val))
+      .optional(),
     bookingStartDate: z.date().optional(),
     bookingEndDate: z.date().optional(),
     startDate: z.date(),
