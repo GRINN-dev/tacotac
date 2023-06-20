@@ -28,8 +28,8 @@
     <div class="text-white text-[13px] font-light absolute w-10 h-min flex-col left-10 top-[120px]">{{ticket.starts_at}}
     </div>
     <div class="text-white text-[13px] font-light absolute w-1 h-min flex-col left-[76px] top-[120px]">-</div>
-    <div class="text-white text-[13px] font-light absolute w-[51px] h-min flex-col left-[88px] top-[120px]">
-        {{ticket.ends_at}}</div>
+{{#if (isdefined ticket.ends_at)}}    <div class="text-white text-[13px] font-light absolute w-[51px] h-min flex-col left-[88px] top-[120px]">
+        {{ticket.ends_at}}</div>{{/if}}
     <div class="text-white text-[43px] font-bold absolute w-min h-min whitespace-nowrap flex-col left-10 top-[68px]">
         {{ticket.day}}</div>
     <div class="absolute w-min h-min whitespace-nowrap flex-col left-[103px] top-[75px]">

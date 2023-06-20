@@ -16,6 +16,9 @@ export function createHtmlTemplate<T>(data: T, templateName: string) {
       encoding: "utf-8",
     }
   );
+  hbs.registerHelper("isdefined", function (value) {
+    return value !== undefined;
+  });
   const template = hbs.compile(html);
   const rendered = template({
     ...data,

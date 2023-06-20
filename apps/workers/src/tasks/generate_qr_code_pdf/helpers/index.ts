@@ -29,17 +29,7 @@ export const generateDocsForAttendees = async (
   bufferPdf: Buffer;
 }> => {
   let bufferPdf: Buffer;
-  /*   const { dataUrlQrCode } = await generateQRCode(
-    JSON.stringify({
-      ticketNumber: rowData.ticket_number,
-      firstname: rowData.firstname,
-      lastname: rowData.lastname,
-      email: rowData.email,
-      attendeeId: rowData.id,
-      registrationId: registrationId,
-      eventId: rowData.event_id,
-    })
-  ); */
+
   const { dataUrlQrCode } = await generateQRCode(
     JSON.stringify({
       t_num: rowData.ticket_number,
@@ -61,7 +51,9 @@ export const generateDocsForAttendees = async (
     month: dayjs(rowData.starts_at).format("MMMM"),
     year: dayjs(rowData.starts_at).year(),
     starts_at: dayjs(rowData.starts_at).format("HH:mm"),
-    ends_at: dayjs(rowData.ends_at).format("HH:mm"),
+    ends_at: rowData.ends_at
+      ? dayjs(rowData.ends_at).format("HH:mm")
+      : undefined,
     place_name: rowData.place_name,
     address: rowData.address_line_1,
     detail: rowData.details,

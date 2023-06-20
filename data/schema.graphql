@@ -1778,7 +1778,7 @@ type Event {
   city: String
   country: String
   createdAt: Datetime!
-  description: String!
+  description: String
   details: String
   endsAt: Datetime
 
@@ -2258,7 +2258,7 @@ input EventInput {
   city: String
   country: String
   createdAt: Datetime
-  description: String!
+  description: String
   details: String
   endsAt: Datetime
   id: UUID
