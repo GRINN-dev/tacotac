@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { GetAllOrganizationQuery, GetCurrentUserQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllOrganizationQuery, GetCurrentUserQuery } from "@tacotacIO/codegen";
 import { ClipboardEdit, SidebarOpen, Sprout, Store, User } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -55,7 +55,7 @@ export const MobileAdminDrawer: FC<{
               <AvatarImage src={currentUser.avatarUrl} />
             </Avatar>
             <div className="flex flex-col px-2 py-1">
-              <div className="line-clamp-1 text-muted-foreground text-sm font-bold uppercase tracking-wide">
+              <div className="text-muted-foreground line-clamp-1 text-sm font-bold uppercase tracking-wide">
                 {currentUser.firstname}
               </div>
               <Link

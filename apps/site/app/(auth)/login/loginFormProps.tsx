@@ -1,4 +1,4 @@
-import { LoginInput } from "@/../../@tacotacIO/codegen/dist";
+import { LoginInput } from "@tacotacIO/codegen";
 
 import { sdk } from "@/lib/sdk";
 import { Field, GenericFormProps } from "@/components/form/types";

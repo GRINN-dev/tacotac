@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useRef } from "react";
-import {  GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import {  GetEventBySlugQuery } from "@tacotacIO/codegen";
 import {  useForm } from "react-hook-form";
 
 import {

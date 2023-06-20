@@ -206,6 +206,9 @@ export function getPostGraphileOptions({
 
       // Makes all SQL function arguments except those with defaults non-nullable
       pgStrictFunctions: true,
+      connectionFilterAllowNullInput: true,
+      connectionFilterAllowEmptyObjectInput: true,
+      connectionFilterRelations: true,
     },
 
     /*

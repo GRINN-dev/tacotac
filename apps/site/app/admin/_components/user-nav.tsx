@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { GetCurrentUserQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetCurrentUserQuery } from "@tacotacIO/codegen";
 import { CreditCard, LogOut, PlusCircle, Settings, User } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";

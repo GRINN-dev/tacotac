@@ -2,12 +2,12 @@
 
 import { FC, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 import {
   GetOrganizationBySlugQuery,
   InviteToOrganizationInput,
   OrganizationMembershipsRolesEnum,
-} from "@/../../@tacotacIO/codegen/dist";
-import { toast } from "@/hooks/use-toast";
+} from "@tacotacIO/codegen";
 import { Copy } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -51,6 +51,7 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
         title: "Invitation envoyée",
         description: "L'utilisateur a été invité à rejoindre l'organisation",
       });
+      router.refresh();
     });
   });
 
@@ -222,13 +223,21 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      process.env.NEXT_PUBLIC_SITE_URL + "/invitation?id=" + invitation.id + "&code=" + invitation.code
+                      process.env.NEXT_PUBLIC_SITE_ENDPOINT +
+                        "/invitation?id=" +
+                        invitation.id +
+                        "&code=" +
+                        invitation.code
                     );
                   }}
                   className="flex items-center gap-2"
                 >
                   <span className="line-clamp-2">
-                    {process.env.NEXT_PUBLIC_SITE_URL + "/invitation?id=" + invitation.id + "&code=" + invitation.code}
+                    {process.env.NEXT_PUBLIC_SITE_ENDPOINT +
+                      "/invitation?id=" +
+                      invitation.id +
+                      "&code=" +
+                      invitation.code}
                   </span>
                   <Copy className="h-4 w-4 flex-none" />
                 </button>

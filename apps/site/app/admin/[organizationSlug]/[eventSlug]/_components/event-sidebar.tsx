@@ -52,7 +52,7 @@ export const EventsSidebar: FC<{
         {
           name: "Ajout participant",
           icon: PlusSquare,
-          href: `/admin/${organizationSlug}/${eventSlug}/participant/create`,
+          href: `/admin/${organizationSlug}/${eventSlug}/participants/create`,
         },
         {
           name: "Charte graphique billetterie",

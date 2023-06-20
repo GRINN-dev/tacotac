@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { GetAllEventsQuery, GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllEventsQuery, GetOrganizationBySlugQuery } from "@tacotacIO/codegen";
 import { Flower2 } from "lucide-react";
 
 import { GenericCalendar } from "@/components/calendar/generic-calendar";

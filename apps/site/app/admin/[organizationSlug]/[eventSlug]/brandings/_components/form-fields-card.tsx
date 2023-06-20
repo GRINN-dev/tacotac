@@ -2,8 +2,8 @@
 
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@tacotacIO/codegen";
+import { ArrowDownCircle, ArrowUp, ArrowUpCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -41,6 +41,10 @@ export const FormFieldCard: FC<{
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  const fieldType = watch("formField.type");
+  const hasPlaceholder = [FieldTypes.Email, FieldTypes.Text, FieldTypes.Textarea, FieldTypes.Date].includes(fieldType);
+  const hasOptions = [FieldTypes.Select, FieldTypes.Checkbox].includes(fieldType);
+
   const onSubmit = async (data: CreateFormFieldInput) => {
     setIsLoading(true);
     formField
@@ -55,7 +59,7 @@ export const FormFieldCard: FC<{
             },
           })
           .then(() => {
-            toast({ title: "Champ mis à jour" });
+            toast({ title: "Champ mis à jour", duration: 2000 });
             setIsLoading(false);
             router.refresh();
           })
@@ -70,7 +74,7 @@ export const FormFieldCard: FC<{
             },
           })
           .then(() => {
-            toast({ title: "Champ créé" });
+            toast({ title: "Champ créé", duration: 2000 });
             setIsLoading(false);
             router.refresh();
           });
@@ -121,13 +125,15 @@ export const FormFieldCard: FC<{
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
         )}
       </div>
-      <div className="mt-4 grid items-center gap-1.5">
-        <Label htmlFor="placeholder">Placeholder</Label>
-        <Input type="text" id="placeholder" {...register("formField.placeholder", {})} />
-        {formState.errors?.formField?.label && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
-        )}
-      </div>
+      {hasPlaceholder && (
+        <div className="mt-4 grid items-center gap-1.5">
+          <Label htmlFor="placeholder">Placeholder</Label>
+          <Input type="text" id="placeholder" {...register("formField.placeholder", {})} />
+          {formState.errors?.formField?.label && (
+            <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
+          )}
+        </div>
+      )}
       <div className="flex items-center space-x-2">
         <Controller
           control={control}
@@ -191,15 +197,17 @@ export const FormFieldCard: FC<{
 
       {/* now for the options: if type is select or radio, I want an array of strings */}
 
-      <div className="mt-4 grid items-center gap-1.5">
-        <Label htmlFor="options">
-          Options proposées au participant. Sur une ligne séparé par le symbole &apos;|&apos;
-        </Label>
-        <Input type="text" id="options" {...register("formField.options", {})} />
-        {formState.errors?.formField?.label && (
-          <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
-        )}
-      </div>
+      {hasOptions && (
+        <div className="mt-4 grid items-center gap-1.5">
+          <Label htmlFor="options">
+            Options proposées au participant. Sur une ligne séparé par le symbole &apos;|&apos;
+          </Label>
+          <Input type="text" id="options" {...register("formField.options", {})} />
+          {formState.errors?.formField?.label && (
+            <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.formField?.label?.message}</p>
+          )}
+        </div>
+      )}
       <div className="mt-4 flex justify-between">
         <div className="flex gap-2">
           <Button type="submit">Enregistrer</Button>
@@ -210,54 +218,6 @@ export const FormFieldCard: FC<{
           ) : (
             false
           )}
-        </div>
-        <div className="flex gap-2">
-          <button
-            disabled={formField?.position === 0}
-            className={cn(formField?.position === 0 && "cursor-not-allowed opacity-50")}
-            onClick={async () => {
-              setIsLoading(true);
-              await sdk().UpdateFormField({
-                input: {
-                  id: formField?.id,
-                  patch: {
-                    position: formField?.position - 1,
-                  },
-                },
-              });
-
-              setIsLoading(false);
-              toast({
-                title: "Champ déplacé",
-              });
-              router.refresh();
-            }}
-          >
-            <ChevronUp />
-          </button>
-          <button
-            disabled={isLast}
-            className={cn(isLast && "cursor-not-allowed opacity-50")}
-            onClick={async () => {
-              setIsLoading(true);
-              await sdk().UpdateFormField({
-                input: {
-                  id: formField?.id,
-                  patch: {
-                    position: formField?.position + 1,
-                  },
-                },
-              });
-
-              setIsLoading(false);
-              toast({
-                title: "Champ déplacé",
-              });
-              router.refresh();
-            }}
-          >
-            <ChevronDown />
-          </button>
         </div>
       </div>
     </form>
@@ -285,5 +245,64 @@ export const CreationDialog: FC<{ eventID: string }> = ({ eventID }) => {
         />
       </DialogContent>
     </Dialog>
+  );
+};
+
+export const OrderFieldButton: FC<{
+  formField?: GetEventBySlugQuery["eventBySlug"]["formFields"]["nodes"][number];
+  isLast?: boolean;
+}> = ({ formField, isLast }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <button
+        disabled={formField?.position === 0}
+        className={cn(formField?.position === 0 && "cursor-not-allowed opacity-0")}
+        onClick={async () => {
+          setIsLoading(true);
+          await sdk().UpdateFormField({
+            input: {
+              id: formField?.id,
+              patch: {
+                position: formField?.position - 1,
+              },
+            },
+          });
+
+          setIsLoading(false);
+          toast({
+            title: "Champ déplacé",
+          });
+          router.refresh();
+        }}
+      >
+        <ArrowUpCircle className="h-3 w-3" />
+      </button>
+      <button
+        disabled={isLast}
+        className={cn(isLast && "cursor-not-allowed opacity-0")}
+        onClick={async () => {
+          setIsLoading(true);
+          await sdk().UpdateFormField({
+            input: {
+              id: formField?.id,
+              patch: {
+                position: formField?.position + 1,
+              },
+            },
+          });
+
+          setIsLoading(false);
+          toast({
+            title: "Champ déplacé",
+          });
+          router.refresh();
+        }}
+      >
+        <ArrowDownCircle className="h-3 w-3" />
+      </button>
+    </div>
   );
 };

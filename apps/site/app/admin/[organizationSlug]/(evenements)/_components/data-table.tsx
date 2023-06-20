@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { GetOrganizationBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetOrganizationBySlugQuery } from "@tacotacIO/codegen";
 
 import { DataTable } from "@/components/data-table/data-table";
 import { columns, filters } from "../columns";

@@ -1,4 +1,4 @@
-import { GetCurrentUserQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetCurrentUserQuery } from "@tacotacIO/codegen";
 import { Calendar, HeartHandshake, PartyPopper, ShieldCheck, Store } from "lucide-react";
 
 export const entries = (user?: GetCurrentUserQuery["currentUser"]) => [

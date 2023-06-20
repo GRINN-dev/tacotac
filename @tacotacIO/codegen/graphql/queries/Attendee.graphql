@@ -10,6 +10,15 @@ query GetAttendeeById($attendeeId: UUID!) {
         }
       }
     }
+    registration {
+      id
+      attendeesList {
+        email
+        firstname
+        lastname
+        isInscriptor
+      }
+    }
     ...MyAttendee
   }
 }

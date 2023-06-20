@@ -142,6 +142,12 @@ input AttendeeFilter {
   """Checks for all expressions in this list."""
   and: [AttendeeFilter!]
 
+  """Filter by the object’s `attendeeFormFields` relation."""
+  attendeeFormFields: AttendeeToManyAttendeeFormFieldFilter
+
+  """Some related `attendeeFormFields` exist."""
+  attendeeFormFieldsExist: Boolean
+
   """Filter by the object’s `civility` field."""
   civility: StringFilter
 
@@ -183,6 +189,12 @@ input AttendeeFilter {
 
   """Filter by the object’s `panelNumber` field."""
   panelNumber: IntFilter
+
+  """Filter by the object’s `registration` relation."""
+  registration: RegistrationFilter
+
+  """A related `registration` exists."""
+  registrationExists: Boolean
 
   """Filter by the object’s `registrationId` field."""
   registrationId: UUIDFilter
@@ -241,11 +253,17 @@ input AttendeeFormFieldFilter {
   """Checks for all expressions in this list."""
   and: [AttendeeFormFieldFilter!]
 
+  """Filter by the object’s `attendee` relation."""
+  attendee: AttendeeFilter
+
   """Filter by the object’s `attendeeId` field."""
   attendeeId: UUIDFilter
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
+
+  """Filter by the object’s `field` relation."""
+  field: FormFieldFilter
 
   """Filter by the object’s `fieldId` field."""
   fieldId: UUIDFilter
@@ -444,6 +462,26 @@ input AttendeeStatusFilter {
 
   """Not included in the specified list."""
   notIn: [AttendeeStatus!]
+}
+
+"""
+A filter to be used against many `AttendeeFormField` object types. All fields are combined with a logical ‘and.’
+"""
+input AttendeeToManyAttendeeFormFieldFilter {
+  """
+  Every related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AttendeeFormFieldFilter
+
+  """
+  No related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AttendeeFormFieldFilter
+
+  """
+  Some related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AttendeeFormFieldFilter
 }
 
 """A connection to a list of `Attendee` values."""
@@ -1974,6 +2012,9 @@ input EventBrandingFilter {
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
 
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
   """Filter by the object’s `eventId` field."""
   eventId: UUIDFilter
 
@@ -2140,6 +2181,18 @@ input EventFilter {
   """Filter by the object’s `endsAt` field."""
   endsAt: DatetimeFilter
 
+  """Filter by the object’s `eventBranding` relation."""
+  eventBranding: EventBrandingFilter
+
+  """A related `eventBranding` exists."""
+  eventBrandingExists: Boolean
+
+  """Filter by the object’s `formFields` relation."""
+  formFields: EventToManyFormFieldFilter
+
+  """Some related `formFields` exist."""
+  formFieldsExist: Boolean
+
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
@@ -2148,6 +2201,12 @@ input EventFilter {
 
   """Filter by the object’s `isDraft` field."""
   isDraft: BooleanFilter
+
+  """Filter by the object’s `logs` relation."""
+  logs: EventToManyLogFilter
+
+  """Some related `logs` exist."""
+  logsExist: Boolean
 
   """Filter by the object’s `name` field."""
   name: StringFilter
@@ -2158,8 +2217,17 @@ input EventFilter {
   """Checks for any expressions in this list."""
   or: [EventFilter!]
 
+  """Filter by the object’s `organization` relation."""
+  organization: OrganizationFilter
+
   """Filter by the object’s `organizationId` field."""
   organizationId: UUIDFilter
+
+  """Filter by the object’s `registrations` relation."""
+  registrations: EventToManyRegistrationFilter
+
+  """Some related `registrations` exist."""
+  registrationsExist: Boolean
 
   """Filter by the object’s `slug` field."""
   slug: StringFilter
@@ -2255,6 +2323,66 @@ enum EventStatus {
 
   """A venir"""
   PENDING
+}
+
+"""
+A filter to be used against many `FormField` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyFormFieldFilter {
+  """
+  Every related `FormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: FormFieldFilter
+
+  """
+  No related `FormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: FormFieldFilter
+
+  """
+  Some related `FormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: FormFieldFilter
+}
+
+"""
+A filter to be used against many `Log` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyLogFilter {
+  """
+  Every related `Log` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: LogFilter
+
+  """
+  No related `Log` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: LogFilter
+
+  """
+  Some related `Log` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: LogFilter
+}
+
+"""
+A filter to be used against many `Registration` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyRegistrationFilter {
+  """
+  Every related `Registration` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: RegistrationFilter
+
+  """
+  No related `Registration` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: RegistrationFilter
+
+  """
+  Some related `Registration` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: RegistrationFilter
 }
 
 """A connection to a list of `Event` values."""
@@ -2551,8 +2679,17 @@ input FormFieldFilter {
   """Checks for all expressions in this list."""
   and: [FormFieldFilter!]
 
+  """Filter by the object’s `attendeeFormFieldsByFieldId` relation."""
+  attendeeFormFieldsByFieldId: FormFieldToManyAttendeeFormFieldFilter
+
+  """Some related `attendeeFormFieldsByFieldId` exist."""
+  attendeeFormFieldsByFieldIdExist: Boolean
+
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
 
   """Filter by the object’s `eventId` field."""
   eventId: UUIDFilter
@@ -2612,6 +2749,26 @@ input FormFieldPatch {
   position: Int
   type: FieldTypes
   updatedAt: Datetime
+}
+
+"""
+A filter to be used against many `AttendeeFormField` object types. All fields are combined with a logical ‘and.’
+"""
+input FormFieldToManyAttendeeFormFieldFilter {
+  """
+  Every related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AttendeeFormFieldFilter
+
+  """
+  No related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AttendeeFormFieldFilter
+
+  """
+  Some related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AttendeeFormFieldFilter
 }
 
 """A connection to a list of `FormField` values."""
@@ -2784,6 +2941,12 @@ input LogFilter {
 
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
 
   """Filter by the object’s `eventId` field."""
   eventId: UUIDFilter
@@ -3597,6 +3760,12 @@ input OrganizationFilter {
   """Filter by the object’s `description` field."""
   description: StringFilter
 
+  """Filter by the object’s `events` relation."""
+  events: OrganizationToManyEventFilter
+
+  """Some related `events` exist."""
+  eventsExist: Boolean
+
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
@@ -3608,6 +3777,18 @@ input OrganizationFilter {
 
   """Checks for any expressions in this list."""
   or: [OrganizationFilter!]
+
+  """Filter by the object’s `organizationInvitations` relation."""
+  organizationInvitations: OrganizationToManyOrganizationInvitationFilter
+
+  """Some related `organizationInvitations` exist."""
+  organizationInvitationsExist: Boolean
+
+  """Filter by the object’s `organizationMemberships` relation."""
+  organizationMemberships: OrganizationToManyOrganizationMembershipFilter
+
+  """Some related `organizationMemberships` exist."""
+  organizationMembershipsExist: Boolean
 
   """Filter by the object’s `slug` field."""
   slug: StringFilter
@@ -3669,11 +3850,20 @@ input OrganizationInvitationFilter {
   """Checks for any expressions in this list."""
   or: [OrganizationInvitationFilter!]
 
+  """Filter by the object’s `organization` relation."""
+  organization: OrganizationFilter
+
   """Filter by the object’s `organizationId` field."""
   organizationId: UUIDFilter
 
   """Filter by the object’s `role` field."""
   role: OrganizationMembershipsRolesEnumFilter
+
+  """Filter by the object’s `user` relation."""
+  user: UserFilter
+
+  """A related `user` exists."""
+  userExists: Boolean
 
   """Filter by the object’s `userId` field."""
   userId: UUIDFilter
@@ -3806,6 +3996,9 @@ input OrganizationMembershipFilter {
   """Checks for any expressions in this list."""
   or: [OrganizationMembershipFilter!]
 
+  """Filter by the object’s `organization` relation."""
+  organization: OrganizationFilter
+
   """Filter by the object’s `organizationId` field."""
   organizationId: UUIDFilter
 
@@ -3814,6 +4007,9 @@ input OrganizationMembershipFilter {
 
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
+
+  """Filter by the object’s `user` relation."""
+  user: UserFilter
 
   """Filter by the object’s `userId` field."""
   userId: UUIDFilter
@@ -3957,6 +4153,66 @@ input OrganizationPatch {
   name: String
   slug: String
   updatedAt: Datetime
+}
+
+"""
+A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input OrganizationToManyEventFilter {
+  """
+  Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EventFilter
+
+  """
+  No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EventFilter
+
+  """
+  Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EventFilter
+}
+
+"""
+A filter to be used against many `OrganizationInvitation` object types. All fields are combined with a logical ‘and.’
+"""
+input OrganizationToManyOrganizationInvitationFilter {
+  """
+  Every related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: OrganizationInvitationFilter
+
+  """
+  No related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: OrganizationInvitationFilter
+
+  """
+  Some related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: OrganizationInvitationFilter
+}
+
+"""
+A filter to be used against many `OrganizationMembership` object types. All fields are combined with a logical ‘and.’
+"""
+input OrganizationToManyOrganizationMembershipFilter {
+  """
+  Every related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: OrganizationMembershipFilter
+
+  """
+  No related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: OrganizationMembershipFilter
+
+  """
+  Some related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: OrganizationMembershipFilter
 }
 
 """A connection to a list of `Organization` values."""
@@ -4846,8 +5102,20 @@ input RegistrationFilter {
   """Checks for all expressions in this list."""
   and: [RegistrationFilter!]
 
+  """Filter by the object’s `attendees` relation."""
+  attendees: RegistrationToManyAttendeeFilter
+
+  """Some related `attendees` exist."""
+  attendeesExist: Boolean
+
   """Filter by the object’s `createdAt` field."""
   createdAt: DatetimeFilter
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
 
   """Filter by the object’s `eventId` field."""
   eventId: UUIDFilter
@@ -4883,6 +5151,26 @@ input RegistrationPatch {
   hearAboutList: [String]
   id: UUID
   updatedAt: Datetime
+}
+
+"""
+A filter to be used against many `Attendee` object types. All fields are combined with a logical ‘and.’
+"""
+input RegistrationToManyAttendeeFilter {
+  """
+  Every related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AttendeeFilter
+
+  """
+  No related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AttendeeFilter
+
+  """
+  Some related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AttendeeFilter
 }
 
 """A connection to a list of `Registration` values."""
@@ -6159,6 +6447,9 @@ input UserAuthenticationFilter {
   """Filter by the object’s `service` field."""
   service: StringFilter
 
+  """Filter by the object’s `user` relation."""
+  user: UserFilter
+
   """Filter by the object’s `userId` field."""
   userId: UUIDFilter
 }
@@ -6297,8 +6588,26 @@ input UserFilter {
   """Checks for any expressions in this list."""
   or: [UserFilter!]
 
+  """Filter by the object’s `organizationInvitations` relation."""
+  organizationInvitations: UserToManyOrganizationInvitationFilter
+
+  """Some related `organizationInvitations` exist."""
+  organizationInvitationsExist: Boolean
+
+  """Filter by the object’s `organizationMemberships` relation."""
+  organizationMemberships: UserToManyOrganizationMembershipFilter
+
+  """Some related `organizationMemberships` exist."""
+  organizationMembershipsExist: Boolean
+
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
+
+  """Filter by the object’s `userAuthentications` relation."""
+  userAuthentications: UserToManyUserAuthenticationFilter
+
+  """Some related `userAuthentications` exist."""
+  userAuthenticationsExist: Boolean
 
   """Filter by the object’s `username` field."""
   username: StringFilter
@@ -6355,6 +6664,66 @@ input UserPatch {
 type UserSubscriptionPayload {
   event: String
   user: User
+}
+
+"""
+A filter to be used against many `OrganizationInvitation` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyOrganizationInvitationFilter {
+  """
+  Every related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: OrganizationInvitationFilter
+
+  """
+  No related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: OrganizationInvitationFilter
+
+  """
+  Some related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: OrganizationInvitationFilter
+}
+
+"""
+A filter to be used against many `OrganizationMembership` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyOrganizationMembershipFilter {
+  """
+  Every related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: OrganizationMembershipFilter
+
+  """
+  No related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: OrganizationMembershipFilter
+
+  """
+  Some related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: OrganizationMembershipFilter
+}
+
+"""
+A filter to be used against many `UserAuthentication` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyUserAuthenticationFilter {
+  """
+  Every related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UserAuthenticationFilter
+
+  """
+  No related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UserAuthenticationFilter
+
+  """
+  Some related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UserAuthenticationFilter
 }
 
 """A connection to a list of `User` values."""

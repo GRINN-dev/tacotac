@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { GetCurrentUserQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetCurrentUserQuery } from "@tacotacIO/codegen";
 
 import { GenericForm } from "@/components/form/generic-form";
 import { getUpdateUserFormProps } from "./userForm";

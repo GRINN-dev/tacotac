@@ -2,7 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetEventBySlugQuery, UpdateEventInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetEventBySlugQuery, UpdateEventInput } from "@tacotacIO/codegen";
 import dayjs from "dayjs";
 import { AlertTriangle, MinusCircle, PlusCircle, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -124,6 +124,8 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
               })
               .then(() => {
                 setIsLoading(false);
+                startTransition(() => router.refresh());
+
                 toast({
                   title: "Événement mis à jour",
                   action: (
@@ -132,8 +134,6 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
                     </ToastAction>
                   ),
                 });
-
-                router.refresh();
               })
               .catch((error) => {
                 toast({

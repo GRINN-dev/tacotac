@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EventsOrderBy } from "@/../../@tacotacIO/codegen/dist";
+import { EventsOrderBy } from "@tacotacIO/codegen";
 import { PlusSquare } from "lucide-react";
 
 import { initLimit } from "@/types/filter";
@@ -8,7 +8,6 @@ import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { ModalStatus } from "./ModalStatus";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 import { MyDataTable } from "./_components/data-table";
@@ -28,8 +27,7 @@ const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
         <div className="flex max-w-3xl flex-row items-center gap-2">
           <Link className={cn(buttonVariants())} href={`/admin/${organizationSlug}/${eventSlug}/participants/create`}>
             Inviter un participant
-          </Link>{" "}
-          <ModalStatus />
+          </Link>
           <SendAllEmailConfirmDonation eventId={data?.eventBySlug?.id} />
           <SendAllEmail eventId={data?.eventBySlug?.id} />
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { SearchAttendeeQuery, SearchAttendeeQueryVariables } from "@/../../@tacotacIO/codegen/dist";
+import { SearchAttendeeQuery, SearchAttendeeQueryVariables } from "@tacotacIO/codegen";
 import { ChevronsUpDown } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
