@@ -16,11 +16,11 @@ export default function IndexPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <ScrollArea className="container grid h-full w-full max-w-prose items-center gap-6 pb-8 pt-6 md:py-10">
-        <Icons.logoWithName className=" h-24 w-24" />
+      <ScrollArea className="container grid items-center w-full h-full gap-6 pt-6 pb-8 max-w-prose md:py-10">
+        <Icons.logoWithName className="w-24 h-24 " />
 
         <div className="flex max-w-[980px] flex-col items-start gap-2">
-          <h1 className="font-zenon-bold text-text text-3xl leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+          <h1 className="text-3xl leading-tight tracking-tighter font-zenon-bold text-text sm:text-3xl md:text-5xl lg:text-6xl">
             <span className="opacity-40">Organisez vos</span> évenements <span className="opacity-40">de</span> levée de
             dons <br className="hidden sm:inline" />
             <span className="opacity-40">en toute</span> simplicité.
@@ -30,21 +30,21 @@ export default function IndexPage() {
             leurs panneaux en un rien de temps.
           </p>
         </div>
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+        <div className="flex flex-col gap-4 mt-8 sm:flex-row">
           <Link href={"/admin"} className={buttonVariants({ size: "lg" })}>
             Tableau de bord
           </Link>
           <Link href={"/login"} className={buttonVariants({ size: "lg", variant: "outline" })}>
             Connexion
           </Link>
-          <Link
+          {/* <Link
             target="_blank"
             rel="noreferrer"
             href={siteConfig.links.scanner}
             className={buttonVariants({ variant: "link", size: "lg" })}
           >
             scanner
-          </Link>
+          </Link> */}
         </div>
       </ScrollArea>
     </>
