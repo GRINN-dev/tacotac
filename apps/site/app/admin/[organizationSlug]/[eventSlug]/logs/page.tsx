@@ -1,4 +1,4 @@
-import { LogsStatus } from "@/../../@tacotacIO/codegen/dist";
+import { LogsStatus } from "@tacotacIO/codegen";
 import dayjs from "dayjs";
 import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 

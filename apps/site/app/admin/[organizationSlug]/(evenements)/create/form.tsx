@@ -2,7 +2,7 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { CreateEventInput } from "@/../../@tacotacIO/codegen/dist";
+import { CreateEventInput } from "@tacotacIO/codegen";
 import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 
@@ -39,7 +39,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1) + "?reload=true");
+      router.push(pathname.substring(0, pathname.lastIndexOf("/") + 1));
     });
   });
 
@@ -310,7 +310,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         </button>
       </div>
       {error && (
-        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
+        <p className="mt-2 line-clamp-3 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {

@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import Script from "next/script";
-import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@/../../@tacotacIO/codegen/dist";
+import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/codegen";
 import { CheckCircle2, MinusCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -82,10 +82,9 @@ export const CreateAttendeeForm2: FC<{
                   data.completeAttendees[i].attendee.civility = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
 
-                data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value =
-                  String(
-                    (data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value)
-                  );
+                /* data.completeAttendees[i].attendeeFormFields[j].value = String(
+                  (data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value)
+                ); */
               }
             }
 
@@ -151,7 +150,7 @@ export const CreateAttendeeForm2: FC<{
               }
             }}
           >
-            Ajouter un participant
+            Ajouter un billet
           </Button>
           <Button type="submit">Valider</Button>
         </div>

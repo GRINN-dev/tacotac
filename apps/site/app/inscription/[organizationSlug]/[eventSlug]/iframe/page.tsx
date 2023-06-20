@@ -17,7 +17,7 @@ console.log(data)
       <div className="flex flex-col items-baseline max-w-3xl gap-2 mx-auto">
         <div className="flex items-center">
           <div className="text-3xl font-semibold">{eventBySlug.name}</div>
-          <img src={eventBySlug?.eventBranding?.logo} alt="logo" className="w-32 ml-4 rounded-md h-14" />
+          {/* <img src={eventBySlug?.eventBranding?.logo} alt="logo" className="w-32 ml-4 rounded-md h-14" /> */}
         </div>
         {/* {currentDate < eventBySlug.bookingStartsAt ? ( */}
         <CreateAttendeeForm2 event={eventBySlug} />

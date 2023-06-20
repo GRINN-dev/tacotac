@@ -8,7 +8,7 @@ import {
   GetEventBySlugQuery,
   RegisterAttendeesCsvInput,
   RegisterCompleteAttendeeCsvInput,
-} from "@/../../@tacotacIO/codegen/dist";
+} from "@tacotacIO/codegen";
 import { AlertTriangle } from "lucide-react";
 import Papa, { parse } from "papaparse";
 
@@ -183,17 +183,6 @@ export const ImportAttendeesForm: FC<{
           setIsForcingImport(false);
         } else {
           router.push(`/admin/${organizationSlug}/${eventSlug}`);
-          toast({
-            title: "Import terminé",
-            action: (
-              <ToastAction
-                onClick={() => router.push(pathname.substring(0, pathname.lastIndexOf("/import") + 1) + "?reload=true")}
-                altText="Retour"
-              >
-                Retour
-              </ToastAction>
-            ),
-          });
           setIsForcingImport(false);
         }
       })

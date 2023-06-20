@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { RegisterInput } from "@/../../@tacotacIO/codegen/dist";
+import { RegisterInput } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";

@@ -111,6 +111,9 @@ query GetEventBySlug(
     eventBranding {
       ...EventBrandingFragment
     }
+    organization {
+      slug
+    }
     attendees {
       totalCount
       nodes {

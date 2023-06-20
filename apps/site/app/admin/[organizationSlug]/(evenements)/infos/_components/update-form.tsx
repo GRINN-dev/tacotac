@@ -2,8 +2,8 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GetOrganizationBySlugQuery, UpdateOrganizationInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
+import { GetOrganizationBySlugQuery, UpdateOrganizationInput } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
@@ -36,12 +36,11 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push(pathname + "?reload=true");
-
       toast({
         title: "Organisations mis à jour",
         //description: "Friday, February 10, 2023 at 5:57 PM",
       });
+      router.refresh();
     });
   });
   return (
@@ -90,7 +89,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
         </button>
       </div>
       {error && (
-        <p className="line-clamp-3 mt-2 text-sm text-red-800 dark:text-red-300">
+        <p className="mt-2 line-clamp-3 text-sm text-red-800 dark:text-red-300">
           {JSON.stringify(
             error,
             (key, value) => {

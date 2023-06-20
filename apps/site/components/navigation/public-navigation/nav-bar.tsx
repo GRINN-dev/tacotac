@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GetCurrentUserQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetCurrentUserQuery } from "@tacotacIO/codegen";
 import { SidebarOpen, User } from "lucide-react";
 
 import { cn } from "@/lib/utils";

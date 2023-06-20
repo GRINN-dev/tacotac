@@ -2,8 +2,8 @@
 
 import { FC, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { AttendeeStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@/../../@tacotacIO/codegen/dist";
 import { toast } from "@/hooks/use-toast";
+import { AttendeeStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@tacotacIO/codegen";
 import { Trash } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 

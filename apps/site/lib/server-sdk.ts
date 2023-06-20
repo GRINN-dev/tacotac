@@ -1,5 +1,5 @@
 import { cookies, headers } from "next/headers";
-import { Requester, getSdk } from "@/../../@tacotacIO/codegen/dist";
+import { Requester, getSdk } from "@tacotacIO/codegen";
 
 export const fetchWrapper = (args) => {
   return (url, options: RequestInit) => {

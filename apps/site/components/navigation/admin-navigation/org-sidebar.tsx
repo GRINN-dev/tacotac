@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { GetAllOrganizationQuery } from "@/../../@tacotacIO/codegen/dist";
+import { GetAllOrganizationQuery } from "@tacotacIO/codegen";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
@@ -15,7 +15,7 @@ export const OrganizationsSidebar: FC<{
   const searchParams = useSearchParams();
   const cafe = searchParams.get("cafe") || "all";
   return (
-    <nav id="cofee-shops" className="group h-full w-max min-w-max py-12 px-2">
+    <nav id="cofee-shops" className="group h-full w-max min-w-max px-2 py-12">
       <ul className="flex flex-col gap-6">
         <li>
           <Link href={`/admin`} className="flex items-center">

@@ -1,4 +1,4 @@
-import { getSdk } from "@/../../@tacotacIO/codegen/dist";
+import { getSdk } from "@tacotacIO/codegen";
 
 export const fetchWrapper = (args) => {
   return (url, options: RequestInit) => {

@@ -1,4 +1,4 @@
-import { TicketPayloadInput } from "@/../../@tacotacIO/codegen/dist";
+import { TicketPayloadInput } from "@tacotacIO/codegen";
 
 export interface Ticket extends TicketPayloadInput {
   lastname?: string;

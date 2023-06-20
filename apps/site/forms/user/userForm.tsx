@@ -1,4 +1,4 @@
-import { GetCurrentUserQuery, UpdateUserInput } from "@/../../@tacotacIO/codegen/dist";
+import { GetCurrentUserQuery, UpdateUserInput } from "@tacotacIO/codegen";
 
 import { sdk } from "@/lib/sdk";
 import { Field, GenericFormProps } from "@/components/form/types";

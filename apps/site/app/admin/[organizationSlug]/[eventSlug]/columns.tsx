@@ -1,10 +1,10 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AttendeeStatus, GetEventBySlugQuery } from "@/../../@tacotacIO/codegen/dist";
-import { ColumnDef } from "@tanstack/react-table";
+import { AttendeeStatus, GetEventBySlugQuery } from "@tacotacIO/codegen";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown, ExternalLink, MoreHorizontal, RefreshCcw } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
@@ -38,7 +38,18 @@ export const columns: (input: {
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return (
+        <Link
+          href={`/admin/${organizationSlug}/${eventSlug}/participants/${row.original.id}`}
+          className={buttonVariants({ variant: "link" })}
+        >
+          {row.original.lastname}
+        </Link>
+      );
+    },
   },
+
   {
     accessorKey: "firstname",
     header: ({ column }) => {
@@ -51,12 +62,27 @@ export const columns: (input: {
     },
   },
   {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    // a mailto in the celle would be nice
+    cell: ({ row }) => {
+      return <a href={`mailto:${row.original.email}`}>{row.original.email}</a>;
+    },
+  },
+  {
     accessorKey: "isVip",
     header: "VIP",
   },
   {
     accessorKey: "ticketNumber",
-    header: "No. de ticket",
+    header: "No. de billet",
     cell: ({ row }) => (
       <Badge variant="outline" className="font-mono text-xs bg-muted text-muted-foreground">
         {row.original.ticketNumber}
@@ -108,10 +134,31 @@ export const columns: (input: {
     ),
   },
   {
+    accessorKey: "pdfUrl",
+    header: "Billet",
+    cell: ({ row }) => (
+      <>
+        {row.original.pdfUrl ? (
+          <Link
+            className={cn(buttonVariants({ variant: "link", size: "sm" }))}
+            href={row.original.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ExternalLink className="mr-2 h-4 w-4" /> Voir le billet
+          </Link>
+        ) : (
+          <span className="text-muted-foreground">Pas de billet</span>
+        )}
+      </>
+    ),
+  },
+  {
     id: "actions",
     header: () => {
       return <Refresher />;
     },
+
     cell: ({ row }) => {
       return (
         <DropdownMenu>
@@ -148,6 +195,7 @@ export const columns: (input: {
         </DropdownMenu>
       );
     },
+
   },
 ];
 
@@ -191,3 +239,45 @@ export const filters: Filter<GetEventBySlugQuery["eventBySlug"]["attendees"]["no
     type: "boolean",
   },
 ];
+
+const RowActions: FC<{
+  row: Row<GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"][number]>;
+  organizationSlug: string;
+  eventSlug: string;
+}> = ({ row, organizationSlug, eventSlug }) => {
+  const router = useRouter();
+  const [isTransitionning, startTransition] = useTransition();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem>
+          <Link href={`/admin/${organizationSlug}/${eventSlug}/participants/${row.original.id}`}>Voir le détail</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            window.confirm("Voulez-vous supprimer ce participant ?") &&
+              sdk()
+                .DeleteAttendee({
+                  input: {
+                    id: row.original.id,
+                  },
+                })
+                .then(() => {
+                  startTransition(() => {
+                    router.refresh();
+                  });
+                });
+          }}
+        >
+          Supprimer
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
