@@ -41,8 +41,8 @@ export const SendAllEmail = ({ eventId }) => {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline" className="border-primary border">
-            <Send className="text-primary mr-2 h-4 w-4" />
+          <Button variant="outline" className="border border-primary">
+            <Send className="w-4 h-4 mr-2 text-primary" />
             Rappel email
           </Button>
         </AlertDialogTrigger>
@@ -50,7 +50,7 @@ export const SendAllEmail = ({ eventId }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Attention</AlertDialogTitle>
             <AlertDialogDescription>
-              <p>{"Êtes-vous sur de vous ? "}</p>
+              <p>{"Êtes-vous sûr ? "}</p>
               <p>{"Vous allez envoyer un email à tous les participants de l'événement."}</p>
             </AlertDialogDescription>
           </AlertDialogHeader>
