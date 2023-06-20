@@ -21,12 +21,12 @@ const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
 
   return (
     <ScrollArea className="h-full">
-      <section className="container pb-8 pt-6 md:py-10">
+      <section className="container pt-6 pb-8 md:py-10">
         <h1 className="admin-h1">Tous les Participants</h1>
 
-        <div className="flex max-w-3xl flex-row items-center gap-2">
+        <div className="flex flex-row items-center max-w-3xl gap-2">
           <Link className={cn(buttonVariants())} href={`/admin/${organizationSlug}/${eventSlug}/participants/create`}>
-            Inviter un participant
+            Ajouter un participant
           </Link>
           <SendAllEmailConfirmDonation eventId={data?.eventBySlug?.id} />
           <SendAllEmail eventId={data?.eventBySlug?.id} />
