@@ -40,6 +40,7 @@ export const TeamSwitcherButton: FC<{
           router.push(`/admin/${organizationSlug}/infos`);
         }}
         disabled={!membership || membership.role === "HOST"}
+        size="sm"
       >
         <Cog className="h-4 w-4" />
       </Button>
@@ -47,8 +48,10 @@ export const TeamSwitcherButton: FC<{
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Cog className="h-4 w-4" />
+      <DialogTrigger asChild>
+        <Button size="sm" variant="ghost">
+          <Cog className="h-4 w-4" />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
