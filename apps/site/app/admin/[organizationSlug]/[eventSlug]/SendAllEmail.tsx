@@ -43,7 +43,7 @@ export const SendAllEmail = ({ eventId }) => {
         <AlertDialogTrigger asChild>
           <Button variant="outline" className="border border-primary">
             <Send className="w-4 h-4 mr-2 text-primary" />
-            Rappel email
+            Renvoyer les billets
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
