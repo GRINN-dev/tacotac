@@ -42,19 +42,6 @@ export const ViewSwitcher: FC<{
       >
         <Table />
       </Link>
-
-      {organizationSlug !== "all" && membership.role !== "HOST" && (
-        <Link
-          href={`/admin/${organizationSlug}/infos`}
-          className={cn(
-            buttonVariants({
-              variant: pathname === `/admin/${organizationSlug}/infos` ? "default" : "ghost",
-            })
-          )}
-        >
-          <Cog />
-        </Link>
-      )}
     </>
   );
 };
