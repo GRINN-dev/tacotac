@@ -41,8 +41,8 @@ export const SendAllEmailConfirmDonation = ({ eventId }) => {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button className="border-primary border" variant="outline">
-            <Send className="text-primary mr-2 h-4 w-4" />
+          <Button className="border border-primary" variant="outline">
+            <Send className="w-4 h-4 mr-2 text-primary" />
             Rappel don
           </Button>
         </AlertDialogTrigger>
@@ -50,10 +50,10 @@ export const SendAllEmailConfirmDonation = ({ eventId }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Attention</AlertDialogTitle>
             <AlertDialogDescription>
-              <p>{"Êtes-vous sur de vous ? "}</p>
+              <p>{"Êtes-vous sûr ? "}</p>
               <p>
                 {
-                  "Vous allez envoyer un email pour confirmer leur don à tous les participants de l'événement qui été présents."
+                  "Vous allez envoyer un email à tous les participants de l'événement pour leur confirmer leurs dons."
                 }
               </p>
             </AlertDialogDescription>
