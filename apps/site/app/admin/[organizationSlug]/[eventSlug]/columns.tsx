@@ -34,7 +34,7 @@ export const columns: (input: {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Nom
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
@@ -45,7 +45,7 @@ export const columns: (input: {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Prénom
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
@@ -58,7 +58,7 @@ export const columns: (input: {
     accessorKey: "ticketNumber",
     header: "No. de ticket",
     cell: ({ row }) => (
-      <Badge variant="outline" className="bg-muted text-muted-foreground font-mono text-xs">
+      <Badge variant="outline" className="font-mono text-xs bg-muted text-muted-foreground">
         {row.original.ticketNumber}
       </Badge>
     ),
@@ -99,7 +99,7 @@ export const columns: (input: {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <ExternalLink className="mr-2 h-4 w-4" /> Voir le billet
+            <ExternalLink className="w-4 h-4 mr-2" /> Voir le QR Code
           </Link>
         ) : (
           <span className="text-muted-foreground">Pas de billet</span>
@@ -116,9 +116,9 @@ export const columns: (input: {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="w-8 h-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -159,10 +159,10 @@ const Refresher: FC = () => {
         router.refresh();
       }}
       variant="ghost"
-      className="h-8 w-8 p-0"
+      className="w-8 h-8 p-0"
     >
       <span className="sr-only">Refresh</span>
-      <RefreshCcw className="h-4 w-4" />
+      <RefreshCcw className="w-4 h-4" />
     </Button>
   );
 };
