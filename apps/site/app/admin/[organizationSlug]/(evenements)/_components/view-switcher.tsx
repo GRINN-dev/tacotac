@@ -3,13 +3,22 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { GetCurrentUserQuery } from "@tacotacIO/codegen";
 import { Calendar, Cog, Table } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-export const ViewSwitcher: FC<{ organizationSlug: string }> = ({ organizationSlug }) => {
+export const ViewSwitcher: FC<{
+  organizationSlug: string;
+  currentUser: GetCurrentUserQuery["currentUser"];
+}> = ({ organizationSlug, currentUser }) => {
   const pathname = usePathname();
+
+  const membership = currentUser.organizations?.nodes?.find(
+    ({ organization }) => organization.slug === organizationSlug
+  );
+
   return (
     <>
       <Link
@@ -34,7 +43,7 @@ export const ViewSwitcher: FC<{ organizationSlug: string }> = ({ organizationSlu
         <Table />
       </Link>
 
-      {organizationSlug !== "all" && (
+      {organizationSlug !== "all" && membership.role !== "HOST" && (
         <Link
           href={`/admin/${organizationSlug}/infos`}
           className={cn(

@@ -20,6 +20,11 @@ export default async function Layout({
         slug: organizationSlug,
       })
     : { organizationBySlug: { name: "Kaypi" } };
+
+  const { currentUser } = await serverSdk({
+    cache: "no-store",
+  }).GetCurrentUser();
+
   return (
     <>
       <ScrollArea className="container h-full space-y-6">
@@ -35,7 +40,7 @@ export default async function Layout({
             <Link href={`/admin/${organizationSlug}/create`} className={buttonVariants({ variant: "outline" })}>
               <PlusSquare className="mr-2 h-4 w-4" /> Créer un évènement
             </Link>
-            <ViewSwitcher organizationSlug={organizationSlug} />
+            <ViewSwitcher currentUser={currentUser} organizationSlug={organizationSlug} />
           </div>
         </div>
         <Separator className="my-6" />

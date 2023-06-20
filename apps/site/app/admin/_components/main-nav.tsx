@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { GetCurrentUserQuery } from "@tacotacIO/codegen";
 import { Calendar, Cog } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 interface NavProps extends React.HTMLAttributes<HTMLElement> {
   organizationSlug?: string;
+  currentUser?: GetCurrentUserQuery["currentUser"];
 }
 export function MainNav({ className, organizationSlug = "all", ...props }: NavProps) {
   const pathname = usePathname();
