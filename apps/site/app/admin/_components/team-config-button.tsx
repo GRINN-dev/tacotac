@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const TeamSwitcherButton: FC<{
   organizationSlug: string;
@@ -40,15 +41,14 @@ export const TeamSwitcherButton: FC<{
         }}
         disabled={!membership || membership.role === "HOST"}
       >
-        <Cog />
+        <Cog className="h-4 w-4" />
       </Button>
     );
 
   return (
     <Dialog>
       <DialogTrigger>
-        {" "}
-        <Cog />
+        <Cog className="h-4 w-4" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -57,36 +57,38 @@ export const TeamSwitcherButton: FC<{
             Accédez à une équipe pour inviter de nouveaux membres, gérer les paramètres de l&apos;équipe, etc.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          {currentUser?.organizations?.nodes
-            ?.filter((organization) => organization.role !== "HOST")
-            ?.map((organization) => (
-              <Link key={organization.organization.id} href={`/admin/${organization.organization.slug}/infos`}>
-                <Card className="flex items-center  px-6 py-2">
-                  <Avatar className="mr-2 h-5 w-5">
-                    <AvatarImage
-                      src={
-                        organization.organization.logoUrl ||
-                        `https://avatar.vercel.sh/${organization.organization.slug}.png`
-                      }
-                      alt={organization.organization.name}
-                    />
-                    <AvatarFallback>
-                      {organization.organization.name
-                        .split(" ")
-                        .filter((word) => word.length > 1)
-                        .slice(0, 2)
-                        .map((word) => word[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <h2 className="text-lg font-bold">{organization.organization.name}</h2>
-                  </div>
-                </Card>
-              </Link>
-            ))}
-        </DialogFooter>
+        <ScrollArea className=" max-h-80">
+          <div className=" flex flex-col gap-2">
+            {currentUser?.organizations?.nodes
+              ?.filter((organization) => organization.role !== "HOST")
+              ?.map((organization) => (
+                <Link key={organization.organization.id} href={`/admin/${organization.organization.slug}/infos`}>
+                  <Card className="flex items-center  px-6 py-2">
+                    <Avatar className="mr-2 h-5 w-5">
+                      <AvatarImage
+                        src={
+                          organization.organization.logoUrl ||
+                          `https://avatar.vercel.sh/${organization.organization.slug}.png`
+                        }
+                        alt={organization.organization.name}
+                      />
+                      <AvatarFallback>
+                        {organization.organization.name
+                          .split(" ")
+                          .filter((word) => word.length > 1)
+                          .slice(0, 2)
+                          .map((word) => word[0])
+                          .join("")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <h2 className="text-lg font-bold">{organization.organization.name}</h2>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
