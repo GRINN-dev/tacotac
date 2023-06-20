@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { MainNav } from "../_components/main-nav";
+import { TeamSwitcherButton } from "../_components/team-config-button";
 import { TeamSwitcher } from "../_components/team-switcher";
 import { UserNav } from "../_components/user-nav";
 
@@ -52,35 +53,7 @@ export default async function AdminLayout({
             }))}
           />
 
-          {currentUser?.organizations?.nodes
-            ?.filter((organization) => organization.role !== "HOST")
-            ?.map((organization) => (
-              <Link key={organization.organization.id} href={`/admin/${organization.organization.slug}/infos`}>
-                <Card className="flex items-center  px-6 py-2">
-                  <Avatar className="mr-2 h-5 w-5">
-                    <AvatarImage
-                      src={
-                        organization.organization.logoUrl ||
-                        `https://avatar.vercel.sh/${organization.organization.slug}.png`
-                      }
-                      alt={organization.organization.name}
-                    />
-                    <AvatarFallback>
-                      {organization.organization.name
-                        .split(" ")
-                        .filter((word) => word.length > 1)
-                        .slice(0, 2)
-                        .map((word) => word[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <h2 className="text-lg font-bold">{organization.organization.name}</h2>
-                  </div>
-                </Card>
-              </Link>
-            ))}
-
+          <TeamSwitcherButton organizationSlug={organizationSlug} currentUser={currentUser} />
           {/* <MainNav className="mx-6 hidden sm:flex" organizationSlug={organizationSlug} /> */}
           <div className="ml-auto flex items-center space-x-4">
             <ThemeToggle />
