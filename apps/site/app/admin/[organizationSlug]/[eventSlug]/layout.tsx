@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { serverSdk } from "@/lib/server-sdk";
@@ -20,6 +21,23 @@ export default async function Layout({
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
+
+  const { currentUser } = await serverSdk({
+    cache: "no-store",
+  }).GetCurrentUser();
+
+  if (!currentUser) redirect("/login");
+
+  // si le current user a un role HOST, on le redirige vers le scanning de cet event
+  const membership = currentUser.organizations?.nodes?.find(
+    ({ organization }) => organization.slug === organizationSlug
+  );
+
+  if (!membership) redirect("/admin");
+
+  if (membership?.role === "HOST") {
+    redirect(`/scanner/event/${data.eventBySlug.id}/scan`);
+  }
 
   const sidebarNavItems = [
     {

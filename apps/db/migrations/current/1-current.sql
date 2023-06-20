@@ -11,3 +11,10 @@ drop trigger if exists _700_generate_slug_trigger on publ.events;
     before insert on publ.events
     for each row
     execute procedure publ.generate_slug();
+
+
+drop function if exists publ.users_events cascade;
+create function publ.users_events(any_user publ.users) returns setof publ.events as $$
+  select * from publ.events where organization_id in (select organization_id from publ.organization_memberships where user_id = any_user.id);
+$$ language sql stable security definer;
+grant execute on function publ.users_events to :DATABASE_VISITOR;

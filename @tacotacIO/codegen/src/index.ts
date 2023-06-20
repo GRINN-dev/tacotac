@@ -6781,7 +6781,7 @@ export const GetCurrentUserDocument = `
         }
       }
     }
-    organizations(filter: {role: {in: ["ADMIN", "OWNER"]}}) {
+    organizations {
       nodes {
         role
         organization {
