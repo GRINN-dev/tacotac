@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Table } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
@@ -9,7 +10,9 @@ interface DataTablePaginationProps<TData> {
 }
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
-  table.setPageSize(100);
+  useEffect(() => {
+    table.setPageSize(100);
+  }, [table]);
   return (
     <div className="flex items-center justify-between px-2">
       <div className="text-muted-foreground flex-1 text-sm">

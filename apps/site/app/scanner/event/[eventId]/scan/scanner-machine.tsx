@@ -264,7 +264,7 @@ export const scannerMachine = createMachine(
       }),
     },
     services: {
-      fetchAttendee: (context: { ticket: { number: string } }) => {
+      fetchAttendee: (context) => {
         return sdk().GetAttendeeByTicketNumber({
           ticketNumber: context.ticket.number,
         });
