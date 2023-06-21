@@ -33,7 +33,9 @@ export const columns: ColumnDef<GetOrganizationBySlugQuery["organizationBySlug"]
     cell: ({ row }) => {
       return (
         <Link href={`/admin/${row.original.organization.slug}/${row.original.slug}`}>
-          <div className="text-accent text-3xl">{row.original.attendees.totalCount}</div>
+          <div className="text-accent text-3xl">
+            {row.original.attendees.totalCount} <span className="text-base">/ {row.original?.capacity || "∞"}</span>
+          </div>
           <div className="text-accent">participants</div>
         </Link>
       );

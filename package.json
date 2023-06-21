@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=3"
+  },
   "scripts": {
     "dev": "./scripts/with-env.sh turbo dev",
     "init:db": "./scripts/with-env.sh node ./scripts/init-db.js",

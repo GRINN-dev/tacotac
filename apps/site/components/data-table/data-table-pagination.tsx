@@ -9,6 +9,7 @@ interface DataTablePaginationProps<TData> {
 }
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
+  table.setPageSize(100);
   return (
     <div className="flex items-center justify-between px-2">
       <div className="text-muted-foreground flex-1 text-sm">
@@ -28,7 +29,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
+              {[10, 25, 50, 100].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>

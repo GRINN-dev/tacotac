@@ -290,7 +290,7 @@ importers:
         specifier: 0.216.0
         version: 0.216.0(react@18.2.0)
       next:
-        specifier: ^13.4.6
+        specifier: latest
         version: 13.4.6(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: npm:@wits/next-themes@^0.2.16
@@ -334,6 +334,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.5
         version: 1.0.5(tailwindcss@3.3.2)
+      turbopack:
+        specifier: ^0.0.1
+        version: 0.0.1
       xstate:
         specifier: ^4.37.2
         version: 4.37.2
@@ -11294,6 +11297,10 @@ packages:
       turbo-linux-arm64: 1.10.3
       turbo-windows-64: 1.10.3
       turbo-windows-arm64: 1.10.3
+    dev: false
+
+  /turbopack@0.0.1:
+    resolution: {integrity: sha512-urgN2cl9AY9JnNi2bNJREMFkdnjyTo2bQlFnegAMEHBozMhB1fuCrQdsag1mHQwY83odPxNtip4BsxBrL7KbRQ==}
     dev: false
 
   /type-check@0.4.0:
