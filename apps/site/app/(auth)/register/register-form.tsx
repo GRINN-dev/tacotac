@@ -1,18 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { RegisterInput } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { GenericForm } from "@/components/form/generic-form";
 import { GoogleAuth } from "@/components/google-auth";
 import { Button, Input, Label } from "@/components/ui";
 import { Separator } from "@/components/ui/separator";
 
-export const RegisterForm = () => {
+export const RegisterForm: FC<{ redirect?: string }> = ({ redirect }) => {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
   const {
@@ -22,11 +21,15 @@ export const RegisterForm = () => {
   } = useForm<RegisterInput>();
   const onSubmit = async (data: RegisterInput) => {
     setLoading(true);
-    await sdk().RegisterUser({
-      input: {
-        ...data,
-      },
-    });
+    await sdk()
+      .RegisterUser({
+        input: {
+          ...data,
+        },
+      })
+      .then(({ register }) => {
+        register?.user?.id && window.location.replace(redirect || "/admin");
+      });
     setLoading(false);
   };
   return (
@@ -98,7 +101,7 @@ export const RegisterForm = () => {
               }
             ).then((res) => res.json());
             setLoading(false);
-            res?.ok && router.push("/");
+            res?.ok && window.location.replace(redirect || "/admin");
           }}
         />
       </div>

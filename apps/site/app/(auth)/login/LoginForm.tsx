@@ -1,18 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { LoginInput } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { GoogleAuth } from "@/components/google-auth";
-import { Button, Input, Label, buttonVariants } from "@/components/ui";
+import { Button, buttonVariants, Input, Label } from "@/components/ui";
 import { Separator } from "@/components/ui/separator";
 
-export const LoginForm = () => {
+export const LoginForm: FC<{
+  redirect?: string;
+}> = ({ redirect }) => {
   const router = useRouter();
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ export const LoginForm = () => {
       })
       .catch((e) => setError(e));
     setLoading(false);
-    window.location.replace("/admin");
+    window.location.replace(redirect || "/admin");
   };
   return (
     <div
@@ -83,7 +85,7 @@ export const LoginForm = () => {
               }
             ).then((res) => res.json());
             setLoading(false);
-            res?.ok && window.location.replace("/admin");
+            res?.ok && window.location.replace(redirect || "/admin");
           }}
         />
       </div>

@@ -16,7 +16,10 @@ export default async function Page({ searchParams: { code, id } }) {
       {currentUser ? (
         <AcceptInvitation code={code} id={id} slug={organizationForInvitation?.slug} />
       ) : (
-        <Link href="/login" className={cn(buttonVariants())}>
+        <Link
+          href={`/login?redirect=${encodeURIComponent(`/invitation?id=${id}&code=${code}`)}`}
+          className={cn(buttonVariants())}
+        >
           Se connecter
         </Link>
       )}

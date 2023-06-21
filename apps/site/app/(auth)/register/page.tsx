@@ -5,7 +5,13 @@ import { buttonVariants } from "@/components/ui";
 import { Separator } from "@/components/ui/separator";
 import { RegisterForm } from "./register-form";
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams: { redirect },
+}: {
+  searchParams: {
+    redirect?: string;
+  };
+}) {
   return (
     <div className="my-12 px-12">
       <div>
@@ -13,11 +19,14 @@ export default async function LoginPage() {
       </div>
       <div className="h-8" />
 
-      <RegisterForm />
+      <RegisterForm redirect={redirect} />
       <Separator className="mt-4" />
       <div className="flex flex-col items-center">
         <p className="mt-4 text-center">Déjà un compte ?</p>
-        <Link href="/login" className={cn(buttonVariants({ variant: "outline" }), "mt-4")}>
+        <Link
+          href={`/login${redirect ? `?redirect=${encodeURIComponent(redirect)}` : ""}`}
+          className={cn(buttonVariants({ variant: "outline" }), "mt-4")}
+        >
           Connectez-vous
         </Link>
       </div>
