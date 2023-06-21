@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { FC, useCallback, useState } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { FC, useCallback, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { Label, Switch } from "../ui"
-import { AgendaView } from "./agenda-view"
-import { CalendarElementProps } from "./calendar-element"
-import { CalendarView } from "./calendar-view"
+import { Label, Switch } from "../ui";
+import { AgendaView } from "./agenda-view";
+import { CalendarElementProps } from "./calendar-element";
+import { CalendarView } from "./calendar-view";
 
 interface GenericCalendarProps {
-  onDateSelected?: (date: Date) => void
-  elementsToDisplay?: CalendarElementProps[]
-  defaultView: "calendar" | "agenda"
+  onDateSelected?: (date: Date) => void;
+  elementsToDisplay?: CalendarElementProps[];
+  defaultView: "calendar" | "agenda";
 }
 
 export const GenericCalendar: FC<GenericCalendarProps> = ({
@@ -19,24 +19,24 @@ export const GenericCalendar: FC<GenericCalendarProps> = ({
   onDateSelected,
   defaultView = "calendar",
 }) => {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams)
-      params.set(name, value)
+      const params = new URLSearchParams(searchParams as any);
+      params.set(name, value);
 
-      return params.toString()
+      return params.toString();
     },
     [searchParams]
-  )
-  const router = useRouter()
-  const pathname = usePathname()
+  );
+  const router = useRouter();
+  const pathname = usePathname();
   const viewType =
     searchParams.get("view") === "agenda"
       ? "agenda"
       : searchParams.get("view") === "calendar"
       ? "calendar"
-      : defaultView
+      : defaultView;
   return (
     <>
       <div className="flex items-center space-x-2   px-4 md:px-12 lg:px-24">
@@ -44,24 +44,16 @@ export const GenericCalendar: FC<GenericCalendarProps> = ({
           id="switch-view"
           checked={viewType === "agenda"}
           onCheckedChange={(checked) => {
-            router.replace(
-              `${pathname}?${createQueryString(
-                "view",
-                checked ? "agenda" : "calendar"
-              )}`
-            )
+            router.replace(`${pathname}?${createQueryString("view", checked ? "agenda" : "calendar")}`);
           }}
         />
         <Label htmlFor="switch-view">Vue agenda</Label>
       </div>
       {viewType === "calendar" ? (
-        <CalendarView
-          elementsToDisplay={elementsToDisplay}
-          onDateSelected={onDateSelected}
-        />
+        <CalendarView elementsToDisplay={elementsToDisplay} onDateSelected={onDateSelected} />
       ) : (
         <AgendaView elementsToDisplay={elementsToDisplay} />
       )}
     </>
-  )
-}
+  );
+};

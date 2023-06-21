@@ -1,34 +1,27 @@
-"use client"
+"use client";
 
-import { FC } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { FC } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui"
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui";
 
 export const Pagination: FC<{ totalCount: number }> = ({ totalCount }) => {
-  const searchParams = useSearchParams()
-  const newSearchParams = new URLSearchParams(searchParams)
-  const page = parseInt(searchParams.get("page") || "1")
-  const itemsPerPage = parseInt(searchParams.get("itemsPerPage") || "4")
-  const totalPages = Math.ceil(totalCount / itemsPerPage)
-  const router = useRouter()
-  const pathname = usePathname()
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams as any);
+  const page = parseInt(searchParams.get("page") || "1");
+  const itemsPerPage = parseInt(searchParams.get("itemsPerPage") || "4");
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <div className="inline-flex items-center justify-center gap-8 text-xs sm:text-sm md:text-base">
       <div className="flex items-center gap-2">
         <Button
           disabled={page === 1}
           onClick={() => {
-            newSearchParams.set("page", (page - 1).toString())
-            router.push(`${pathname}?${newSearchParams.toString()}`)
+            newSearchParams.set("page", (page - 1).toString());
+            router.push(`${pathname}?${newSearchParams.toString()}`);
           }}
         >
           <ChevronLeft size={8} className=" h-4 w-4 " />
@@ -36,8 +29,8 @@ export const Pagination: FC<{ totalCount: number }> = ({ totalCount }) => {
         <div className="flex items-center justify-center gap-2">
           <Select
             onValueChange={(value) => {
-              newSearchParams.set("page", value)
-              router.push(`${pathname}?${newSearchParams.toString()}`)
+              newSearchParams.set("page", value);
+              router.push(`${pathname}?${newSearchParams.toString()}`);
             }}
           >
             <SelectTrigger className="min-w-max">
@@ -57,8 +50,8 @@ export const Pagination: FC<{ totalCount: number }> = ({ totalCount }) => {
         <Button
           disabled={page === totalPages}
           onClick={() => {
-            newSearchParams.set("page", (page + 1).toString())
-            router.push(`${pathname}?${newSearchParams.toString()}`)
+            newSearchParams.set("page", (page + 1).toString());
+            router.push(`${pathname}?${newSearchParams.toString()}`);
           }}
         >
           <ChevronRight size={8} className=" h-4 w-4 " />
@@ -66,8 +59,8 @@ export const Pagination: FC<{ totalCount: number }> = ({ totalCount }) => {
       </div>
       <Select
         onValueChange={(value) => {
-          newSearchParams.set("itemsPerPage", value)
-          router.push(`${pathname}?${newSearchParams.toString()}`)
+          newSearchParams.set("itemsPerPage", value);
+          router.push(`${pathname}?${newSearchParams.toString()}`);
         }}
       >
         <SelectTrigger>
@@ -80,5 +73,5 @@ export const Pagination: FC<{ totalCount: number }> = ({ totalCount }) => {
         </SelectContent>
       </Select>
     </div>
-  )
-}
+  );
+};

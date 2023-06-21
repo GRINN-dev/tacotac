@@ -1,38 +1,33 @@
-"use client"
+"use client";
 
-import { FC, ReactNode } from "react"
-import Link from "next/link"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { format } from "date-fns"
-import {
-  Calendar as CalendarIcon,
-  ChevronDownSquare,
-  ChevronUpSquare,
-  Filter,
-} from "lucide-react"
+import { FC, ReactNode } from "react";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon, ChevronDownSquare, ChevronUpSquare, Filter } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button, Input, Label, RadioGroup, RadioGroupItem } from "../ui"
-import { Calendar } from "../ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import { cn } from "@/lib/utils";
+import { Button, Input, Label, RadioGroup, RadioGroupItem } from "../ui";
+import { Calendar } from "../ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 export const CollectionTable: FC<{
-  collectionName: string
+  collectionName: string;
   data: {
-    displayName: string
-    name: string
-    values: (number | string | boolean | ReactNode)[]
-    orderBy?: { asc: string; desc: string }
-    filterType?: "boolean" | "string" | "date" | "id" | "number" | "enum"
-    enumValues?: { value: string; label: string }[]
-  }[]
+    displayName: string;
+    name: string;
+    values: (number | string | boolean | ReactNode)[];
+    orderBy?: { asc: string; desc: string };
+    filterType?: "boolean" | "string" | "date" | "id" | "number" | "enum";
+    enumValues?: { value: string; label: string }[];
+  }[];
 }> = ({ data, collectionName }) => {
-  const searchParams = useSearchParams()
-  const newSearchParams = new URLSearchParams(searchParams)
-  const orderBy = JSON.parse(searchParams.get("orderBy")) || []
-  const router = useRouter()
-  const pathname = usePathname()
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams as any);
+  const orderBy = JSON.parse(searchParams.get("orderBy")) || [];
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <ScrollArea draggable className="w-full">
       <div className="sm:test-sm mx-4 text-xs md:mx-12 md:text-base">
@@ -44,31 +39,20 @@ export const CollectionTable: FC<{
                   <div className="flex items-center gap-1">
                     {item.displayName}
                     {item.orderBy && (
-                      <div
-                        className="flex flex-col gap-px"
-                        id={`filter-${item.displayName}`}
-                      >
+                      <div className="flex flex-col gap-px" id={`filter-${item.displayName}`}>
                         <button
                           className={cn(
                             "flex items-center justify-center ",
-                            orderBy.includes(item.orderBy.asc)
-                              ? "bg-black text-white"
-                              : "text-primary bg-white"
+                            orderBy.includes(item.orderBy.asc) ? "bg-black text-white" : "text-primary bg-white"
                           )}
                           onClick={() => {
-                            orderBy.includes(item.orderBy.asc) ||
-                            orderBy.includes(item.orderBy.desc)
+                            orderBy.includes(item.orderBy.asc) || orderBy.includes(item.orderBy.desc)
                               ? newSearchParams.delete("orderBy")
                               : newSearchParams.set(
                                   "orderBy",
-                                  JSON.stringify([
-                                    ...orderBy,
-                                    item.orderBy.asc,
-                                  ]).replace(" ", "")
-                                )
-                            router.push(
-                              `${pathname}?${newSearchParams.toString()}`
-                            )
+                                  JSON.stringify([...orderBy, item.orderBy.asc]).replace(" ", "")
+                                );
+                            router.push(`${pathname}?${newSearchParams.toString()}`);
                           }}
                         >
                           <ChevronUpSquare size={8} />
@@ -76,24 +60,16 @@ export const CollectionTable: FC<{
                         <button
                           className={cn(
                             "flex items-center justify-center ",
-                            orderBy.includes(item.orderBy.desc)
-                              ? "bg-black text-white"
-                              : "text-primary bg-white"
+                            orderBy.includes(item.orderBy.desc) ? "bg-black text-white" : "text-primary bg-white"
                           )}
                           onClick={() => {
-                            orderBy.includes(item.orderBy.asc) ||
-                            orderBy.includes(item.orderBy.desc)
+                            orderBy.includes(item.orderBy.asc) || orderBy.includes(item.orderBy.desc)
                               ? newSearchParams.delete("orderBy")
                               : newSearchParams.set(
                                   "orderBy",
-                                  JSON.stringify([
-                                    ...orderBy,
-                                    item.orderBy.desc,
-                                  ]).replace(" ", "")
-                                )
-                            router.push(
-                              `${pathname}?${newSearchParams.toString()}`
-                            )
+                                  JSON.stringify([...orderBy, item.orderBy.desc]).replace(" ", "")
+                                );
+                            router.push(`${pathname}?${newSearchParams.toString()}`);
                           }}
                         >
                           <ChevronDownSquare size={8} />
@@ -142,11 +118,7 @@ export const CollectionTable: FC<{
                                     )}
                                   >
                                     <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {false ? (
-                                      format(new Date(), "PPP")
-                                    ) : (
-                                      <span>Pick a date</span>
-                                    )}
+                                    {false ? format(new Date(), "PPP") : <span>Pick a date</span>}
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0">
@@ -170,10 +142,7 @@ export const CollectionTable: FC<{
                               </div>
                               {item.enumValues.map((x) => (
                                 <div className="flex items-center space-x-2">
-                                  <RadioGroupItem
-                                    value={x.value}
-                                    id={x.value}
-                                  />
+                                  <RadioGroupItem value={x.value} id={x.value} />
                                   <Label htmlFor={x.value}>{x.label}</Label>
                                 </div>
                               ))}
@@ -193,10 +162,7 @@ export const CollectionTable: FC<{
           </thead>
           <tbody>
             {data[0].values.map((_, i) => (
-              <tr
-                className="even:bg-muted m-0 border-t p-0"
-                key={`${collectionName}-row-${i}`}
-              >
+              <tr className="even:bg-muted m-0 border-t p-0" key={`${collectionName}-row-${i}`}>
                 {data.map((item, j) => (
                   <td
                     key={`${collectionName}-row-${i}-col-${j}`}
@@ -212,5 +178,5 @@ export const CollectionTable: FC<{
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
-  )
-}
+  );
+};
