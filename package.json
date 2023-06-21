@@ -25,8 +25,8 @@
   "homepage": "https://github.com/tacotacIO/tacotacIO#readme",
   "dependencies": {
     "chalk": "^4.1.2",
-    "pg": "^8.8.0",
+    "pg": "^8.11.0",
     "ts-node": "^10.9.1",
-    "turbo": "^1.9.4"
+    "turbo": "^1.10.3"
   }
 }

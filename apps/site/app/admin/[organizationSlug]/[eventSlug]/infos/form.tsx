@@ -10,6 +10,7 @@ import * as z from "zod";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
+import { Loader } from "@/components/loader";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   CalendarAndTimeFormField,
+  CheckboxFormField,
   InputFormField,
   NumberFormField,
   TextAreaFormField,
@@ -36,18 +38,24 @@ import { toast } from "@/components/ui/use-toast";
 const formSchema = z
   .object({
     name: z.string().nonempty({ message: "Le nom de l'événement est obligatoire" }),
-    description: z.string().optional(),
-    capacity: z.coerce.number().positive({ message: "La capacité doit être un nombre positif" }).optional(),
-    bookingStartDate: z.date().optional(),
-    bookingEndDate: z.date().optional(),
+    description: z.string().optional().nullable(),
+    hasLimitedCapacity: z.boolean().optional().nullable(),
+    capacity: z.coerce
+      .number()
+      .positive({ message: "La capacité doit être un nombre positif" })
+      .transform((value) => (!value ? undefined : value))
+      .optional()
+      .nullable(),
+    bookingStartDate: z.date().optional().nullable(),
+    bookingEndDate: z.date().optional().nullable(),
     startDate: z.date(),
-    endDate: z.date().optional(),
+    endDate: z.date().optional().nullable(),
     placeName: z.string().nonempty({ message: "Le nom du lieu est obligatoire" }),
     placeAddress: z.string().nonempty({ message: "L'adresse du lieu est obligatoire" }),
-    placeAddressComplement: z.string().optional(),
+    placeAddressComplement: z.string().optional().nullable(),
     placeZipCode: z.string().nonempty({ message: "Le code postal du lieu est obligatoire" }),
     placeCity: z.string().nonempty({ message: "La ville du lieu est obligatoire" }),
-    placeCountry: z.string().optional(),
+    placeCountry: z.string().optional().nullable(),
     webhooks: z
       .array(
         z.object({
@@ -80,20 +88,21 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: event.name,
-      description: event.description,
-      capacity: event.capacity,
-      bookingStartDate: event.bookingStartsAt && new Date(event.bookingStartsAt),
-      bookingEndDate: event.bookingEndsAt && new Date(event.bookingEndsAt),
-      startDate: event.startsAt && new Date(event.startsAt),
-      endDate: event.endsAt && new Date(event.endsAt),
-      placeName: event.placeName,
-      placeAddress: event.addressLine1,
-      placeAddressComplement: event.addressLine2,
-      placeZipCode: event.zipCode,
-      placeCity: event.city,
-      placeCountry: event.country,
-      webhooks: event.webhooks.map((webhook) => ({ value: webhook })),
+      name: event.name || undefined,
+      description: event.description || undefined,
+      hasLimitedCapacity: event.capacity !== null && event.capacity !== undefined,
+      capacity: event.capacity || undefined,
+      bookingStartDate: (event.bookingStartsAt && new Date(event.bookingStartsAt)) || undefined,
+      bookingEndDate: (event.bookingEndsAt && new Date(event.bookingEndsAt)) || undefined,
+      startDate: (event.startsAt && new Date(event.startsAt)) || undefined,
+      endDate: (event.endsAt && new Date(event.endsAt)) || undefined,
+      placeName: event.placeName || undefined,
+      placeAddress: event.addressLine1 || undefined,
+      placeAddressComplement: event.addressLine2 || undefined,
+      placeZipCode: event.zipCode || undefined,
+      placeCity: event.city || undefined,
+      placeCountry: event.country || undefined,
+      webhooks: event.webhooks?.map((webhook: string) => ({ value: webhook })),
     },
   });
 
@@ -111,7 +120,7 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
           patch: {
             name: values.name,
             description: values.description,
-            capacity: values.capacity,
+            capacity: values.hasLimitedCapacity ? values.capacity : null,
             bookingStartsAt: values.bookingStartDate,
             bookingEndsAt: values.bookingEndDate,
             startsAt: values.startDate,
@@ -122,7 +131,7 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
             zipCode: values.placeZipCode,
             city: values.placeCity,
             country: values.placeCountry,
-            webhooks: values.webhooks.map((webhook) => webhook.value),
+            webhooks: values.webhooks?.map((webhook) => webhook.value),
           },
         },
       })
@@ -138,6 +147,7 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
 
   return (
     <>
+      <Loader loading={isSubmitting} />
       <div className="flex w-full justify-between">
         <h1 className="admin-h1">Modifier les informations</h1>
         <div className="flex gap-2">
@@ -247,13 +257,22 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
             descrition="Choisissez un nom pour votre événement"
             placeholder="Nom de l'événement"
           />
-          <NumberFormField
+          <CheckboxFormField
             control={form.control}
-            name="capacity"
-            label="Capacité"
-            descrition="Si vous n'indiquez pas de capacité, il n'y aura pas de limite"
-            placeholder="2000"
+            name="hasLimitedCapacity"
+            label="L'événement a une capacité limitée"
+            descrition={""}
+            id="hasLimitedCapacity"
           />
+          {form.watch("hasLimitedCapacity") && (
+            <NumberFormField
+              control={form.control}
+              name="capacity"
+              label="Capacité"
+              descrition="Si vous n'indiquez pas de capacité, il n'y aura pas de limite"
+              placeholder="2000"
+            />
+          )}
           <TextAreaFormField
             control={form.control}
             name="description"

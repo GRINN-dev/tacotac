@@ -9,10 +9,12 @@ import * as z from "zod";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
+import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   CalendarAndTimeFormField,
+  CheckboxFormField,
   InputFormField,
   NumberFormField,
   TextAreaFormField,
@@ -24,11 +26,13 @@ const formSchema = z
   .object({
     name: z.string().nonempty({ message: "Le nom de l'événement est obligatoire" }),
     description: z.string().optional(),
+    hasLimitedCapacity: z.boolean().optional().nullable(),
     capacity: z.coerce
       .number()
       .positive({ message: "La capacité doit être un nombre positif" })
-      .transform((val) => (!val ? undefined : val))
-      .optional(),
+      .transform((value) => (!value ? undefined : value))
+      .optional()
+      .nullable(),
     bookingStartDate: z.date().optional(),
     bookingEndDate: z.date().optional(),
     startDate: z.date(),
@@ -86,7 +90,7 @@ export const CreateForm: FC<{ organizationId: string }> = ({ organizationId }) =
             organizationId,
             name: values.name,
             description: values.description,
-            capacity: values.capacity,
+            capacity: values.hasLimitedCapacity ? values.capacity : null,
             bookingStartsAt: values.bookingStartDate,
             bookingEndsAt: values.bookingEndDate,
             startsAt: values.startDate,
@@ -137,13 +141,22 @@ export const CreateForm: FC<{ organizationId: string }> = ({ organizationId }) =
             descrition="Choisissez un nom pour votre événement"
             placeholder="Nom de l'événement"
           />
-          <NumberFormField
+          <CheckboxFormField
             control={form.control}
-            name="capacity"
-            label="Capacité"
-            descrition="Si vous n'indiquez pas de capacité, il n'y aura pas de limite"
-            placeholder="2000"
+            name="hasLimitedCapacity"
+            label="L'événement a une capacité limitée"
+            descrition={""}
+            id="hasLimitedCapacity"
           />
+          {form.watch("hasLimitedCapacity") && (
+            <NumberFormField
+              control={form.control}
+              name="capacity"
+              label="Capacité"
+              descrition="Si vous n'indiquez pas de capacité, il n'y aura pas de limite"
+              placeholder="2000"
+            />
+          )}
           <TextAreaFormField
             control={form.control}
             name="description"

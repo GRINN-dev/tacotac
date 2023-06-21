@@ -405,6 +405,69 @@ input AttendeePatch {
   updatedAt: Datetime
 }
 
+"""A connection to a list of `Attendee` values."""
+type AttendeesConnection {
+  """
+  A list of edges which contains the `Attendee` and cursor to aid in pagination.
+  """
+  edges: [AttendeesEdge!]!
+
+  """A list of `Attendee` objects."""
+  nodes: [Attendee!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Attendee` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Attendee` edge in the connection."""
+type AttendeesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Attendee` at the end of the edge."""
+  node: Attendee!
+}
+
+"""Methods to use when ordering `Attendee`."""
+enum AttendeesOrderBy {
+  CIVILITY_ASC
+  CIVILITY_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  FIRSTNAME_ASC
+  FIRSTNAME_DESC
+  ID_ASC
+  ID_DESC
+  IS_INSCRIPTOR_ASC
+  IS_INSCRIPTOR_DESC
+  IS_NEWS_EVENT_EMAIL_ASC
+  IS_NEWS_EVENT_EMAIL_DESC
+  IS_NEWS_FONDATION_EMAIL_ASC
+  IS_NEWS_FONDATION_EMAIL_DESC
+  IS_VIP_ASC
+  IS_VIP_DESC
+  LASTNAME_ASC
+  LASTNAME_DESC
+  NATURAL
+  PANEL_NUMBER_ASC
+  PANEL_NUMBER_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  REGISTRATION_ID_ASC
+  REGISTRATION_ID_DESC
+  STATUS_ASC
+  STATUS_DESC
+  TICKET_NUMBER_ASC
+  TICKET_NUMBER_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
 enum AttendeeStatus {
   """Inscription annulée"""
   CANCELLED
@@ -482,69 +545,6 @@ input AttendeeToManyAttendeeFormFieldFilter {
   Some related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
   some: AttendeeFormFieldFilter
-}
-
-"""A connection to a list of `Attendee` values."""
-type AttendeesConnection {
-  """
-  A list of edges which contains the `Attendee` and cursor to aid in pagination.
-  """
-  edges: [AttendeesEdge!]!
-
-  """A list of `Attendee` objects."""
-  nodes: [Attendee!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Attendee` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Attendee` edge in the connection."""
-type AttendeesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Attendee` at the end of the edge."""
-  node: Attendee!
-}
-
-"""Methods to use when ordering `Attendee`."""
-enum AttendeesOrderBy {
-  CIVILITY_ASC
-  CIVILITY_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  EMAIL_ASC
-  EMAIL_DESC
-  FIRSTNAME_ASC
-  FIRSTNAME_DESC
-  ID_ASC
-  ID_DESC
-  IS_INSCRIPTOR_ASC
-  IS_INSCRIPTOR_DESC
-  IS_NEWS_EVENT_EMAIL_ASC
-  IS_NEWS_EVENT_EMAIL_DESC
-  IS_NEWS_FONDATION_EMAIL_ASC
-  IS_NEWS_FONDATION_EMAIL_DESC
-  IS_VIP_ASC
-  IS_VIP_DESC
-  LASTNAME_ASC
-  LASTNAME_DESC
-  NATURAL
-  PANEL_NUMBER_ASC
-  PANEL_NUMBER_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  REGISTRATION_ID_ASC
-  REGISTRATION_ID_DESC
-  STATUS_ASC
-  STATUS_DESC
-  TICKET_NUMBER_ASC
-  TICKET_NUMBER_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
 }
 
 """
@@ -2308,6 +2308,67 @@ input EventPatch {
   zipCode: String
 }
 
+"""A connection to a list of `Event` values."""
+type EventsConnection {
+  """
+  A list of edges which contains the `Event` and cursor to aid in pagination.
+  """
+  edges: [EventsEdge!]!
+
+  """A list of `Event` objects."""
+  nodes: [Event!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Event` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Event` edge in the connection."""
+type EventsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Event` at the end of the edge."""
+  node: Event!
+}
+
+"""Methods to use when ordering `Event`."""
+enum EventsOrderBy {
+  BOOKING_ENDS_AT_ASC
+  BOOKING_ENDS_AT_DESC
+  BOOKING_STARTS_AT_ASC
+  BOOKING_STARTS_AT_DESC
+  CAPACITY_ASC
+  CAPACITY_DESC
+  CITY_ASC
+  CITY_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  ENDS_AT_ASC
+  ENDS_AT_DESC
+  ID_ASC
+  ID_DESC
+  IS_CANCELLED_ASC
+  IS_CANCELLED_DESC
+  IS_DRAFT_ASC
+  IS_DRAFT_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  ORGANIZATION_ID_ASC
+  ORGANIZATION_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SLUG_ASC
+  SLUG_DESC
+  STARTS_AT_ASC
+  STARTS_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
 enum EventStatus {
   """Annulé"""
   CANCELLED
@@ -2383,67 +2444,6 @@ input EventToManyRegistrationFilter {
   Some related `Registration` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
   some: RegistrationFilter
-}
-
-"""A connection to a list of `Event` values."""
-type EventsConnection {
-  """
-  A list of edges which contains the `Event` and cursor to aid in pagination.
-  """
-  edges: [EventsEdge!]!
-
-  """A list of `Event` objects."""
-  nodes: [Event!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Event` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Event` edge in the connection."""
-type EventsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Event` at the end of the edge."""
-  node: Event!
-}
-
-"""Methods to use when ordering `Event`."""
-enum EventsOrderBy {
-  BOOKING_ENDS_AT_ASC
-  BOOKING_ENDS_AT_DESC
-  BOOKING_STARTS_AT_ASC
-  BOOKING_STARTS_AT_DESC
-  CAPACITY_ASC
-  CAPACITY_DESC
-  CITY_ASC
-  CITY_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  ENDS_AT_ASC
-  ENDS_AT_DESC
-  ID_ASC
-  ID_DESC
-  IS_CANCELLED_ASC
-  IS_CANCELLED_DESC
-  IS_DRAFT_ASC
-  IS_DRAFT_DESC
-  NAME_ASC
-  NAME_DESC
-  NATURAL
-  ORGANIZATION_ID_ASC
-  ORGANIZATION_ID_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  SLUG_ASC
-  SLUG_DESC
-  STARTS_AT_ASC
-  STARTS_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
 }
 
 enum FieldTypes {
@@ -2751,26 +2751,6 @@ input FormFieldPatch {
   updatedAt: Datetime
 }
 
-"""
-A filter to be used against many `AttendeeFormField` object types. All fields are combined with a logical ‘and.’
-"""
-input FormFieldToManyAttendeeFormFieldFilter {
-  """
-  Every related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: AttendeeFormFieldFilter
-
-  """
-  No related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: AttendeeFormFieldFilter
-
-  """
-  Some related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: AttendeeFormFieldFilter
-}
-
 """A connection to a list of `FormField` values."""
 type FormFieldsConnection {
   """
@@ -2814,6 +2794,26 @@ enum FormFieldsOrderBy {
   TYPE_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
+}
+
+"""
+A filter to be used against many `AttendeeFormField` object types. All fields are combined with a logical ‘and.’
+"""
+input FormFieldToManyAttendeeFormFieldFilter {
+  """
+  Every related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AttendeeFormFieldFilter
+
+  """
+  No related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AttendeeFormFieldFilter
+
+  """
+  Some related `AttendeeFormField` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AttendeeFormFieldFilter
 }
 
 input GeneratePresignedPostInput {
@@ -2967,26 +2967,6 @@ input LogFilter {
   updatedAt: DatetimeFilter
 }
 
-"""An input for mutations affecting `Log`"""
-input LogInput {
-  createdAt: Datetime
-  eventId: UUID
-  id: UUID
-  payload: JSON
-  status: LogsStatus!
-  updatedAt: Datetime
-}
-
-"""Represents an update to a `Log`. Fields that are set will be updated."""
-input LogPatch {
-  createdAt: Datetime
-  eventId: UUID
-  id: UUID
-  payload: JSON
-  status: LogsStatus
-  updatedAt: Datetime
-}
-
 input LoginInput {
   password: String!
   username: String!
@@ -2998,8 +2978,28 @@ type LoginPayload {
   user: User!
 }
 
+"""An input for mutations affecting `Log`"""
+input LogInput {
+  createdAt: Datetime
+  eventId: UUID
+  id: UUID
+  payload: JSON
+  status: LogsStatus!
+  updatedAt: Datetime
+}
+
 type LogoutPayload {
   success: Boolean
+}
+
+"""Represents an update to a `Log`. Fields that are set will be updated."""
+input LogPatch {
+  createdAt: Datetime
+  eventId: UUID
+  id: UUID
+  payload: JSON
+  status: LogsStatus
+  updatedAt: Datetime
 }
 
 """A connection to a list of `Log` values."""
@@ -4155,6 +4155,51 @@ input OrganizationPatch {
   updatedAt: Datetime
 }
 
+"""A connection to a list of `Organization` values."""
+type OrganizationsConnection {
+  """
+  A list of edges which contains the `Organization` and cursor to aid in pagination.
+  """
+  edges: [OrganizationsEdge!]!
+
+  """A list of `Organization` objects."""
+  nodes: [Organization!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Organization` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Organization` edge in the connection."""
+type OrganizationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Organization` at the end of the edge."""
+  node: Organization!
+}
+
+"""Methods to use when ordering `Organization`."""
+enum OrganizationsOrderBy {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  ID_ASC
+  ID_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SLUG_ASC
+  SLUG_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
 """
 A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
 """
@@ -4213,51 +4258,6 @@ input OrganizationToManyOrganizationMembershipFilter {
   Some related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
   """
   some: OrganizationMembershipFilter
-}
-
-"""A connection to a list of `Organization` values."""
-type OrganizationsConnection {
-  """
-  A list of edges which contains the `Organization` and cursor to aid in pagination.
-  """
-  edges: [OrganizationsEdge!]!
-
-  """A list of `Organization` objects."""
-  nodes: [Organization!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Organization` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Organization` edge in the connection."""
-type OrganizationsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Organization` at the end of the edge."""
-  node: Organization!
-}
-
-"""Methods to use when ordering `Organization`."""
-enum OrganizationsOrderBy {
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  DESCRIPTION_ASC
-  DESCRIPTION_DESC
-  ID_ASC
-  ID_DESC
-  NAME_ASC
-  NAME_DESC
-  NATURAL
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  SLUG_ASC
-  SLUG_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
 }
 
 """Information about pagination in a connection."""
@@ -5153,26 +5153,6 @@ input RegistrationPatch {
   updatedAt: Datetime
 }
 
-"""
-A filter to be used against many `Attendee` object types. All fields are combined with a logical ‘and.’
-"""
-input RegistrationToManyAttendeeFilter {
-  """
-  Every related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: AttendeeFilter
-
-  """
-  No related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: AttendeeFilter
-
-  """
-  Some related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: AttendeeFilter
-}
-
 """A connection to a list of `Registration` values."""
 type RegistrationsConnection {
   """
@@ -5212,6 +5192,26 @@ enum RegistrationsOrderBy {
   PRIMARY_KEY_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
+}
+
+"""
+A filter to be used against many `Attendee` object types. All fields are combined with a logical ‘and.’
+"""
+input RegistrationToManyAttendeeFilter {
+  """
+  Every related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AttendeeFilter
+
+  """
+  No related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AttendeeFilter
+
+  """
+  Some related `Attendee` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AttendeeFilter
 }
 
 """All input for the `removeFromOrganization` mutation."""
@@ -5490,14 +5490,14 @@ input StringFilter {
   """Included in the specified list."""
   in: [String!]
 
-  """Included in the specified list (case-insensitive)."""
-  inInsensitive: [String!]
-
   """Contains the specified string (case-sensitive)."""
   includes: String
 
   """Contains the specified string (case-insensitive)."""
   includesInsensitive: String
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
 
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
@@ -5549,14 +5549,14 @@ input StringFilter {
   """Not included in the specified list."""
   notIn: [String!]
 
-  """Not included in the specified list (case-insensitive)."""
-  notInInsensitive: [String!]
-
   """Does not contain the specified string (case-sensitive)."""
   notIncludes: String
 
   """Does not contain the specified string (case-insensitive)."""
   notIncludesInsensitive: String
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
 
   """
   Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
@@ -5627,53 +5627,6 @@ type TransferOrganizationOwnershipPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-}
-
-"""
-A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
-"""
-scalar UUID
-
-"""
-A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
-"""
-input UUIDFilter {
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: UUID
-
-  """Equal to the specified value."""
-  equalTo: UUID
-
-  """Greater than the specified value."""
-  greaterThan: UUID
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: UUID
-
-  """Included in the specified list."""
-  in: [UUID!]
-
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Less than the specified value."""
-  lessThan: UUID
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: UUID
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: UUID
-
-  """Not equal to the specified value."""
-  notEqualTo: UUID
-
-  """Not included in the specified list."""
-  notIn: [UUID!]
 }
 
 """All input for the `updateAttendeeEmailAndSendEmail` mutation."""
@@ -6661,71 +6614,6 @@ input UserPatch {
   username: String
 }
 
-type UserSubscriptionPayload {
-  event: String
-  user: User
-}
-
-"""
-A filter to be used against many `OrganizationInvitation` object types. All fields are combined with a logical ‘and.’
-"""
-input UserToManyOrganizationInvitationFilter {
-  """
-  Every related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: OrganizationInvitationFilter
-
-  """
-  No related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: OrganizationInvitationFilter
-
-  """
-  Some related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: OrganizationInvitationFilter
-}
-
-"""
-A filter to be used against many `OrganizationMembership` object types. All fields are combined with a logical ‘and.’
-"""
-input UserToManyOrganizationMembershipFilter {
-  """
-  Every related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: OrganizationMembershipFilter
-
-  """
-  No related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: OrganizationMembershipFilter
-
-  """
-  Some related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: OrganizationMembershipFilter
-}
-
-"""
-A filter to be used against many `UserAuthentication` object types. All fields are combined with a logical ‘and.’
-"""
-input UserToManyUserAuthenticationFilter {
-  """
-  Every related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  every: UserAuthenticationFilter
-
-  """
-  No related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  none: UserAuthenticationFilter
-
-  """
-  Some related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
-  """
-  some: UserAuthenticationFilter
-}
-
 """A connection to a list of `User` values."""
 type UsersConnection {
   """
@@ -6819,6 +6707,118 @@ input UsersOrganizationsRecordFilter {
 
   """Filter by the object’s `role` field."""
   role: StringFilter
+}
+
+type UserSubscriptionPayload {
+  event: String
+  user: User
+}
+
+"""
+A filter to be used against many `OrganizationInvitation` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyOrganizationInvitationFilter {
+  """
+  Every related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: OrganizationInvitationFilter
+
+  """
+  No related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: OrganizationInvitationFilter
+
+  """
+  Some related `OrganizationInvitation` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: OrganizationInvitationFilter
+}
+
+"""
+A filter to be used against many `OrganizationMembership` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyOrganizationMembershipFilter {
+  """
+  Every related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: OrganizationMembershipFilter
+
+  """
+  No related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: OrganizationMembershipFilter
+
+  """
+  Some related `OrganizationMembership` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: OrganizationMembershipFilter
+}
+
+"""
+A filter to be used against many `UserAuthentication` object types. All fields are combined with a logical ‘and.’
+"""
+input UserToManyUserAuthenticationFilter {
+  """
+  Every related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UserAuthenticationFilter
+
+  """
+  No related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UserAuthenticationFilter
+
+  """
+  Some related `UserAuthentication` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UserAuthenticationFilter
+}
+
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
+"""
+A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
+"""
+input UUIDFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: UUID
+
+  """Equal to the specified value."""
+  equalTo: UUID
+
+  """Greater than the specified value."""
+  greaterThan: UUID
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: UUID
+
+  """Included in the specified list."""
+  in: [UUID!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: UUID
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: UUID
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: UUID
+
+  """Not equal to the specified value."""
+  notEqualTo: UUID
+
+  """Not included in the specified list."""
+  notIn: [UUID!]
 }
 
 """All input for the `verifyEmail` mutation."""

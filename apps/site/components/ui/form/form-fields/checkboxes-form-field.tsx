@@ -50,32 +50,20 @@
 
 */
 
-import { ReactNode } from "react"
-import { Checkbox } from "@radix-ui/react-checkbox"
-import {
-  Controller,
-  ControllerProps,
-  FieldPath,
-  FieldValues,
-} from "react-hook-form"
+import { ReactNode } from "react";
+import { Controller, ControllerProps, FieldPath, FieldValues } from "react-hook-form";
 
-import {
-  FormControl,
-  FormDescription,
-  FormFieldContext,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from ".."
+import { Checkbox } from "@/components/ui/checkbox";
+import { FormControl, FormDescription, FormFieldContext, FormItem, FormLabel, FormMessage } from "..";
 
 interface CheckboxFormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
-  descrition: ReactNode
-  label: ReactNode
-  placeholder?: string
-  id: string
+  descrition: ReactNode;
+  label: ReactNode;
+  placeholder?: string;
+  id: string;
 }
 
 export const CheckboxFormField = <
@@ -98,13 +86,9 @@ export const CheckboxFormField = <
               <div className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl>
                   <Checkbox
-                    checked={field.value?.includes(id)}
+                    checked={field.value}
                     onCheckedChange={(checked) => {
-                      return checked
-                        ? field.onChange([...field.value, id])
-                        : field.onChange(
-                            field.value?.filter((value) => value !== id)
-                          )
+                      field.onChange(checked);
                     }}
                   />
                 </FormControl>
@@ -112,24 +96,24 @@ export const CheckboxFormField = <
               </div>
               <FormMessage />
             </FormItem>
-          )
+          );
         }}
       />
     </FormFieldContext.Provider>
-  )
-}
+  );
+};
 
 interface CheckboxesFormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
-  descrition: ReactNode
-  label: ReactNode
-  placeholder?: string
-  options: CheckboxFormFieldProps<TFieldValues, TName>[]
+  descrition: ReactNode;
+  label: ReactNode;
+  placeholder?: string;
+  options: CheckboxFormFieldProps<TFieldValues, TName>[];
 }
 
-export const CheckboxesFormField = <
+/* export const CheckboxesFormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
@@ -160,3 +144,4 @@ export const CheckboxesFormField = <
     </FormFieldContext.Provider>
   )
 }
+ */
