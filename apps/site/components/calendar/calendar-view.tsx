@@ -1,56 +1,45 @@
-"use client"
+"use client";
 
-import { FC, useTransition } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { format } from "date-fns"
-import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
+import { FC, useTransition } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { format } from "date-fns";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 
-import { CalendarViewType, getCalendar } from "@/lib/calendar"
-import { cn, detailDate } from "@/lib/utils"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui"
-import { CalendarElementProps } from "./calendar-element"
-import { CalendarMonthView } from "./calendar-month-view"
-import { CalendarWeekView } from "./calendar-week-view"
+import { CalendarViewType, getCalendar } from "@/lib/calendar";
+import { cn, detailDate } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui";
+import { CalendarElementProps } from "./calendar-element";
+import { CalendarMonthView } from "./calendar-month-view";
+import { CalendarWeekView } from "./calendar-week-view";
 
 export const CalendarView: FC<{
-  onDateSelected: (date: Date) => void
-  elementsToDisplay: CalendarElementProps[]
+  onDateSelected: (date: Date) => void;
+  elementsToDisplay: CalendarElementProps[];
 }> = ({ onDateSelected, elementsToDisplay }) => {
-  const searchParams = useSearchParams()
-  const [isPending, startTransition] = useTransition()
-  const router = useRouter()
-  const pathname = usePathname()
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const calendarCursor = searchParams.get("calendarCursor")
-  const viewType =
-    (searchParams.get("calendarView") as CalendarViewType) ||
-    CalendarViewType.Month
+  const calendarCursor = searchParams.get("calendarCursor");
+  const viewType = (searchParams.get("calendarView") as CalendarViewType) || CalendarViewType.Month;
   const { headers, body, navigation, cursorDate } = getCalendar({
     weekStartsOn: 1,
     cursorDate: calendarCursor ? new Date(calendarCursor) : new Date(),
     viewType,
-  })
+  });
 
   const handleViewChange = (view: CalendarViewType, newCursorDate?: Date) => {
-    const newSearchParams = new URLSearchParams(searchParams)
+    const newSearchParams = new URLSearchParams(searchParams as any);
 
     newCursorDate
-      ? newSearchParams.set(
-          "calendarCursor",
-          format(newCursorDate, "yyyy-MM-dd")
-        )
-      : newSearchParams.delete("calendarCursor")
-    newSearchParams.set("calendarView", view)
+      ? newSearchParams.set("calendarCursor", format(newCursorDate, "yyyy-MM-dd"))
+      : newSearchParams.delete("calendarCursor");
+    newSearchParams.set("calendarView", view);
     startTransition(() => {
-      router.replace(`${pathname}?${newSearchParams.toString()}`)
-    })
-  }
+      router.replace(`${pathname}?${newSearchParams.toString()}`);
+    });
+  };
 
   return (
     <>
@@ -67,14 +56,11 @@ export const CalendarView: FC<{
           <Select
             value={searchParams.get("calendarView") || "month"}
             onValueChange={(value) => {
-              handleViewChange(value as CalendarViewType)
+              handleViewChange(value as CalendarViewType);
             }}
           >
             <SelectTrigger className="w-[180px]">
-              <SelectValue
-                placeholder="Vue"
-                defaultValue={CalendarViewType.Month}
-              />
+              <SelectValue placeholder="Vue" defaultValue={CalendarViewType.Month} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={CalendarViewType.Month}>Mois</SelectItem>
@@ -86,25 +72,17 @@ export const CalendarView: FC<{
           <button
             type="button"
             className="rounded-full border p-2"
-            onClick={() =>
-              handleViewChange(viewType, navigation.prev(cursorDate))
-            }
+            onClick={() => handleViewChange(viewType, navigation.prev(cursorDate))}
           >
             <ChevronLeft />
           </button>
-          <button
-            type="button"
-            className="rounded-full border p-2"
-            onClick={() => handleViewChange(viewType)}
-          >
+          <button type="button" className="rounded-full border p-2" onClick={() => handleViewChange(viewType)}>
             <Calendar />
           </button>
           <button
             type="button"
             className="rounded-full border p-2"
-            onClick={() =>
-              handleViewChange(viewType, navigation.next(cursorDate))
-            }
+            onClick={() => handleViewChange(viewType, navigation.next(cursorDate))}
           >
             <ChevronRight />
           </button>
@@ -127,5 +105,5 @@ export const CalendarView: FC<{
         />
       )}
     </>
-  )
-}
+  );
+};
