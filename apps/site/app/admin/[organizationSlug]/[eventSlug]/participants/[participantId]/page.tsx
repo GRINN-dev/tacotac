@@ -18,7 +18,7 @@ const InfosAttendeePage = async ({ params: { organizationSlug, eventSlug, partic
         <h1 className="admin-h1">Participant - Modifier les informations</h1>
 
         <div className="mx-auto flex max-w-3xl items-baseline gap-2">
-          <UpdateAttendeeForm {...attendee} />
+          <UpdateAttendeeForm attendee={attendee} organizationSlug={organizationSlug} eventSlug={eventSlug} />
         </div>
         <h2 className="admin-h2 mt-8">Informations renseignées à l&apos;inscription </h2>
         {attendee.isInscriptor ? (

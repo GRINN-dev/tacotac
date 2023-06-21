@@ -9,6 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
+import { Loader } from "@/components/loader";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,17 +34,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface iUpdateAttendee extends ExtractType<GetAttendeeByIdQuery, "attendee"> {}
-
-export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
-  id,
-  firstname,
-  lastname,
-  email,
-  status,
-  panelNumber,
-  isVip,
-}) => {
+export const UpdateAttendeeForm: FC<{
+  attendee: GetAttendeeByIdQuery["attendee"];
+  organizationSlug: string;
+  eventSlug: string;
+}> = ({ attendee, organizationSlug, eventSlug }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
@@ -53,7 +48,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
   const { register, handleSubmit, formState, control } = useForm<UpdateAttendeeInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    data.id = id;
+    data.id = attendee.id;
     await sdk()
       .UpdateAttendee({
         input: data,
@@ -65,7 +60,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
       });
     setIsLoading(false);
     startTransition(() => {
-      router.push(pathname.substring(0, pathname.lastIndexOf(`/participant/${id}`) + 1) + "?reload=true");
+      router.refresh();
 
       toast({
         title: "Participant mis à jour",
@@ -75,11 +70,16 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
   });
 
   const deleteAttendee = async () => {
-    // await sdk().DeleteRegistration({ input: { id: registrationId } });
-    router.push(pathname.substring(0, pathname.lastIndexOf(`/participant/${id}`) + 1) + "?reload=true");
+    setIsLoading(true);
+    await sdk().DeleteAttendee({ input: { id: attendee.id } });
+    setIsLoading(false);
+    startTransition(() => {
+      router.push(`/admin/${organizationSlug}/${eventSlug}`);
+    });
   };
   return (
     <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
+      <Loader loading={isSubmitting} />
       <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"patch.status"}
@@ -109,7 +109,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
         <Input
           type="text"
           id="firstname"
-          defaultValue={firstname}
+          defaultValue={attendee.firstname}
           placeholder="Martin"
           {...register("patch.firstname", {
             required: "Un prénom pour le participant est requis",
@@ -125,7 +125,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
         <Input
           type="text"
           id="lastname"
-          defaultValue={lastname}
+          defaultValue={attendee.lastname}
           placeholder="Martin"
           {...register("patch.lastname", {
             required: "Un nom pour le participant est requis",
@@ -140,7 +140,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
         <Input
           type="email"
           id="email"
-          defaultValue={email}
+          defaultValue={attendee.email}
           placeholder="mon@email.com"
           {...register("patch.email", {
             required: "Un email pour le participant est requis",
@@ -155,7 +155,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
         <Label htmlFor="isVip">{"Vip"}</Label>
         <Input
           type="checkbox"
-          defaultChecked={isVip}
+          defaultChecked={attendee.isVip}
           id="isVip"
           className="h-4 w-4 "
           {...register("patch.isVip", {})}
@@ -168,7 +168,7 @@ export const UpdateAttendeeForm: FC<iUpdateAttendee> = ({
         <Label htmlFor="panelNumber">{"Numéro de panneau"}</Label>
         <Input
           type="number"
-          defaultValue={panelNumber}
+          defaultValue={attendee.panelNumber}
           id="panelNumber"
           {...register("patch.panelNumber", {
             valueAsNumber: true,
