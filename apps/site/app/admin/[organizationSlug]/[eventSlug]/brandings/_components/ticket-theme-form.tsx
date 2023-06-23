@@ -34,7 +34,9 @@ type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
 export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySlug"]["eventBranding"] }> = ({
   eventBranding,
 }) => {
+
   const [image, setImage] = useState<File[] | null>("" as any);
+
 
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
