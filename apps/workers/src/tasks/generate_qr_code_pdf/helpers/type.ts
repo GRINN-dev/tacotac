@@ -44,6 +44,7 @@ export interface IRowAttendee {
   header_mail_name: string;
   header_mail_contact: string;
   logo: string;
+  image_ticket_url: string;
 }
 
 export interface CreateTicketPayload {

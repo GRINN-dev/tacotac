@@ -40,7 +40,7 @@ export const generateDocsForAttendees = async (
     })
   );
 
-  const reworkedTicket = {
+  const dataTicketStructure = {
     event_name: rowData.name,
     logo: rowData.logo,
     first_name: rowData.firstname,
@@ -60,13 +60,14 @@ export const generateDocsForAttendees = async (
     city: rowData.city,
     qr_code_url: dataUrlQrCode,
     code_invit: rowData.sign_code,
+    image_ticket_url: rowData.image_ticket_url,
   };
 
   const generatePdfFilePayload: GeneratePdfFilesPayload = {
     pdfData: {
       template: createHtmlTemplate<CreateTicketPayload>(
         {
-          ticket: reworkedTicket,
+          ticket: dataTicketStructure,
         },
         "ticket_v1"
       ),

@@ -1975,6 +1975,7 @@ type EventBranding {
   headerMailContact: String
   headerMailName: String
   id: UUID!
+  imageTicketUrl: String
   logo: String
   richText: String
   shortText: String
@@ -2043,6 +2044,7 @@ input EventBrandingInput {
   headerMailContact: String
   headerMailName: String
   id: UUID
+  imageTicketUrl: String
   logo: String
   richText: String
   shortText: String
@@ -2060,6 +2062,7 @@ input EventBrandingPatch {
   headerMailContact: String
   headerMailName: String
   id: UUID
+  imageTicketUrl: String
   logo: String
   richText: String
   shortText: String
