@@ -60,7 +60,7 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({
   }
 
   return (
-    <div className="group relative">
+    <div className="group relative m-auto">
       <div
         className={cn(
           "flex justify-center rounded-xl border border-dashed  border-gray-300 p-3",

@@ -9,8 +9,8 @@ import { TicketThemeForm } from "./ticket-theme-form";
 export function TicketEditor({ event }: { event: GetEventBySlugQuery["eventBySlug"] }) {
   return (
     <div className="mt-12">
-      <section className="text-foreground bg-background h-80" id="ticket-preview"></section>
-      <TicketThemeForm />
+      {/* <section className="text-foreground bg-background h-80" id="ticket-preview"></section> */}
+      <TicketThemeForm eventBranding={event.eventBranding}  />
     </div>
   );
 }

@@ -20,6 +20,7 @@ export function createHtmlTemplate<T>(data: T, templateName: string) {
     return value !== undefined;
   });
   const template = hbs.compile(html);
+  console.log("🚀 ~ file: createHtmlTemplate.ts:23 ~ template:", template);
   const rendered = template({
     ...data,
     assetsUrl: process.env.NEXT_PUBLIC_API_ENDPOINT + "/static",

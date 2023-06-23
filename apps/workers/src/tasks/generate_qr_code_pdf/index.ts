@@ -14,7 +14,7 @@ export const qrCodeGenPdf: Task = async (payload, { addJob, withPgClient }) => {
     pgClient.query(
       ` SELECT atts.*,evts.id as event_id, evts.name, evts.details, evts.city, evts.place_name, 
       evts.address_line_1, evts.starts_at, evts.ends_at,
-       evtsb.header_mail_name, evtsb.header_mail_contact, evtsb.logo
+       evtsb.header_mail_name, evtsb.header_mail_contact, evtsb.logo, evtsb.image_ticket_url
       FROM publ.attendees atts
       inner join publ.registrations regs on regs.id = atts.registration_id
       inner join publ.events evts on evts.id = regs.event_id
