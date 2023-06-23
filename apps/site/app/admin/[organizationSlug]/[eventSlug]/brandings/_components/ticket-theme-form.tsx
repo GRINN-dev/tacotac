@@ -9,6 +9,8 @@ import { ChevronDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn, uploadToS3 } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
@@ -35,9 +37,7 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   eventBranding,
 }) => {
  
-
   const [image, setImage] = useState<File[]>();
-
 
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
@@ -47,7 +47,6 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   });
   const router = useRouter();
   async function onSubmit(data: AppearanceFormValues) {
-    console.log("🚀 ~ file: ticket-theme-form.tsx:41 ~ onSubmit ~ data:", data);
     const img = await uploadToS3(image[0]);
     sdk()
       .UpdateEventBranding({
