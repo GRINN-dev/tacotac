@@ -34,7 +34,10 @@ type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
 export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySlug"]["eventBranding"] }> = ({
   eventBranding,
 }) => {
-  const [image, setImage] = useState<File[] | null>(null);
+ 
+
+  const [image, setImage] = useState<File[]>();
+
 
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
@@ -80,7 +83,7 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex items-center justify-center space-x-4">
           <Image
-            src={(image as any) || eventBranding?.imageTicketUrl}
+            src={image as any || eventBranding?.imageTicketUrl || ""}
             width={300}
             height={200}
             className=" rounded-2xl object-cover"
