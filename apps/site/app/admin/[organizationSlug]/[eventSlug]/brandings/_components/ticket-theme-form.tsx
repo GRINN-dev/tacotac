@@ -35,7 +35,9 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   eventBranding,
 }) => {
  
+
   const [image, setImage] = useState<File[]>();
+
 
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
