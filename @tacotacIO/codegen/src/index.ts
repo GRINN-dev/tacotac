@@ -2593,6 +2593,8 @@ export type Mutation = {
   scanAttendeesAsync?: Maybe<ScanAttendeesAsyncPayload>;
   /** Select event to retrieve all attendee and send email to all attendee */
   sendEmailAllAttendeeEvent?: Maybe<SendEmailAllAttendeeEventPayload>;
+  /** Select registration_id to send email to attendee */
+  sendEmailAttendeeEvent?: Maybe<SendEmailAttendeeEventPayload>;
   /** Select event to retrieve all attendee and send email to all attendee and confirm donation */
   sendEmailConfirmDonationByEventId?: Maybe<SendEmailConfirmDonationByEventIdPayload>;
   transferOrganizationOwnership?: Maybe<TransferOrganizationOwnershipPayload>;
@@ -2899,6 +2901,12 @@ export type MutationScanAttendeesAsyncArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationSendEmailAllAttendeeEventArgs = {
   input: SendEmailAllAttendeeEventInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationSendEmailAttendeeEventArgs = {
+  input: SendEmailAttendeeEventInput;
 };
 
 
@@ -4314,7 +4322,6 @@ export type RowEventAttendee = {
   pdfUrl?: Maybe<Scalars['String']>;
   placeName?: Maybe<Scalars['String']>;
   qrCodeUrl?: Maybe<Scalars['String']>;
-  signCode?: Maybe<Scalars['String']>;
   startsAt?: Maybe<Scalars['Datetime']>;
   ticketNumber?: Maybe<Scalars['String']>;
 };
@@ -4397,6 +4404,29 @@ export type SendEmailAllAttendeeEventPayload = {
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   rowEventAttendees?: Maybe<Array<Maybe<RowEventAttendee>>>;
+};
+
+/** All input for the `sendEmailAttendeeEvent` mutation. */
+export type SendEmailAttendeeEventInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  registrationId: Scalars['UUID'];
+};
+
+/** The output of our `sendEmailAttendeeEvent` mutation. */
+export type SendEmailAttendeeEventPayload = {
+  __typename?: 'SendEmailAttendeeEventPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  rowEventAttendee?: Maybe<RowEventAttendee>;
 };
 
 /** All input for the `sendEmailConfirmDonationByEventId` mutation. */
@@ -5524,6 +5554,13 @@ export type SendEmailAllAttendeeEventMutationVariables = Exact<{
 
 export type SendEmailAllAttendeeEventMutation = { __typename?: 'Mutation', sendEmailAllAttendeeEvent?: { __typename?: 'SendEmailAllAttendeeEventPayload', clientMutationId?: string | null, rowEventAttendees?: Array<{ __typename?: 'RowEventAttendee', id?: string | null, email?: string | null } | null> | null } | null };
 
+export type SendEmailAttendeeEventMutationVariables = Exact<{
+  registrationId: Scalars['UUID'];
+}>;
+
+
+export type SendEmailAttendeeEventMutation = { __typename?: 'Mutation', sendEmailAttendeeEvent?: { __typename?: 'SendEmailAttendeeEventPayload', clientMutationId?: string | null, rowEventAttendee?: { __typename?: 'RowEventAttendee', id?: string | null, email?: string | null } | null } | null };
+
 export type UpdateAttendeeEmailAndSendEmailMutationVariables = Exact<{
   attendees: Array<InputMaybe<AttendeePatch>> | InputMaybe<AttendeePatch>;
 }>;
@@ -6062,6 +6099,17 @@ export const SendEmailAllAttendeeEventDocument = `
   sendEmailAllAttendeeEvent(input: {eventId: $eventId}) {
     clientMutationId
     rowEventAttendees {
+      id
+      email
+    }
+  }
+}
+    `;
+export const SendEmailAttendeeEventDocument = `
+    mutation SendEmailAttendeeEvent($registrationId: UUID!) {
+  sendEmailAttendeeEvent(input: {registrationId: $registrationId}) {
+    clientMutationId
+    rowEventAttendee {
       id
       email
     }
@@ -6816,6 +6864,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     SendEmailAllAttendeeEvent(variables: SendEmailAllAttendeeEventMutationVariables, options?: C): Promise<SendEmailAllAttendeeEventMutation> {
       return requester<SendEmailAllAttendeeEventMutation, SendEmailAllAttendeeEventMutationVariables>(SendEmailAllAttendeeEventDocument, variables, options) as Promise<SendEmailAllAttendeeEventMutation>;
+    },
+    SendEmailAttendeeEvent(variables: SendEmailAttendeeEventMutationVariables, options?: C): Promise<SendEmailAttendeeEventMutation> {
+      return requester<SendEmailAttendeeEventMutation, SendEmailAttendeeEventMutationVariables>(SendEmailAttendeeEventDocument, variables, options) as Promise<SendEmailAttendeeEventMutation>;
     },
     UpdateAttendeeEmailAndSendEmail(variables: UpdateAttendeeEmailAndSendEmailMutationVariables, options?: C): Promise<UpdateAttendeeEmailAndSendEmailMutation> {
       return requester<UpdateAttendeeEmailAndSendEmailMutation, UpdateAttendeeEmailAndSendEmailMutationVariables>(UpdateAttendeeEmailAndSendEmailDocument, variables, options) as Promise<UpdateAttendeeEmailAndSendEmailMutation>;
