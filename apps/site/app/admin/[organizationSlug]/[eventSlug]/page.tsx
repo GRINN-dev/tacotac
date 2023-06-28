@@ -1,17 +1,13 @@
 import Link from "next/link";
-import { EventsOrderBy } from "@tacotacIO/codegen";
-import { PlusSquare } from "lucide-react";
 
-import { initLimit } from "@/types/filter";
-import { sdk } from "@/lib/sdk";
 import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { SendAllEmail } from "./SendAllEmail";
-import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 import { MyDataTable } from "./_components/data-table";
 import { columns } from "./columns";
+import { SendAllEmail } from "./SendAllEmail";
+import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
 
 const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
   const data = await serverSdk().GetEventBySlug({

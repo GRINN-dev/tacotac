@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AttendeeStatus, GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ArrowUpDown, ExternalLink, MoreHorizontal, RefreshCcw } from "lucide-react";
+import { ArrowUpDown, ExternalLink, MoreHorizontal, RefreshCcw, Send } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -24,9 +24,11 @@ import {
 export const columns: (input: {
   organizationSlug: string;
   eventSlug: string;
+  sendEmail: (registrationId: string) => void;
 }) => ColumnDef<GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"][number]>[] = ({
   organizationSlug,
   eventSlug,
+  sendEmail,
 }) => [
   {
     accessorKey: "lastname",
@@ -154,6 +156,22 @@ export const columns: (input: {
     ),
   },
   {
+    header: "Renvoi billet",
+    cell: ({ row }) => {
+      return (
+        <Button
+          variant="outline"
+          size="sm"
+          className="border-primary border text-xs"
+          onClick={() => sendEmail(row.original.registrationId)}
+        >
+          <Send className="text-primary mr-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+
+  {
     id: "actions",
     header: () => {
       return <Refresher />;
@@ -195,7 +213,6 @@ export const columns: (input: {
         </DropdownMenu>
       );
     },
-
   },
 ];
 
