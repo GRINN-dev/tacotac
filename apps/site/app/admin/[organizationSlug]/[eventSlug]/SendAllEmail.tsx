@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
 
 import { sdk } from "@/lib/sdk";
@@ -16,6 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
 
 export const SendAllEmail = ({ eventId }) => {
   const sendEmails = (eventId: string) => {
@@ -23,7 +23,7 @@ export const SendAllEmail = ({ eventId }) => {
       .SendEmailAllAttendeeEvent({ eventId })
       .then((data) => {
         toast({
-          title: "Tous les emails ont bien été envoyé",
+          title: "Tous les emails ont bien été envoyé 🏉",
         });
       })
       .catch((error) => {
