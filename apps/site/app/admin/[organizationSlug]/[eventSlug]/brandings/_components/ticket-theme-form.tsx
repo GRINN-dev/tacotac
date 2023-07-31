@@ -28,7 +28,7 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   eventBranding,
 }) => {
   const [image, setImage] = useState<File[]>();
-
+  const [imageUplaod, setImageUplaod] = useState<File[] | null>(null);
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues: {
@@ -37,7 +37,8 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   });
   const router = useRouter();
   async function onSubmit(data: AppearanceFormValues) {
-    const img = await uploadToS3(image[0]);
+    const img = await uploadToS3(imageUplaod[0]);
+    console.log("🚀 ~ file: ticket-theme-form.tsx:51 ~ onSubmit ~ img:", img);
     sdk()
       .UpdateEventBranding({
         input: {
@@ -57,6 +58,7 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   }
 
   function showImage(e: any) {
+    console.log("🚀 ~ file: ticket-theme-form.tsx:71 ~ showImage ~ e:", e);
     const reader = new FileReader();
     const file = e[0];
     if (file) {
@@ -71,6 +73,7 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex items-center justify-center space-x-4">
+
           <Image
             src={(image as any) || eventBranding?.imageTicketUrl || ""}
             width={300}
@@ -78,6 +81,7 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
             className=" rounded-2xl object-cover"
             alt="image-ticket"
           />
+
           <div className="aspect-[3/2] w-full rounded-2xl object-cover">
             <FileDragNDrop
               title={"image"}
@@ -87,7 +91,7 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
               maxSize={1024 * 1024}
               onFileUpload={(file) => {
                 showImage(file);
-                setImage(file);
+                setImageUplaod(file);
               }}
             ></FileDragNDrop>
           </div>

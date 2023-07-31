@@ -33,14 +33,16 @@ export const CopyToClipboard: FC<{
       box-shadow: 0 0 5px #ccc;
     }
   </style>
+
   <iframe src="https://kaypi-app.vercel.app/inscription/${organisationSlug}/${eventSlug}/iframe" class="my-iframe" />
+
   `;
 
   // Returns a highlighted HTML string
   const html = Prism.highlight(code, Prism.languages.html, "html");
   return (
     <div className="relative">
-      <pre id="code-to-copy" className="language-html relative" dangerouslySetInnerHTML={{ __html: html }} />{" "}
+      <pre id="code-to-copy" className="relative language-html" dangerouslySetInnerHTML={{ __html: html }} />{" "}
       <button
         className={cn(
           "inline-block rounded border border-slate-400 p-1 text-slate-400 hover:text-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2",
@@ -50,7 +52,7 @@ export const CopyToClipboard: FC<{
           navigator.clipboard.writeText(code).then(() => setCopied(true));
         }}
       >
-        {copied ? <Check className="h-4 w-4 text-slate-400" /> : <Clipboard className="h-4 w-4 text-slate-400" />}
+        {copied ? <Check className="w-4 h-4 text-slate-400" /> : <Clipboard className="w-4 h-4 text-slate-400" />}
       </button>
     </div>
   );
