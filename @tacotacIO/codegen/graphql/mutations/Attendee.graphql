@@ -47,6 +47,16 @@ mutation SendEmailAllAttendeeEvent($eventId: UUID!) {
   }
 }
 
+mutation SendEmailAttendeeEvent($registrationId: UUID!) {
+  sendEmailAttendeeEvent(input: { registrationId: $registrationId }) {
+    clientMutationId
+    rowEventAttendee {
+      id
+      email
+    }
+  }
+}
+
 mutation UpdateAttendeeEmailAndSendEmail($attendees: [AttendeePatch]!) {
   updateAttendeeEmailAndSendEmail(input: { attendees: $attendees }) {
     attendees {
