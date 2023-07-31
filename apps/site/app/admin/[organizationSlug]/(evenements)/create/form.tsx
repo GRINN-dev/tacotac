@@ -61,7 +61,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="name"
           placeholder="Obole"
           {...register("event.name", {
-            required: "Un nom pour l'organisation est requis",
+            required: "Un nom pour l'équipe est requis",
           })}
         />
         {formState.errors?.event?.name && (
@@ -75,7 +75,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="description"
           placeholder="Description"
           {...register("event.description", {
-            required: "Une description pour l'organisation est requise",
+            required: "Une description pour l'équipe est requise",
           })}
         />
         {formState.errors?.event?.description && (
@@ -109,7 +109,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="startsAt"
           placeholder="Date"
           {...register("event.startsAt", {
-            required: "Une date pour l'organisation est requise",
+            required: "Une date pour l'équipe est requise",
           })}
         />
         {formState.errors?.event?.startsAt && (
@@ -125,7 +125,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="endsAt"
           placeholder="Date"
           {...register("event.endsAt", {
-            required: "Une date pour l'organisation est requise",
+            required: "Une date pour l'équipe est requise",
           })}
         />
         {formState.errors?.event?.endsAt && (
@@ -143,7 +143,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="bookingStartsAt"
           placeholder="Date de début des réservations"
           {...register("event.bookingStartsAt", {
-            required: "Une date de début des réservations pour l'organisation est requise",
+            required: "Une date de début des réservations pour l'équipe est requise",
           })}
         />
         {formState.errors?.event?.bookingStartsAt && (
@@ -160,7 +160,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="bookingEndsAt"
           placeholder="Date de fin des réservations"
           {...register("event.bookingEndsAt", {
-            required: "Une date de fin des réservations pour l'organisation est requise",
+            required: "Une date de fin des réservations pour l'équipe est requise",
           })}
         />
         {formState.errors?.event?.bookingEndsAt && (
@@ -181,7 +181,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="placeName"
           placeholder="Nom du lieu"
           {...register("event.placeName", {
-            required: "Un nom de lieu pour l'organisation est requis",
+            required: "Un nom de lieu pour l'équipe est requis",
           })}
         />
         {formState.errors?.event?.placeName && (
@@ -196,7 +196,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="addressLine1"
           placeholder="Adresse"
           {...register("event.addressLine1", {
-            required: "Une adresse pour l'organisation est requise",
+            required: "Une adresse pour l'équipe est requise",
           })}
         />
         {formState.errors?.event?.addressLine1 && (
@@ -219,7 +219,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="postalCode"
           placeholder="Code postal"
           {...register("event.zipCode", {
-            required: "Un code postal pour l'organisation est requis",
+            required: "Un code postal pour l'équipe est requis",
           })}
         />
         {formState.errors?.event?.zipCode && (
@@ -234,7 +234,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="city"
           placeholder="Ville"
           {...register("event.city", {
-            required: "Une ville pour l'organisation est requise",
+            required: "Une ville pour l'équipe est requise",
           })}
         />
         {formState.errors?.event?.city && (
@@ -249,7 +249,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           id="country"
           placeholder="Pays"
           {...register("event.country", {
-            required: "Un pays pour l'organisation est requis",
+            required: "Un pays pour l'équipe est requis",
           })}
         />
         {formState.errors?.event?.country && (

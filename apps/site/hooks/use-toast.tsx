@@ -1,7 +1,11 @@
+;
 // Inspired by react-hot-toast library
 import * as React from "react";
 
+
+
 import { ToastActionElement, type ToastProps } from "@/components/ui/toast";
+
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000;
@@ -136,6 +140,7 @@ interface Toast extends Omit<ToasterToast, "id"> {}
 
 function toast({ ...props }: Toast) {
   const id = genId();
+  console.log("🚀 ~ file: use-toast.tsx:139 ~ toast ~ id:", id);
 
   const update = (props: ToasterToast) =>
     dispatch({

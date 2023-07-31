@@ -148,11 +148,13 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
   return (
     <>
       <Loader loading={isSubmitting} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       <div className="flex w-full justify-between">
         <h1 className="admin-h1">Modifier les informations</h1>
         <div className="flex gap-2">
-          <Button type="submit" disabled={isSubmitting || !form.formState.isDirty}>
-            Mettre à jour
+          <Button type="submit" name="action" value="update_one" disabled={isSubmitting || !form.formState.isDirty}>
+            Mettre à jour !
           </Button>
           <Button
             variant="secondary"
@@ -247,8 +249,7 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
           </AlertDialog>
         </div>
       </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+     
           <h2 className="admin-h2">Infos générales</h2>
           <InputFormField
             control={form.control}
@@ -410,7 +411,7 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
             </Button>
           </div>
           <div className="flex w-full justify-end gap-2">
-            <Button disabled={isSubmitting || !form.formState.isDirty} type="submit">
+            <Button name="action" value="update_two" disabled={isSubmitting || !form.formState.isDirty} type="submit">
               Mettre à jour
             </Button>
           </div>

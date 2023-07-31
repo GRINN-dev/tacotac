@@ -53,7 +53,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
           defaultValue={name}
           placeholder="Obole"
           {...register("patch.name", {
-            required: "Un nom pour l'organisation est requis",
+            required: "Un nom pour l'équipe est requis",
           })}
         />
         {formState.errors?.patch?.name && (
@@ -68,7 +68,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
           placeholder="Description"
           defaultValue={description}
           {...register("patch.description", {
-            required: "Une description pour l'organisation est requise",
+            required: "Une description pour l'équipe est requise",
           })}
         />
         {formState.errors?.patch?.description && (
@@ -76,13 +76,13 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
         )}
       </div>
 
-      <div className="mt-4 grid  items-center gap-1.5">
+      {/* <div className="mt-4 grid  items-center gap-1.5">
         <Label htmlFor="logoUrl">Logo</Label>
         <Input type="text" id="logoUrl" placeholder="Logo" defaultValue={logoUrl} {...register("patch.logoUrl", {})} />
         {formState.errors?.patch?.logoUrl && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors.patch?.logoUrl?.message}</p>
         )}
-      </div>
+      </div> */}
       <div className="mt-8 flex gap-2">
         <button type="submit" className={buttonVariants({ size: "lg" })}>
           Mettre à jour

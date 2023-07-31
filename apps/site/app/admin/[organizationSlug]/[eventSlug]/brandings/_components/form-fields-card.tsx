@@ -6,6 +6,8 @@ import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@tacotacI
 import { ArrowDownCircle, ArrowUp, ArrowUpCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import {
@@ -23,8 +25,9 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 
+
 export const FormFieldCard: FC<{
-  onSuccess?: any;
+  onSuccess?: () => void;
   eventID?: string;
   formField?: GetEventBySlugQuery["eventBySlug"]["formFields"]["nodes"][number];
   isLast?: boolean;
@@ -33,7 +36,7 @@ export const FormFieldCard: FC<{
     defaultValues: {
       formField: {
         ...formField,
-        options: formField?.options?.join("|") as any,
+        options: formField?.options?.join(";") as any,
       },
     },
   });
@@ -53,7 +56,7 @@ export const FormFieldCard: FC<{
             input: {
               patch: {
                 ...data.formField,
-                options: (data.formField.options as any)?.split("|"),
+                options: (data.formField.options as any)?.split(";"),
               },
               id: formField.id,
             },
@@ -68,7 +71,7 @@ export const FormFieldCard: FC<{
             input: {
               formField: {
                 ...data.formField,
-                options: (data.formField.options as any)?.split("|"),
+                options: (data.formField.options as any)?.split(";"),
                 eventId: eventID,
               },
             },
@@ -78,7 +81,7 @@ export const FormFieldCard: FC<{
             setIsLoading(false);
             router.refresh();
           });
-    onSuccess();
+    onSuccess;
   };
 
   return (
@@ -153,7 +156,7 @@ export const FormFieldCard: FC<{
           htmlFor="is-required-for-inscriptor"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          Le champ est requi pour la personne qui fait l&apos;inscription
+          Le champ est requis pour la personne qui fait l&apos;inscription
         </label>
       </div>
       <div className="flex items-center space-x-2">
@@ -172,7 +175,7 @@ export const FormFieldCard: FC<{
           htmlFor="is-required-for-attendee"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          Le champ est requi pour la personne qui participe à l&apos;évènement
+          Le champ est requis pour la personne qui participe à l&apos;évènement
         </label>
       </div>
       <div className="flex items-center space-x-2">
@@ -200,7 +203,7 @@ export const FormFieldCard: FC<{
       {hasOptions && (
         <div className="mt-4 grid items-center gap-1.5">
           <Label htmlFor="options">
-            Options proposées au participant. Sur une ligne séparé par le symbole &apos;|&apos;
+            Options proposées au participant. Sur une ligne séparé par le symbole &apos; ; &apos;
           </Label>
           <Input type="text" id="options" {...register("formField.options", {})} />
           {formState.errors?.formField?.label && (
@@ -239,6 +242,7 @@ export const CreationDialog: FC<{ eventID: string }> = ({ eventID }) => {
       <DialogContent>
         <FormFieldCard
           onSuccess={() => {
+            console.log("test");
             setIsOpen(false);
           }}
           eventID={eventID}

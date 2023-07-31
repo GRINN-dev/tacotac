@@ -11,6 +11,8 @@ import {
 import { Copy } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -49,7 +51,7 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
       setIsInviting(false);
       toast({
         title: "Invitation envoyée",
-        description: "L'utilisateur a été invité à rejoindre l'organisation",
+        description: "L'utilisateur a été invité à rejoindre l'équipe",
       });
       router.refresh();
     });
@@ -126,7 +128,7 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
                       .then(() => {
                         toast({
                           title: "Membre retiré",
-                          description: "L'utilisateur a été retiré de l'organisation",
+                          description: "L'utilisateur a été retiré de l'équipe",
                         });
                         router.refresh();
                       });

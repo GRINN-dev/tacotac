@@ -1,4 +1,5 @@
 import { ChangeEvent, DragEvent, FC, useState } from "react";
+import { max } from "date-fns";
 
 
 
@@ -8,13 +9,21 @@ export interface FileDragNDropProps {
   title: string | null | undefined;
   id: string;
   acceptFormat: string;
-  placeholder:string
+  placeholder: string;
   onFileUpload: (files: File[]) => void;
+  maxSize?: number;
 }
 
 //random int between 1 and 1000000
 
-export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id, acceptFormat, placeholder }) => {
+export const FileDragNDrop: FC<FileDragNDropProps> = ({
+  title,
+  onFileUpload,
+  id,
+  acceptFormat,
+  placeholder,
+  maxSize,
+}) => {
   const [loading, setLoading] = useState(false);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
@@ -47,11 +56,17 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id,
   //permet de récup fichiers dans DocumentUploadCard
 
   const fileUploaded = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("🚀 ~ file: FileDragNDrop.tsx:59 ~ fileUploaded ~ e.target.files:", e.target.files[0].type);
+    console.log("🚀 ~ file: FileDragNDrop.tsx:59 ~ acceptFormat:", acceptFormat);
     // max file size 10mb
     const maxFileSize = 10 * 1024 * 1024;
     // alert if a file is too big
     if (e.target.files && e.target.files[0].size > maxFileSize) {
       alert("Le fichier est trop volumineux");
+      return;
+    }
+    if (!e.target.files || !e.target.files[0].type.includes("image")) {
+      alert("Le format du fichier n'est pas accepté");
       return;
     }
     const files = e.target.files;
