@@ -9,7 +9,6 @@ export function Toaster() {
   return (
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
-      console.log("🚀 ~ file: toaster.tsx:22 ~ id:", id);
 
         return (
           <Toast key={id} {...props}>

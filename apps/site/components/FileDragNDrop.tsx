@@ -56,8 +56,6 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({
   //permet de récup fichiers dans DocumentUploadCard
 
   const fileUploaded = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("🚀 ~ file: FileDragNDrop.tsx:59 ~ fileUploaded ~ e.target.files:", e.target.files[0].type);
-    console.log("🚀 ~ file: FileDragNDrop.tsx:59 ~ acceptFormat:", acceptFormat);
     // max file size 10mb
     const maxFileSize = 10 * 1024 * 1024;
     // alert if a file is too big

@@ -8,12 +8,15 @@ import { GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { uploadToS3 } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+
 
 const appearanceFormSchema = z.object({
   imageTicketUrl: z.string().nonempty({ message: "L'image de fond est obligatoire" }),
@@ -34,7 +37,6 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   });
   const router = useRouter();
   async function onSubmit(data: AppearanceFormValues) {
-    console.log("🚀 ~ file: ticket-theme-form.tsx:41 ~ onSubmit ~ data:", data);
     const img = await uploadToS3(image[0]);
     sdk()
       .UpdateEventBranding({
@@ -84,7 +86,6 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
               placeholder={"Glissez une image ici de type png, jpg, svg, webp et de taille inférieure à 10Mo"}
               maxSize={1024 * 1024}
               onFileUpload={(file) => {
-                console.log("file: ", file);
                 showImage(file);
                 setImage(file);
               }}

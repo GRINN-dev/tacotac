@@ -11,7 +11,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ScanPage = async () => {
   const { currentUser } = await serverSdk().GetCurrentUser();
-  console.log("🚀 ~ file: page.tsx:14 ~ ScanPage ~ currentUser:", currentUser);
   const headersList = headers();
   const userAgent = headersList.get("user-agent");
 
