@@ -25,13 +25,20 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
   );
 
   attendeeAndEvent[0]?.webhooks?.map(async (webhook: string) => {
-    await axios.post(webhook, {
-      state: state,
-      firstname: attendeeAndEvent[0].firstname,
-      lastname: attendeeAndEvent[0].lastname,
-      panel_number: attendeeAndEvent[0].panel_number,
-      event_name: attendeeAndEvent[0].name,
-      status: attendeeAndEvent[0].status,
-    });
+    try {
+      await axios.post(webhook, {
+        state: state,
+        firstname: attendeeAndEvent[0].firstname,
+        lastname: attendeeAndEvent[0].lastname,
+        panel_number: attendeeAndEvent[0].panel_number,
+        event_name: attendeeAndEvent[0].name,
+        status: attendeeAndEvent[0].status,
+      });
+    } catch (error) {
+      console.log(
+        "🚀 ~ file: send_webhook.ts:38 ~ attendeeAndEvent[0]?.webhooks?.map ~ error:",
+        error?.response?.data
+      );
+    }
   });
 };
