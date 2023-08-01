@@ -20,7 +20,7 @@ export const AddNewTeamCard: FC = () => {
   const router = useRouter();
   return (
     <>
-      <p className="">Vous n&apos;appartenez à aucune organisation pour le moment</p>
+      <p className="">Vous n&apos;appartenez à aucune équipe pour le moment</p>
       <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
         <DialogTrigger asChild>
           <Button variant="default" className="w-auto">
@@ -29,7 +29,7 @@ export const AddNewTeamCard: FC = () => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Créer une équipe</DialogTitle>
+            <DialogTitle>Créer une nouvelle équipe</DialogTitle>
             <DialogDescription>
               Ajouter une nouvelle équipe afin qu&apos;elle prenne en charge la gestion de ses propres évènements.
             </DialogDescription>

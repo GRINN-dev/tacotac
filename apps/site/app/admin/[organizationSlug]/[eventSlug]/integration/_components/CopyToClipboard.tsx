@@ -4,9 +4,18 @@ import { FC, useState } from "react";
 import { Check, Clipboard } from "lucide-react";
 import Prism from "prismjs";
 
+
+
+
+
+
 import "prismjs/themes/prism-okaidia.css";
+
+
+
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+
 
 export const CopyToClipboard: FC<{
   organisationSlug: string;
@@ -24,7 +33,9 @@ export const CopyToClipboard: FC<{
       box-shadow: 0 0 5px #ccc;
     }
   </style>
-  <iframe src={"https://dev.kaypi.fr/inscription/${organisationSlug}/${eventSlug}/iframe"} class="my-iframe" />
+
+  <iframe src="https://kaypi-app.vercel.app/inscription/${organisationSlug}/${eventSlug}/iframe" class="my-iframe" />
+
   `;
 
   // Returns a highlighted HTML string

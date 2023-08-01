@@ -172,7 +172,7 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
                     }}
                   >
                     <PlusCircle className="mr-2 h-5 w-5" />
-                    Créer une équipe
+                    Créer une nouvelle équipe
                   </CommandItem>
                 </DialogTrigger>
               </CommandGroup>
@@ -182,7 +182,7 @@ export const TeamSwitcher = ({ className, teams, organizationSlug }: TeamSwitche
       </Popover>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Créer une équipe</DialogTitle>
+          <DialogTitle>Créer une nouvelle équipe</DialogTitle>
           <DialogDescription>
             Ajouter une nouvelle équipe afin qu&apos;elle prenne en charge la gestion de ses propres évènements.
           </DialogDescription>

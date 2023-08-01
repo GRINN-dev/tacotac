@@ -229,7 +229,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             placeholder="Obole"
             defaultValue={name}
             {...register("patch.name", {
-              required: "Un nom pour l'organisation est requis",
+              required: "Un nom pour l'équipe est requis",
             })}
           />
           {formState.errors?.patch?.name && (

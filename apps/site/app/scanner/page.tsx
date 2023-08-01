@@ -1,6 +1,7 @@
+import { headers } from "next/headers";
 import Link from "next/link";
 import dayjs from "dayjs";
-import { PartyPopper } from "lucide-react";
+import { ArrowLeft, PartyPopper } from "lucide-react";
 
 import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ScanPage = async () => {
   const { currentUser } = await serverSdk().GetCurrentUser();
+  const headersList = headers();
+  const userAgent = headersList.get("user-agent");
+
+  let isMobileView = userAgent!.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i);
+
+  const eventsSorted = currentUser.events?.nodes?.sort((a, b) => dayjs(a.startsAt).diff(dayjs(b.startsAt)) || 0);
+  const returnCondition =
+    currentUser.events?.nodes?.length > 0 ? `/${currentUser.events?.nodes[0]?.organization?.slug}` : "/all";
   if (!currentUser) {
     return (
       <div className="bg-muted text-muted-foreground flex h-full w-full items-center justify-center">
@@ -28,14 +37,23 @@ const ScanPage = async () => {
 
   return (
     <ScrollArea className="container grid h-full items-center gap-6 ">
-      <h1 className="text-primary mt-10 text-3xl font-bold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-        Événements
-      </h1>
+      <div className="flex flex-row items-center  space-x-4">
+        {!isMobileView && (
+          <Link
+            href={"/admin" + returnCondition}
+            className={cn(buttonVariants({ variant: "ghost", size: "sm" })) + "  mt-10 "}
+          >
+            <ArrowLeft className="mr-2  h-4 w-4 " />
+          </Link>
+        )}
+        <h1 className="text-primary mt-10 text-3xl font-bold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+          Événements
+        </h1>
+      </div>
 
       <div className="grid gap-4 pb-8 sm:grid-cols-2 md:grid-cols-3">
-        {currentUser.events?.nodes
-          ?.sort((a, b) => dayjs(a.startsAt).diff(dayjs(b.startsAt)) || 0)
-          ?.map((event, i) => (
+        {eventsSorted.length > 0 ? (
+          eventsSorted?.map((event, i) => (
             <Link href={`scanner/event/${event.id}/scan`} key={i}>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -50,7 +68,10 @@ const ScanPage = async () => {
                 </CardContent>
               </Card>
             </Link>
-          ))}
+          ))
+        ) : (
+          <div className="ml-16 mt-4">{"Vous n'avez pas d'événement à venir"}</div>
+        )}
       </div>
     </ScrollArea>
   );

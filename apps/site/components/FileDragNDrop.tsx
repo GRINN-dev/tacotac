@@ -8,13 +8,21 @@ export interface FileDragNDropProps {
   title: string | null | undefined;
   id: string;
   acceptFormat: string;
-  placeholder:string
+  placeholder: string;
   onFileUpload: (files: File[]) => void;
+  maxSize?: number;
 }
 
 //random int between 1 and 1000000
 
-export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id, acceptFormat, placeholder }) => {
+export const FileDragNDrop: FC<FileDragNDropProps> = ({
+  title,
+  onFileUpload,
+  id,
+  acceptFormat,
+  placeholder,
+  maxSize,
+}) => {
   const [loading, setLoading] = useState(false);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
@@ -52,6 +60,10 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({ title, onFileUpload, id,
     // alert if a file is too big
     if (e.target.files && e.target.files[0].size > maxFileSize) {
       alert("Le fichier est trop volumineux");
+      return;
+    }
+    if (!e.target.files || !e.target.files[0].type.includes("image")) {
+      alert("Le format du fichier n'est pas accepté");
       return;
     }
     const files = e.target.files;

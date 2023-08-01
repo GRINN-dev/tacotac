@@ -215,7 +215,6 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               <FindAttendee
                 eventId={event.id}
                 onSelect={(attendee) => {
-                  console.log("attendee", attendee);
                   send({
                     type: "SELECT_ATTENDEE",
                     payload: attendee,

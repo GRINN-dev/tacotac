@@ -148,6 +148,8 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
   return (
     <>
       <Loader loading={isSubmitting} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       <div className="flex w-full justify-between">
         <h1 className="admin-h1">Modifier les informations</h1>
         <div className="flex gap-2">
@@ -247,8 +249,7 @@ export const UpdateForm: FC<{ event: GetEventBySlugQuery["eventBySlug"] }> = ({ 
           </AlertDialog>
         </div>
       </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+     
           <h2 className="admin-h2">Infos générales</h2>
           <InputFormField
             control={form.control}

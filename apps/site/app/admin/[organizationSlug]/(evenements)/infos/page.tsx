@@ -15,7 +15,7 @@ const InfosOrganizationPage = async ({ params: { organizationSlug } }) => {
 
   return (
     <section className="bg-background text-foreground container h-full w-full rounded-t-3xl pb-8 pt-6 md:py-10">
-      <h1 className="admin-h1">Mon organisation</h1>
+      <h1 className="admin-h1">Mon équipe</h1>
       <h2 className="admin-h2">Modifier les infos principale</h2>
 
       <UpdateOrganizationForm {...organization} />
