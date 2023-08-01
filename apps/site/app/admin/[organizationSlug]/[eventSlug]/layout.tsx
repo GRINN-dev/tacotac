@@ -99,7 +99,7 @@ export default async function Layout({
           </div>
         </div>
         <Separator className="my-6" />
-        <div className="mx-auto flex max-w-5xl gap-4">
+        <div className="mx-auto flex max-w-5xl gap-4 xl:max-w-none">
           <aside className="sticky top-0 hidden w-1/5 lg:block">
             <SidebarNav items={sidebarNavItems} />
           </aside>
