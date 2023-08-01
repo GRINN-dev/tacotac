@@ -2,10 +2,13 @@ import { LogsStatus } from "@tacotacIO/codegen";
 import dayjs from "dayjs";
 import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { serverSdk } from "@/lib/server-sdk";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+
 
 const LogsPage = async ({
   params: { organizationSlug, eventSlug },
@@ -54,7 +57,6 @@ const LogsPage = async ({
   };
 
   const SheetPayload = ({ payload }) => {
-    console.log("🚀 ~ file: page.tsx:48 ~ SheetPayload ~ payload:", payload);
     return (
       <Sheet>
         <SheetTrigger>
