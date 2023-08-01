@@ -14,6 +14,10 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     attendeeId?: string;
     sendEmailPayload: SendEmailPayload;
   };
+  console.log(
+    "🚀 ~ file: send_email.ts:14 ~ constsendEmail:Task= ~ payload:",
+    sendEmailPayload.mailData
+  );
 
   console.log("isDev: ", isDev);
   await sgMail
@@ -34,7 +38,7 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
         ));
     })
     .catch((error: any) => {
-      console.error(error);
+      console.error("🚀 ~send email error: ", error?.body);
     });
   if (isDev) {
     console.log(
