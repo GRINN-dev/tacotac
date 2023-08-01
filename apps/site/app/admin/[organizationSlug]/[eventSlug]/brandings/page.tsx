@@ -9,7 +9,7 @@ const InfosEventsBrandingsPage = async ({ params: { organizationSlug, eventSlug 
 
   return (
     <main className="container  pb-8 pt-6 md:py-10">
-      <h1 className="admin-h1">Peronnaliser l&apos;événement</h1>
+      <h1 className="admin-h1">Personnaliser l&apos;événement</h1>
 
       <Form eventBySlug={eventBySlug} />
     </main>

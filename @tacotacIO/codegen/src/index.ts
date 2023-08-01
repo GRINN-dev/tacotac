@@ -5517,7 +5517,7 @@ export type OrganizationFragmentFragment = { __typename?: 'Organization', id: an
 
 export type RegistrationFragmentFragment = { __typename?: 'Registration', eventId?: any | null, createdAt: any, hearAboutList?: Array<string | null> | null, id: any, updatedAt: any };
 
-export type MyUserFragment = { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string };
+export type MyUserFragment = { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, username: string };
 
 export type CreateAttendeeMutationVariables = Exact<{
   input: CreateAttendeeInput;
@@ -5748,7 +5748,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null } | null };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, username: string } | null } | null };
 
 export type ForgotPasswordMutationVariables = Exact<{
   input: ForgotPasswordInput;
@@ -5900,7 +5900,7 @@ export type GetOrganizationByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null }> }, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null }> } } | null };
+export type GetOrganizationByIdQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null }> }, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, username: string } | null }> } } | null };
 
 export type GetOrganizationBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -5914,7 +5914,7 @@ export type GetOrganizationBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null }> }, organizationInvitations: { __typename?: 'OrganizationInvitationsConnection', nodes: Array<{ __typename?: 'OrganizationInvitation', id: any, email?: string | null, role: OrganizationMembershipsRolesEnum, code?: string | null }> }, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number }, organization?: { __typename?: 'Organization', slug?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
+export type GetOrganizationBySlugQuery = { __typename?: 'Query', organizationBySlug?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, description?: string | null, logoUrl?: string | null, createdAt: any, updatedAt: any, organizationMemberships: { __typename?: 'OrganizationMembershipsConnection', nodes: Array<{ __typename?: 'OrganizationMembership', id: any, role: OrganizationMembershipsRolesEnum, createdAt: any, user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, username: string } | null }> }, organizationInvitations: { __typename?: 'OrganizationInvitationsConnection', nodes: Array<{ __typename?: 'OrganizationInvitation', id: any, email?: string | null, role: OrganizationMembershipsRolesEnum, code?: string | null }> }, events: { __typename?: 'EventsConnection', totalCount: number, nodes: Array<{ __typename?: 'Event', id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number }, organization?: { __typename?: 'Organization', slug?: string | null } | null }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null, endCursor?: any | null } } } | null };
 
 export type OrganizationForInvitationQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -5931,19 +5931,19 @@ export type GetAllUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetAllUsersQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', totalCount: number, edges: Array<{ __typename?: 'UsersEdge', node: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } }> } | null };
+export type GetAllUsersQuery = { __typename?: 'Query', users?: { __typename?: 'UsersConnection', totalCount: number, edges: Array<{ __typename?: 'UsersEdge', node: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, username: string } }> } | null };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string } | null };
+export type GetUserByIdQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, username: string } | null };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, events: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, startsAt?: any | null, city?: string | null, organization?: { __typename?: 'Organization', id: any, name: string } | null }> }, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl?: string | null } | null }> } } | null };
+export type GetCurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, firstname: string, lastname: string, avatarUrl?: string | null, isAdmin: boolean, createdAt: any, updatedAt: any, email: string, username: string, events: { __typename?: 'EventsConnection', nodes: Array<{ __typename?: 'Event', id: any, name: string, startsAt?: any | null, city?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null } | null }> }, organizations: { __typename?: 'UsersOrganizationsConnection', nodes: Array<{ __typename?: 'UsersOrganizationsRecord', role?: string | null, organization?: { __typename?: 'Organization', id: any, name: string, slug?: string | null, logoUrl?: string | null } | null }> } } | null };
 
 export const MyAttendeeFragmentDoc = `
     fragment MyAttendee on Attendee {
@@ -6051,6 +6051,7 @@ export const MyUserFragmentDoc = `
   createdAt
   updatedAt
   email
+  username
 }
     `;
 export const CreateAttendeeDocument = `
@@ -6830,6 +6831,7 @@ export const GetCurrentUserDocument = `
         organization {
           id
           name
+          slug
         }
       }
     }

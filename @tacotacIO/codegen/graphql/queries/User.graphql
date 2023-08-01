@@ -27,6 +27,7 @@ query GetCurrentUser {
         organization {
           id
           name
+          slug
         }
       }
     }
