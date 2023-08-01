@@ -7,4 +7,5 @@ fragment MyUser on User {
   createdAt
   updatedAt
   email
+  username
 }

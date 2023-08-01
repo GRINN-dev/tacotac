@@ -20,7 +20,7 @@ const CreateEventPage = async ({ params: { organizationSlug } }) => {
   if (organizationSlug === "all")
     return (
       <main className="container pb-8 pt-6 md:py-10">
-        <h1 className="admin-h1">Choisir une organisation</h1>
+        <h1 className="admin-h1">Choisir une équipe</h1>
         <div className="grid w-max gap-4">
           {currentUser?.organizations?.nodes?.map((organization) => (
             <Link key={organization.organization.id} href={`/admin/${organization.organization.slug}/create`}>

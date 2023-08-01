@@ -53,7 +53,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
           defaultValue={name}
           placeholder="Obole"
           {...register("patch.name", {
-            required: "Un nom pour l'organisation est requis",
+            required: "Un nom pour l'équipe est requis",
           })}
         />
         {formState.errors?.patch?.name && (
@@ -68,7 +68,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
           placeholder="Description"
           defaultValue={description}
           {...register("patch.description", {
-            required: "Une description pour l'organisation est requise",
+            required: "Une description pour l'équipe est requise",
           })}
         />
         {formState.errors?.patch?.description && (
