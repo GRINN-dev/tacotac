@@ -10,18 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import {
-  Button,
-  Checkbox,
-  Input,
-  Label,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui";
+import { Button, Checkbox, Input, Label, Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 
@@ -48,10 +37,14 @@ export const FormFieldCard: FC<{
   const hasPlaceholder = [FieldTypes.Email, FieldTypes.Text, FieldTypes.Textarea, FieldTypes.Date].includes(fieldType);
   const hasOptions = [FieldTypes.Select, FieldTypes.Checkbox].includes(fieldType);
 
-  const onSubmit = async (data: CreateFormFieldInput) => {
+  const onSubmit = async (data: CreateFormFieldInput, event) => {
+    console.log("🚀 ~ file: form-fields-card.tsx:41 ~ onSubmit ~ event:", event.nativeEvent.submitter.name);
+    console.log("🚀 ~ file: form-fields-card.tsx:52 ~ onSubmit ~ data:", data, formField);
     setIsLoading(true);
-    formField
-      ? sdk()
+
+    if (formField) {
+      if (event.nativeEvent.submitter.name === "button-save") {
+        sdk()
           .UpdateFormField({
             input: {
               patch: {
@@ -65,22 +58,38 @@ export const FormFieldCard: FC<{
             toast({ title: "Champ mis à jour", duration: 2000 });
             setIsLoading(false);
             router.refresh();
-          })
-      : sdk()
-          .CreateFormField({
+          });
+      } else if (event.nativeEvent.submitter.name === "button-delete") {
+        sdk()
+          .DeleteFormField({
             input: {
-              formField: {
-                ...data.formField,
-                options: (data.formField.options as any)?.split(";"),
-                eventId: eventID,
-              },
+              id: formField.id,
             },
           })
           .then(() => {
-            toast({ title: "Champ créé", duration: 2000 });
+            toast({ title: "Champ supprimer", duration: 2000 });
             setIsLoading(false);
             router.refresh();
           });
+      }
+    } else {
+      sdk()
+        .CreateFormField({
+          input: {
+            formField: {
+              ...data.formField,
+              options: (data.formField.options as any)?.split(";"),
+              eventId: eventID,
+            },
+          },
+        })
+        .then(() => {
+          toast({ title: "Champ créé", duration: 2000 });
+          setIsLoading(false);
+          router.refresh();
+        });
+    }
+
     onSuccess;
   };
 
@@ -212,9 +221,9 @@ export const FormFieldCard: FC<{
       )}
       <div className="mt-4 flex justify-between">
         <div className="flex gap-2">
-          <Button type="submit">Enregistrer</Button>
+          <Button type="submit" name="button-save">Enregistrer</Button>
           {formField?.isDeletable ? (
-            <Button type="button" variant="secondary">
+            <Button type="submit" name="button-delete" variant="secondary">
               Supprimer
             </Button>
           ) : (
