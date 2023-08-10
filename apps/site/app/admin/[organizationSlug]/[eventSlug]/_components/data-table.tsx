@@ -33,15 +33,7 @@ export const MyDataTable = ({
   };
   return (
     <>
-      <div
-        onClick={() =>
-          toast({
-            title: "Email bien envoyé 🏉",
-          })
-        }
-      >
-        Test
-      </div>
+     
       <DataTable
         columns={columns({
           organizationSlug,

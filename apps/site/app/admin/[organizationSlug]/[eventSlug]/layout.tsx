@@ -103,7 +103,7 @@ export default async function Layout({
           <aside className="sticky top-0 hidden w-1/5 lg:block">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="max-w-4xl flex-1 xl:max-w-none ">{children}</div>
+          <div className="w-full">{children}</div>
         </div>
       </ScrollArea>
     </>
