@@ -4,7 +4,6 @@ import { FC } from "react";
 import { GetEventBySlugQuery } from "@tacotacIO/codegen";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { CreationDialog, FormFieldCard, OrderFieldButton } from "./form-fields-card";
 
 export const EventFormFieldsForm: FC<{
