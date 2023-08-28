@@ -11,8 +11,9 @@ console.log(data)
   const { eventBySlug } = data;
 
   return (
-    <section className="container grid items-center gap-6 pt-6 pb-8 md:py-10 text-foreground bg-background"
-    style={...eventBySlug?.eventBranding?.cssVariables}
+    <section className="container grid items-center gap-6 pt-3 pb-8 md:py-4 text-foreground bg-background"
+      style={...eventBySlug?.eventBranding?.cssVariables}
+    data-theme="light"
     >
       <div className="flex flex-col items-baseline max-w-3xl gap-2 mx-auto">
         <div className="flex items-center">
