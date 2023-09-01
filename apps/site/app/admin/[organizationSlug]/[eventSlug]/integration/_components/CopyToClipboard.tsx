@@ -34,7 +34,7 @@ export const CopyToClipboard: FC<{
     }
   </style>
 
-  <iframe src="https://kaypi-app.vercel.app/inscription/${organisationSlug}/${eventSlug}/iframe" class="my-iframe" />
+  <iframe src="https://dev.kaypi.fr/inscription/${organisationSlug}/${eventSlug}/iframe" class="my-iframe" />
 
   `;
 

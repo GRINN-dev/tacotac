@@ -11,7 +11,7 @@ console.log(data)
   const { eventBySlug } = data;
 
   return (
-    <section className="container grid items-center gap-6 pt-3 pb-8 md:py-4 text-foreground bg-background"
+    <section className="container grid items-center gap-6 pt-3 pb-8 md:py-4 text-[#1e1d2d] bg-white"
       style={...eventBySlug?.eventBranding?.cssVariables}
     data-theme="light"
     >
