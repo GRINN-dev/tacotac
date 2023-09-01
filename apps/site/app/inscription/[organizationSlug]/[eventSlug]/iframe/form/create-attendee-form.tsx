@@ -1,10 +1,13 @@
 "use client";
 
 import { FC, useState } from "react";
+import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/codegen";
 import { CheckCircle2, MinusCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
+
+
 
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
@@ -15,6 +18,7 @@ import { CreateAttendeeSubForm } from "./create-attendee-sub-form";
 export const CreateAttendeeForm2: FC<{
   event: GetEventBySlugQuery["eventBySlug"];
 }> = ({ event }) => {
+  const router = useRouter();
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -89,7 +93,7 @@ export const CreateAttendeeForm2: FC<{
             }
 
             const res = await sdk().RegisterCompleteAttendees({ input: data });
-
+            router.refresh();
             res.registerCompleteAttendees?.registration?.id ? setSuccess(true) : setError("Une erreur est survenue");
             setLoading(false);
           }
