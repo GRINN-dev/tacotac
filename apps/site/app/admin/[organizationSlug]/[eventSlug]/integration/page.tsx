@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ export default async function Page({
     organizationSlug: string;
   };
 }) {
+  const headersList = headers();
   return (
     <section className="container pb-8 pt-6 md:py-10 ">
       <h1 className="admin-h1">Intégrer le formulaire d&apos;inscription</h1>
@@ -21,7 +23,7 @@ export default async function Page({
         Voir le formulaire d&apos;inscription
       </Link>
 
-      <CopyToClipboard eventSlug={eventSlug} organisationSlug={organizationSlug} />
+      <CopyToClipboard eventSlug={eventSlug} host={headersList.get("host")} organisationSlug={organizationSlug} />
 
       <IFrameViewer href={`/inscription/${organizationSlug}/${eventSlug}/iframe`} />
     </section>
