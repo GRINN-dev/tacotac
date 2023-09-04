@@ -24,7 +24,7 @@ export default async function Page({
         Voir le formulaire d&apos;inscription
       </Link>
 
-      <CopyToClipboard eventSlug={eventSlug} organisationSlug={organizationSlug} />
+      <CopyToClipboard eventSlug={eventSlug} host={headersList.get("host")} organisationSlug={organizationSlug} />
 
       <IFrameViewer href={`/inscription/${organizationSlug}/${eventSlug}/iframe`} />
     </section>
