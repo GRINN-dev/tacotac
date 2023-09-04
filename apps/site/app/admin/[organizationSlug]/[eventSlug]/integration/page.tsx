@@ -15,7 +15,6 @@ export default async function Page({
   };
 }) {
   const headersList = headers();
-  console.log("🚀 ~ file: page.tsx:18 ~ headersList:", headersList.get("host"));
   return (
     <section className="container pb-8 pt-6 md:py-10 ">
       <h1 className="admin-h1">Intégrer le formulaire d&apos;inscription</h1>
