@@ -20,7 +20,8 @@ import { buttonVariants } from "@/components/ui/button";
 export const CopyToClipboard: FC<{
   organisationSlug: string;
   eventSlug: string;
-}> = ({ organisationSlug, eventSlug }) => {
+  host: string;
+}> = ({ organisationSlug, eventSlug, host }) => {
   const [copied, setCopied] = useState(false);
   const code = `
   <style>
@@ -34,7 +35,7 @@ export const CopyToClipboard: FC<{
     }
   </style>
 
-  <iframe src="https://dev.kaypi.fr/inscription/${organisationSlug}/${eventSlug}/iframe" class="my-iframe" />
+  <iframe src="https://${host}/inscription/${organisationSlug}/${eventSlug}/iframe" class="my-iframe" />
 
   `;
 
