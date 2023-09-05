@@ -18,6 +18,10 @@ mutation UpdateOrganization($input: UpdateOrganizationInput!) {
 mutation InviteUserToOrganization($input: InviteToOrganizationInput!) {
   inviteToOrganization(input: $input) {
     clientMutationId
+    typeErrorCodeAndMessage {
+      errorCode
+      errorMessage
+    }
   }
 }
 

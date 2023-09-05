@@ -1,3 +1,5 @@
+import { toast } from "@/hooks/use-toast";
+
 import { serverSdk } from "@/lib/server-sdk";
 import { MyDataTable } from "./_components/data-table";
 
