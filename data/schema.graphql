@@ -2895,6 +2895,7 @@ type InviteToOrganizationPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+  typeErrorCodeAndMessage: TypeErrorCodeAndMessage
 }
 
 """
@@ -5662,6 +5663,13 @@ type TransferOrganizationOwnershipPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+type TypeErrorCodeAndMessage {
+  data: JSON
+  errorCode: String
+  errorMessage: String
+  errorValue: Int
 }
 
 """All input for the `updateAttendeeEmailAndSendEmail` mutation."""

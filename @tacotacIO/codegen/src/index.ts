@@ -2340,6 +2340,7 @@ export type InviteToOrganizationPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  typeErrorCodeAndMessage?: Maybe<TypeErrorCodeAndMessage>;
 };
 
 /** Logs from events */
@@ -4577,6 +4578,14 @@ export type TransferOrganizationOwnershipPayloadOrganizationEdgeArgs = {
   orderBy?: InputMaybe<Array<OrganizationsOrderBy>>;
 };
 
+export type TypeErrorCodeAndMessage = {
+  __typename?: 'TypeErrorCodeAndMessage';
+  data?: Maybe<Scalars['JSON']>;
+  errorCode?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']>;
+  errorValue?: Maybe<Scalars['Int']>;
+};
+
 /** All input for the `updateAttendeeEmailAndSendEmail` mutation. */
 export type UpdateAttendeeEmailAndSendEmailInput = {
   attendees: Array<InputMaybe<AttendeePatch>>;
@@ -5685,7 +5694,7 @@ export type InviteUserToOrganizationMutationVariables = Exact<{
 }>;
 
 
-export type InviteUserToOrganizationMutation = { __typename?: 'Mutation', inviteToOrganization?: { __typename?: 'InviteToOrganizationPayload', clientMutationId?: string | null } | null };
+export type InviteUserToOrganizationMutation = { __typename?: 'Mutation', inviteToOrganization?: { __typename?: 'InviteToOrganizationPayload', clientMutationId?: string | null, typeErrorCodeAndMessage?: { __typename?: 'TypeErrorCodeAndMessage', errorCode?: string | null, errorMessage?: string | null } | null } | null };
 
 export type RemoveUserFromOrganizationMutationVariables = Exact<{
   input: RemoveFromOrganizationInput;
@@ -6281,6 +6290,10 @@ export const InviteUserToOrganizationDocument = `
     mutation InviteUserToOrganization($input: InviteToOrganizationInput!) {
   inviteToOrganization(input: $input) {
     clientMutationId
+    typeErrorCodeAndMessage {
+      errorCode
+      errorMessage
+    }
   }
 }
     `;
