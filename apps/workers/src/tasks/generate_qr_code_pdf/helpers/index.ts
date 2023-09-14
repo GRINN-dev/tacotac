@@ -14,6 +14,12 @@ import {
 } from "./type";
 import { WithPgClient } from "graphile-worker";
 import { createHtmlTemplate } from "../../../utils/createHtmlTemplate";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone"; // dependent on utc plugin
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Europe/Paris");
 
 interface SendEmailPayload {
   mailData: MailDataRequired;
@@ -46,13 +52,13 @@ export const generateDocsForAttendees = async (
     first_name: rowData.firstname,
     last_name: rowData.lastname,
     ticket_number: rowData.ticket_number,
-    string_day: dayjs(rowData.starts_at).format("dddd"),
-    day: dayjs(rowData.starts_at).format("DD"),
-    month: dayjs(rowData.starts_at).format("MMMM"),
-    year: dayjs(rowData.starts_at).year(),
-    starts_at: dayjs(rowData.starts_at).format("HH:mm"),
+    string_day: dayjs.tz(rowData.starts_at).format("dddd"),
+    day: dayjs.tz(rowData.starts_at).format("DD"),
+    month: dayjs.tz(rowData.starts_at).format("MMMM"),
+    year: dayjs.tz(rowData.starts_at).year(),
+    starts_at: dayjs.tz(rowData.starts_at).format("HH:mm"),
     ends_at: rowData.ends_at
-      ? dayjs(rowData.ends_at).format("HH:mm")
+      ? dayjs.tz(rowData.ends_at).format("HH:mm")
       : undefined,
     place_name: rowData.place_name,
     address: rowData.address_line_1,
@@ -121,12 +127,12 @@ export const generateDocsForAttendees = async (
         Last_Name: rowData.lastname,
         Ticket_Number: rowData.ticket_number,
         Logo: rowData.logo,
-        String_Day: dayjs(rowData.starts_at).format("dddd"),
-        Day: dayjs(rowData.starts_at).format("DD"),
-        Month: dayjs(rowData.starts_at).format("MMMM"),
-        Year: dayjs(rowData.starts_at).year(),
-        Starts_At: dayjs(rowData.starts_at).format("HH:mm"),
-        Ends_At: dayjs(rowData.ends_at).format("HH:mm"),
+        String_Day: dayjs.tz(rowData.starts_at).format("dddd"),
+        Day: dayjs.tz(rowData.starts_at).format("DD"),
+        Month: dayjs.tz(rowData.starts_at).format("MMMM"),
+        Year: dayjs.tz(rowData.starts_at).year(),
+        Starts_At: dayjs.tz(rowData.starts_at).format("HH:mm"),
+        Ends_At: dayjs.tz(rowData.ends_at).format("HH:mm"),
         Place_Name: rowData.place_name,
         Address: rowData.address_line_1,
         Detail: rowData.details,
