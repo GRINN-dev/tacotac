@@ -8,8 +8,6 @@ import { GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { uploadToS3 } from "@/lib/utils";
 import { FileDragNDrop } from "@/components/FileDragNDrop";
@@ -18,9 +16,7 @@ import { Form } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 
 const appearanceFormSchema = z.object({
-
-  imageTicketUrl: z.string().nonempty({ message: "L'image de fond est obligatoire" }),
-
+  imageTicketUrl: z.string().nullish(),
 });
 
 type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
@@ -28,7 +24,6 @@ type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
 export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySlug"]["eventBranding"] }> = ({
   eventBranding,
 }) => {
-
   const [image, setImage] = useState<File[]>();
 
   const [imageUplaod, setImageUplaod] = useState<File[] | null>(null);
@@ -41,7 +36,6 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   });
   const router = useRouter();
   async function onSubmit(data: AppearanceFormValues) {
-
     const img = await uploadToS3(imageUplaod[0]);
 
     sdk()
@@ -78,7 +72,6 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="flex items-center justify-center space-x-4">
-
           <Image
             src={(image as any) || eventBranding?.imageTicketUrl || ""}
             width={300}
