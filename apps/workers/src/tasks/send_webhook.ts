@@ -15,7 +15,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
 
   const { rows: attendeeAndEvent } = await withPgClient(pgClient =>
     pgClient.query(
-      `select atts.firstname, atts.lastname, atts.panel_number, atts.status, evts.name, evts.webhooks 
+      `select atts.firstname, atts.lastname, atts.email, atts.panel_number, atts.status, evts.name, evts.webhooks 
           from publ.attendees atts
           inner join publ.registrations regs on regs.id = atts.registration_id
           inner join publ.events evts on evts.id = regs.event_id
@@ -30,6 +30,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
         state: state,
         firstname: attendeeAndEvent[0].firstname,
         lastname: attendeeAndEvent[0].lastname,
+        email: attendeeAndEvent[0].email,
         panel_number: attendeeAndEvent[0].panel_number,
         event_name: attendeeAndEvent[0].name,
         status: attendeeAndEvent[0].status,
