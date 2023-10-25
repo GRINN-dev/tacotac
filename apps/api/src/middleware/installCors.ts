@@ -9,6 +9,7 @@ export const installCors = (app: Express) => {
         "https://kaypi-git-development.vercel.app/",
         // regexp for kaypi + anything + 'vercel.app'
         /https:\/\/kaypi.*.vercel.app$/,
+        /https:\/\/kaypi.fr$/,
         // kaypi.fr and all its subdomains
         /\.kaypi\.fr$/,
       ],
