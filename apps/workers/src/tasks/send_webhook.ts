@@ -23,6 +23,10 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
       [attendeeId]
     )
   );
+  console.log(
+    "🚀 ~ file: send_webhook.ts:26 ~ constsendWebHook:Task= ~ attendeeAndEvent:",
+    attendeeAndEvent
+  );
   //test
   attendeeAndEvent[0]?.webhooks?.map(async (webhook: string) => {
     try {
