@@ -14,3 +14,5 @@ create trigger _500_send_webhook___update_attendee
   for each row
   execute procedure priv.send_webhook___update_attendee();
 comment on function priv.send_webhook___update_attendee() is E'Ensures that every update attendee send webhook to the client.';
+
+
