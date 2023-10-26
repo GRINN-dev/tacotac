@@ -2,6 +2,7 @@
 
 import { FC } from "react";
 import { GetEventBySlugQuery } from "@tacotacIO/codegen";
+import { format } from "date-fns";
 import { CSVDownload, CSVLink } from "react-csv";
 
 interface ExportCsvProps {
@@ -23,14 +24,14 @@ export const ExportCsv: FC<ExportCsvProps> = ({ users, name }) => {
         status,
         qrCodeUrl,
         pdfUrl,
-        createdAt,
-        updatedAt,
+        format(new Date(createdAt), "dd-MM-yyyy à HH:mm"),
+        format(new Date(updatedAt), "dd-MM-yyyy à HH:mm"),
       ]
     ),
   ];
   return (
     <CSVLink
-      className="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors rounded-md focus-visible:ring-ring ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+      className="focus-visible:ring-ring ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
       filename={"participants_" + name + ".csv"}
       data={csvData}
     >

@@ -1,5 +1,6 @@
 import { Task } from "graphile-worker";
 import axios from "axios";
+import dayjs from "dayjs";
 enum stateWebhook {
   RESA_BILLET = "RESA_BILLET",
   MAJ_INSCRIPTION = "MAJ_INSCRIPTION",
@@ -16,7 +17,8 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
 
   const { rows: attendeeAndEvent } = await withPgClient(pgClient =>
     pgClient.query(
-      `select atts.firstname, atts.lastname, atts.email, atts.panel_number, atts.status, evts.name, evts.webhooks, evts.id 
+      `select atts.firstname, atts.lastname, atts.email, atts.panel_number, atts.status, atts.created_at, atts.updated_at,
+          evts.name, evts.webhooks, evts.id 
           from publ.attendees atts
           inner join publ.registrations regs on regs.id = atts.registration_id
           inner join publ.events evts on evts.id = regs.event_id
@@ -27,20 +29,12 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
 
   const { rows: formFieldsDetails } = await withPgClient(pgClient =>
     pgClient.query(
-      `SELECT  ffs.label, unnest(array_agg(DISTINCT affs.value)) AS values
-      FROM publ.attendee_form_fields affs
-      INNER JOIN publ.form_fields ffs ON ffs.event_id = $1
-      WHERE affs.attendee_id = $2  AND affs.field_id = ffs.id
-      GROUP BY affs.attendee_id, ffs.label;`,
+      `select  ffs.label, unnest(array_agg(distinct affs.value)) as values
+      from publ.attendee_form_fields affs
+      inner join publ.form_fields ffs ON ffs.event_id = $1
+      where affs.attendee_id = $2  AND affs.field_id = ffs.id
+      group by affs.attendee_id, ffs.label;`,
       [attendeeAndEvent[0].id, attendeeId]
-    )
-  );
-  console.log(
-    "🚀 ~ file: send_webhook.ts:38 ~ constsendWebHook:Task= ~ formFieldsDetails:",
-    attendeeAndEvent,
-    formFieldsDetails.filter(
-      formFieldDetail =>
-        !["Civilité", "Email", "Nom", "Prénom"].includes(formFieldDetail.label)
     )
   );
 
@@ -58,12 +52,21 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
         panel_number: attendeeAndEvent[0].panel_number,
         event_name: attendeeAndEvent[0].name,
         status: attendeeAndEvent[0].status,
-        additional_information: formFieldsDetails.filter(
-          formFieldDetail =>
-            !["Civilité", "Email", "Nom", "Prénom"].includes(
-              formFieldDetail.label
-            )
+        created_at: dayjs(attendeeAndEvent[0].created_att).format(
+          "DD-MM-YYYY à HH:mm"
         ),
+        updated_at: dayjs(attendeeAndEvent[0].updated_at).format(
+          "DD-MM-YYYY à HH:mm"
+        ),
+        additional_information:
+          formFieldsDetails?.length > 4
+            ? formFieldsDetails.filter(
+                formFieldDetail =>
+                  !["Civilité", "Email", "Nom", "Prénom"].includes(
+                    formFieldDetail.label
+                  )
+              )
+            : "pas d'infos supplémentaires",
       });
     } catch (error) {
       console.log(
