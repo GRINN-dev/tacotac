@@ -3,17 +3,16 @@
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
-import { FieldTypes, GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/codegen";
+import { GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/codegen";
 import { CheckCircle2, MinusCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
-import { Button, Input, Label } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreateAttendeeSubForm } from "./create-attendee-sub-form";
+
 
 export const CreateAttendeeForm2: FC<{
   event: GetEventBySlugQuery["eventBySlug"];
