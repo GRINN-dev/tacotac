@@ -61,7 +61,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
         status: attendeeAndEvent[0].status,
         is_vip: attendeeAndEvent[0].is_vip,
         created_at: dayjs
-          .tz(attendeeAndEvent[0].created_att)
+          .tz(attendeeAndEvent[0].created_at)
           .format("DD-MM-YYYY à HH:mm"),
         updated_at: dayjs
           .tz(attendeeAndEvent[0].updated_at)
