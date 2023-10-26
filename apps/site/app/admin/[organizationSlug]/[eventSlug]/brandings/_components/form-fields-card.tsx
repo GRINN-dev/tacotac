@@ -3,17 +3,25 @@
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@tacotacIO/codegen";
-import { ArrowDownCircle, ArrowUp, ArrowUpCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-
-
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { Button, Checkbox, Input, Label, Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
+import {
+  Button,
+  Checkbox,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-
 
 export const FormFieldCard: FC<{
   onSuccess?: () => void;
@@ -38,8 +46,6 @@ export const FormFieldCard: FC<{
   const hasOptions = [FieldTypes.Select, FieldTypes.Checkbox].includes(fieldType);
 
   const onSubmit = async (data: CreateFormFieldInput, event) => {
-    console.log("🚀 ~ file: form-fields-card.tsx:41 ~ onSubmit ~ event:", event.nativeEvent.submitter.name);
-    console.log("🚀 ~ file: form-fields-card.tsx:52 ~ onSubmit ~ data:", data, formField);
     setIsLoading(true);
 
     if (formField) {
@@ -221,7 +227,9 @@ export const FormFieldCard: FC<{
       )}
       <div className="mt-4 flex justify-between">
         <div className="flex gap-2">
-          <Button type="submit" name="button-save">Enregistrer</Button>
+          <Button type="submit" name="button-save">
+            Enregistrer
+          </Button>
           {formField?.isDeletable ? (
             <Button type="submit" name="button-delete" variant="secondary">
               Supprimer
