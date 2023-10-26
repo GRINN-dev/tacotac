@@ -1,6 +1,12 @@
 import { Task } from "graphile-worker";
 import axios from "axios";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Europe/Paris");
+
 enum stateWebhook {
   RESA_BILLET = "RESA_BILLET",
   MAJ_INSCRIPTION = "MAJ_INSCRIPTION",
@@ -18,7 +24,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
   const { rows: attendeeAndEvent } = await withPgClient(pgClient =>
     pgClient.query(
       `select atts.firstname, atts.lastname, atts.email, atts.panel_number, atts.status, 
-          atts.created_at AT TIME ZONE 'Europe/Paris', atts.updated_at AT TIME ZONE 'Europe/Paris', atts.is_vip,
+          atts.created_at, atts.updated_at, atts.is_vip,
           evts.name, evts.webhooks, evts.id 
           from publ.attendees atts
           inner join publ.registrations regs on regs.id = atts.registration_id
@@ -54,12 +60,12 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
         event_name: attendeeAndEvent[0].name,
         status: attendeeAndEvent[0].status,
         is_vip: attendeeAndEvent[0].is_vip,
-        created_at: dayjs(attendeeAndEvent[0].created_att).format(
-          "DD-MM-YYYY à HH:mm"
-        ),
-        updated_at: dayjs(attendeeAndEvent[0].updated_at).format(
-          "DD-MM-YYYY à HH:mm"
-        ),
+        created_at: dayjs
+          .tz(attendeeAndEvent[0].created_att)
+          .format("DD-MM-YYYY à HH:mm"),
+        updated_at: dayjs
+          .tz(attendeeAndEvent[0].updated_at)
+          .format("DD-MM-YYYY à HH:mm"),
         additional_information:
           formFieldsDetails?.length > 4
             ? formFieldsDetails.filter(
