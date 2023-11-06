@@ -55,7 +55,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
               )
           )
           .reduce((acc, curr) => ({ ...acc, [curr.label]: curr.values }), {})
-      : {};
+      : "pas de données supplémentaires";
 
   //test
   attendeeAndEvent[0]?.webhooks?.map(async (webhook: string) => {
