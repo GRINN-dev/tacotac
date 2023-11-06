@@ -36,7 +36,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
 
   const { rows: formFieldsDetails } = await withPgClient(pgClient =>
     pgClient.query(
-      `select  ffs.label, unnest(array_agg(distinct affs.value)) as values
+      `select ffs.label, unnest(array_agg(distinct affs.value)) as values
       from publ.attendee_form_fields affs
       inner join publ.form_fields ffs ON ffs.event_id = $1
       where affs.attendee_id = $2  AND affs.field_id = ffs.id
@@ -44,6 +44,18 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
       [attendeeAndEvent[0].id, attendeeId]
     )
   );
+
+  const additional_information =
+    formFieldsDetails?.length > 4
+      ? formFieldsDetails
+          .filter(
+            formFieldDetail =>
+              !["Civilité", "Email", "Nom", "Prénom"].includes(
+                formFieldDetail.label
+              )
+          )
+          .reduce((acc, curr) => ({ ...acc, [curr.label]: curr.values }), {})
+      : {};
 
   //test
   attendeeAndEvent[0]?.webhooks?.map(async (webhook: string) => {
@@ -66,15 +78,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
         updated_at: dayjs
           .tz(attendeeAndEvent[0].updated_at)
           .format("DD-MM-YYYY à HH:mm"),
-        additional_information:
-          formFieldsDetails?.length > 4
-            ? formFieldsDetails.filter(
-                formFieldDetail =>
-                  !["Civilité", "Email", "Nom", "Prénom"].includes(
-                    formFieldDetail.label
-                  )
-              )
-            : "pas d'infos supplémentaires",
+        ...additional_information,
       });
     } catch (error) {
       console.log(
