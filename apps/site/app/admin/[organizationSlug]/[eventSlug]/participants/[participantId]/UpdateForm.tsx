@@ -80,22 +80,24 @@ export const UpdateAttendeeForm: FC<{
   return (
     <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
       <Loader loading={isSubmitting} />
+      
       <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"patch.status"}
           control={control}
           render={({ field: { onChange, onBlur, value, ref, name }, fieldState: { error } }) => (
             <>
-              <Select defaultValue={status} onValueChange={onChange}>
+              <Select defaultValue={attendee.status} onValueChange={onChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Choisir un status" />
                 </SelectTrigger>
-                <SelectContent className="w-[180px]">
+                <SelectContent defaultValue={attendee.status} className="w-[180px]">
                   <SelectGroup>
                     <SelectLabel>Status</SelectLabel>
-                    <SelectItem value={AttendeeStatus.Idle}>En attente</SelectItem>
+                    <SelectItem value={AttendeeStatus.Idle}>Inscrits</SelectItem>
                     <SelectItem value={AttendeeStatus.Cancelled}>Annulé</SelectItem>
-                    <SelectItem value={AttendeeStatus.Confirmed}>Confirmé</SelectItem>
+                    <SelectItem value={AttendeeStatus.Confirmed}>Appairé</SelectItem>
+                    <SelectItem value={AttendeeStatus.TicketScan}>Présent</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -151,7 +153,7 @@ export const UpdateAttendeeForm: FC<{
         )}
       </div>
 
-      <div className="mt-4 grid items-center gap-1.5">
+      {/* <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="isVip">{"Vip"}</Label>
         <Input
           type="checkbox"
@@ -163,7 +165,7 @@ export const UpdateAttendeeForm: FC<{
         {formState.errors?.patch?.isVip && (
           <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.isVip?.message}</p>
         )}
-      </div>
+      </div> */}
       <div className="mt-4 grid items-center gap-1.5">
         <Label htmlFor="panelNumber">{"Numéro de panneau"}</Label>
         <Input
