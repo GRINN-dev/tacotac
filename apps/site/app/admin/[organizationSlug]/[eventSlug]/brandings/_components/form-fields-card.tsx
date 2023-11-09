@@ -10,18 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import {
-  Button,
-  Checkbox,
-  Input,
-  Label,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui";
+import { Button, Checkbox, Input, Label, Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 
@@ -50,11 +39,6 @@ export const FormFieldCard: FC<{
 
   const onSubmit = async (data: CreateFormFieldInput, event) => {
     setIsLoading(true);
-    console.log(
-      "🚀 ~ file: form-fields-card.tsx:53 ~ onSubmit ~ event.nativeEvent.submitter.name:",
-      event.nativeEvent.submitter.name,
-      data.formField
-    );
     delete data.formField.id;
     delete data.formField.eventId;
 

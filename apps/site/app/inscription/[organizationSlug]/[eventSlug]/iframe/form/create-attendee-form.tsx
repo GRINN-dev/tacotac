@@ -74,16 +74,6 @@ export const CreateAttendeeForm2: FC<{
               }
 
               for (let j = 0; j < data.completeAttendees[i].attendeeFormFields.length; j++) {
-                console.log("🚀 ~ file: create-attendee-form.tsx:76 ~ j:", j);
-                console.log(
-                  "🚀 ~ file: create-attendee-form.tsx:77 ~ onSubmit={handleSubmit ~ data.completeAttendees:",
-                  data?.completeAttendees[i]?.attendeeFormFields[j]?.fieldId
-                );
-                console.log(
-                  "🚀 ~ file: create-attendee-form.tsx:82 ~ onSubmit={handleSubmit ~ emailFormFieldId:",
-                  emailFormFieldId
-                );
-
                 if (data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.fieldId === emailFormFieldId) {
                   data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
@@ -101,7 +91,6 @@ export const CreateAttendeeForm2: FC<{
                     data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.value
                   );
                 }
-               
               }
             }
 
