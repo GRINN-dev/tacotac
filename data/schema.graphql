@@ -23,8 +23,15 @@ type AcceptInvitationToOrganizationPayload {
   query: Query
 }
 
+type AdditionalInformation {
+  label: String
+  values: String
+}
+
 """Event from organizations"""
 type Attendee {
+  additionalData: [AdditionalInformation]
+
   """Reads and enables pagination through a set of `AttendeeFormField`."""
   attendeeFormFields(
     """Read all values in the set after (below) this cursor."""
