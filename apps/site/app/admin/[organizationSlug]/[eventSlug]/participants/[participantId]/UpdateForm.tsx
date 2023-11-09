@@ -7,8 +7,10 @@ import { AttendeeStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@taco
 import { Trash } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
-import { cn } from "@/lib/utils";
+import { cn, transformStatus } from "@/lib/utils";
 import { Loader } from "@/components/loader";
 import {
   AlertDialog,
@@ -80,7 +82,7 @@ export const UpdateAttendeeForm: FC<{
   return (
     <form onSubmit={onSubmit} className={cn("mt-4", isSubmitting && "animate-pulse")}>
       <Loader loading={isSubmitting} />
-      
+
       <div className="mt-4 grid items-center gap-1.5">
         <Controller
           name={"patch.status"}
@@ -94,10 +96,16 @@ export const UpdateAttendeeForm: FC<{
                 <SelectContent defaultValue={attendee.status} className="w-[180px]">
                   <SelectGroup>
                     <SelectLabel>Status</SelectLabel>
-                    <SelectItem value={AttendeeStatus.Idle}>Inscrits</SelectItem>
-                    <SelectItem value={AttendeeStatus.Cancelled}>Annulé</SelectItem>
-                    <SelectItem value={AttendeeStatus.Confirmed}>Appairé</SelectItem>
-                    <SelectItem value={AttendeeStatus.TicketScan}>Présent</SelectItem>
+                    <SelectItem value={AttendeeStatus.Idle}>{transformStatus(AttendeeStatus.Idle)}</SelectItem>
+                    <SelectItem value={AttendeeStatus.Cancelled}>
+                      {transformStatus(AttendeeStatus.Cancelled)}
+                    </SelectItem>
+                    <SelectItem value={AttendeeStatus.Confirmed}>
+                      {transformStatus(AttendeeStatus.Confirmed)}
+                    </SelectItem>
+                    <SelectItem value={AttendeeStatus.TicketScan}>
+                      {transformStatus(AttendeeStatus.TicketScan)}
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

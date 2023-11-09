@@ -8,19 +8,15 @@ import { AttendeeStatus, GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { ArrowUpDown, Crown, ExternalLink, MoreHorizontal, RefreshCcw, Send } from "lucide-react";
 
+
+
 import { sdk } from "@/lib/sdk";
-import { cn } from "@/lib/utils";
+import { cn, transformStatus } from "@/lib/utils";
 import { Filter } from "@/components/data-table/data-table-toolbar";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 
 export const columns: (input: {
   organizationSlug: string;
@@ -111,17 +107,7 @@ export const columns: (input: {
     cell: ({ row }) => {
       return (
         <Badge variant="outline">
-          {row.original.status === AttendeeStatus.Cancelled
-            ? "Annulé"
-            : row.original.status === AttendeeStatus.Confirmed
-            ? "Confirmé"
-            : row.original.status === AttendeeStatus.Idle
-            ? "En attente"
-            : row.original.status === AttendeeStatus.PanelScan
-            ? "Panneau scanné"
-            : row.original.status === AttendeeStatus.TicketScan
-            ? "Ticket scanné"
-            : "Inconnu"}
+          { transformStatus(row.original.status)}
         </Badge>
       );
     },

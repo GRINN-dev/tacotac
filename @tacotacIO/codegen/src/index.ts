@@ -47,9 +47,16 @@ export type AcceptInvitationToOrganizationPayload = {
   query?: Maybe<Query>;
 };
 
+export type AdditionalInformation = {
+  __typename?: 'AdditionalInformation';
+  label?: Maybe<Scalars['String']>;
+  values?: Maybe<Scalars['String']>;
+};
+
 /** Event from organizations */
 export type Attendee = {
   __typename?: 'Attendee';
+  additionalData?: Maybe<Array<Maybe<AdditionalInformation>>>;
   /** Reads and enables pagination through a set of `AttendeeFormField`. */
   attendeeFormFields: AttendeeFormFieldsConnection;
   civility: Scalars['String'];
@@ -5514,7 +5521,7 @@ export type VerifyEmailPayload = {
   query?: Maybe<Query>;
 };
 
-export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null };
+export type MyAttendeeFragment = { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null };
 
 export type EventBrandingFragmentFragment = { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null, imageTicketUrl?: string | null };
 
@@ -5533,21 +5540,21 @@ export type CreateAttendeeMutationVariables = Exact<{
 }>;
 
 
-export type CreateAttendeeMutation = { __typename?: 'Mutation', createAttendee?: { __typename?: 'CreateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null } | null } | null };
+export type CreateAttendeeMutation = { __typename?: 'Mutation', createAttendee?: { __typename?: 'CreateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null } | null } | null };
 
 export type UpdateAttendeeMutationVariables = Exact<{
   input: UpdateAttendeeInput;
 }>;
 
 
-export type UpdateAttendeeMutation = { __typename?: 'Mutation', updateAttendee?: { __typename?: 'UpdateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null } | null } | null };
+export type UpdateAttendeeMutation = { __typename?: 'Mutation', updateAttendee?: { __typename?: 'UpdateAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null } | null } | null };
 
 export type DeleteAttendeeMutationVariables = Exact<{
   input: DeleteAttendeeInput;
 }>;
 
 
-export type DeleteAttendeeMutation = { __typename?: 'Mutation', deleteAttendee?: { __typename?: 'DeleteAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null } | null } | null };
+export type DeleteAttendeeMutation = { __typename?: 'Mutation', deleteAttendee?: { __typename?: 'DeleteAttendeePayload', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null } | null } | null };
 
 export type RegisterAttendeesMutationVariables = Exact<{
   input: RegisterAttendeesInput;
@@ -5797,7 +5804,7 @@ export type GetAttendeeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, attendeeFormFields: { __typename?: 'AttendeeFormFieldsConnection', nodes: Array<{ __typename?: 'AttendeeFormField', value?: string | null, field?: { __typename?: 'FormField', name?: string | null, id: any, label: string } | null }> }, registration?: { __typename?: 'Registration', id: any, attendeesList: Array<{ __typename?: 'Attendee', email?: string | null, firstname: string, lastname: string, isInscriptor?: boolean | null }> } | null } | null };
+export type GetAttendeeByIdQuery = { __typename?: 'Query', attendee?: { __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, attendeeFormFields: { __typename?: 'AttendeeFormFieldsConnection', nodes: Array<{ __typename?: 'AttendeeFormField', value?: string | null, field?: { __typename?: 'FormField', name?: string | null, id: any, label: string } | null }> }, registration?: { __typename?: 'Registration', id: any, attendeesList: Array<{ __typename?: 'Attendee', email?: string | null, firstname: string, lastname: string, isInscriptor?: boolean | null }> } | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null } | null };
 
 export type GetAttendeesWithoutMailByRegistrationIdQueryVariables = Exact<{
   registrationId: Scalars['UUID'];
@@ -5811,7 +5818,7 @@ export type GetAttendeeByTicketNumberQueryVariables = Exact<{
 }>;
 
 
-export type GetAttendeeByTicketNumberQuery = { __typename?: 'Query', attendeeByTicketNumber?: { __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null } | null };
+export type GetAttendeeByTicketNumberQuery = { __typename?: 'Query', attendeeByTicketNumber?: { __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null } | null };
 
 export type SearchAttendeeQueryVariables = Exact<{
   search: Scalars['String'];
@@ -5819,7 +5826,7 @@ export type SearchAttendeeQueryVariables = Exact<{
 }>;
 
 
-export type SearchAttendeeQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null }> } | null };
+export type SearchAttendeeQuery = { __typename?: 'Query', attendees?: { __typename?: 'AttendeesConnection', nodes: Array<{ __typename?: 'Attendee', eventId?: any | null, id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, registration?: { __typename?: 'Registration', id: any, eventId?: any | null } | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null }> } | null };
 
 export type GetAllEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5849,7 +5856,7 @@ export type GetEventByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null, imageTicketUrl?: string | null } | null, formFields: { __typename?: 'FormFieldsConnection', nodes: Array<{ __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number }> }, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
+export type GetEventByIdQuery = { __typename?: 'Query', event?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null, imageTicketUrl?: string | null } | null, formFields: { __typename?: 'FormFieldsConnection', nodes: Array<{ __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number }> }, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
 export type GetEventBySlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -5857,7 +5864,7 @@ export type GetEventBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, formFields: { __typename?: 'FormFieldsConnection', nodes: Array<{ __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number }> }, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null, imageTicketUrl?: string | null } | null, organization?: { __typename?: 'Organization', slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null }> } } | null };
+export type GetEventBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, capacity?: number | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, formFields: { __typename?: 'FormFieldsConnection', nodes: Array<{ __typename?: 'FormField', id: any, type: FieldTypes, label: string, name?: string | null, placeholder?: string | null, options?: Array<string | null> | null, appliesToAllAttendees: boolean, isDeletable: boolean, isRequiredForAttendee: boolean, isRequiredForInscriptor: boolean, position: number }> }, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null, imageTicketUrl?: string | null } | null, organization?: { __typename?: 'Organization', slug?: string | null } | null, attendees: { __typename?: 'AttendeesConnection', totalCount: number, nodes: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null }> } } | null };
 
 export type GetEventByEventSlugQueryVariables = Exact<{
   eventSlug: Scalars['String'];
@@ -5877,7 +5884,7 @@ export type GetEventLogsBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetEventLogsBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null, imageTicketUrl?: string | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
+export type GetEventLogsBySlugQuery = { __typename?: 'Query', eventBySlug?: { __typename?: 'Event', capacity?: number | null, id: any, name: string, slug?: string | null, description?: string | null, addressLine2?: string | null, addressLine1?: string | null, city?: string | null, zipCode?: string | null, country?: string | null, startsAt?: any | null, endsAt?: any | null, bookingStartsAt?: any | null, bookingEndsAt?: any | null, createdAt: any, updatedAt: any, placeName?: string | null, webhooks?: Array<string | null> | null, organizationId: any, totalRegistrations?: number | null, isDraft: boolean, totalConfirmedRegistrations?: number | null, isCancelled: boolean, state?: string | null, eventBranding?: { __typename?: 'EventBranding', createdAt: any, font?: Fonts | null, id: any, logo?: string | null, shortText?: string | null, richText?: string | null, updatedAt: any, headerMailName?: string | null, headerMailContact?: string | null, cssVariables?: any | null, imageTicketUrl?: string | null } | null, registrations: { __typename?: 'RegistrationsConnection', nodes: Array<{ __typename?: 'Registration', attendeesList: Array<{ __typename?: 'Attendee', id: any, firstname: string, lastname: string, email?: string | null, createdAt: any, updatedAt: any, status: AttendeeStatus, panelNumber?: number | null, ticketNumber: string, registrationId?: any | null, qrCodeUrl?: string | null, pdfUrl?: string | null, isInscriptor?: boolean | null, isVip?: boolean | null, additionalData?: Array<{ __typename?: 'AdditionalInformation', label?: string | null, values?: string | null } | null> | null }> }> }, logsList: Array<{ __typename?: 'Log', id: any, status: LogsStatus, payload?: any | null, updatedAt: any }> } | null };
 
 export type GetCurrentUserEventsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5970,6 +5977,10 @@ export const MyAttendeeFragmentDoc = `
   pdfUrl
   isInscriptor
   isVip
+  additionalData {
+    label
+    values
+  }
 }
     `;
 export const EventBrandingFragmentFragmentDoc = `

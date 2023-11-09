@@ -1,7 +1,11 @@
+import { AttendeeStatus } from "@tacotacIO/codegen";
 import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+
+
 import { sdk } from "./sdk";
+
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -87,48 +91,9 @@ export const detailHours = (date: any) => {
   }
 };
 
-/* export const convertDayNames = (day) => {
-  if (day === DayOfWeek.Monday) {
-    return "Lundi";
-  } else if (day === DayOfWeek.Thuesday) {
-    return "Mardi";
-  } else if (day === DayOfWeek.Wednesday) {
-    return "Mercredi";
-  } else if (day === DayOfWeek.Thursday) {
-    return "Jeudi";
-  } else if (day === DayOfWeek.Friday) {
-    return "Vendredi";
-  } else if (day === DayOfWeek.Saturday) {
-    return "Samedi";
-  } else if (day === DayOfWeek.Sunday) {
-    return "Dimanche";
-  }
-  return day;
-}; */
-
-/* export const convertSlotTypeNames = (slot) => {
-  if (slot === SlotType.FreeActivity) {
-    return "Activité libre";
-  } else if (slot === SlotType.Openings) {
-    return "Horaires d'ouverture";
-  }
-  return slot;
-}; */
-
 export const range = (x) => {
   return new Array(x).fill(undefined).map((_, i) => i);
 };
-
-/* export const convertActivityTypeKindNames = (kind) => {
-  if (kind === ActivityTypeKind.IndoorActivity) {
-    return "Activité d'intérieur";
-  } else if (kind === ActivityTypeKind.OutdoorActivity) {
-    return "Activité d'extérieur";
-  } else if (kind === ActivityTypeKind.BoardGame) {
-    return "Jeu de société";
-  }
-  return kind;
-}; */
 
 export const intToHourString = (int: number | null | undefined) => {
   if (!int) return null;
@@ -176,4 +141,19 @@ export const validCaptcha = (): Promise<{ isValidCaptcha: boolean }> => {
       }
     });
   });
+};
+
+export const transformStatus = (status: string) => {
+  switch (status) {
+    case AttendeeStatus.Idle:
+      return "Inscrit";
+    case AttendeeStatus.Cancelled:
+      return "Annulé";
+    case AttendeeStatus.Confirmed:
+      return "Appairé";
+    case AttendeeStatus.TicketScan:
+      return "Présent";
+    default:
+      return "Inscrits";
+  }
 };

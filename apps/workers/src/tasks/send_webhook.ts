@@ -37,10 +37,10 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
   const { rows: formFieldsDetails } = await withPgClient(pgClient =>
     pgClient.query(
       `select ffs.label, unnest(array_agg(distinct affs.value)) as values
-      from publ.attendee_form_fields affs
-      inner join publ.form_fields ffs ON ffs.event_id = $1
-      where affs.attendee_id = $2  AND affs.field_id = ffs.id
-      group by affs.attendee_id, ffs.label;`,
+        from publ.attendee_form_fields affs
+        inner join publ.form_fields ffs ON ffs.event_id = $1
+        where affs.attendee_id = $2  AND affs.field_id = ffs.id
+        group by affs.attendee_id, ffs.label;`,
       [attendeeAndEvent[0].id, attendeeId]
     )
   );
@@ -56,6 +56,11 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
           )
           .reduce((acc, curr) => ({ ...acc, [curr.label]: curr.values }), {})
       : "pas de données supplémentaires";
+
+  console.log(
+    "🚀 ~ file: send_webhook.ts:36 ~ constsendWebHook:Task= ~ attendeeAndEvent:",
+    attendeeAndEvent[0].email
+  );
 
   //test
   attendeeAndEvent[0]?.webhooks?.map(async (webhook: string) => {
@@ -82,8 +87,8 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
       });
     } catch (error) {
       console.log(
-        "🚀 ~ file: send_webhook.ts:38 ~ attendeeAndEvent[0]?.webhooks?.map ~ error:",
-        error?.response?.data
+        "🚀 ~ file: send_webhook.ts:38 ~ attendeeAndEvent[0]?.webhooks?.map ~ error:"
+        //error?.response?.data
       );
     }
   });
