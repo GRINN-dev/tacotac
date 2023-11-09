@@ -6,6 +6,8 @@ import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@tacotacI
 import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import {
@@ -22,6 +24,7 @@ import {
 } from "@/components/ui";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
+
 
 export const FormFieldCard: FC<{
   onSuccess?: () => void;
@@ -47,6 +50,13 @@ export const FormFieldCard: FC<{
 
   const onSubmit = async (data: CreateFormFieldInput, event) => {
     setIsLoading(true);
+    console.log(
+      "🚀 ~ file: form-fields-card.tsx:53 ~ onSubmit ~ event.nativeEvent.submitter.name:",
+      event.nativeEvent.submitter.name,
+      data.formField
+    );
+    delete data.formField.id;
+    delete data.formField.eventId;
 
     if (formField) {
       if (event.nativeEvent.submitter.name === "button-save") {
