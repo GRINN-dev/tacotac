@@ -55,7 +55,6 @@ export const CreateAttendeeForm2: FC<{
       <form
         className={cn("overflow-visible p-2", success === true && "hidden")}
         onSubmit={handleSubmit(async (data) => {
-          console.log("🚀 ~ file: create-attendee-form.tsx:58 ~ data:", data);
           const isValid = await trigger();
           const { isValidCaptcha } = await validCaptcha();
           if (isValid && isValidCaptcha) {
