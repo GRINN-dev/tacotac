@@ -15,6 +15,7 @@ import { Button } from "@/components/ui";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreateAttendeeSubForm } from "./create-attendee-sub-form";
 
+
 export const CreateAttendeeForm2: FC<{
   event: GetEventBySlugQuery["eventBySlug"];
 }> = ({ event }) => {
@@ -73,21 +74,26 @@ export const CreateAttendeeForm2: FC<{
               }
 
               for (let j = 0; j < data.completeAttendees[i].attendeeFormFields.length; j++) {
+                console.log("🚀 ~ file: create-attendee-form.tsx:76 ~ j:", j);
                 console.log(
                   "🚀 ~ file: create-attendee-form.tsx:77 ~ onSubmit={handleSubmit ~ data.completeAttendees:",
                   data?.completeAttendees[i]?.attendeeFormFields[j]?.fieldId
                 );
+                console.log(
+                  "🚀 ~ file: create-attendee-form.tsx:82 ~ onSubmit={handleSubmit ~ emailFormFieldId:",
+                  emailFormFieldId
+                );
 
-                if (data?.completeAttendees[i]?.attendeeFormFields[j]?.fieldId === emailFormFieldId) {
+                if (data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.fieldId === emailFormFieldId) {
                   data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
-                if (data.completeAttendees[i].attendeeFormFields[j].fieldId === firstnameFormFieldId) {
+                if (data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.fieldId === firstnameFormFieldId) {
                   data.completeAttendees[i].attendee.firstname = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
-                if (data.completeAttendees[i].attendeeFormFields[j].fieldId === lastnameFormFieldId) {
+                if (data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.fieldId === lastnameFormFieldId) {
                   data.completeAttendees[i].attendee.lastname = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
-                if (data.completeAttendees[i].attendeeFormFields[j].fieldId === civilityFormFieldId) {
+                if (data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.fieldId === civilityFormFieldId) {
                   data.completeAttendees[i].attendee.civility = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
 
