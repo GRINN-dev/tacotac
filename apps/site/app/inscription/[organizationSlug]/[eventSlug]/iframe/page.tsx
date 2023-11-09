@@ -7,7 +7,7 @@ const CreateAttendeePage = async ({ params: { organizationSlug, eventSlug } }) =
     eventSlug: eventSlug,
     organizationSlug: organizationSlug,
   });
-console.log(data)
+console.log("🚀 ~ data", data?.eventBySlug.formFields)
   const { eventBySlug } = data;
 
   return (
