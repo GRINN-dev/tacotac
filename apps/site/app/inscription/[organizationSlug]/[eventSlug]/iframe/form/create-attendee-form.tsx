@@ -98,7 +98,7 @@ export const CreateAttendeeForm2: FC<{
                 }
 
                 data.completeAttendees[i].attendeeFormFields[j].value = String(
-                  data.completeAttendees[i].attendeeFormFields[j].value
+                  data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.value
                 );
               }
             }
