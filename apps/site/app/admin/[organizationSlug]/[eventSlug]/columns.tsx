@@ -6,32 +6,28 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { AttendeeStatus, GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ArrowUpDown, ExternalLink, MoreHorizontal, RefreshCcw, Send } from "lucide-react";
+import { ArrowUpDown, Crown, ExternalLink, MoreHorizontal, RefreshCcw, Send } from "lucide-react";
 
 
 
 import { sdk } from "@/lib/sdk";
-import { cn } from "@/lib/utils";
+import { cn, transformStatus } from "@/lib/utils";
 import { Filter } from "@/components/data-table/data-table-toolbar";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 
 export const columns: (input: {
   organizationSlug: string;
   eventSlug: string;
   sendEmail: (registrationId: string) => void;
+  updateIsVIp: (attendeeId: string, isVip: boolean) => void;
 }) => ColumnDef<GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"][number]>[] = ({
   organizationSlug,
   eventSlug,
   sendEmail,
+  updateIsVIp,
 }) => [
   {
     accessorKey: "lastname",
@@ -39,7 +35,7 @@ export const columns: (input: {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Nom
-          <ArrowUpDown className="w-4 h-4 ml-2" />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -61,7 +57,7 @@ export const columns: (input: {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Prénom
-          <ArrowUpDown className="w-4 h-4 ml-2" />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -84,12 +80,23 @@ export const columns: (input: {
   {
     accessorKey: "isVip",
     header: "VIP",
+    cell: ({ row }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="border-primary border text-center text-xs"
+          onClick={() => updateIsVIp(row?.original?.id, row?.original?.isVip)}
+        >
+          <Crown color={row?.original?.isVip ? "#10ad22" : "#ebe5e5"} strokeWidth={1.5} />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "ticketNumber",
     header: "No. de billet",
     cell: ({ row }) => (
-      <Badge variant="outline" className="font-mono text-xs bg-muted text-muted-foreground">
+      <Badge variant="outline" className="bg-muted text-muted-foreground font-mono text-xs">
         {row.original.ticketNumber}
       </Badge>
     ),
@@ -100,17 +107,7 @@ export const columns: (input: {
     cell: ({ row }) => {
       return (
         <Badge variant="outline">
-          {row.original.status === AttendeeStatus.Cancelled
-            ? "Annulé"
-            : row.original.status === AttendeeStatus.Confirmed
-            ? "Confirmé"
-            : row.original.status === AttendeeStatus.Idle
-            ? "En attente"
-            : row.original.status === AttendeeStatus.PanelScan
-            ? "Panneau scanné"
-            : row.original.status === AttendeeStatus.TicketScan
-            ? "Ticket scanné"
-            : "Inconnu"}
+          { transformStatus(row.original.status)}
         </Badge>
       );
     },
@@ -130,7 +127,7 @@ export const columns: (input: {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <ExternalLink className="w-4 h-4 mr-2" /> Voir le QR Code
+            <ExternalLink className="mr-2 h-4 w-4" /> Voir le QR Code
           </Link>
         ) : (
           <span className="text-muted-foreground">Pas de billet</span>
@@ -190,9 +187,9 @@ export const columns: (input: {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-8 h-8 p-0">
+            <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="w-4 h-4" />
+              <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -233,10 +230,10 @@ const Refresher: FC = () => {
         router.refresh();
       }}
       variant="ghost"
-      className="w-8 h-8 p-0"
+      className="h-8 w-8 p-0"
     >
       <span className="sr-only">Refresh</span>
-      <RefreshCcw className="w-4 h-4" />
+      <RefreshCcw className="h-4 w-4" />
     </Button>
   );
 };

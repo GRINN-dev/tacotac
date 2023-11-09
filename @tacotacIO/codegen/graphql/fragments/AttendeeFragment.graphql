@@ -13,4 +13,8 @@ fragment MyAttendee on Attendee {
   pdfUrl
   isInscriptor
   isVip
+  additionalData {
+    label
+    values
+  }
 }

@@ -7,12 +7,13 @@ import { GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/
 import { CheckCircle2, MinusCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 
+
+
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
 import { Button } from "@/components/ui";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreateAttendeeSubForm } from "./create-attendee-sub-form";
-
 
 export const CreateAttendeeForm2: FC<{
   event: GetEventBySlugQuery["eventBySlug"];
@@ -72,7 +73,12 @@ export const CreateAttendeeForm2: FC<{
               }
 
               for (let j = 0; j < data.completeAttendees[i].attendeeFormFields.length; j++) {
-                if (data.completeAttendees[i].attendeeFormFields[j].fieldId === emailFormFieldId) {
+                console.log(
+                  "🚀 ~ file: create-attendee-form.tsx:77 ~ onSubmit={handleSubmit ~ data.completeAttendees:",
+                  data?.completeAttendees[i]?.attendeeFormFields[j]?.fieldId
+                );
+
+                if (data?.completeAttendees[i]?.attendeeFormFields[j]?.fieldId === emailFormFieldId) {
                   data.completeAttendees[i].attendee.email = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
                 if (data.completeAttendees[i].attendeeFormFields[j].fieldId === firstnameFormFieldId) {

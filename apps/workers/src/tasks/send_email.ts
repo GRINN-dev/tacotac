@@ -14,10 +14,10 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     attendeeId?: string;
     sendEmailPayload: SendEmailPayload;
   };
-  console.log(
-    "🚀 ~ file: send_email.ts:14 ~ constsendEmail:Task= ~ payload:",
-    sendEmailPayload.mailData
-  );
+  // console.log(
+  //   "🚀 ~ file: send_email.ts:14 ~ constsendEmail:Task= ~ payload:",
+  //   sendEmailPayload.mailData
+  // );
 
   console.log("isDev: ", isDev);
   await sgMail
@@ -27,15 +27,15 @@ export const sendEmail: Task = async (payload, { addJob, withPgClient }) => {
     })
     .then(async (response: any) => {
       console.log("sendgrid response status code", response[0].statusCode);
-      attendeeId &&
-        (await withPgClient(pgClient =>
-          pgClient.query(
-            `update publ.attendees atts
-          set is_email_sent = true
-          where atts.id = $1;`,
-            [attendeeId]
-          )
-        ));
+      // attendeeId &&
+      //   (await withPgClient(pgClient =>
+      //     pgClient.query(
+      //       `update publ.attendees atts
+      //     set is_email_sent = true
+      //     where atts.id = $1;`,
+      //       [attendeeId]
+      //     )
+      //   ));
     })
     .catch((error: any) => {
       console.error("🚀 ~send email error: ", error?.body);
