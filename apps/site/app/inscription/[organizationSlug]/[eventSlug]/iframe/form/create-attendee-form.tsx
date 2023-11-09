@@ -96,10 +96,12 @@ export const CreateAttendeeForm2: FC<{
                 if (data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.fieldId === civilityFormFieldId) {
                   data.completeAttendees[i].attendee.civility = data.completeAttendees[i].attendeeFormFields[j].value;
                 }
-
-                data.completeAttendees[i].attendeeFormFields[j].value = String(
-                  data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.value
-                );
+                if (data.completeAttendees[i].attendeeFormFields[j]) {
+                  data.completeAttendees[i].attendeeFormFields[j].value = String(
+                    data?.completeAttendees?.[i]?.attendeeFormFields?.[j]?.value
+                  );
+                }
+               
               }
             }
 
