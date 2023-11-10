@@ -105,11 +105,7 @@ export const columns: (input: {
     accessorKey: "status",
     header: "Statut",
     cell: ({ row }) => {
-      return (
-        <Badge variant="outline">
-          { transformStatus(row.original.status)}
-        </Badge>
-      );
+      return <Badge variant="outline">{transformStatus(row.original.status)}</Badge>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -130,7 +126,7 @@ export const columns: (input: {
             <ExternalLink className="mr-2 h-4 w-4" /> Voir le QR Code
           </Link>
         ) : (
-          <span className="text-muted-foreground">Pas de billet</span>
+          <span className="text-muted-foreground">En préparation...</span>
         )}
       </>
     ),
@@ -150,7 +146,7 @@ export const columns: (input: {
             <ExternalLink className="mr-2 h-4 w-4" /> Voir le billet
           </Link>
         ) : (
-          <span className="text-muted-foreground">Pas de billet</span>
+          <span className="text-muted-foreground">En préparation...</span>
         )}
       </>
     ),
