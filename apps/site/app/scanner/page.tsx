@@ -16,9 +16,6 @@ const ScanPage = async () => {
 
   let isMobileView = userAgent!.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i);
 
-  const eventsSorted = currentUser.events?.nodes?.sort((a, b) => dayjs(a.startsAt).diff(dayjs(b.startsAt)) || 0);
-  const returnCondition =
-    currentUser.events?.nodes?.length > 0 ? `/${currentUser.events?.nodes[0]?.organization?.slug}` : "/all";
   if (!currentUser) {
     return (
       <div className="bg-muted text-muted-foreground flex h-full w-full items-center justify-center">
@@ -34,6 +31,10 @@ const ScanPage = async () => {
       </div>
     );
   }
+
+  const eventsSorted = currentUser.events?.nodes?.sort((a, b) => dayjs(a.startsAt).diff(dayjs(b.startsAt)) || 0);
+  const returnCondition =
+    currentUser.events?.nodes?.length > 0 ? `/${currentUser.events?.nodes[0]?.organization?.slug}` : "/all";
 
   return (
     <ScrollArea className="container grid h-full items-center gap-6 ">
