@@ -24,7 +24,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
   const { rows: attendeeAndEvent } = await withPgClient(pgClient =>
     pgClient.query(
       `select atts.firstname, atts.lastname, atts.email, atts.panel_number, atts.status, 
-          atts.created_at, atts.updated_at, atts.is_vip,
+          atts.created_at, atts.updated_at, atts.is_vip, atts.ticket_number,
           evts.name, evts.webhooks, evts.id 
           from publ.attendees atts
           inner join publ.registrations regs on regs.id = atts.registration_id
@@ -77,6 +77,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
         event_name: attendeeAndEvent[0].name,
         status: attendeeAndEvent[0].status,
         is_vip: attendeeAndEvent[0].is_vip,
+        ticket_number: attendeeAndEvent[0].ticket_number,
         created_at: dayjs
           .tz(attendeeAndEvent[0].created_at)
           .format("DD-MM-YYYY à HH:mm"),
