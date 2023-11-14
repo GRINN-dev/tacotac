@@ -376,17 +376,6 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
         ) : (
           <pre>{JSON.stringify(state.value, null, 2)}</pre>
         )}
-
-        <pre>
-          {JSON.stringify(
-            {
-              context: state.context,
-              value: state.value,
-            },
-            null,
-            2
-          )}
-        </pre>
       </ScrollArea>
     </div>
   );
