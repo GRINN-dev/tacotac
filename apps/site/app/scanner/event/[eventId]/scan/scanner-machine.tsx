@@ -32,6 +32,7 @@ export const scannerMachine = createMachine(
 
           CANCEL: {
             target: "idle",
+            actions: "refresh",
           },
 
           SCAN_TICKET: {
@@ -46,6 +47,7 @@ export const scannerMachine = createMachine(
         on: {
           CANCEL: {
             target: "idle",
+            actions: "refresh",
           },
 
           ENTER_PANEL_NUMBER: [
@@ -78,6 +80,7 @@ export const scannerMachine = createMachine(
         on: {
           RESTART: {
             target: "idle",
+            actions: "refresh",
           },
         },
       },
@@ -88,6 +91,7 @@ export const scannerMachine = createMachine(
 
           CANCEL: {
             target: "idle",
+            actions: "refresh",
           },
 
           ENTER_EMAIL: {
@@ -118,10 +122,11 @@ export const scannerMachine = createMachine(
           },
           SAVE_OFFLINE: {
             target: "idle",
-            actions: "saveOffline",
+            actions: ["saveOffline", "refresh"],
           },
           CANCEL: {
             target: "idle",
+            actions: "refresh",
           },
         },
       },
@@ -145,7 +150,7 @@ export const scannerMachine = createMachine(
           onError: [
             {
               target: "idle",
-              actions: "saveOffline",
+              actions: ["saveOffline", "refresh"],
             },
           ],
         },
@@ -262,6 +267,19 @@ export const scannerMachine = createMachine(
           event: event.payload.eventId,
         }),
       }),
+      refresh: assign({
+        ticket: {
+          number: "",
+          isMissingEmail: false,
+          isVIP: false,
+          fullName: "",
+          event: "",
+        },
+        panel: null,
+        attendee: null,
+        email: "",
+        error: "null",
+      }),
     },
     services: {
       fetchAttendee: (context) => {
@@ -282,7 +300,6 @@ export const scannerMachine = createMachine(
       },
       verifyTicket: async (context, event) => {
         console.log("verifyTicket", event);
-        console.log(context);
         const { attendeeByTicketNumber } = await sdk().GetAttendeeByTicketNumber({
           ticketNumber: context.ticket.number,
         });

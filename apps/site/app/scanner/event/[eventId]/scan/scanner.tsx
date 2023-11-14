@@ -1,12 +1,13 @@
 "use client";
 
-import { FC, memo, useEffect, useMemo, useState } from "react";
+import { FC, memo, useState } from "react";
 import Link from "next/link";
 import { CreateAttendeeForm2 } from "@/app/inscription/[organizationSlug]/[eventSlug]/iframe/form/create-attendee-form";
 import { useStickyState } from "@/hooks/use-sticky-state";
 import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload } from "@tacotacIO/codegen";
 import { useMachine } from "@xstate/react";
 import { ArrowLeft, QrCode, Ticket } from "lucide-react";
+import { assign } from "xstate";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -65,9 +66,6 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
             metadata: context,
           } as ScanAttendeesAsyncInput["payloads"][0],
         ]);
-      },
-      refresh: () => {
-        console.log("refresh");
       },
     },
   });
@@ -129,7 +127,6 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               });
           }
           if (!!error) {
-            console.log(error);
           }
         }
       },
@@ -379,6 +376,17 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
         ) : (
           <pre>{JSON.stringify(state.value, null, 2)}</pre>
         )}
+
+        <pre>
+          {JSON.stringify(
+            {
+              context: state.context,
+              value: state.value,
+            },
+            null,
+            2
+          )}
+        </pre>
       </ScrollArea>
     </div>
   );

@@ -29,7 +29,7 @@ export interface Typegen0 {
     verifyTicket: "done.invoke.Scanner.verifying-tiket:invocation[0]";
   };
   missingImplementations: {
-    actions: "refresh" | "saveOffline";
+    actions: "saveOffline";
     delays: never;
     guards: never;
     services: never;
@@ -42,7 +42,12 @@ export interface Typegen0 {
     assignPanelNumber: "ENTER_PANEL_NUMBER" | "SCAN_PANEL";
     assignTicket: "SCAN_TICKET";
     assignTicketNumber: "ENTER_TICKET_NUMBER";
-    refresh: "done.invoke.Scanner.submitting:invocation[0]";
+    refresh:
+      | "CANCEL"
+      | "RESTART"
+      | "SAVE_OFFLINE"
+      | "done.invoke.Scanner.submitting:invocation[0]"
+      | "error.platform.Scanner.submitting:invocation[0]";
     saveOffline: "SAVE_OFFLINE" | "error.platform.Scanner.submitting:invocation[0]";
   };
   eventsCausingDelays: {};
