@@ -57,7 +57,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
   const router = useRouter();
   const pathname = usePathname();
   const { register, handleSubmit, formState } = useForm<UpdateEventInput>();
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     setIsLoading(true);
     data.id = id;
     data.patch.webhooks = webhookList;
@@ -98,7 +98,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
   return (
     <div className={cn(rest.isCancelled && "pointer-events-none opacity-60")}>
       {rest.isCancelled && (
-        <Card className="p-4 mb-4">
+        <Card className="mb-4 p-4">
           <div className="flex items-center gap-2">
             <AlertTriangle className="text-yellow-500" size={24} />
             <div className="flex-1">
@@ -264,9 +264,9 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             <p className="text-sm text-red-800 dark:text-red-300">{formState.errors?.patch?.capacity?.message}</p>
           )}
         </div>
-        <Separator className="w-12 my-8" />
+        <Separator className="my-8 w-12" />
 
-        <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 border-b-slate-200 first:mt-0 dark:border-b-slate-700">
+        <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
           Date et ouverture de la billeterie
         </h2>
 
@@ -332,20 +332,20 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             </p>
           )}
         </div>
-        <Separator className="w-12 my-8" />
+        <Separator className="my-8 w-12" />
 
-        <h2 className="pb-2 mt-10 text-3xl font-semibold tracking-tight transition-colors border-b scroll-m-20 border-b-slate-200 first:mt-0 dark:border-b-slate-700">
+        <h2 className="mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700">
           Lieu
         </h2>
 
         <div className="mt-4 grid items-center gap-1.5">
           <Label>Liste des webhooks</Label>
-          <ul className="pl-4 list-disc">
+          <ul className="list-disc pl-4">
             {webhookList?.length > 0
               ? webhookList?.map((webhook, index) => (
                   <li key={webhook + index}>
                     <div
-                      className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm focus:outline-none"
+                      className="inline-flex items-center rounded-full border border-transparent p-1 shadow-sm focus:outline-none"
                       onClick={() => removeItemClick(index)}
                     >
                       {webhook} <MinusCircle className="ml-2" />
@@ -427,9 +427,9 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
         <div className="mt-4 grid items-center gap-1.5">
           <Label className="mt-2" htmlFor="webhookList">
             Ajouter un webhook (Zapier, Maker, etc.)
-            <div className="p-4 my-4 border rounded-lg">
+            <div className="my-4 rounded-lg border p-4">
               <div className="shrink-0">
-                <AlertTriangle className="w-5 h-5 text-red-200" aria-hidden="true" />
+                <AlertTriangle className="h-5 w-5 text-red-200" aria-hidden="true" />
               </div>
               <div className="ml-3 break-words">
                 <h3 className="text-sm font-medium text-red-200">Attention </h3>
@@ -441,12 +441,12 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             </div>
           </Label>
           <Label>Liste des webhooks</Label>
-          <ul className="pl-4 list-disc">
+          <ul className="list-disc pl-4">
             {webhookList?.length > 0
               ? webhookList?.map((webhook, index) => (
                   <li key={webhook + index}>
                     <div
-                      className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm focus:outline-none"
+                      className="inline-flex items-center rounded-full border border-transparent p-1 shadow-sm focus:outline-none"
                       onClick={() => removeItemClick(index)}
                     >
                       {webhook} <MinusCircle className="ml-2" />
@@ -463,7 +463,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
               onChange={(evt) => setWebhook(evt?.currentTarget?.value)}
             />
             <div
-              className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm focus:outline-none"
+              className="inline-flex items-center rounded-full border border-transparent p-1 shadow-sm focus:outline-none"
               onClick={() => {
                 if (webhook) {
                   setWebhookList([...webhookList, webhook]);
@@ -475,14 +475,14 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
             </div>
           </div>
         </div>
-        <div className="flex justify-between gap-2 mt-8">
+        <div className="mt-8 flex justify-between gap-2">
           <button type="submit" className={buttonVariants({ size: "lg" })}>
             Mettre à jour
           </button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">
-                <Trash className="w-4 h-4 mr-2" />
+                <Trash className="mr-2 h-4 w-4" />
                 Supprimer cet évenement
               </Button>
             </AlertDialogTrigger>
@@ -504,7 +504,7 @@ export const UpdateEventForm: FC<iUpdateEvent> = ({
           </AlertDialog>
         </div>
         {error && (
-          <p className="mt-2 text-sm text-red-800 line-clamp-3 dark:text-red-300">
+          <p className="mt-2 line-clamp-3 text-sm text-red-800 dark:text-red-300">
             {JSON.stringify(
               error,
               (key, value) => {

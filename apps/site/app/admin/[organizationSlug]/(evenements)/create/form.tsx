@@ -6,8 +6,6 @@ import { CreateEventInput } from "@tacotacIO/codegen";
 import { AlertTriangle, MinusCircle, PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -27,7 +25,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const router = useRouter();
   const pathname = usePathname();
   const { register, handleSubmit, formState } = useForm<CreateEventInput>();
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     setIsLoading(true);
     data.event.webhooks = webhookList;
     await sdk()

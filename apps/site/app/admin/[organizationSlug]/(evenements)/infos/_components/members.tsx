@@ -11,8 +11,6 @@ import {
 import { Copy } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -24,8 +22,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 
-
-
 export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizationBySlug"] }> = ({ organization }) => {
   const { register, handleSubmit, formState, control } = useForm<InviteToOrganizationInput>();
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +31,7 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
   const [error, setError] = useState<Error | null>(null);
   const [isInviting, setIsInviting] = useState(false);
   const toaster = useToast();
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     setIsLoading(true);
 
     const response = await sdk()

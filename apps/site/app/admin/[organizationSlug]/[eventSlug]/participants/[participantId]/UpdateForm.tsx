@@ -7,8 +7,6 @@ import { AttendeeStatus, GetAttendeeByIdQuery, UpdateAttendeeInput } from "@taco
 import { Trash } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn, transformStatus } from "@/lib/utils";
 import { Loader } from "@/components/loader";
@@ -48,7 +46,7 @@ export const UpdateAttendeeForm: FC<{
   const router = useRouter();
   const pathname = usePathname();
   const { register, handleSubmit, formState, control } = useForm<UpdateAttendeeInput>();
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     setIsLoading(true);
     data.id = attendee.id;
     await sdk()
