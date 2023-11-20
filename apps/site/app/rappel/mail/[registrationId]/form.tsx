@@ -40,7 +40,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
     }
   }, []);
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     const isValid = await trigger();
     const { isValidCaptcha } = await validCaptcha();
     if (isValid && isValidCaptcha) {

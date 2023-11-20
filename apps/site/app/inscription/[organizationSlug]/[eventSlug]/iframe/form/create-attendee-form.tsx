@@ -7,14 +7,11 @@ import { GetEventBySlugQuery, RegisterCompleteAttendeesInput } from "@tacotacIO/
 import { CheckCircle2, MinusCircle } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn, validCaptcha } from "@/lib/utils";
 import { Button } from "@/components/ui";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreateAttendeeSubForm } from "./create-attendee-sub-form";
-
 
 export const CreateAttendeeForm2: FC<{
   event: GetEventBySlugQuery["eventBySlug"];
@@ -54,7 +51,7 @@ export const CreateAttendeeForm2: FC<{
 
       <form
         className={cn("overflow-visible p-2", success === true && "hidden")}
-        onSubmit={handleSubmit(async (data) => {
+        onSubmit={handleSubmit(async (data: any) => {
           const isValid = await trigger();
           const { isValidCaptcha } = await validCaptcha();
           if (isValid && isValidCaptcha) {

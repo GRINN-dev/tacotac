@@ -5,8 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { GetOrganizationBySlugQuery, UpdateOrganizationInput } from "@tacotacIO/codegen";
 import { useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-
 
 interface iUpdateOrganization extends ExtractType<GetOrganizationBySlugQuery, "organizationBySlug"> {}
 export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, description, logoUrl }) => {
@@ -25,7 +22,7 @@ export const UpdateOrganizationForm: FC<iUpdateOrganization> = ({ id, name, desc
   const router = useRouter();
   const pathname = usePathname();
   const { register, handleSubmit, formState } = useForm<UpdateOrganizationInput>();
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: any) => {
     setIsLoading(true);
     data.id = id;
     await sdk()
