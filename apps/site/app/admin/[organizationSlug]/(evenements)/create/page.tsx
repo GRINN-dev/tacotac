@@ -2,12 +2,13 @@ import Link from "next/link";
 import router from "next/router";
 import { PlusSquare } from "lucide-react";
 
+
+
 import { serverSdk } from "@/lib/server-sdk";
 import { buttonVariants } from "@/components/ui";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { AddNewTeamCard } from "./_components/add-new-team-card";
-import { CreateEventForm } from "./form";
 import { CreateForm } from "./form2";
 
 const CreateEventPage = async ({ params: { organizationSlug } }) => {
@@ -56,10 +57,6 @@ const CreateEventPage = async ({ params: { organizationSlug } }) => {
 
   return (
     <section className="container  pb-8 pt-6 md:py-10">
-      {/* <h1 className="admin-h1">Créer un nouvel événement</h1> */}
-      {/* <div className="mt-8">
-        <CreateEventForm organizationId={organizationBySlug?.id} />
-      </div> */}
       <div className="mt-8">
         <CreateForm organizationId={organizationBySlug?.id} />
       </div>
