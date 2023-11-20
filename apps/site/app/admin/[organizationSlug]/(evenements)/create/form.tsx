@@ -22,7 +22,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const [isTransitionning, startTransition] = useTransition();
   const isSubmitting = isTransitionning || isLoading;
   const [error, setError] = useState<Error | null>(null);
-  const [webhookList, setWebhookList] = useState<string[]>([]);
+  const [webhooks, setWebhookList] = useState<string[]>([]);
   const [webhook, setWebhook] = useState("");
 
   const router = useRouter();
@@ -30,12 +30,10 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const { register, handleSubmit, formState } = useForm<CreateEventInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-   
-    data?.event?.webhooks.push(webhook);
 
     await sdk()
       .CreateEvent({
-        input: { ...data, event: { ...data.event, organizationId } },
+        input: { ...data, event: { ...data.event, webhooks, organizationId } },
       })
       .catch((error) => {
         setError(error);
@@ -49,7 +47,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   });
 
   const removeItemClick = (index: number) => {
-    const newList = [...webhookList];
+    const newList = [...webhooks];
     newList.splice(index, 1);
     setWebhookList(newList);
   };
@@ -262,7 +260,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         )}
       </div>
       <div className="mt-4 grid items-center gap-1.5">
-        <Label className="mt-2" htmlFor="webhookList">
+        <Label className="mt-2" htmlFor="webhooks">
           Ajouter un webhook (Zapier, Maker, etc.)
           <div className="my-4 rounded-lg border p-4">
             <div className="flex">
@@ -282,7 +280,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
         <div className="flex space-x-4">
           <Input
             type="text"
-            id="webhookList"
+            id="webhooks"
             placeholder="Saissir un webhook"
             onChange={(evt) => setWebhook(evt?.currentTarget?.value)}
           />
@@ -290,7 +288,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
             className="inline-flex items-center rounded-full border border-transparent p-1  shadow-sm  focus:outline-none"
             onClick={() => {
               if (webhook) {
-                setWebhookList([...webhookList, webhook]);
+                setWebhookList([...webhooks, webhook]);
                 setWebhook("");
               }
             }}
@@ -299,7 +297,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
           </div>
         </div>
 
-        {webhookList?.map((webhook, index) => (
+        {webhooks?.map((webhook, index) => (
           <div
             key={webhook + index}
             className="inline-flex items-center rounded-full border border-transparent p-1  shadow-sm  focus:outline-none"
