@@ -33,7 +33,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
 
     await sdk()
       .CreateEvent({
-        input: { ...data, event: { ...data.event, webhooks, organizationId } },
+        input: { event: { ...data.event, webhooks, organizationId } },
       })
       .catch((error) => {
         setError(error);
