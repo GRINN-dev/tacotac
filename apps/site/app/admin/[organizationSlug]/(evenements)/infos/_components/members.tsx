@@ -3,11 +3,7 @@
 import { FC, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
-import {
-  GetOrganizationBySlugQuery,
-  InviteToOrganizationInput,
-  OrganizationMembershipsRolesEnum,
-} from "@tacotacIO/codegen";
+import { GetOrganizationBySlugQuery, InviteToOrganizationInput, OrganizationMembershipsRolesEnum } from "@tacotacIO/codegen";
 import { Copy } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -23,7 +19,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
-
 
 
 export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizationBySlug"] }> = ({ organization }) => {
@@ -42,17 +37,17 @@ export const Members: FC<{ organization: GetOrganizationBySlugQuery["organizatio
       .InviteUserToOrganization({
         input: {
           organizationId: organization.id,
-          email: data.email,
-          role: data.role,
+          email: data?.email,
+          role: data?.role,
         },
       })
       .then((data) => {
         console.log("🚀 ~ file: members.tsx:49 ~ .then ~ data:", data);
-        if (data.inviteToOrganization?.typeErrorCodeAndMessage?.errorCode) {
+        if (data?.inviteToOrganization?.typeErrorCodeAndMessage?.errorCode) {
           toaster.toast({
             variant: "destructive",
-            title: data.inviteToOrganization?.typeErrorCodeAndMessage?.errorCode,
-            description: data.inviteToOrganization?.typeErrorCodeAndMessage?.errorMessage,
+            title: data?.inviteToOrganization?.typeErrorCodeAndMessage?.errorCode,
+            description: data?.inviteToOrganization?.typeErrorCodeAndMessage?.errorMessage,
           });
         }
       });
