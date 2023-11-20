@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 
+
 export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTransitionning, startTransition] = useTransition();
@@ -29,7 +30,9 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const { register, handleSubmit, formState } = useForm<CreateEventInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    data.event.webhooks = webhookList;
+    if (data && data.event) {
+      data.event.webhooks = webhookList;
+    }
     await sdk()
       .CreateEvent({
         input: { ...data, event: { ...data.event, organizationId } },
