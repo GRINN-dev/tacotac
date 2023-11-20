@@ -29,11 +29,12 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const pathname = usePathname();
   const { register, handleSubmit, formState } = useForm<CreateEventInput>();
   const onSubmit = handleSubmit(async (data) => {
+    console.log("🚀 ~ file: form.tsx:32 ~ onSubmit ~ data:", data);
     setIsLoading(true);
 
     await sdk()
       .CreateEvent({
-        input: { event: { ...data.event, webhooks, organizationId } },
+        input: { event: { ...data?.event, webhooks, organizationId } },
       })
       .catch((error) => {
         setError(error);
