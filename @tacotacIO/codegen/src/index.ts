@@ -2159,12 +2159,24 @@ export type FormFieldAttendeeFormFieldsByFieldIdArgs = {
  * for equality and combined with a logical ‘and.’
  */
 export type FormFieldCondition = {
+  /** Checks for equality with the object’s `appliesToAllAttendees` field. */
+  appliesToAllAttendees?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `eventId` field. */
   eventId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
   id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isDeletable` field. */
+  isDeletable?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `isRequiredForAttendee` field. */
+  isRequiredForAttendee?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `isRequiredForInscriptor` field. */
+  isRequiredForInscriptor?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `options` field. */
+  options?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Checks for equality with the object’s `placeholder` field. */
+  placeholder?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `position` field. */
   position?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `type` field. */
@@ -2177,6 +2189,8 @@ export type FormFieldCondition = {
 export type FormFieldFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<FormFieldFilter>>;
+  /** Filter by the object’s `appliesToAllAttendees` field. */
+  appliesToAllAttendees?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `attendeeFormFieldsByFieldId` relation. */
   attendeeFormFieldsByFieldId?: InputMaybe<FormFieldToManyAttendeeFormFieldFilter>;
   /** Some related `attendeeFormFieldsByFieldId` exist. */
@@ -2189,10 +2203,20 @@ export type FormFieldFilter = {
   eventId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isDeletable` field. */
+  isDeletable?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isRequiredForAttendee` field. */
+  isRequiredForAttendee?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `isRequiredForInscriptor` field. */
+  isRequiredForInscriptor?: InputMaybe<BooleanFilter>;
   /** Negates the expression. */
   not?: InputMaybe<FormFieldFilter>;
+  /** Filter by the object’s `options` field. */
+  options?: InputMaybe<StringListFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<FormFieldFilter>>;
+  /** Filter by the object’s `placeholder` field. */
+  placeholder?: InputMaybe<StringFilter>;
   /** Filter by the object’s `position` field. */
   position?: InputMaybe<IntFilter>;
   /** Filter by the object’s `type` field. */
@@ -2261,13 +2285,25 @@ export type FormFieldsEdge = {
 
 /** Methods to use when ordering `FormField`. */
 export enum FormFieldsOrderBy {
+  AppliesToAllAttendeesAsc = 'APPLIES_TO_ALL_ATTENDEES_ASC',
+  AppliesToAllAttendeesDesc = 'APPLIES_TO_ALL_ATTENDEES_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   EventIdAsc = 'EVENT_ID_ASC',
   EventIdDesc = 'EVENT_ID_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  IsDeletableAsc = 'IS_DELETABLE_ASC',
+  IsDeletableDesc = 'IS_DELETABLE_DESC',
+  IsRequiredForAttendeeAsc = 'IS_REQUIRED_FOR_ATTENDEE_ASC',
+  IsRequiredForAttendeeDesc = 'IS_REQUIRED_FOR_ATTENDEE_DESC',
+  IsRequiredForInscriptorAsc = 'IS_REQUIRED_FOR_INSCRIPTOR_ASC',
+  IsRequiredForInscriptorDesc = 'IS_REQUIRED_FOR_INSCRIPTOR_DESC',
   Natural = 'NATURAL',
+  OptionsAsc = 'OPTIONS_ASC',
+  OptionsDesc = 'OPTIONS_DESC',
+  PlaceholderAsc = 'PLACEHOLDER_ASC',
+  PlaceholderDesc = 'PLACEHOLDER_DESC',
   PositionAsc = 'POSITION_ASC',
   PositionDesc = 'POSITION_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
@@ -4536,6 +4572,46 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
   /** Starts with the specified string (case-insensitive). */
   startsWithInsensitive?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against String List fields. All fields are combined with a logical ‘and.’ */
+export type StringListFilter = {
+  /** Any array item is equal to the specified value. */
+  anyEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is greater than the specified value. */
+  anyGreaterThan?: InputMaybe<Scalars['String']>;
+  /** Any array item is greater than or equal to the specified value. */
+  anyGreaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is less than the specified value. */
+  anyLessThan?: InputMaybe<Scalars['String']>;
+  /** Any array item is less than or equal to the specified value. */
+  anyLessThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is not equal to the specified value. */
+  anyNotEqualTo?: InputMaybe<Scalars['String']>;
+  /** Contained by the specified list of values. */
+  containedBy?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Contains the specified list of values. */
+  contains?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Overlaps the specified list of values. */
+  overlaps?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 /** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
