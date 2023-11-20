@@ -30,7 +30,7 @@ export const CreateEventForm: FC<{ organizationId: string }> = ({ organizationId
   const { register, handleSubmit, formState } = useForm<CreateEventInput>();
   const onSubmit = handleSubmit(async (data) => {
     setIsLoading(true);
-    if (data && data.event) {
+    if (data && data?.event) {
       data.event.webhooks = webhookList;
     }
     await sdk()
