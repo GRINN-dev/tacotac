@@ -21,7 +21,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 export const columns: (input: {
   organizationSlug: string;
   eventSlug: string;
-  sendEmail: (registrationId: string) => void;
+  sendEmail: (ticketNumber: string) => void;
   updateIsVIp: (attendeeId: string, isVip: boolean) => void;
 }) => ColumnDef<GetEventBySlugQuery["eventBySlug"]["attendees"]["nodes"][number]>[] = ({
   organizationSlug,
@@ -160,7 +160,7 @@ export const columns: (input: {
           size="sm"
           className="border-primary border text-xs"
           onClick={() => {
-            sendEmail(row.original.registrationId);
+            sendEmail(row.original.ticketNumber);
             toast({
               title: "Scheduled: Catch up",
               description: "Friday, February 10, 2023 at 5:57 PM",

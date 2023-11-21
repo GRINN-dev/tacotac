@@ -22,9 +22,9 @@ export const MyDataTable = ({
   eventSlug: string;
 }) => {
   const router = useRouter();
-  const sendEmail = (registrationId: string) => {
+  const sendEmail = (ticketNumber: string) => {
     sdk()
-      .SendEmailAttendeeEvent({ registrationId })
+      .SendEmailAttendeeEvent({ ticketNumber })
       .then((data) => {
         router.refresh();
         toast({

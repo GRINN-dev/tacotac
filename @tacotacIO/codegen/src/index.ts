@@ -2637,7 +2637,7 @@ export type Mutation = {
   scanAttendeesAsync?: Maybe<ScanAttendeesAsyncPayload>;
   /** Select event to retrieve all attendee and send email to all attendee */
   sendEmailAllAttendeeEvent?: Maybe<SendEmailAllAttendeeEventPayload>;
-  /** Select registration_id to send email to attendee */
+  /** Select ticket_number to send email to attendee */
   sendEmailAttendeeEvent?: Maybe<SendEmailAttendeeEventPayload>;
   /** Select event to retrieve all attendee and send email to all attendee and confirm donation */
   sendEmailConfirmDonationByEventId?: Maybe<SendEmailConfirmDonationByEventIdPayload>;
@@ -4457,7 +4457,7 @@ export type SendEmailAttendeeEventInput = {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  registrationId: Scalars['UUID'];
+  ticketNumber: Scalars['String'];
 };
 
 /** The output of our `sendEmailAttendeeEvent` mutation. */
@@ -5647,7 +5647,7 @@ export type SendEmailAllAttendeeEventMutationVariables = Exact<{
 export type SendEmailAllAttendeeEventMutation = { __typename?: 'Mutation', sendEmailAllAttendeeEvent?: { __typename?: 'SendEmailAllAttendeeEventPayload', clientMutationId?: string | null, rowEventAttendees?: Array<{ __typename?: 'RowEventAttendee', id?: string | null, email?: string | null } | null> | null } | null };
 
 export type SendEmailAttendeeEventMutationVariables = Exact<{
-  registrationId: Scalars['UUID'];
+  ticketNumber: Scalars['String'];
 }>;
 
 
@@ -6203,8 +6203,8 @@ export const SendEmailAllAttendeeEventDocument = `
 }
     `;
 export const SendEmailAttendeeEventDocument = `
-    mutation SendEmailAttendeeEvent($registrationId: UUID!) {
-  sendEmailAttendeeEvent(input: {registrationId: $registrationId}) {
+    mutation SendEmailAttendeeEvent($ticketNumber: String!) {
+  sendEmailAttendeeEvent(input: {ticketNumber: $ticketNumber}) {
     clientMutationId
     rowEventAttendee {
       id

@@ -47,8 +47,8 @@ mutation SendEmailAllAttendeeEvent($eventId: UUID!) {
   }
 }
 
-mutation SendEmailAttendeeEvent($registrationId: UUID!) {
-  sendEmailAttendeeEvent(input: { registrationId: $registrationId }) {
+mutation SendEmailAttendeeEvent($ticketNumber: String!) {
+  sendEmailAttendeeEvent(input: { ticketNumber:$ticketNumber }) {
     clientMutationId
     rowEventAttendee {
       id
