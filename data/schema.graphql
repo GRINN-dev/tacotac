@@ -3528,7 +3528,7 @@ type Mutation {
     input: SendEmailAllAttendeeEventInput!
   ): SendEmailAllAttendeeEventPayload
 
-  """Select registration_id to send email to attendee"""
+  """Select ticket_number to send email to attendee"""
   sendEmailAttendeeEvent(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -5497,7 +5497,7 @@ input SendEmailAttendeeEventInput {
   payload verbatim. May be used to track mutations by the client.
   """
   clientMutationId: String
-  registrationId: UUID!
+  ticketNumber: String!
 }
 
 """The output of our `sendEmailAttendeeEvent` mutation."""
