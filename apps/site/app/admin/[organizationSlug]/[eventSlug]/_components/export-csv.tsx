@@ -16,6 +16,10 @@ interface ExportCsvProps {
 }
 
 export const ExportCsv: FC<ExportCsvProps> = ({ users, name }) => {
+  console.log("🚀 ~ file: export-csv.tsx:19 ~ users:", users);
+  const defaultAdditionalData = users?.nodes[74]?.additionalData
+    ?.filter((formFieldDetail) => !["Civilité", "Email", "Nom", "Prénom"].includes(formFieldDetail.label))
+    ?.reduce((acc, formFieldDetail) => ({ ...acc, [formFieldDetail.label]: "  " }), {});
   const csvData =
     users?.nodes.length > 0
       ? [
@@ -31,9 +35,7 @@ export const ExportCsv: FC<ExportCsvProps> = ({ users, name }) => {
             "Billet",
             "Créé le",
             "Mis à jour le",
-            ...users?.nodes[0]?.additionalData
-              ?.filter((formFieldDetail) => !["Civilité", "Email", "Nom", "Prénom"].includes(formFieldDetail.label))
-              ?.map((d) => d.label),
+            ...Object.keys(defaultAdditionalData),
           ],
           ...users?.nodes.map(
             ({
@@ -49,22 +51,33 @@ export const ExportCsv: FC<ExportCsvProps> = ({ users, name }) => {
               createdAt,
               updatedAt,
               additionalData,
-            }) => [
-              id,
-              email,
-              firstname,
-              lastname,
-              isVip ? "Oui" : "Non vip",
-              ticketNumber,
-              transformStatus(status),
-              qrCodeUrl,
-              pdfUrl,
-              format(new Date(createdAt), "dd-MM-yyyy à HH:mm"),
-              format(new Date(updatedAt), "dd-MM-yyyy à HH:mm"),
-              ...additionalData
+            }) => {
+              const additionalDataMap = additionalData
                 ?.filter((formFieldDetail) => !["Civilité", "Email", "Nom", "Prénom"].includes(formFieldDetail.label))
-                .map((formFieldDetail) => (formFieldDetail.values ? formFieldDetail.values : "  ")),
-            ]
+                .reduce(
+                  (acc, formFieldDetail) => ({
+                    ...acc,
+                    [formFieldDetail.label]: ![null, undefined, "", "undefined"].includes(formFieldDetail.values)
+                      ? formFieldDetail.values
+                      : "  ",
+                  }),
+                  { ...defaultAdditionalData }
+                );
+              return [
+                id,
+                email,
+                firstname,
+                lastname,
+                isVip ? "Oui" : "Non vip",
+                ticketNumber,
+                transformStatus(status),
+                qrCodeUrl,
+                pdfUrl,
+                format(new Date(createdAt), "dd-MM-yyyy à HH:mm"),
+                format(new Date(updatedAt), "dd-MM-yyyy à HH:mm"),
+                ...Object.values(additionalDataMap),
+              ];
+            }
           ),
         ]
       : [];
