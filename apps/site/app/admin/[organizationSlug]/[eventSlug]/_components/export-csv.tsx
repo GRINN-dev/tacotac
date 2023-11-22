@@ -63,7 +63,7 @@ export const ExportCsv: FC<ExportCsvProps> = ({ users, name }) => {
               format(new Date(updatedAt), "dd-MM-yyyy à HH:mm"),
               ...additionalData
                 ?.filter((formFieldDetail) => !["Civilité", "Email", "Nom", "Prénom"].includes(formFieldDetail.label))
-                .map((formFieldDetail) => formFieldDetail.values),
+                .map((formFieldDetail) => (formFieldDetail.values ? formFieldDetail.values : "  ")),
             ]
           ),
         ]

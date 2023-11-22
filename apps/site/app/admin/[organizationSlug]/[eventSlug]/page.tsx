@@ -17,7 +17,6 @@ const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
     eventSlug,
     organizationSlug,
   });
-  console.log("🚀 ~  data:", data?.eventBySlug?.attendees);
 
   return (
     <ScrollArea className="h-full">
