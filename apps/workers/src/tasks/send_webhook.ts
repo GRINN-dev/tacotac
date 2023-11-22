@@ -76,7 +76,7 @@ export const sendWebHook: Task = async (payload, { addJob, withPgClient }) => {
         panel_number: attendeeAndEvent[0].panel_number,
         event_name: attendeeAndEvent[0].name,
         status: attendeeAndEvent[0].status,
-        is_vip: attendeeAndEvent[0].is_vip,
+        is_vip: attendeeAndEvent[0].is_vip ? "Oui" : "Non vip",
         ticket_number: attendeeAndEvent[0].ticket_number,
         created_at: dayjs
           .tz(attendeeAndEvent[0].created_at)
