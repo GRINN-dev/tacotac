@@ -221,10 +221,10 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button size="sm" variant="outline">
-                    Inscire
+                    Inscrire
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="max-h-screen overflow-y-auto">
                   <CreateAttendeeForm2 event={event} />
                 </DialogContent>
               </Dialog>
