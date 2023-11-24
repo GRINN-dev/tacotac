@@ -5,10 +5,7 @@ import { GetEventBySlugQuery } from "@tacotacIO/codegen";
 import { format } from "date-fns";
 import { CSVDownload, CSVLink } from "react-csv";
 
-
-
 import { transformStatus } from "@/lib/utils";
-
 
 interface ExportCsvProps {
   users: GetEventBySlugQuery["eventBySlug"]["attendees"];
@@ -35,7 +32,7 @@ export const ExportCsv: FC<ExportCsvProps> = ({ users, name }) => {
             "Billet",
             "Créé le",
             "Mis à jour le",
-            ...Object.keys(defaultAdditionalData),
+            ...Object.keys(defaultAdditionalData || {}),
           ],
           ...users?.nodes.map(
             ({
