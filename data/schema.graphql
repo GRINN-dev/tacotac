@@ -2663,9 +2663,6 @@ A condition to be used against `FormField` object types. All fields are tested
 for equality and combined with a logical ‘and.’
 """
 input FormFieldCondition {
-  """Checks for equality with the object’s `appliesToAllAttendees` field."""
-  appliesToAllAttendees: Boolean
-
   """Checks for equality with the object’s `createdAt` field."""
   createdAt: Datetime
 
@@ -2674,21 +2671,6 @@ input FormFieldCondition {
 
   """Checks for equality with the object’s `id` field."""
   id: UUID
-
-  """Checks for equality with the object’s `isDeletable` field."""
-  isDeletable: Boolean
-
-  """Checks for equality with the object’s `isRequiredForAttendee` field."""
-  isRequiredForAttendee: Boolean
-
-  """Checks for equality with the object’s `isRequiredForInscriptor` field."""
-  isRequiredForInscriptor: Boolean
-
-  """Checks for equality with the object’s `options` field."""
-  options: [String]
-
-  """Checks for equality with the object’s `placeholder` field."""
-  placeholder: String
 
   """Checks for equality with the object’s `position` field."""
   position: Int
@@ -2706,9 +2688,6 @@ A filter to be used against `FormField` object types. All fields are combined wi
 input FormFieldFilter {
   """Checks for all expressions in this list."""
   and: [FormFieldFilter!]
-
-  """Filter by the object’s `appliesToAllAttendees` field."""
-  appliesToAllAttendees: BooleanFilter
 
   """Filter by the object’s `attendeeFormFieldsByFieldId` relation."""
   attendeeFormFieldsByFieldId: FormFieldToManyAttendeeFormFieldFilter
@@ -2728,26 +2707,11 @@ input FormFieldFilter {
   """Filter by the object’s `id` field."""
   id: UUIDFilter
 
-  """Filter by the object’s `isDeletable` field."""
-  isDeletable: BooleanFilter
-
-  """Filter by the object’s `isRequiredForAttendee` field."""
-  isRequiredForAttendee: BooleanFilter
-
-  """Filter by the object’s `isRequiredForInscriptor` field."""
-  isRequiredForInscriptor: BooleanFilter
-
   """Negates the expression."""
   not: FormFieldFilter
 
-  """Filter by the object’s `options` field."""
-  options: StringListFilter
-
   """Checks for any expressions in this list."""
   or: [FormFieldFilter!]
-
-  """Filter by the object’s `placeholder` field."""
-  placeholder: StringFilter
 
   """Filter by the object’s `position` field."""
   position: IntFilter
@@ -2825,25 +2789,13 @@ type FormFieldsEdge {
 
 """Methods to use when ordering `FormField`."""
 enum FormFieldsOrderBy {
-  APPLIES_TO_ALL_ATTENDEES_ASC
-  APPLIES_TO_ALL_ATTENDEES_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   EVENT_ID_ASC
   EVENT_ID_DESC
   ID_ASC
   ID_DESC
-  IS_DELETABLE_ASC
-  IS_DELETABLE_DESC
-  IS_REQUIRED_FOR_ATTENDEE_ASC
-  IS_REQUIRED_FOR_ATTENDEE_DESC
-  IS_REQUIRED_FOR_INSCRIPTOR_ASC
-  IS_REQUIRED_FOR_INSCRIPTOR_DESC
   NATURAL
-  OPTIONS_ASC
-  OPTIONS_DESC
-  PLACEHOLDER_ASC
-  PLACEHOLDER_DESC
   POSITION_ASC
   POSITION_DESC
   PRIMARY_KEY_ASC
@@ -5670,69 +5622,6 @@ input StringFilter {
 
   """Starts with the specified string (case-insensitive)."""
   startsWithInsensitive: String
-}
-
-"""
-A filter to be used against String List fields. All fields are combined with a logical ‘and.’
-"""
-input StringListFilter {
-  """Any array item is equal to the specified value."""
-  anyEqualTo: String
-
-  """Any array item is greater than the specified value."""
-  anyGreaterThan: String
-
-  """Any array item is greater than or equal to the specified value."""
-  anyGreaterThanOrEqualTo: String
-
-  """Any array item is less than the specified value."""
-  anyLessThan: String
-
-  """Any array item is less than or equal to the specified value."""
-  anyLessThanOrEqualTo: String
-
-  """Any array item is not equal to the specified value."""
-  anyNotEqualTo: String
-
-  """Contained by the specified list of values."""
-  containedBy: [String]
-
-  """Contains the specified list of values."""
-  contains: [String]
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: [String]
-
-  """Equal to the specified value."""
-  equalTo: [String]
-
-  """Greater than the specified value."""
-  greaterThan: [String]
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: [String]
-
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Less than the specified value."""
-  lessThan: [String]
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: [String]
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: [String]
-
-  """Not equal to the specified value."""
-  notEqualTo: [String]
-
-  """Overlaps the specified list of values."""
-  overlaps: [String]
 }
 
 """

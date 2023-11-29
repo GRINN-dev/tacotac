@@ -103,6 +103,9 @@ export const ImportAttendeesForm: FC<{
             isVip: result["VIP true | false"] === "true" ? true : false,
           };
         });
+
+        console.log(resultsRewrite);
+
         setParsedData(resultsRewrite);
       },
     });
@@ -124,8 +127,8 @@ export const ImportAttendeesForm: FC<{
       for (let j = 0; j < event.formFields.nodes.length; j++) {
         data.completeAttendees[i].attendeeFormFields[j] = {
           fieldId: event.formFields.nodes[j].id,
-          value: parsedData[i][event.formFields.nodes[j].label],
-          attendeeId: "2e143d93-afa0-4b99-b90b-44a1428228e2", // any uuid, we fake it to make the API happy
+          value: String(parsedData[i][event.formFields.nodes[j].label]),
+          attendeeId: "00000000-0000-0000-0000-000000000000", // any uuid, we fake it to make the API happy
         };
 
         if (event.formFields.nodes[j].name === "email") {
@@ -142,8 +145,10 @@ export const ImportAttendeesForm: FC<{
         }
       }
 
-      data.completeAttendees[i].attendee.isVip = parsedData[i]["VIP true | false"];
+      data.completeAttendees[i].attendee.isVip = parsedData[i]["isVip"] || false;
     }
+
+    console.log(data);
 
     sdk()
       .RegisterCompleteAttendeesCsv({
@@ -166,9 +171,8 @@ export const ImportAttendeesForm: FC<{
                   </button>
                   <p>
                     {
-                      response.registerCompleteAttendeeCsv.attendeeImports.find(
-                        ({ errorCode }) => errorCode === "ALEXT"
-                      )?.errorMessage
+                      response.registerCompleteAttendeeCsv.attendeeImports.find((x) => x?.errorCode === "ALEXT")
+                        ?.errorMessage
                     }
                   </p>
                   <p>
@@ -237,7 +241,9 @@ export const ImportAttendeesForm: FC<{
             handleCsvUpload(file);
           }}
         />
-        <div className="mt-10">{csvUploadrender?.length > 0 && <SimpleCollection arrayList={csvUploadrender} />}</div>
+        <div className="mt-10 overflow-x-auto">
+          {csvUploadrender?.length > 0 && <SimpleCollection arrayList={csvUploadrender} />}
+        </div>
       </div>
       <div className={cn("mt-8 flex gap-2", !parsedData.length && "hidden")}>
         <Button

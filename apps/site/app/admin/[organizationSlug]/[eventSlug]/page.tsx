@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-
-
 import { serverSdk } from "@/lib/server-sdk";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -10,7 +8,6 @@ import { MyDataTable } from "./_components/data-table";
 import { ExportCsv } from "./_components/export-csv";
 import { SendAllEmail } from "./SendAllEmail";
 import { SendAllEmailConfirmDonation } from "./SendAllEmailConfirmDonation";
-
 
 const EventsPage = async ({ params: { organizationSlug, eventSlug } }) => {
   const data = await serverSdk().GetEventBySlug({
