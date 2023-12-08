@@ -309,7 +309,7 @@ export const scannerMachine = createMachine(
 
         if (attendeeByTicketNumber?.panelNumber) {
           const confirm = window.confirm(
-            `Ce ticket a déjà été scanné sur le panel ${attendeeByTicketNumber?.panelNumber}. Voulez-vous le scanner à nouveau ?`
+            `Ce ticket a déjà été scanné sur le panneau ${attendeeByTicketNumber?.panelNumber}. Voulez-vous le scanner à nouveau ?`
           );
           if (!confirm) {
             throw new Error("ticket déjà scanné");
