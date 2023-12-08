@@ -23,7 +23,7 @@ begin
         email=CASE
                   WHEN v_attendee.email IS NOT NULL AND v_attendee.email <> '' THEN v_attendee.email
                   WHEN payload.email IS NOT NULL AND payload.email <> '' THEN payload.email
-                  ELSE 'toto'
+                  ELSE att.email
                 END
     where ticket_number=payload.ticket_number;
   end if;
