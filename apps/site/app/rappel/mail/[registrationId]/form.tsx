@@ -55,7 +55,7 @@ export const UpdateAttendeeMailForm: FC<iUpdateAttendeeMail> = ({ nodes }) => {
         title: "Email mis à jour !",
       });
     } else {
-      console.log("invalide");
+      console.warn("invalide");
     }
   });
   return (

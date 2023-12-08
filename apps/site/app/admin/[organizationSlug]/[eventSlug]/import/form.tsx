@@ -104,8 +104,6 @@ export const ImportAttendeesForm: FC<{
           };
         });
 
-        console.log(resultsRewrite);
-
         setParsedData(resultsRewrite);
       },
     });
@@ -148,7 +146,6 @@ export const ImportAttendeesForm: FC<{
       data.completeAttendees[i].attendee.isVip = parsedData[i]["isVip"] || false;
     }
 
-    console.log(data);
 
     sdk()
       .RegisterCompleteAttendeesCsv({

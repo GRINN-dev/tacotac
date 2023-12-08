@@ -39,7 +39,6 @@ export const getUpdateUserFormProps: (input: {
     },
   ];
   const onSubmit = async (data: UpdateUserInput) => {
-    console.log("updated", data);
     await sdk().UpdateUser({ input: data });
   };
   return {

@@ -57,7 +57,6 @@ export const TicketThemeForm: FC<{ eventBranding: GetEventBySlugQuery["eventBySl
   }
 
   function showImage(e: any) {
-    console.log("🚀 ~ file: ticket-theme-form.tsx:71 ~ showImage ~ e:", e);
     const reader = new FileReader();
     const file = e[0];
     if (file) {

@@ -34,7 +34,6 @@ export const getResetPasswordFormProps: ({
     },
   ];
   const onSubmit = async (data: ResetPasswordInput) => {
-    console.log("created", data);
     await sdk().ResetPassword({
       input: {
         ...data,

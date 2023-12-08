@@ -1,9 +1,5 @@
 import { ChangeEvent, DragEvent, FC, useState } from "react";
 
-
-
-
-
 export interface FileDragNDropProps {
   title: string | null | undefined;
   id: string;
@@ -44,7 +40,6 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({
     e.preventDefault();
     const files = e.dataTransfer.files;
     loadFiles(Array.from(files));
-    console.log(files);
   };
 
   const loadFiles = async (files: File[]) => {
@@ -79,10 +74,10 @@ export const FileDragNDrop: FC<FileDragNDropProps> = ({
         }
       >
         <div onDragEnter={dragEnter} onDragLeave={dragLeave} className="m-2 flex flex-col items-center p-4">
-          <span className="py-1 px-1.5 text-center text-base">{placeholder}</span>
+          <span className="px-1.5 py-1 text-center text-base">{placeholder}</span>
           <span>ou</span>
           <label htmlFor={id} className="">
-            <span className="group-hover:text-primary-500 group-hover:bg-accent-500 cursor-pointer rounded py-1 px-1.5 text-center text-base underline group-hover:shadow-xl">
+            <span className="group-hover:text-primary-500 group-hover:bg-accent-500 cursor-pointer rounded px-1.5 py-1 text-center text-base underline group-hover:shadow-xl">
               Cliquez pour choisir
             </span>
             <input

@@ -89,7 +89,6 @@ export const FindAttendee: FC<{
                   <CommandItem
                     key={suggestion.value?.id}
                     onSelect={async (_currentValue) => {
-                      console.log("onSelect", suggestion);
                       setSelected(suggestion);
                       setSuggestions([]);
                       setOpen(false);

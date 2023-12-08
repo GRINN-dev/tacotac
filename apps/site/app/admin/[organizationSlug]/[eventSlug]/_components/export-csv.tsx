@@ -13,7 +13,6 @@ interface ExportCsvProps {
 }
 
 export const ExportCsv: FC<ExportCsvProps> = ({ users, name }) => {
-  console.log("🚀 ~ file: export-csv.tsx:19 ~ users:", users);
   const defaultAdditionalData = users?.nodes[74]?.additionalData
     ?.filter((formFieldDetail) => !["Civilité", "Email", "Nom", "Prénom"].includes(formFieldDetail.label))
     ?.reduce((acc, formFieldDetail) => ({ ...acc, [formFieldDetail.label]: "  " }), {});

@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../../popover";
 
 interface CalendarFormFieldProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
   descrition: ReactNode;
   label: ReactNode;
@@ -27,7 +27,7 @@ interface CalendarFormFieldProps<
 
 export const CalendarAndTimeFormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   descrition,
   label,
@@ -70,7 +70,6 @@ const Input: FC<{
   );
 
   /*   useEffect(() => {
-    console.log("1");
     if (dateValue && timeValue) {
       const [hour, minute] = timeValue.split(":");
       const date = new Date(dateValue);

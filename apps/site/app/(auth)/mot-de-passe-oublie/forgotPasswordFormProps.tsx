@@ -13,7 +13,6 @@ export const getForgotPasswordFormProps: () => GenericFormProps<ForgotPasswordIn
     },
   ];
   const onSubmit = async (data: ForgotPasswordInput) => {
-    console.log("created", data);
     await sdk().ForgotPassword({
       input: {
         ...data,

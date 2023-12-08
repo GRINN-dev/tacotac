@@ -7,7 +7,6 @@ import { useStickyState } from "@/hooks/use-sticky-state";
 import { GetEventByIdQuery, ScanAttendeesAsyncInput, ScanAttendeesAsyncPayload } from "@tacotacIO/codegen";
 import { useMachine } from "@xstate/react";
 import { ArrowLeft, QrCode, Ticket } from "lucide-react";
-import { assign } from "xstate";
 
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
@@ -44,19 +43,6 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
 
     actions: {
       saveOffline: (context) => {
-        console.log("saved offline");
-        /* localStorage.setItem(
-          "offlineData",
-          JSON.stringify([
-            ...JSON.parse(localStorage.getItem("offlineData") || "[]"),
-            {
-              email: context.email,
-              panelNumber: context.panel,
-              ticketNumber: context.ticket.number,
-              metadata: context,
-            } as ScanAttendeesAsyncInput["payloads"][0],
-          ])
-        ); */
         setOfflineData([
           ...offlineData,
           {
@@ -184,7 +170,13 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
         }
       </div>
 
-      <ScrollArea className="bg-background container -mt-6 max-w-2xl grow rounded-t-xl pt-4">
+      <ScrollArea
+        className={cn(
+          "bg-background container -mt-6 max-w-2xl grow rounded-t-xl pt-4",
+          state.matches("scanning-panel") && "border-4 border-lime-400",
+          state.matches("scanning-ticket") && "border-4 border-sky-500"
+        )}
+      >
         {state.matches("idle") ? (
           <>
             <h1 className="line-clamp-2 text-lg font-bold">{event.name}</h1>
@@ -280,7 +272,13 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
               }}
             >
               <Label htmlFor="panel">no. panneau</Label>
-              <Input id="panel" required value={panelNumber} onChange={(e) => setPanelNumber(e.target.value)} />
+              <Input
+                id="panel"
+                required
+                value={panelNumber}
+                type="number"
+                onChange={(e) => setPanelNumber(e.target.value)}
+              />
               <Button disabled={!panelNumber} type="submit" className="mt-4">
                 Entrée manuelle
               </Button>

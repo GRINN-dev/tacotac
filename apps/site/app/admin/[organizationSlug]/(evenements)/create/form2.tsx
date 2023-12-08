@@ -106,7 +106,6 @@ export const CreateForm: FC<{ organizationId: string }> = ({ organizationId }) =
         },
       })
       .then((data) => {
-        console.log(data);
         toast({
           title: "Événement créé",
           description: "Votre événement a bien été créé",

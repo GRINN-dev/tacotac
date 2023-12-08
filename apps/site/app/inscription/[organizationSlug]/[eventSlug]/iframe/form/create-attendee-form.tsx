@@ -146,7 +146,6 @@ export const CreateAttendeeForm2: FC<{
             variant="outline"
             onClick={async () => {
               const formIsOk = await trigger(`completeAttendees`);
-              console.log(formIsOk);
               if (formIsOk) {
                 attendeesFieldArray.append({});
                 setAccordionValue(String(attendeesFieldArray.fields.length));

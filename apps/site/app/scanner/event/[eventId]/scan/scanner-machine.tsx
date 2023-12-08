@@ -218,11 +218,9 @@ export const scannerMachine = createMachine(
   {
     guards: {
       attendeeIsFetched: ({ attendee }) => {
-        console.log("attendee is fetched", !!attendee?.id);
         return !!attendee?.id;
       },
       submissionIsSuccessful: (_, event) => {
-        console.log("submission", event);
         return event.data?.scanAttendee?.boolean;
       },
       qrCodeDetected: (_, event) => event.payload !== null,
@@ -294,17 +292,16 @@ export const scannerMachine = createMachine(
               ticketNumber: context.ticket.number,
               panelNumber: context.panel,
               metadata: context,
+              email: context.email,
             },
           },
         });
       },
       verifyTicket: async (context, event) => {
-        console.log("verifyTicket", event);
         const { attendeeByTicketNumber } = await sdk().GetAttendeeByTicketNumber({
           ticketNumber: context.ticket.number,
         });
         // do something with eventId
-        console.log("attendeeByTicketNumber", attendeeByTicketNumber);
 
         if (attendeeByTicketNumber?.registration?.eventId !== context.eventId) {
           throw new Error("ticket non valide");
