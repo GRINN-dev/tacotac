@@ -265,19 +265,21 @@ export const scannerMachine = createMachine(
           event: event.payload.eventId,
         }),
       }),
-      refresh: assign({
-        ticket: {
-          number: "",
-          isMissingEmail: false,
-          isVIP: false,
-          fullName: "",
-          event: "",
-        },
-        panel: null,
-        attendee: null,
-        email: "",
-        error: "null",
-      }),
+      refresh: () => {
+        assign({
+          ticket: {
+            number: "",
+            isMissingEmail: false,
+            isVIP: false,
+            fullName: "",
+            event: "",
+          },
+          panel: null,
+          attendee: null,
+          email: "",
+          error: "null",
+        });
+      },
     },
     services: {
       fetchAttendee: (context) => {

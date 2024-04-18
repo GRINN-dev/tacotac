@@ -59,6 +59,12 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
   const [ticketNumber, setTicketNumber] = useState("");
   const [panelNumber, setPanelNumber] = useState("");
 
+  // reset ticket and panel number when the state goes back to idle
+  if (state.matches("idle") && !!ticketNumber && !!panelNumber) {
+    setTicketNumber("");
+    setPanelNumber("");
+  }
+
   // get the number of attendees to synchronize
   const numberOfAttendeesToSynchronize = offlineData.length;
 
