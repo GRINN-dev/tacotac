@@ -6,14 +6,22 @@ import { CreateFormFieldInput, FieldTypes, GetEventBySlugQuery } from "@tacotacI
 import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-
-
 import { sdk } from "@/lib/sdk";
 import { cn } from "@/lib/utils";
-import { Button, Checkbox, Input, Label, Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
+import {
+  Button,
+  Checkbox,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
-
 
 export const FormFieldCard: FC<{
   onSuccess?: () => void;
@@ -67,7 +75,7 @@ export const FormFieldCard: FC<{
             },
           })
           .then(() => {
-            toast({ title: "Champ supprimer", duration: 2000 });
+            toast({ title: "Champ supprimé", duration: 2000 });
             setIsLoading(false);
             router.refresh();
           });
