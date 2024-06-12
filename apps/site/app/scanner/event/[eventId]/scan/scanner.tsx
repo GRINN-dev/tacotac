@@ -60,7 +60,7 @@ export const Scanner: FC<{ event: GetEventByIdQuery["event"] }> = ({ event }) =>
   const [panelNumber, setPanelNumber] = useState("");
 
   // reset ticket and panel number when the state goes back to idle
-  if (state.matches("idle") && !!ticketNumber && !!panelNumber) {
+  if (state.matches("idle") && (!!ticketNumber || !!panelNumber)) {
     setTicketNumber("");
     setPanelNumber("");
   }
