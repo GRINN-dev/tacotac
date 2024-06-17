@@ -227,26 +227,35 @@ export const scannerMachine = createMachine(
     },
     actions: {
       assignTicketNumber: assign({
-        ticket: (context, event) => ({
-          ...context.ticket,
-          number: event.payload,
-        }),
+        ticket: (context, event) => {
+          console.log(event.payload);
+          return {
+            ...context.ticket,
+            number: event.payload,
+          };
+        },
       }),
       assignAttendee: assign({
-        attendee: (context, event) => event.data.attendeeByTicketNumber,
+        attendee: (context, event) => {
+          console.log(event.data.attendeeByTicketNumber);
+          return event.data.attendeeByTicketNumber;
+        },
       }),
       assignPanelNumber: assign({
         panel: (_, event) => Number(event.payload),
       }),
       assignTicket: assign({
-        ticket: (context, event) => ({
-          ...context.ticket,
-          number: event.payload.number,
-          isMissingEmail: event.payload.isMissingEmail,
-          isVIP: event.payload.isVIP,
-          fullName: event.payload.fullName,
-          event: event.payload.event,
-        }),
+        ticket: (context, event) => {
+          console.log(event.payload);
+          return {
+            ...context.ticket,
+            number: event.payload.number,
+            isMissingEmail: event.payload.isMissingEmail,
+            isVIP: event.payload.isVIP,
+            fullName: event.payload.fullName,
+            event: event.payload.event,
+          };
+        },
       }),
       assignEmail: assign({
         email: (_, event) => event.payload,
@@ -265,21 +274,19 @@ export const scannerMachine = createMachine(
           event: event.payload.eventId,
         }),
       }),
-      refresh: () => {
-        assign({
-          ticket: {
-            number: "",
-            isMissingEmail: false,
-            isVIP: false,
-            fullName: "",
-            event: "",
-          },
-          panel: null,
-          attendee: null,
-          email: "",
-          error: "null",
-        });
-      },
+      refresh: assign({
+        ticket: {
+          number: "",
+          isMissingEmail: false,
+          isVIP: false,
+          fullName: "",
+          event: "",
+        },
+        panel: null,
+        attendee: null,
+        email: "",
+        error: "null",
+      }),
     },
     services: {
       fetchAttendee: (context) => {
